@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 
 const dummyData = [
@@ -57,21 +57,26 @@ const HelpBox = styled.div`
   }
 `;
 
-const ProgramsBox = styled.div`
+const UtilityCardBox = styled.div`
   grid-area: programs;
 `;
 
 const UtilityCardBody = styled.div`
-  background-color: var(--color-bkg-highlight);
+  background-color: black;
   margin: 32px 0;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 3px 4px 0 rgba(0,0,0,1);
+  border: 2px solid var(--color-button-primary-light);
 `;
 
 const UtilityHeader = styled.div`
-  background-color: steelblue;
+  background-color: var(--color-button-primary-light);
   color: white;
   height: 64px;
   display: flex;
   align-items: center;
+  box-shadow: 0 0px 8px 4px rgba(0,0,0,.5);
   h3 {
     margin-left: 16px;
   }
@@ -82,7 +87,30 @@ const ProgramCardBox = styled.div`
 `;
 
 const ProgramCardBody = styled.div`
-  background-color: purple;
+  margin: 8px 0;
+  h4 {
+    margin: 0;
+  }
+`;
+
+const ProgramCardHeader = styled.div`
+  background-color: var(--color-button-primary-main);
+  color: white;
+  padding: 8px 16px;
+  position: relative;
+  z-index: 2;
+`;
+
+const ProgramCardMain = styled.div`
+  background-color: var(--color-bkg-highlight);
+  box-shadow: 0 2px 4px 2px rgba(0,0,0,.5);
+  position: relative;
+  z-index: 1;
+  height: 64px;
+`;
+
+const ProgramCardDetails = styled.div`
+  background-color: yellow;
   height: 64px;
 `;
 
@@ -95,9 +123,9 @@ function UtilityList () {
   }
 
   return (
-    <ProgramsBox className="container">
+    <UtilityCardBox className="container">
       {renderUtilities()}
-    </ProgramsBox>
+    </UtilityCardBox>
   )
 }
 
@@ -122,9 +150,22 @@ function UtilityCard (props) {
 }
 
 function ProgramCard (props) {
+
+  
+
   return (
     <ProgramCardBody>
-      <h4>{props.program.program_name}</h4>
+      <ProgramCardHeader>
+        <h4>{props.program.program_name}</h4>
+      </ProgramCardHeader>
+
+      <ProgramCardMain>
+
+      </ProgramCardMain>
+
+      <ProgramCardDetails>
+
+      </ProgramCardDetails>
     </ProgramCardBody>
   )
 }
