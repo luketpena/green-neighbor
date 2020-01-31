@@ -6,7 +6,7 @@ const Container = styled.div`
   height: 500px;
   margin: 0 auto;
   display: grid;
-  grid-template-areas: "title help" "programs programs";
+  grid-template-areas: 
   grid-template-columns: 1fr 250px;
   grid-template-rows: 250px auto;
 `;
@@ -49,6 +49,7 @@ export default function UtilityPage() {
 
   return(
     <Container>
+
       <TitleBox>
         <p>Showing results for</p>
         <h2>Saint Paul, MN 55104</h2>
@@ -62,8 +63,9 @@ export default function UtilityPage() {
       </HelpBox>
 
       <ProgramsBox className="container">
-        
+
       </ProgramsBox>
+
     </Container>
   )
 }
