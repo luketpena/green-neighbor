@@ -5,7 +5,7 @@ import axios from 'axios';
 function* getPrograms(action) {
   try{
     const programs = yield axios.get(`/api/programs/${action.payload}`);
-    yield put({type: 'SET_PROGRAMS', payload: programs});
+    yield put({type: 'SET_PROGRAMS', payload: programs.data});
   } catch (error) {
       console.log(error);
   }
