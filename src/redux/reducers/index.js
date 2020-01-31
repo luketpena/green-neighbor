@@ -7,6 +7,12 @@ import user from './userReducer';
 // It bundles up all of the other reducers so our project can use them.
 // This is imported in index.js as rootSaga
 
+// creates a reducer that, when string is sent, sets state to action.payload.
+// The parameter str sets the correct string, and type sets the starting state. Type defaults to [].
+const createReducer = (str, type=[]) => {
+  return (state=type, action) => action.type === str ? action.payload : state;
+}
+
 // Lets make a bigger object for our store, with the objects from our reducers.
 // This is what we get when we use 'state' inside of 'mapStateToProps'
 const rootReducer = combineReducers({

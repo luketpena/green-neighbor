@@ -12,6 +12,7 @@ CREATE TABLE "user" (
 );
 
 CREATE TABLE "zips" (
+	"id" SERIAL PRIMARY KEY,
 	"zip" INT,
 	"eiaid" INT,
 	"utility_name" VARCHAR,
@@ -26,6 +27,7 @@ CREATE TABLE "zips" (
 );
 
 CREATE TABLE "gpp" (
+	"id" SERIAL PRIMARY KEY,
 	"eiaid" INT,
 	"utility_name" VARCHAR,
 	"state" VARCHAR,
