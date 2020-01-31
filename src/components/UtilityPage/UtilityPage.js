@@ -1,6 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
+const dummyData = [
+  {utility_name: 'Drill Baby Drill'},
+  {utility_name: 'We Love Oil Inc.'},
+  {utility_name: 'Windmills are Neat'}
+]
+
 const Container = styled.div`
   width: 90%;
   height: 500px;
@@ -45,6 +51,52 @@ const ProgramsBox = styled.div`
   grid-area: programs;
 `;
 
+const UtilityCardBody = styled.div`
+  background-color: var(--color-bkg-highlight);
+  margin: 32px 0;
+`;
+
+const UtilityHeader = styled.div`
+  background-color: steelblue;
+  color: white;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  h3 {
+    margin-left: 16px;
+  }
+`;
+
+function UtilityList () {
+
+  function renderCompanies() {
+    return dummyData.map( (item,i)=>{
+      return <UtilityCard key={i} company={item}/>
+    });
+  }
+
+  return (
+    <ProgramsBox className="container">
+      {renderCompanies()}
+    </ProgramsBox>
+  )
+}
+
+function UtilityCard (props) {
+  return (
+    <UtilityCardBody>
+      <UtilityHeader>
+        <h3>{props.company.utility_name}</h3>
+      </UtilityHeader>
+      content
+    </UtilityCardBody>
+  )
+}
+
+function ProgramCard (props) {
+  
+}
+
 export default function UtilityPage() {
 
   return(
@@ -62,9 +114,7 @@ export default function UtilityPage() {
         <button className="button-default">There are no energy programs!</button>
       </HelpBox>
 
-      <ProgramsBox className="container">
-
-      </ProgramsBox>
+      <UtilityList />
 
     </Container>
   )
