@@ -15,4 +15,4 @@ function* programDetailsSaga() {
   yield takeLatest('GET_PROGRAM_DETAILS', getProgramDetails);
 }
 
-export default programsSaga;
+export default programDetailsSaga;
