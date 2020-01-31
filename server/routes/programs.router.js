@@ -40,7 +40,7 @@ router.get('/details/:id', async (req, res) => {
         const query = `
         SELECT * FROM "gpp" WHERE "id"=$1`;
         const results = await pool.query(query, [req.params.id]);
-        res.send(results.rows);
+        res.send(results.rowsgit);
     } catch (error){
         res.sendStatus(500);
         console.log('-------- ERROR GETTING PROGRAM DETAILS -------- \n', error);
