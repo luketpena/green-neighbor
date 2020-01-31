@@ -38,8 +38,6 @@ body {
 .container {
   background-color: var(--color-bkg-container);
   border-radius: 16px;
-  width: 500px;
-  height: 200px;
   padding: 16px;
   box-sizing: border-box;
   box-shadow: 0 4px 4px -2px var(--color-shadow);
