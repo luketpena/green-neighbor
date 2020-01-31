@@ -16,7 +16,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 import AboutPage from '../AboutPage/AboutPage';
 import UserPage from '../UserPage/UserPage';
 import InfoPage from '../InfoPage/InfoPage';
-
+import DetailsPage from '../DetailsPage/DetailsPage';
 import UtilityPage from '../UtilityPage/UtilityPage';
 
 import './App.css';
@@ -59,6 +59,12 @@ class App extends Component {
             />
             {/* If none of the other routes matched, we will show a 404. */}
             <Route path="/utility" component={UtilityPage}/>
+            
+
+            {/* If none of the other route matched, we will show a 404. */}
+            <Route path="/details" component={DetailsPage}/>
+
+            {/* This 404 route needs to be last. */}
             <Route render={() => <h1>404</h1>} />
             
           </Switch>
