@@ -2,9 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 
 const dummyData = [
-  {utility_name: 'Drill Baby Drill'},
-  {utility_name: 'We Love Oil Inc.'},
-  {utility_name: 'Windmills are Neat'}
+  {
+    name: 'Drill Baby Drill',
+    programs: [
+      {
+        program_name: 'Solar Stuff',
+      },
+      {
+        program_name: 'Corn Stuff'
+      }
+    ]
+  },
+  {name: 'We Love Oil Inc.', programs: []},
+  {name: 'Windmills are Neat', programs: []}
 ]
 
 const Container = styled.div`
@@ -67,9 +77,18 @@ const UtilityHeader = styled.div`
   }
 `;
 
+const ProgramCardBox = styled.div`
+
+`;
+
+const ProgramCardBody = styled.div`
+  background-color: purple;
+  height: 64px;
+`;
+
 function UtilityList () {
 
-  function renderCompanies() {
+  function renderUtilities() {
     return dummyData.map( (item,i)=>{
       return <UtilityCard key={i} company={item}/>
     });
@@ -77,24 +96,37 @@ function UtilityList () {
 
   return (
     <ProgramsBox className="container">
-      {renderCompanies()}
+      {renderUtilities()}
     </ProgramsBox>
   )
 }
 
 function UtilityCard (props) {
+
+  function renderPrograms() {
+    return props.company.programs.map( (item,i)=>{
+      return <ProgramCard key={i} program={item} />
+    });
+  }
+
   return (
     <UtilityCardBody>
       <UtilityHeader>
-        <h3>{props.company.utility_name}</h3>
+        <h3>{props.company.name}</h3>
       </UtilityHeader>
-      content
+      <ProgramCardBox>
+        {renderPrograms()}
+      </ProgramCardBox>
     </UtilityCardBody>
   )
 }
 
 function ProgramCard (props) {
-  
+  return (
+    <ProgramCardBody>
+      <h4>{props.program.program_name}</h4>
+    </ProgramCardBody>
+  )
 }
 
 export default function UtilityPage() {
