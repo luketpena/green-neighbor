@@ -49,6 +49,7 @@ export default function UtilityPage() {
 
   return(
     <Container>
+      
       <TitleBox>
         <p>Showing results for</p>
         <h2>Saint Paul, MN 55104</h2>
@@ -62,8 +63,9 @@ export default function UtilityPage() {
       </HelpBox>
 
       <ProgramsBox className="container">
-        
+
       </ProgramsBox>
+
     </Container>
   )
 }

@@ -7,7 +7,7 @@ export default function Template() {
 
   return(
     <Container>
-      
+
     </Container>
   )
 }
