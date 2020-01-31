@@ -5,7 +5,7 @@ import axios from 'axios';
 function* getProgramDetails(action) {
   try{
     const details = yield axios.get(`/api/programs/details/${action.payload}`);
-    yield put({type: 'SET_PROGRAM_DETAILS', payload: details});
+    yield put({type: 'SET_PROGRAM_DETAILS', payload: details.data});
   } catch (error) {
       console.log(error);
   }
