@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {useParams} from 'react-router-dom';
+import {useParams, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -32,12 +32,13 @@ align-content: center;
 `;
 
 
-// const UnderlineH1 = styled.h1`
-// border-bottom: 2px solid currentColor;
-// `;
 
 // BEGIN bottom section component //
-const BottomDash = () => (
+function BottomDash (details) {
+  const history = useHistory();
+  const {zip} = useParams();
+
+  return(
   <BottomDisplay>
       <div className="container">
         <h3>Share With Your Friends!</h3>
@@ -45,9 +46,9 @@ const BottomDash = () => (
         <button class= "button-primary" >Go!</button>
       </div>
       <div className="container">
-        <h3>Select a different Program!</h3>
-        <p>Supporting text</p>
-        <button class= "button-primary">Go!</button>
+        <h3>Select a Different Program</h3>
+        <p>Click below to view other programs in your area.</p>
+        <button class= "button-primary" onClick={() => history.push(`/utility/${zip}`)}>Go!</button>
       </div><div className="container">
         <h3>Notice a Problem?</h3>
         <p>Supporting text</p>
@@ -64,19 +65,18 @@ const BottomDash = () => (
         <button class= "button-primary">Go!</button>
       </div> 
   </BottomDisplay> 
-);
+  )
+};
 //END bottom component // 
 
-// go to program sign up button //
-// function goSignUp () {
-//   window.location.assign(details.sign_up_url);
-// }
+
 
 export default function DetailsPage() {
 
   const details = useSelector(state => state.programDetails)
   const dispatch = useDispatch();
   const {id} = useParams(); 
+  
 
 
   useEffect(()=>{

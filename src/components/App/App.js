@@ -66,7 +66,7 @@ class App extends Component {
             
 
             {/* If none of the other route matched, we will show a 404. */}
-            <Route path="/details/:id" component={DetailsPage}/>
+            <Route path="/details/:id/:zip" component={DetailsPage}/>
 
             {/* This 404 route needs to be last. */}
             <Route path="/utility/:zip" component={UtilityPage}/>
