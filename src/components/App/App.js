@@ -11,8 +11,8 @@ import {connect} from 'react-redux';
 import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
 
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
-
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import DetailsPage from '../DetailsPage/DetailsPage';
 import AboutPage from '../AboutPage/AboutPage';
 import UserPage from '../UserPage/UserPage';
 import InfoPage from '../InfoPage/InfoPage';
@@ -66,7 +66,7 @@ class App extends Component {
             
 
             {/* If none of the other route matched, we will show a 404. */}
-            <Route path="/details" component={DetailsPage}/>
+            <Route path="/details/:id" component={DetailsPage}/>
 
             {/* This 404 route needs to be last. */}
             <Route path="/utility/:zip" component={UtilityPage}/>

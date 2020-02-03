@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -65,17 +67,34 @@ const BottomDash = () => (
 );
 //END bottom component // 
 
+// go to program sign up button //
+// function goSignUp () {
+//   window.location.assign(details.sign_up_url);
+// }
+
 export default function DetailsPage() {
+
+  const details = useSelector(state => state.programDetails)
+  const dispatch = useDispatch();
+  const {id} = useParams(); 
+
+
+  useEffect(()=>{
+    dispatch({type: 'GET_PROGRAM_DETAILS', payload: id});
+  }, [id]);
   
 
   return(
     <Container>
+      {JSON.stringify(details)}
       <TitleDiv>
-        <h3>Utility Name - Zip Code</h3>
-        <h1>Program Title</h1>
+        <h3>{details.utility_name} - {details.eiaid}</h3>
+        <h1>{details.program_name}</h1>
         <p>You're one step closer to green energy.</p>
         <p>Continue to the program website to sign up!</p>
-        <button class= "button-primary">Go!</button>
+        <a href = {details.sign_up_url}>
+          <button class= "button-primary" > Go!</button>
+        </a>
       </TitleDiv>
       <BottomDash>
       </BottomDash>
