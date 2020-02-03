@@ -4,6 +4,7 @@
 DROP TABLE "gpp";
 DROP TABLE "zips";
 DROP TABLE "user";
+DROP TABLE "tickets";
 
 CREATE TABLE "user" (
   "id" SERIAL PRIMARY KEY,
@@ -62,6 +63,17 @@ CREATE TABLE "gpp" (
 	"sign_up_url" VARCHAR,
 	"date_updated" DATE,
 	"production" INT
+);
+
+CREATE TABLE "tickets" (
+	"id" SERIAL PRIMARY KEY,
+	"resolved" BOOLEAN DEFAULT FALSE,
+	"zip" INT,
+	"utility_name" VARCHAR,
+	"utility_id" INT,
+	"program_name" VARCHAR,
+	"program_id" VARCHAR,
+	"comments" VARCHAR
 );
 
 BEGIN;
