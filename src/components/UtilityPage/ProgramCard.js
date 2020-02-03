@@ -8,7 +8,7 @@ const ProgramCardBody = styled.div`
   h4 {
     margin: 0 8px;
   }
-  height: ${props=>(props.detailsActive? '330' : '180')}px;
+  height: ${props=>(props.detailsActive? '348' : '198')}px;
   overflow: hidden;
   transition: height .5s;
 `;
@@ -29,12 +29,13 @@ const ProgramCardMain = styled.div`
   background-color: var(--color-bkg-highlight);
   box-shadow: 0 2px 4px 2px rgba(0,0,0,.5);
   position: relative;
+  box-sizing: border-box;
   z-index: 1;
   height: 150px;
   padding: 4px;
   text-align: center;
   p {
-    margin: 4px;
+    margin: 8px auto;
     display: block;
   }
 `;
@@ -54,6 +55,20 @@ const BarBox = styled.div`
   overflow: hidden;
   margin: 0 16px;
   box-shadow: 0 1px 2px 0 rgba(0,0,0,.5);
+`;
+
+const DetailsButton = styled.button`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  outline: none;
+  border: none;
+  transition: background-color .2s;
+  &:hover {
+    cursor: pointer;
+    background-color: #EEE;
+  }
 `;
 
 
@@ -143,10 +158,11 @@ export default function ProgramCard(props) {
         <SelectButton className="button-secondary">Select</SelectButton>
       </ProgramCardHeader>
 
-      <ProgramCardMain onClick={()=>setDetailsActive(!detailsActive)}>
+      <ProgramCardMain >
           <p>{renderSourceText()}</p>
           <p>{renderAttributeText()}</p>
           <p>{renderBlockActive()}</p>
+          <DetailsButton onClick={()=>setDetailsActive(!detailsActive)}>Pricing details</DetailsButton>
       </ProgramCardMain>
 
       <ProgramCardDetails>
