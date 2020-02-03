@@ -16,7 +16,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 import AboutPage from '../AboutPage/AboutPage';
 import UserPage from '../UserPage/UserPage';
 import InfoPage from '../InfoPage/InfoPage';
-import DetailsPage from '../DetailsPage/DetailsPage';
+import IntroductionPage from '../IntroductionPage/IntroductionPage';
 import UtilityPage from '../UtilityPage/UtilityPage';
 
 import './App.css';
@@ -30,7 +30,6 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <Nav />
           <Switch>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
             <Redirect exact from="/" to="/home" />
@@ -57,6 +56,11 @@ class App extends Component {
               path="/info"
               component={InfoPage}
             />
+            <Route
+            exact
+            path="/intro"
+            component={IntroductionPage}
+            />
             {/* If none of the other routes matched, we will show a 404. */}
             <Route path="/utility" component={UtilityPage}/>
             
@@ -65,10 +69,10 @@ class App extends Component {
             <Route path="/details" component={DetailsPage}/>
 
             {/* This 404 route needs to be last. */}
+            <Route path="/utility/:zip" component={UtilityPage}/>
             <Route render={() => <h1>404</h1>} />
             
           </Switch>
-          <Footer />
         </div>
       </Router>
   )}
