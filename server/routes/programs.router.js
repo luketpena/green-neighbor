@@ -51,7 +51,7 @@ router.get('/details/:id', async (req, res) => {
 });
 
 router.get('/geocode/:zip', (req,res)=>{
- 
+
   axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.params.zip}&sensor=true&key=${process.env.GEOCODE_API_KEY}`)
   .then(response=>{
     res.send(response.data.results[0].formatted_address);

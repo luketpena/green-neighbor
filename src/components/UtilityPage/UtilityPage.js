@@ -3,22 +3,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 
-const dummyData = [
-  {
-    name: 'Drill Baby Drill',
-    programs: [
-      {
-        program_name: 'Solar Stuff',
-      },
-      {
-        program_name: 'Corn Stuff'
-      }
-    ]
-  },
-  {name: 'We Love Oil Inc.', programs: []},
-  {name: 'Windmills are Neat', programs: []}
-]
-
 const Container = styled.div`
   width: 90%;
   height: 500px;
@@ -184,8 +168,8 @@ function ProgramCard (props) {
 export default function UtilityPage(props) {
 
   const dispatch = useDispatch();
-  
   const {zip} = useParams(); 
+  const geocode = useSelector(state=>state.geocode);
 
   useEffect(()=>{
     dispatch({type: 'GET_PROGRAMS', payload: zip});
@@ -196,7 +180,7 @@ export default function UtilityPage(props) {
       
       <TitleBox>
         <p>Showing results for</p>
-        <h2>Saint Paul, MN {zip}</h2>
+        <h2>{geocode}</h2>
         <p>We found # companies and # energy programs.</p>
       </TitleBox>
 
