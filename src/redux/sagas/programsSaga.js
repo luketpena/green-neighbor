@@ -11,8 +11,18 @@ function* getPrograms(action) {
   }
 }
 
+function* getGeocodeData(action) {
+  try {
+    const response = yield axios.get(`/api/programs/geocode/${action.payload}`);
+    yield put({type: 'SET_GEOCODE_DATA', payload: response.data});
+  } catch (error) {
+    console.log(error);    
+  }
+}
+
 function* programsSaga() {
   yield takeLatest('GET_PROGRAMS', getPrograms);
+  yield takeLatest('GET_GEOCODE_DATA', getGeocodeData);
 }
 
 export default programsSaga;
