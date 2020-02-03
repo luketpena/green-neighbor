@@ -9,12 +9,11 @@ router.get('/:zip', async (req, res) => {
     try {
         const query = `
         SELECT "gpp".*
-        FROM "zips" JOIN  "gpp" ON "zips"."eia_state"="gpp"."eia_state"
+        FROM "zips" LEFT JOIN  "gpp" ON "zips"."eia_state"="gpp"."eia_state"
         WHERE "zips"."zip"=$1 AND "gpp"."production"=1`
         let programs = await pool.query(query, [req.params.zip]);
         programs = programs.rows;
         const dataToSend = [];
-        console.log(programs);
         programs.forEach(program => {
             let i = 0;
             for(; i < dataToSend.length && dataToSend[i].name !== program.utility_name; i++);
@@ -27,7 +26,7 @@ router.get('/:zip', async (req, res) => {
             delete program.utility_name;
             dataToSend[i].programs.push(program);
         });
-        console.log(JSON.stringify(dataToSend));
+
         res.send(dataToSend);
     } catch(error){
         res.sendStatus(500);
