@@ -8,7 +8,7 @@ const ProgramCardBody = styled.div`
   h4 {
     margin: 0 8px;
   }
-  height: ${props=>(props.detailsActive? '230' : '130')}px;
+  height: ${props=>(props.detailsActive? '330' : '180')}px;
   overflow: hidden;
   transition: height .5s;
 `;
@@ -30,8 +30,9 @@ const ProgramCardMain = styled.div`
   box-shadow: 0 2px 4px 2px rgba(0,0,0,.5);
   position: relative;
   z-index: 1;
-  height: 100px;
+  height: 150px;
   padding: 4px;
+  text-align: center;
   p {
     margin: 4px;
     display: block;
@@ -40,7 +41,7 @@ const ProgramCardMain = styled.div`
 
 const ProgramCardDetails = styled.div`
   background-color: yellow;
-  height: 100px;
+  height: 150px;
   left: 0;
 `;
 
@@ -70,7 +71,7 @@ export default function ProgramCard(props) {
     {text: 'is Green-e Certified', value: (props.program.green_e==='Yes'? true : false)},
     {text: 'uses Retired Recs', value: (props.program.recs_retired==='Yes'? true : false)},
     {text: 'is Revenue Neutral', value: (props.program.revenue_neutral==='Yes'? true : false)},
-  ])
+  ]);
 
   function sortEnergy() {
     let copy = [];
@@ -127,6 +128,13 @@ export default function ProgramCard(props) {
     return attributeString;
   }
 
+  function renderBlockActive() {
+    switch(props.program.blocks_available) {
+      case 'No': return 'This program is priced by Kilowatt-hour'; break;
+      default: return 'This program is priced by Block'; break;
+    }
+  }
+
   return (
     <ProgramCardBody detailsActive={detailsActive}>
       <ProgramCardHeader>
@@ -138,6 +146,7 @@ export default function ProgramCard(props) {
       <ProgramCardMain onClick={()=>setDetailsActive(!detailsActive)}>
           <p>{renderSourceText()}</p>
           <p>{renderAttributeText()}</p>
+          <p>{renderBlockActive()}</p>
       </ProgramCardMain>
 
       <ProgramCardDetails>
