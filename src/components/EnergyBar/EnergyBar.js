@@ -11,17 +11,13 @@ const Container = styled.div`
 
 const Bar = styled.div`
   background-color: ${props=>props.bar.color};
-  min-width: auto;
   width: ${props=>props.bar.value*100}%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  &:hover {
-    width: auto;
-    cursor: pointer;
-  }
+  overflow: hidden;
 `;
 
 export default function EnergyBar(props) {
@@ -61,7 +57,6 @@ export default function EnergyBar(props) {
               break;
             }
           }
-          
         }
       }
     }
@@ -70,7 +65,7 @@ export default function EnergyBar(props) {
 
   function renderBars() {
     return sortEnergy().map( (item,i)=>{
-      return <Bar bar={item} key={i} onMouseEnter={()=>barEnter(i)} onMouseLeave={()=>barLeave(i)}>{item.name}</Bar>
+      return <Bar bar={item} key={i}>{item.name}</Bar>
     })
   }
 
