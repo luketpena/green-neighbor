@@ -125,7 +125,7 @@ const ProgramCardDetails = styled.div`
 
 function UtilityList () {
 
-  const programs = useSelector(state=>state.programs);
+  const programs = useSelector(state => state.programs);
 
   function renderUtilities() {
     return programs.map( (item,i)=>{
