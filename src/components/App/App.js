@@ -63,7 +63,7 @@ class App extends Component {
             component={IntroductionPage}
             />
             {/* If none of the other routes matched, we will show a 404. */}
-            <Route path="/utility" component={UtilityPage}/>
+            <Route path="/utility/:zip" component={UtilityPage}/>
             <Route render={() => <h1>404</h1>} />
             
           </Switch>

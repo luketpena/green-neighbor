@@ -1,4 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 
 const dummyData = [
@@ -123,8 +125,10 @@ const ProgramCardDetails = styled.div`
 
 function UtilityList () {
 
+  const programs = useSelector(state=>state.programs);
+
   function renderUtilities() {
-    return dummyData.map( (item,i)=>{
+    return programs.map( (item,i)=>{
       return <UtilityCard key={i} company={item}/>
     });
   }
@@ -177,14 +181,22 @@ function ProgramCard (props) {
   )
 }
 
-export default function UtilityPage() {
+export default function UtilityPage(props) {
+
+  const dispatch = useDispatch();
+  
+  const {zip} = useParams(); 
+
+  useEffect(()=>{
+    dispatch({type: 'GET_PROGRAMS', payload: zip});
+  }, [zip]);
 
   return(
     <Container>
       
       <TitleBox>
         <p>Showing results for</p>
-        <h2>Saint Paul, MN 55104</h2>
+        <h2>Saint Paul, MN {zip}</h2>
         <p>We found # companies and # energy programs.</p>
       </TitleBox>
 
