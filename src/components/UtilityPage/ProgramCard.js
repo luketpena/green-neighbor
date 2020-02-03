@@ -41,9 +41,12 @@ const ProgramCardMain = styled.div`
 `;
 
 const ProgramCardDetails = styled.div`
-  background-color: yellow;
+  background-color: #EEE;
   height: 150px;
   left: 0;
+  p {
+    margin: 0;
+  }
 `;
 
 const SelectButton = styled.button `
@@ -74,7 +77,8 @@ const DetailsButton = styled.button`
 
 export default function ProgramCard(props) {
 
-  let [detailsActive, setDetailsActive] = useState(false);
+  let [detailsActive, setDetailsActive] = useState(true);
+  let [blockActive] = useState(( (props.program.blocks_available==='No' || props.program.blocks_available===null)? false : true))
   const [energy] = useState([
     {name: 'Wind', value: props.program.wind}, 
     {name: 'Solar', value: props.program.solar}, 
@@ -144,9 +148,31 @@ export default function ProgramCard(props) {
   }
 
   function renderBlockActive() {
-    switch(props.program.blocks_available) {
-      case 'No': return 'This program is priced by Kilowatt-hour'; break;
+    switch(blockActive) {
+      case false: return 'This program is priced by Kilowatt-hour'; break;
       default: return 'This program is priced by Block'; break;
+    }
+  }
+
+  function renderPricing() {
+    let priceString = 'Cost: ';
+    if (blockActive) {
+      let blockCostArray = props.program.block_cost.split(';');
+      if (blockCostArray.length>1) {priceString += `Starting at $${Number(blockCostArray[0]).toFixed(2)} per Kilowatt-hour`}
+      else {priceString += `$${Number(blockCostArray[0]).toFixed(2)} per Kilwatt-hour`}
+    } else {
+
+    }
+    return priceString
+  }
+
+  function renderBlockSize() {
+    if (blockActive) {
+      let blockString = 'Block size: ';
+      let blockSizeArray = props.program.block_size_kwh.split(';');
+      if (blockSizeArray.length>1) {blockString += `Starting at ${props.program.block_size_kwh.split(';')[0]} Kilowatt-hours`}
+      else {blockString += `${props.program.block_size_kwh.split(';')[0]} Kilwatt-hours`}
+      return <p>{blockString}</p>
     }
   }
 
@@ -166,7 +192,8 @@ export default function ProgramCard(props) {
       </ProgramCardMain>
 
       <ProgramCardDetails>
-
+        <p>{renderPricing()}</p>
+        {renderBlockSize()}
       </ProgramCardDetails>
     </ProgramCardBody>
   )
