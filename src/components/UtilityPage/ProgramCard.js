@@ -120,12 +120,14 @@ export default function ProgramCard(props) {
   }
 
   function renderSourceText() {
-    let sourceString = 'This program uses ';
+    let sourceString = 'Generated from ';
     const sourceList = sortEnergy();
+    let sourceCount = 0;
     for (let i=0; i<sourceList.length; i++) {
-      if (i===sourceList.length-1) {sourceString += 'and '}
+      if (i===sourceList.length-1 && sourceCount>0) {sourceString += ' and '}
       sourceString += `${sourceList[i].value*100}% ${sourceList[i].name}`;
-      if (i<sourceList.length-1) {sourceString += ', ';} else {sourceString += ' power.'}
+      sourceCount++;
+      if (i<sourceList.length-1) {if (sourceList.length>2) {sourceString += ', ';} } else {sourceString += ' power'}
     }
     return sourceString;
   }
@@ -133,20 +135,21 @@ export default function ProgramCard(props) {
   function renderAttributeText() {
     let attributeString = '';
     for (let i=0; i<attributes.length; i++) {
-     
-      if (attributes[i].value) {
+      if (attributes[i].value!==null) {
         if (attributeString.length===0) {
           attributeString += 'This program '
         } else if (i<attributes.length) {
-          attributeString += ', '
+          console.log('Attribute length',attributes[i]);
+          if (attributes.length>2) {
+            attributeString += ', '
+          }                    
           if (i===attributes.length-1) {
-            attributeString += 'and '
+            attributeString += 'and ' 
           }
         }
         attributeString += attributes[i].text;
       }
     }
-    if (attributeString.length>0) {attributeString += '.'};  
     return attributeString;
   }
 
@@ -161,10 +164,10 @@ export default function ProgramCard(props) {
     let priceString = 'The price ';
     if (blockActive && props.program.block_cost) {
       let blockCostArray = props.program.block_cost.split(';');
-      if (blockCostArray.length>1) {priceString += `starts at $${Number(blockCostArray[0]).toFixed(2)} per Kilowatt-hour.`}
-      else {priceString += `is $${Number(blockCostArray[0]).toFixed(2)} per Kilwatt-hour.`}
+      if (blockCostArray.length>1) {priceString += `starts at $${Number(blockCostArray[0]).toFixed(2)} per Kilowatt-hour`}
+      else {priceString += `is $${Number(blockCostArray[0]).toFixed(2)} per Kilwatt-hour`}
     } else {
-      priceString += `is $${Number(props.program.cost_kwh).toFixed(2)} per Kilwatt-hour.`;
+      priceString += `is $${Number(props.program.cost_kwh).toFixed(2)} per Kilwatt-hour`;
     }
     return priceString
   }
@@ -182,8 +185,19 @@ export default function ProgramCard(props) {
   function renderCredit() {
     switch(props.program.credit_yn) {
       case 'Yes': return <p>This program offers credit {(props.program.credit_kwh? <span>at ${props.program.credit_kwh} </span> : <></>)}per Kilwatt-hour</p>;
-      case 'Included': return `This program offers credit included in the price.`;
+      case 'Included': return `This program offers credit included in the price`;
       default: return ``
+    }
+  }
+
+  function renderPercentOptions() {
+    if (props.program.percentage_options) {
+      const optionArray = props.program.percentage_options.split(';');      
+      if (optionArray.length===1) {
+        return <p>Covers {optionArray[0]}% of energy usage</p>
+      } else {
+        return <p>Coverage percentage options range from {optionArray[0]}% to {optionArray[optionArray.length-1]}% of energy usage</p>
+      }
     }
   }
 
@@ -205,6 +219,7 @@ export default function ProgramCard(props) {
       <ProgramCardDetails>
         <p>{renderPricing()} {renderBlockSize()}</p>
         {renderCredit()}
+        {renderPercentOptions()}
       </ProgramCardDetails>
     </ProgramCardBody>
   )
