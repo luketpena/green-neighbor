@@ -4,26 +4,31 @@ import styled from 'styled-components';
 import ProgramCard from './ProgramCard';
 
 const UtilityCardBody = styled.div`
-  background-color: black;
-  margin: 32px 0;
-  border-radius: 4px;
+  max-width: 800px;
+  margin: 32px auto;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 3px 4px 0 rgba(0,0,0,1);
-  border: 2px solid var(--color-button-primary-light);
+  box-shadow: 0 3px 8px 0 rgba(0,0,0,.3);
+  background-color: var(--color-bkg-dark);
+  
 `;
 
 const UtilityHeader = styled.div`
-  background-color: var(--color-button-primary-light);
+  background-color: var(--color-primary);
   color: white;
   height: 64px;
   display: grid;
   grid-template-areas: "title button";
   grid-template-columns: 1fr auto;
   align-items: center;
-  box-shadow: 0 0px 8px 4px rgba(0,0,0,.5);
+
+  box-shadow: 0 3px 8px 0 rgba(0,0,0,.3);
+
   h3 {
-    margin-left: 16px;
+    margin: 0 0 0 8px;
+    font-size: 24px;
     grid-area: title;
+    font-family: var(--font-main);
   }
   button {
     grid-area: button;
@@ -31,6 +36,7 @@ const UtilityHeader = styled.div`
 `;
 
 const ProgramCardBox = styled.div`
+  padding: 16px;
 `;
 
 
