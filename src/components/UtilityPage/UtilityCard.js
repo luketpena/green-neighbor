@@ -39,13 +39,25 @@ const ProgramCardBox = styled.div`
   padding: 16px;
 `;
 
+const EmptyProgramDiv = styled.div`
+  text-align: center;
+  color: white;
+  font-family: var(--font-main);
+`;
+
 
 export default function UtilityCard(props) {
 
   function renderPrograms() {
-    return props.company.programs.map( (item,i)=>{
-      return <ProgramCard key={i} program={item} />
-    });
+    if (props.company.programs.length>0) {
+      return props.company.programs.map( (item,i)=>{
+        return <ProgramCard key={i} program={item} />
+      });
+    } else {
+      return <EmptyProgramDiv>
+        <p>We couldn't find any programs for this company.</p>
+      </EmptyProgramDiv>
+    }
   }
 
   return (
