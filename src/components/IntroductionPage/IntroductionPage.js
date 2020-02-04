@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 const Container = styled.div`
 width: 90%;
@@ -33,17 +33,13 @@ flex-direction: column;
 justify-content: center;
 `;
 
+export default function IntroductionPage(props) {
+    const history = useHistory();
+    let [zipInput, setZipInput] = useState('');
 
-function zipCode(){
-    console.log('utilitiy page');
-    // history.push(`/utility/${zip}`)
-    
-}
-
-
-
-export default function IntroductionPage() {
-    let history = useHistory();
+    function sendZipValue(){
+      history.push(`/utility/${zipInput}`)
+    }
 
   return(
     <Container>
@@ -53,8 +49,9 @@ export default function IntroductionPage() {
 
       <ZipBox>
           <p>Find green energy near you.</p>
-          <label>Zip Code: </label><br/><input className="zip-input" type="number" placeholder="55124"/><br/>
-          <button className="button-default" onClick={()=>zipCode()}>Go</button>
+          <label>Zip Code: </label><br/><input className="zip-input" type="number" 
+          placeholder="55124" value={zipInput} onChange={event => setZipInput(event.target.value)}/><br/>
+          <button className="button-default" onClick={()=>sendZipValue(zipInput)}>Go</button>
       </ZipBox>
 
       <LearnBox className="container">
