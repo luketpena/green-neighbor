@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const Container = styled.div`
 width: 90%;
@@ -56,7 +56,7 @@ export default function IntroductionPage(props) {
 
       <LearnBox className="container">
         <p>Click on the buttons to learn more about us or to help us out</p>
-        <button className="button-default" onClick={()=>history.push("/faq")}>Learn more about us</button> 
+        <button className="button-default" onClick={()=>history.push("/about")}>Learn more about us</button> 
         <button className="button-default" onClick={()=>history.push("/contribute")}>Help us out</button>
         {/* update push links to when we had those pages set up */}
       </LearnBox>
