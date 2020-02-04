@@ -2,6 +2,7 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 const axios = require('axios');
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 const dotenv = require('dotenv');
 dotenv.config();
 const gppCols =  require('../modules/gppColumns');
@@ -12,13 +13,13 @@ const gppCols =  require('../modules/gppColumns');
 router.get('/:zip', async (req, res) => {
     try {
         const zipsCols = [
-            'id', 'zip', 'eiaid', 'utility_name',
+            'zip', 'eiaid', 'utility_name',
             'state', 'eia_state'
         ]
         const cols = gppCols.filter(col => !zipsCols.includes(col));
         const query = `
-        SELECT ${zipsCols.map(col => `"zips"."${col}"`).join(', ')},
-            ${cols.map(col => `"gpp"."${col}"`).join(', ')}, "gpp"."id" AS "gpp_id"
+        SELECT ${zipsCols.map(col => `"zips"."${col}"`).join(', ')}, "zips"."id" AS "zip_id",
+            ${cols.map(col => `"gpp"."${col}"`).join(', ')}
         FROM "zips" LEFT JOIN  (
             SELECT * FROM "gpp" WHERE "gpp"."production"=1
         ) AS "gpp" ON "zips"."eia_state"="gpp"."eia_state"
@@ -77,6 +78,51 @@ router.get('/geocode/:zip', (req,res)=>{
     console.log('Error getting geocode data from API:',error);   
     res.sendStatus(400);
   })
-})
+});
+
+router.post('/create', rejectUnauthenticated, async (req, res) => {
+    try{
+        if(req.body.id) delete req.body.id;
+        const injectors = [];
+        const config = [];
+        const cols = Object.entries(req.body)
+            .filter(([key]) => gppCols.includes(key))
+            .map(([key, value], i) => {
+                config.push(value);
+                injectors.push(`$${config.length}`);
+                return key;
+            }).join(', ');
+        const query = `
+            INSERT INTO "gpp" (${cols}) VALUES (${injectors.join(', ')})`;
+        
+        await pool.query(query, config);
+        res.sendStatus(200);
+    } catch (error){ 
+        res.sendStatus(500);
+        console.log(error);
+    }
+});
+
+router.put('/update/:id', rejectUnauthenticated, async (req, res) => {
+    try{
+        const config = [req.params.id];
+        const cols = Object.entries(req.body)
+            .filter(([key]) => gppCols.includes(key))
+            .map(([key, value], i) => {
+                config.push(value);
+                return `${key}=$${config.length}`;
+            }).join(', ');
+
+        const query = `
+            UPDATE "gpp" SET ${cols}
+            WHERE "gpp"."id"=$1`;
+
+        await pool.query(query, config);
+        res.sendStatus(200);
+    } catch (error) {
+        res.sendStatus(500);
+        console.log(error);
+    }
+});
 
 module.exports = router;
