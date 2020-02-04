@@ -24,6 +24,7 @@
     "styled-components": "^5.0.0"
   },
   "scripts": {
+    "database.sql": "psql green_neighbor < database.sql",
     "start": "node server/server.js",
     "client": "react-scripts start",
     "server": "nodemon --watch server server/server.js",
