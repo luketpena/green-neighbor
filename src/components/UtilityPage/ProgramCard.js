@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useHistory, useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import EnergyBar from '../EnergyBar/EnergyBar';
 
@@ -107,6 +108,9 @@ const ProgramCardTitleBox = styled.div`
 
 
 export default function ProgramCard(props) {
+
+  const history = useHistory();
+  const {zip} = useParams(); 
 
   let [detailsActive, setDetailsActive] = useState(false);
   let [blockActive] = useState(( (props.program.blocks_available==='No' || props.program.blocks_available===null)? false : true))
@@ -242,10 +246,12 @@ export default function ProgramCard(props) {
 
   return (
     <ProgramCardBody detailsActive={detailsActive}>
+      {JSON.stringify(props.program)}
       <ProgramCardHeader>
         <ProgramCardTitleBox>
           <h5>{props.program.program_name}</h5>
-          <SelectButton className="button-primary">Select</SelectButton>
+          
+          <SelectButton className="button-primary" onClick={()=>history.push(`/details/${props.program.gpp_id}/${zip}`)}>Select</SelectButton>
         </ProgramCardTitleBox>
         <BarBox><EnergyBar program={props.program}/></BarBox>
         

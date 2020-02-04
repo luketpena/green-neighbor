@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {useParams} from 'react-router-dom';
+import {useParams, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 
 import Background from '../../images/bkg-forest-top.jpg';
@@ -66,13 +66,19 @@ const HelpBox = styled.div`
 
 export default function UtilityPage(props) {
 
+  const history = useHistory();
   const dispatch = useDispatch();
   const {zip} = useParams(); 
+  const myParams = useParams();
   const geocode = useSelector(state=>state.geocode);
   const programs = useSelector(state=>state.programs);
 
   useEffect(()=>{
-    dispatch({type: 'GET_PROGRAMS', payload: zip});
+    console.log('Zip code on useEffect:',myParams);
+    
+    if (zip) {
+      dispatch({type: 'GET_PROGRAMS', payload: zip});
+    }
   },[zip]);
 
   function countPrograms() {
@@ -97,7 +103,7 @@ export default function UtilityPage(props) {
         </TitleBoxMain>
 
         <HelpBox>
-          <button className="button-wire">My utility company isn't listed!</button>
+          <button className="button-wire" onClick={()=>history.push(`/report/${zip}`)}>My utility company isn't listed!</button>
         </HelpBox>
 
       </TitleBox>

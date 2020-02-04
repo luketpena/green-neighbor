@@ -64,7 +64,6 @@ class App extends Component {
               component={IntroductionPage}
             />
             {/* If none of the other routes matched, we will show a 404. */}
-            <Route path="/utility" component={UtilityPage}/>
             
 
             {/* If none of the other route matched, we will show a 404. */}
