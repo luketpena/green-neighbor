@@ -12,19 +12,17 @@ const Container = styled.div`
   height: 500px;
   margin: 0 auto;
   display: grid;
-  grid-template-areas: "title help" "programs programs";
-  grid-template-columns: 1fr 250px;
-  grid-template-rows: 250px auto;
+  grid-template-areas: "title" "help" "programs ";
+  grid-template-rows: 200px auto auto;
 `;
 
 const TitleBox = styled.div`
   grid-area: title;
   color: var(--color-text-dark);
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding-left: 5%;
 
   p {
     margin: 0;
@@ -69,9 +67,7 @@ export default function UtilityPage(props) {
       </TitleBox>
 
       <HelpBox>
-        <h2>Help!</h2>
         <button className="button-default">My utility company isn't listed!</button>
-        <button className="button-default">There are no energy programs!</button>
       </HelpBox>
 
       <UtilityList />

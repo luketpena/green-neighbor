@@ -89,7 +89,7 @@ const ProgramCardTitleBox = styled.div`
 
 export default function ProgramCard(props) {
 
-  let [detailsActive, setDetailsActive] = useState(true);
+  let [detailsActive, setDetailsActive] = useState(false);
   let [blockActive] = useState(( (props.program.blocks_available==='No' || props.program.blocks_available===null)? false : true))
   const [energy] = useState([
     {name: 'Wind', value: props.program.wind}, 

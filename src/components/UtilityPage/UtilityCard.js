@@ -16,11 +16,17 @@ const UtilityHeader = styled.div`
   background-color: var(--color-button-primary-light);
   color: white;
   height: 64px;
-  display: flex;
+  display: grid;
+  grid-template-areas: "title button";
+  grid-template-columns: 1fr auto;
   align-items: center;
   box-shadow: 0 0px 8px 4px rgba(0,0,0,.5);
   h3 {
     margin-left: 16px;
+    grid-area: title;
+  }
+  button {
+    grid-area: button;
   }
 `;
 
@@ -40,6 +46,7 @@ export default function UtilityCard(props) {
     <UtilityCardBody>
       <UtilityHeader>
         <h3>{props.company.name}</h3>
+        <button className="button-default">Report missing program</button>
       </UtilityHeader>
       <ProgramCardBox>
         {renderPrograms()}
