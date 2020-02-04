@@ -7,6 +7,7 @@
 
 :root {
   --color-bkg-main: #EEE;
+  --color-bkg-dark: #093A31;
   --color-bkg-container: white;
   --color-bkg-highlight: white;
   --color-shadow: rgba(0,0,0,.5);
@@ -75,9 +76,9 @@ body {
 }
 
 .button-default:hover, .button-primary:hover, .button-secondary:hover, .button-negative:hover {
+  background-color: var(--color-button-default-light);
   box-shadow: 0 6px 6px -4px var(--color-shadow);
   cursor: pointer;
-  background-color: var(--color-button-default-light);
 }
 
 .button-wire {
@@ -101,11 +102,11 @@ body {
   padding: 8px 32px;
 }
 
-.button-primary {background-color: var(--color-primary); color: var(--color-text-light)}
-.button-primary:hover {background-color: var(--color-primary-light); color: var(--color-text-light)}
+.button-primary {background-color: var(--color-primary); color: var(--color-text-light);}
+.button-primary:hover {background-color: var(--color-primary-light); color: var(--color-text-light);}
 
-.button-secondary {background-color: var(--color-button-secondary-main); color: var(--color-text-light)}
-.button-secondary:hover {background-color: var(--color-button-secondary-light); color: var(--color-text-light)}
+.button-secondary {background-color: var(--color-button-secondary-main); color: var(--color-text-light);}
+.button-secondary:hover {background-color: var(--color-button-secondary-light); color: var(--color-text-light);}
 
-.button-negative {background-color: var(--color-button-negative-main); color: var(--color-text-light)}
-.button-negative:hover {background-color: var(--color-button-negative-light); color: var(--color-text-light)}
+.button-negative {background-color: var(--color-button-negative-main); color: var(--color-text-light);}
+.button-negative:hover {background-color: var(--color-button-negative-light); color: var(--color-text-light);}

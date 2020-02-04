@@ -4,9 +4,10 @@ import EnergyBar from '../EnergyBar/EnergyBar';
 
 
 const ProgramCardBody = styled.div`
-  margin: 8px 0;
-  h4 {
+  margin: 8px 0 32px 0;
+  h5 {
     margin: 0 8px;
+    font-size: 18px;
   }
   height: ${props=>(props.detailsActive? '380' : '230')}px;
   overflow: hidden;
@@ -18,7 +19,7 @@ const ProgramCardBody = styled.div`
 
 const ProgramCardHeader = styled.div`
   background-color: white;
-  color: var(--color-text-dark);
+  color: var(--color-primary);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,6 +28,8 @@ const ProgramCardHeader = styled.div`
   position: relative;
   z-index: 2;
   height: 80px;
+  border-bottom: 3px dashed #DDD;
+  box-sizing: border-box;
 `;
 
 const ProgramCardMain = styled.div`
@@ -41,16 +44,17 @@ const ProgramCardMain = styled.div`
   p {
     margin: 8px auto;
     display: block;
-    color: gray;
+    color: #333;
   }
 `;
 
 const ProgramCardDetails = styled.div`
-  background-color: white;
+  background-color: var(--color-primary);
   height: 150px;
   text-align: center;
   box-sizing: border-box;
   padding: 8px;
+  color: white;
   p {
     margin: 8px auto;
     display: block;
@@ -77,9 +81,13 @@ const DetailsButton = styled.button`
   width: 100%;
   outline: none;
   border: none;
-  transition: background-color .2s;
+  color: gray;
+  transition: all .2s;
+  background-color: white;
+  font-size: 16px;
   &:hover {
     cursor: pointer;
+    color: #333;
     background-color: #EEE;
   }
 `;
@@ -132,9 +140,11 @@ export default function ProgramCard(props) {
     return copy;
   }
 
+  //Creates the text describing where a program is sources from
   function renderSourceText() {
-    let sourceString = 'Generated from ';
+    let sourceString = 'Generated from '
     const sourceList = sortEnergy();
+
     let sourceCount = 0;
     for (let i=0; i<sourceList.length; i++) {
       if (i===sourceList.length-1 && sourceCount>0) {sourceString += ' and '}
@@ -143,6 +153,7 @@ export default function ProgramCard(props) {
       if (i<sourceList.length-1) {if (sourceList.length>2) {sourceString += ', ';} } else {sourceString += ' power'}
     }
     return sourceString;
+    
   }
 
   function renderAttributeText() {
@@ -168,8 +179,8 @@ export default function ProgramCard(props) {
 
   function renderBlockActive() {
     switch(blockActive) {
-      case false: return 'Priced by Kilowatt-hour'; break;
-      default: return 'Priced by Block'; break;
+      case false: return 'Priced by Kilowatt-hour';
+      default: return 'Priced by Block';
     }
   }
 
@@ -226,7 +237,7 @@ export default function ProgramCard(props) {
     <ProgramCardBody detailsActive={detailsActive}>
       <ProgramCardHeader>
         <ProgramCardTitleBox>
-          <h4>{props.program.program_name}</h4>
+          <h5>{props.program.program_name}</h5>
           <SelectButton className="button-primary">Select</SelectButton>
         </ProgramCardTitleBox>
         <BarBox><EnergyBar program={props.program}/></BarBox>
