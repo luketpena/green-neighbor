@@ -1,7 +1,10 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {useParams, useHistory} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
+import SocialCard from '../DetailsPage/SocialCard';
+import SelectProgramCard from'../DetailsPage/SelProgCard';
+import ProblemCard from'../DetailsPage/ProblemCard';
 import {Hashtag} from 'react-twitter-widgets';
 
 const Container = styled.div`
@@ -36,30 +39,14 @@ align-content: center;
 
 // BEGIN bottom section component //
 function BottomDash (details) {
-  const history = useHistory();
-  const {zip} = useParams();
+  
   
 
   return(
   <BottomDisplay>
-      <div className="container">
-        <h3>Share With Your Friends!</h3>
-        <p>Supporting text</p>
-        <button class= "button-primary" >Facebook</button>
-
-        <Hashtag 
-          hashtag="GNP,greenenergy,">
-        </Hashtag>
-      </div>
-      <div className="container">
-        <h3>Select a Different Program</h3>
-        <p>Click below to view other programs in your area.</p>
-        <button class= "button-primary" onClick={() => history.push(`/utility/${zip}`)}>Go!</button>
-      </div><div className="container">
-        <h3>Notice a Problem?</h3>
-        <p>Supporting text</p>
-        <button class= "button-primary">Go!</button>
-      </div>
+      <SocialCard />
+      <SelectProgramCard />
+      <ProblemCard />
       <div className="container">
         <h3>Discover Green Energy's Impact</h3>
         <p>Supporting text</p>
