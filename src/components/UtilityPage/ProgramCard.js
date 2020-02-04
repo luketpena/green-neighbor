@@ -201,6 +201,14 @@ export default function ProgramCard(props) {
     }
   }
 
+  function renderTermination() {
+    switch(props.program.termination_fee) {
+      case 'Yes': return <p>Charges fee upon termination</p>;
+      case 'No': return <p>Does not charge fees upon termination</p>
+      default: return '';
+    }
+  }
+
   return (
     <ProgramCardBody detailsActive={detailsActive}>
       <ProgramCardHeader>
@@ -220,6 +228,7 @@ export default function ProgramCard(props) {
         <p>{renderPricing()} {renderBlockSize()}</p>
         {renderCredit()}
         {renderPercentOptions()}
+        {renderTermination()}
       </ProgramCardDetails>
     </ProgramCardBody>
   )
