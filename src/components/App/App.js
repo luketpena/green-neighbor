@@ -11,13 +11,12 @@ import {connect} from 'react-redux';
 import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
 
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
-
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import DetailsPage from '../DetailsPage/DetailsPage';
 import AboutPage from '../AboutPage/AboutPage';
 import UserPage from '../UserPage/UserPage';
 import InfoPage from '../InfoPage/InfoPage';
 import IntroductionPage from '../IntroductionPage/IntroductionPage';
-
 import UtilityPage from '../UtilityPage/UtilityPage';
 
 import './App.css';
@@ -65,6 +64,13 @@ class App extends Component {
               component={IntroductionPage}
             />
             {/* If none of the other routes matched, we will show a 404. */}
+            <Route path="/utility" component={UtilityPage}/>
+            
+
+            {/* If none of the other route matched, we will show a 404. */}
+            <Route path="/details/:id/:zip" component={DetailsPage}/>
+
+            {/* This 404 route needs to be last. */}
             <Route path="/utility/:zip" component={UtilityPage}/>
 
             <Route path="/report/:zip/:eia_state?/:program_id?" component={ReportErrorPage} />

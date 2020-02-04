@@ -55,6 +55,7 @@ router.get('/:zip', async (req, res) => {
     }
 });
 
+// replace * with specific columns: Zip, utility name, program, sign up link //
 router.get('/details/:id', async (req, res) => {
     try{
         const query = `
