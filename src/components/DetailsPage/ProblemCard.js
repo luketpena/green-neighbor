@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Hashtag} from 'react-twitter-widgets';
 
 const Container = styled.div`
 width: auto;

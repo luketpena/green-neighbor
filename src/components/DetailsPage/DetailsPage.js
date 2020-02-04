@@ -3,9 +3,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import SocialCard from '../DetailsPage/SocialCard';
-import SelectProgramCard from'../DetailsPage/SelProgCard';
-import ProblemCard from'../DetailsPage/ProblemCard';
-import {Hashtag} from 'react-twitter-widgets';
+import SelectProgramCard from '../DetailsPage/SelProgCard';
+import ProblemCard from '../DetailsPage/ProblemCard';
+import DiscoverCard from '../DetailsPage/DiscoverCard';
+import ContributeCard from '../DetailsPage/ContributeCard';
 
 const Container = styled.div`
 width: auto;
@@ -47,16 +48,8 @@ function BottomDash (details) {
       <SocialCard />
       <SelectProgramCard />
       <ProblemCard />
-      <div className="container">
-        <h3>Discover Green Energy's Impact</h3>
-        <p>Supporting text</p>
-        <button class= "button-primary">Go!</button>
-      </div>
-      <div className="container">
-        <h3>Want to Contribute to the Project?</h3>
-        <p>Supporting text</p>
-        <button class= "button-primary">Go!</button>
-      </div> 
+      <DiscoverCard />
+      <ContributeCard />
   </BottomDisplay> 
   )
 };
