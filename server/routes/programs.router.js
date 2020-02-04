@@ -1,13 +1,10 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
-<<<<<<< HEAD
 const axios = require('axios');
 const dotenv = require('dotenv');
 dotenv.config();
-=======
 const gppCols =  require('../modules/gppColumns');
->>>>>>> 5a9d2076164df645bef5791c6ff471c1d6265d9e
 
 /**
  * GET route template
