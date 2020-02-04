@@ -54,7 +54,7 @@ router.get('/:zip', async (req, res) => {
 router.get('/details/:id', async (req, res) => {
     try{
         const query = `
-        SELECT * FROM "gpp" WHERE "id"=$1`;
+            SELECT * FROM "gpp" WHERE "id"=$1`;
         const results = await pool.query(query, [req.params.id]);
         res.send(results.rows[0]);
     } catch (error){

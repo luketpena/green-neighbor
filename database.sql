@@ -70,7 +70,7 @@ CREATE TABLE "tickets" (
 	"resolved" BOOLEAN DEFAULT FALSE,
 	"zip" INT,
 	"utility_name" VARCHAR,
-	"utility_id" INT,
+	"eia_state" VARCHAR,
 	"program_name" VARCHAR,
 	"program_id" VARCHAR,
 	"comments" VARCHAR
