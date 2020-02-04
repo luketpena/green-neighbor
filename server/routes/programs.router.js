@@ -80,7 +80,8 @@ router.get('/geocode/:zip', (req,res)=>{
   })
 });
 
-router.post('/create', rejectUnauthenticated, async (req, res) => {
+// router.post('/create', rejectUnauthenticated, async (req, res) => {
+router.post('/create', async (req, res) => {
     try{
         if(req.body.id) delete req.body.id;
         const injectors = [];
@@ -103,9 +104,11 @@ router.post('/create', rejectUnauthenticated, async (req, res) => {
     }
 });
 
-router.put('/update/:id', rejectUnauthenticated, async (req, res) => {
+// router.put('/update/:id', rejectUnauthenticated, async (req, res) => {
+router.put('/update/:id', async (req, res) => {
     try{
         const config = [req.params.id];
+        req.body.date_updated = new Date();
         const cols = Object.entries(req.body)
             .filter(([key]) => gppCols.includes(key))
             .map(([key, value], i) => {

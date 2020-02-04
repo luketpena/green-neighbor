@@ -61,8 +61,8 @@ CREATE TABLE "gpp" (
 	"waitlist" VARCHAR,
 	"sign_up_text" VARCHAR,
 	"sign_up_url" VARCHAR,
-	"date_updated" DATE,
-	"production" INT
+	"date_updated" DATE DEFAULT CURRENT_DATE,
+	"production" INT DEFAULT 0
 );
 
 CREATE TABLE "tickets" (
