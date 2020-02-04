@@ -13,6 +13,14 @@ const EmptyCompanyDiv = styled.div`
 
 const UtilityCardBox = styled.div`
   grid-area: programs;
+  width: 90%;
+  margin: 64px auto;
+`;
+
+const Container = styled.div`
+  background-color: var(--color-bkg-main);
+  border-radius: 15% 15% 0 0;
+  box-shadow: 0 0 32px 0 rgba(0,0,0,1);
 `;
 
 
@@ -36,8 +44,10 @@ export default function UtilityList() {
   }
 
   return (
-    <UtilityCardBox className="container">
-      {renderUtilities()}
-    </UtilityCardBox>
+    <Container>
+      <UtilityCardBox>
+        {renderUtilities()}
+      </UtilityCardBox>
+    </Container>
   )
 }

@@ -11,11 +11,14 @@ const ProgramCardBody = styled.div`
   height: ${props=>(props.detailsActive? '380' : '230')}px;
   overflow: hidden;
   transition: height .5s;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,.2);
+  font-family: var(--font-main);
 `;
 
 const ProgramCardHeader = styled.div`
-  background-color: #CCC;
-  color: white;
+  background-color: white;
+  color: var(--color-text-dark);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,7 +30,7 @@ const ProgramCardHeader = styled.div`
 `;
 
 const ProgramCardMain = styled.div`
-  background-color: var(--color-bkg-highlight);
+  background-color: white;
   box-shadow: 0 2px 4px 2px rgba(0,0,0,.5);
   position: relative;
   box-sizing: border-box;
@@ -38,11 +41,12 @@ const ProgramCardMain = styled.div`
   p {
     margin: 8px auto;
     display: block;
+    color: gray;
   }
 `;
 
 const ProgramCardDetails = styled.div`
-  background-color: #EEE;
+  background-color: white;
   height: 150px;
   text-align: center;
   box-sizing: border-box;
@@ -223,7 +227,7 @@ export default function ProgramCard(props) {
       <ProgramCardHeader>
         <ProgramCardTitleBox>
           <h4>{props.program.program_name}</h4>
-          <SelectButton className="button-secondary">Select</SelectButton>
+          <SelectButton className="button-primary">Select</SelectButton>
         </ProgramCardTitleBox>
         <BarBox><EnergyBar program={props.program}/></BarBox>
         
