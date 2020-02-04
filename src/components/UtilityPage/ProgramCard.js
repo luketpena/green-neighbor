@@ -8,7 +8,7 @@ const ProgramCardBody = styled.div`
   h4 {
     margin: 0 8px;
   }
-  height: ${props=>(props.detailsActive? '348' : '198')}px;
+  height: ${props=>(props.detailsActive? '380' : '230')}px;
   overflow: hidden;
   transition: height .5s;
 `;
@@ -16,13 +16,14 @@ const ProgramCardBody = styled.div`
 const ProgramCardHeader = styled.div`
   background-color: #CCC;
   color: white;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding: 0 16px;
   position: relative;
   z-index: 2;
-  height: 48px;
+  height: 80px;
 `;
 
 const ProgramCardMain = styled.div`
@@ -61,6 +62,8 @@ const BarBox = styled.div`
   overflow: hidden;
   margin: 0 16px;
   box-shadow: 0 1px 2px 0 rgba(0,0,0,.5);
+  margin-top: 8px;
+  width: 100%;
 `;
 
 const DetailsButton = styled.button`
@@ -75,6 +78,12 @@ const DetailsButton = styled.button`
     cursor: pointer;
     background-color: #EEE;
   }
+`;
+
+const ProgramCardTitleBox = styled.div`
+  display: grid;
+  grid-template-columns: 1fr auto;
+  width: 100%;
 `;
 
 
@@ -212,9 +221,12 @@ export default function ProgramCard(props) {
   return (
     <ProgramCardBody detailsActive={detailsActive}>
       <ProgramCardHeader>
-        <h4>{props.program.program_name}</h4>
+        <ProgramCardTitleBox>
+          <h4>{props.program.program_name}</h4>
+          <SelectButton className="button-secondary">Select</SelectButton>
+        </ProgramCardTitleBox>
         <BarBox><EnergyBar program={props.program}/></BarBox>
-        <SelectButton className="button-secondary">Select</SelectButton>
+        
       </ProgramCardHeader>
 
       <ProgramCardMain >
