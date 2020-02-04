@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
@@ -53,10 +53,21 @@ export default function UtilityPage(props) {
   const dispatch = useDispatch();
   const {zip} = useParams(); 
   const geocode = useSelector(state=>state.geocode);
+  const programs = useSelector(state=>state.programs);
 
   useEffect(()=>{
     dispatch({type: 'GET_PROGRAMS', payload: zip});
   }, [zip]);
+
+  function countPrograms() {
+    let programList = [];
+    for (let program of programs) {
+      programList = [...programList, ...program.programs];
+    }
+    console.log('All programs found:', programList);
+    
+    return programList.length;
+  }
 
   return(
     <Container>
@@ -64,7 +75,7 @@ export default function UtilityPage(props) {
       <TitleBox>
         <p>Showing results for</p>
         <h2>{geocode}</h2>
-        <p>We found # companies and # energy programs.</p>
+        <p>We found {programs.length} {(programs.length===1? 'company' : 'companies')} and {countPrograms()} energy {(countPrograms()===1? 'program' : 'programs')}.</p>
       </TitleBox>
 
       <HelpBox>
