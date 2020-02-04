@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useHistory, useParams } from 'react-router-dom';
 
 const Container = styled.div`
 width: 90%;
@@ -32,9 +33,15 @@ flex-direction: column;
 justify-content: center;
 `;
 
+export default function IntroductionPage(props) {
+    const history = useHistory();
+    let [zipInput, setZipInput] = useState('');
 
-
-export default function IntroductionPage() {
+    function sendZipValue(){
+      if(zipInput && zipInput.length){
+        history.push(`/utility/${zipInput}`);
+      }
+    }
 
   return(
     <Container>
@@ -44,14 +51,16 @@ export default function IntroductionPage() {
 
       <ZipBox>
           <p>Find green energy near you.</p>
-          <label>Zip Code: </label><br/><input className="zip-input" type="number" placeholder="55124"/><br/>
-          <button className="button-default">Go</button>
+          <label>Zip Code: </label><br/><input className="zip-input" type="number" 
+          placeholder="55124" value={zipInput} onChange={event => setZipInput(event.target.value)}/><br/>
+          <button className="button-default" onClick={()=>sendZipValue(zipInput)}>Go</button>
       </ZipBox>
 
       <LearnBox className="container">
         <p>Click on the buttons to learn more about us or to help us out</p>
-        <button className="button-default">Learn more about us</button> 
-        <button className="button-default">Help us out</button>
+        <button className="button-default" onClick={()=>history.push("/faq")}>Learn more about us</button> 
+        <button className="button-default" onClick={()=>history.push("/contribute")}>Help us out</button>
+        {/* update push links to when we had those pages set up */}
       </LearnBox>
 
     </Container>

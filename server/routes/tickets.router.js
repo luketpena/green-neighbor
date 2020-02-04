@@ -23,9 +23,21 @@ router.get('/', async (req, res) => {
             }
         });
 
+        let orderBy = 'id';
+        if(req.query.orderBy){
+            if( equalQueries.includes(req.query.orderBy) ||
+                ilikeQueries.includes(req.query.orderBy) )
+            {
+                orderBy = req.query.orderBy;
+            }
+        }
+
+        const order = req.query.order.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
+
         const query = `
             SELECT * FROM "tickets"
-            ${conditions.length ? `WHERE ${conditions.join(' AND ')}`: ''}`;
+            ${conditions.length ? `WHERE ${conditions.join(' AND ')}`: ''}
+            ORDER BY ${orderBy} ${order}`;
 
         const {rows} = await pool.query(query, config);
         res.send(rows);
