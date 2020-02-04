@@ -11,12 +11,6 @@ const UtilityCardBody = styled.div`
   box-shadow: 0 3px 8px 0 rgba(0,0,0,.3);
   background-color: var(--color-bkg-dark);
   
-  h4 {
-    font-family: var(--font-main);
-    text-align: center;
-    font-size: 18px;
-    color: white;
-  }
 `;
 
 const UtilityHeader = styled.div`
@@ -60,7 +54,6 @@ export default function UtilityCard(props) {
         <h3>{props.company.name}</h3>
         <button className="button-default">Report missing program</button>
       </UtilityHeader>
-      <h4>Programs List</h4>
       <ProgramCardBox>
         {renderPrograms()}
       </ProgramCardBox>

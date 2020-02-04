@@ -44,7 +44,7 @@ export default function UtilityList() {
   function renderUtilities() {
     if (programs.length>0) {
       return programs.map( (item,i)=>{
-        return <UtilityCard key={i} company={item}/>
+        return <UtilityCard key={Math.random()} company={item}/>
       });
     } else {
       return <EmptyCompanyDiv>

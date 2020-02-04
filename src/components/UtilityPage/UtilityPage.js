@@ -73,7 +73,7 @@ export default function UtilityPage(props) {
 
   useEffect(()=>{
     dispatch({type: 'GET_PROGRAMS', payload: zip});
-  }, [zip]);
+  },[zip]);
 
   function countPrograms() {
     let programList = [];
@@ -89,14 +89,17 @@ export default function UtilityPage(props) {
     <Container>
       
       <TitleBox>
+
         <TitleBoxMain>
           <p>Showing results for</p>
           <h2>{geocode}</h2>
           <p>We found {programs.length} {(programs.length===1? 'company' : 'companies')} and {countPrograms()} energy {(countPrograms()===1? 'program' : 'programs')}.</p>
         </TitleBoxMain>
+
         <HelpBox>
           <button className="button-wire">My utility company isn't listed!</button>
         </HelpBox>
+
       </TitleBox>
 
 
