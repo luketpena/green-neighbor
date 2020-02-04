@@ -31,7 +31,7 @@ const UtilityHeader = styled.div`
   box-shadow: 0 3px 8px 0 rgba(0,0,0,.3);
 
   h3 {
-    margin: 0 0 0 16px;
+    margin: 0 0 0 8px;
     font-size: 24px;
     grid-area: title;
     font-family: var(--font-main);

@@ -2,6 +2,9 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import EnergyBar from '../EnergyBar/EnergyBar';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCaretUp } from '@fortawesome/free-solid-svg-icons'
+
 
 const ProgramCardBody = styled.div`
   margin: 8px 0 32px 0;
@@ -89,6 +92,10 @@ const DetailsButton = styled.button`
     cursor: pointer;
     color: #333;
     background-color: #EEE;
+  }
+  .icon {
+    transition: transform .5s;
+    transform: rotate(${props=>(props.detailsActive? 180 : 0)}deg);
   }
 `;
 
@@ -248,7 +255,7 @@ export default function ProgramCard(props) {
           <p>{renderSourceText()}</p>
           <p>{renderAttributeText()}</p>
           <p>{renderBlockActive()}</p>
-          <DetailsButton onClick={()=>setDetailsActive(!detailsActive)}>Pricing details</DetailsButton>
+          <DetailsButton detailsActive={detailsActive} onClick={()=>setDetailsActive(!detailsActive)}>Pricing details <FontAwesomeIcon className="icon" icon={faCaretUp} /></DetailsButton>
       </ProgramCardMain>
 
       <ProgramCardDetails>
