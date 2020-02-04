@@ -43,9 +43,12 @@ const ProgramCardMain = styled.div`
 const ProgramCardDetails = styled.div`
   background-color: #EEE;
   height: 150px;
-  left: 0;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 8px;
   p {
-    margin: 0;
+    margin: 8px auto;
+    display: block;
   }
 `;
 
@@ -149,30 +152,38 @@ export default function ProgramCard(props) {
 
   function renderBlockActive() {
     switch(blockActive) {
-      case false: return 'This program is priced by Kilowatt-hour'; break;
-      default: return 'This program is priced by Block'; break;
+      case false: return 'Priced by Kilowatt-hour'; break;
+      default: return 'Priced by Block'; break;
     }
   }
 
   function renderPricing() {
-    let priceString = 'Cost: ';
-    if (blockActive) {
+    let priceString = 'The price ';
+    if (blockActive && props.program.block_cost) {
       let blockCostArray = props.program.block_cost.split(';');
-      if (blockCostArray.length>1) {priceString += `Starting at $${Number(blockCostArray[0]).toFixed(2)} per Kilowatt-hour`}
-      else {priceString += `$${Number(blockCostArray[0]).toFixed(2)} per Kilwatt-hour`}
+      if (blockCostArray.length>1) {priceString += `starts at $${Number(blockCostArray[0]).toFixed(2)} per Kilowatt-hour.`}
+      else {priceString += `is $${Number(blockCostArray[0]).toFixed(2)} per Kilwatt-hour.`}
     } else {
-
+      priceString += `is $${Number(props.program.cost_kwh).toFixed(2)} per Kilwatt-hour.`;
     }
     return priceString
   }
 
   function renderBlockSize() {
     if (blockActive) {
-      let blockString = 'Block size: ';
+      let blockString = '';
       let blockSizeArray = props.program.block_size_kwh.split(';');
-      if (blockSizeArray.length>1) {blockString += `Starting at ${props.program.block_size_kwh.split(';')[0]} Kilowatt-hours`}
-      else {blockString += `${props.program.block_size_kwh.split(';')[0]} Kilwatt-hours`}
-      return <p>{blockString}</p>
+      if (blockSizeArray.length>1) {blockString += `with block sizes starting at ${props.program.block_size_kwh.split(';')[0]} Kilowatt-hours`}
+      else {blockString += `with ${props.program.block_size_kwh.split(';')[0]} Kilwatt-hours blocks`}
+      return blockString
+    }
+  }
+
+  function renderCredit() {
+    switch(props.program.credit_yn) {
+      case 'Yes': return <p>This program offers credit {(props.program.credit_kwh? <span>at ${props.program.credit_kwh} </span> : <></>)}per Kilwatt-hour</p>;
+      case 'Included': return `This program offers credit included in the price.`;
+      default: return ``
     }
   }
 
@@ -192,8 +203,8 @@ export default function ProgramCard(props) {
       </ProgramCardMain>
 
       <ProgramCardDetails>
-        <p>{renderPricing()}</p>
-        {renderBlockSize()}
+        <p>{renderPricing()} {renderBlockSize()}</p>
+        {renderCredit()}
       </ProgramCardDetails>
     </ProgramCardBody>
   )

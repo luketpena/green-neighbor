@@ -33,23 +33,15 @@ export default function EnergyBar(props) {
 
   function sortEnergy() {
     let copy = [];
-    console.log('All sources:',energy);
     
     for (let i=0; i<energy.length; i++) {
-      console.log('Name:',energy[i].name);
       if (energy[i].value) {
         //Pushing to the start when it is the first source
-        
         if (copy.length===0) {
-          console.log('FIRST');
-          
           copy.push(energy[i]);
         } else {
-          
-          let spliced = false;
           for (let j=0; j<copy.length; j++) {
             if (copy[j].value<energy[i].value) {
-              console.log(copy[j].value,'<',energy[i].value);
               copy.splice(j,0,energy[i]);
               break;
             } else if(j===copy.length-1) {
