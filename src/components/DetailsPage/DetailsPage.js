@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useParams, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
+import {Hashtag} from 'react-twitter-widgets';
 
 const Container = styled.div`
 width: auto;
@@ -37,13 +38,18 @@ align-content: center;
 function BottomDash (details) {
   const history = useHistory();
   const {zip} = useParams();
+  
 
   return(
   <BottomDisplay>
       <div className="container">
         <h3>Share With Your Friends!</h3>
         <p>Supporting text</p>
-        <button class= "button-primary" >Go!</button>
+        <button class= "button-primary" >Facebook</button>
+
+        <Hashtag 
+          hashtag="GNP,greenenergy,">
+        </Hashtag>
       </div>
       <div className="container">
         <h3>Select a Different Program</h3>
