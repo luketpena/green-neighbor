@@ -47,6 +47,10 @@ export default function ReportErrorPage(props){
         }
     }, [utility_name, history]);
 
+    const postTicket = () => {
+        dispatch({type: 'POST_TICKET', payload: {zip, utility_name, program_name, program_id, comments} });
+    }
+
     let body;
     if(program_id && eia_state){
         body = (
@@ -93,7 +97,7 @@ export default function ReportErrorPage(props){
                     value={comments}
                     onChange={e=>setComments(e.target.value)}
                 />
-                <button className='button-default'>Submit</button>
+                <button className='button-default' onClick={() => postTicket()}>Submit</button>
             </Body>
         </Container>
     )
