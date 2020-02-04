@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   width: 100%;
-  background-color: black;
   height: 100%;
   color: red;
   display: flex;
@@ -30,14 +29,14 @@ const Bar = styled.div`
 
 export default function EnergyBar(props) {
 
-  const [energy, setEnergy] = useState([
+  const [energy] = useState([
     {name: 'Wind', value: props.program.wind, color: 'skyblue'}, 
     {name: 'Solar', value: props.program.solar, color: 'orange'}, 
     {name: 'Bio', value: props.program.bio, color: 'limegreen'}, 
     {name: 'Hydro', value: props.program.hydro, color: 'dodgerblue'}, 
     {name: 'Geo', value: props.program.geo, color: 'orangered'}, 
     {name: 'Other', value: props.program.other, color: 'rebeccapurple'}]);
-  const [hover,setHover] = useState(-1);
+  const [hover] = useState(-1);
   const [select,setSelect] = useState(-1);
 
   function sortEnergy() {
@@ -68,15 +67,6 @@ export default function EnergyBar(props) {
     return sortEnergy().map( (item,i)=>{
     return <Bar bar={item} key={i} select={select} index={i} onClick={()=>setSelect(i)} onMouseLeave={()=>setSelect(-1)}>{item.name} {item.value*100}%</Bar>
     })
-  }
-
-  function barEnter(index) {
-    setHover(index);
-  }
-  function barLeave(index) {
-    if (hover===index) {
-      setHover(-1);
-    }
   }
 
   function generateColumns() {
