@@ -1,6 +1,9 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
+const axios = require('axios');
+const dotenv = require('dotenv');
+dotenv.config();
 const gppCols =  require('../modules/gppColumns');
 
 /**
@@ -62,5 +65,18 @@ router.get('/details/:id', async (req, res) => {
         console.log('-------- ERROR GETTING PROGRAM DETAILS -------- \n', error);
     }
 });
+
+router.get('/geocode/:zip', (req,res)=>{
+
+  axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.params.zip}&sensor=true&key=${process.env.GEOCODE_API_KEY}`)
+  .then(response=>{
+    res.send(response.data.results[0].formatted_address);
+    console.log('Back from API request. Zip:',req.params.zip,'Key:',process.env.GEOCODE_API_KEY);
+    
+  }).catch(error=>{
+    console.log('Error getting geocode data from API:',error);   
+    res.sendStatus(400);
+  })
+})
 
 module.exports = router;
