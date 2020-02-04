@@ -26,9 +26,12 @@ const TitleBox = styled.div`
 
   p {
     margin: 0;
+    font-family: var(--font-main);
   }
   h2 {
     margin: 8px 0;
+    font-family: var(--font-header);
+    font-size: 48px;
   }
 `;
 

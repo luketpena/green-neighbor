@@ -1,4 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+@font-face {
+  font-family: 'Leafy';
+  font-weight: 5;
+  src: local('Leafy'), url('../../fonts/leafy.otf') format('opentype');
+}
 
 :root {
   --color-bkg-main: lightgreen;
@@ -21,7 +26,9 @@
   --color-text-light: white;
   --color-text-dark: #222;
 
+  --font-header: 'Leafy', sans-serif;
   --font-button: 'Roboto', sans-serif;
+  --font-main: 'Roboto', sans-serif;
 }
 
 body {
