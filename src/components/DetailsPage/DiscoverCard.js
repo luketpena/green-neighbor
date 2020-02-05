@@ -11,11 +11,11 @@ justify-content: center;
 `;
 
 export default function DiscoverCard () {
-    return(
-    <Container className="container">
-        <h3>Discover Green Energy's Impact</h3>
-        <p>Supporting text</p>
-        <button class= "button-primary">Go!</button>
-    </Container> 
-    )
-  };
+  return(
+  <Container className="container">
+      <h3>Discover Green Energy's Impact</h3>
+      <p>Supporting text</p>
+      <button class= "button-primary">Go!</button>
+  </Container> 
+  )
+};

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import styled, {keyframes} from 'styled-components';
@@ -6,7 +6,7 @@ import styled, {keyframes} from 'styled-components';
 import Background from '../../images/bkg-forest-top.jpg';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBullhorn, faScroll, faSeedling, faExclamation, faHandsHelping } from '@fortawesome/free-solid-svg-icons';
+import { faBullhorn, faScroll, faSeedling, faExclamation, faHandsHelping, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
 const ActionData = [
   {text: `Share with Friends`, icon: faBullhorn},
@@ -38,11 +38,6 @@ const appear_step2 = keyframes`
   0% {opacity: 0;}
   50% {opacity: 0;}
   100% {opacity: 1;}
-`;
-const appear_step3 = keyframes`
-  0% {bottom: -100%;}
-  75% {bottom: -100%;}
-  100% {bottom: 0;}
 `;
 
 const TitleDiv = styled.div`
@@ -91,7 +86,8 @@ const BottomDisplay = styled.div`
   backdrop-filter: blur(4px);
   border-top: 4px dashed white;
   position: relative;
-  animation: 3s ${appear_step3} ease-in;
+  transition: height .5s;
+  height: ${props=>(props.active? `200px` : `0px`)};
 `;
 
 
@@ -127,7 +123,6 @@ const ActionCard = styled.button`
       transform: scale(1.4);
     }
   }
-
 `;
 
 const TitleMain = styled.div`
@@ -137,12 +132,44 @@ const TitleAction = styled.div`
   animation: 2s ${appear_step2} ease-in;
 `;
 
+const DiscoverBar = styled.div`
+  .discoverButton {
+    margin: 0 auto;
+    display: block;
+    background: none;
+    outline: none;
+    color: white;
+    font-family: var(--font-header);
+    font-size: 32px;
+    border: none;
+    p {
+      margin: 0;
+      transition: all 1s;
+    }
+    .icon {
+      transform: scale(1) rotate(${props=> (props.active? `180deg` : `0`)});
+      transition: transform .2s;
+      transition-timing-function: cubic-bezier(.17,.67,.67,1.59);
+    }
+    &:hover {
+      cursor: pointer;
+      .icon {
+        transform: scale(1.5) rotate(${props=> (props.active? `180deg` : `0`)});
+      }
+      p {
+        transform: scale(1.2);
+      }
+    }
+  }
+`;
+
 
 export default function DetailsPage() {
 
   const details = useSelector(state => state.programDetails)
   const dispatch = useDispatch();
   const {id} = useParams(); 
+  let [discoverActive, setDiscoverActive] = useState(false);
   
 
 
@@ -150,10 +177,14 @@ export default function DetailsPage() {
     dispatch({type: 'GET_PROGRAM_DETAILS', payload: id});
   }, [id]);
 
+  function blurActions(event) {
+    event.target.blur();
+  }
+
   function renderActions() {
     return ActionData.map( (item,i)=>{
       return (
-        <ActionCard >
+        <ActionCard key={i} onMouseLeave={blurActions}>
           <FontAwesomeIcon className="icon" icon={item.icon}/>
           <p>{item.text}</p>
         </ActionCard>
@@ -178,9 +209,15 @@ export default function DetailsPage() {
         </TitleAction>
       </TitleDiv>
 
-      <BottomDisplay>
-        {renderActions()}
-      </BottomDisplay> 
+      <DiscoverBar active={discoverActive}>
+        <button className="discoverButton" onClick={()=>setDiscoverActive(!discoverActive)}>
+          <p>Discover More</p>
+          <FontAwesomeIcon className="icon" icon={faCaretUp} />
+        </button>
+        <BottomDisplay active={discoverActive}>
+          {renderActions()}
+        </BottomDisplay> 
+      </DiscoverBar>
 
     </Container>
   )
