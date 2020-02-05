@@ -1,68 +1,116 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
+import Background from '../../images/bkg-forest-top.jpg';
 
-const Container = styled.div`
-width: 90%;
-height: 500px;
-margin: 0 auto;
-display: grid;
-grid-template-areas: "title" "zip" "learn";
-grid-template-rows: 150px 250px auto;
 
+const BackgroundBox = styled.div`
+  background-image: url(${Background});
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 32px;
+  box-sizing: border-box;
 `;
 
-const TitleBox = styled.div`
-grid-area: title;
-flex-direction: column;
-justify-content: center;
-text-align: center;
+const Container = styled.div`
+  
+  display: grid;
+  grid-template-areas: "main" "learn";
+  grid-template-rows: 1fr auto;
+  border: 4px dashed white;
+  height: 100%;
+
 `;
 
 const ZipBox = styled.div`
-grid-area: zip;
-flex-direction: column;
-justify-content: center;
-text-align: center;
+  grid-area: main;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-shadow: 0 0 4px black;
+  
+  h1 {
+    font-family: var(--font-header);
+    font-size: 64px;
+    margin: 0;
+  }
+  h2 {
+    margin: 0;
+    font-family: var(--font-main);
+    font-weight: lighter;
+  }
+  label {
+    margin: 64px 0 8px 0;
+    font-family: var(--font-main);
+  }
+  input {
+    background-color: rgba(255,255,255,.1);
+    backdrop-filter: blur(0px);
+    outline: none;
+    border: 1px solid white;
+    color: white;
+    font-size: 30px;
+    font-family: var(--font-header);
+    padding: 8px;
+    text-align: center;
+    border-radius: 4px;
+  }
 `;
 
 const LearnBox = styled.div`
-grid-area: learn;
-text-align: center;
-flex-direction: column;
-justify-content: center;
+  grid-area: learn;
+  text-align: center;
+  margin: 16px auto;
 `;
 
 export default function IntroductionPage(props) {
-    const history = useHistory();
-    let [zipInput, setZipInput] = useState('');
+  const history = useHistory();
+  let [zipInput, setZipInput] = useState('');
 
-    function sendZipValue(){
-      if(zipInput && zipInput.length){
-        history.push(`/utility/${zipInput}`);
-      }
+  function sendZipValue(){
+    if(zipInput && zipInput.length){
+      history.push(`/utility/${zipInput}`);
     }
+  }
+
+  function pressEnter(event) {
+    if (event.key === "Enter") {
+      sendZipValue(zipInput);
+    }
+  }
 
   return(
-    <Container>
-      <TitleBox>
-          <h1>Green Neighbor</h1>
-      </TitleBox>
+    <BackgroundBox>
+      <Container>
 
-      <ZipBox>
-          <p>Find green energy near you.</p>
-          <label>Zip Code: </label><br/><input className="zip-input" type="number" 
-          placeholder="55124" value={zipInput} onChange={event => setZipInput(event.target.value)}/><br/>
-          <button className="button-default" onClick={()=>sendZipValue(zipInput)}>Go</button>
-      </ZipBox>
+        <ZipBox>
+            <h1>The Green Neighbor Challenge</h1>
+            <h2>Find green energy near you.</h2>
+            <label>Enter your zip code to get started.</label>
+            <input 
+              className="zip-input" 
+              type="number" 
+              value={zipInput} 
+              onKeyPress={event=>pressEnter(event)} 
+              onChange={event => setZipInput(event.target.value)}/>
+            <button className="button-wire" onClick={()=>sendZipValue(zipInput)}>Go</button>
+        </ZipBox>
 
-      <LearnBox className="container">
-        <p>Click on the buttons to learn more about us or to help us out</p>
-        <button className="button-default" onClick={()=>history.push("/about")}>Learn more about us</button> 
-        <button className="button-default" onClick={()=>history.push("/contribute")}>Help us out</button>
-        {/* update push links to when we had those pages set up */}
-      </LearnBox>
+        <LearnBox>
+          <button className="button-default" onClick={()=>history.push("/about")}>Learn who we are</button> 
+          <button className="button-default" onClick={()=>history.push("/contribute")}>How you can help</button>
+          {/* update push links to when we had those pages set up */}
+        </LearnBox>
 
-    </Container>
+      </Container>
+    </BackgroundBox>
   )
 }
