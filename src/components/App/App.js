@@ -12,7 +12,6 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import DetailsPage from '../DetailsPage/DetailsPage';
 import AboutPage from '../AboutPage/AboutPage';
 import AdminLandingPage from '../AdminLandingPage/AdminLandingPage';
-import InfoPage from '../InfoPage/InfoPage';
 import IntroductionPage from '../IntroductionPage/IntroductionPage';
 import UtilityPage from '../UtilityPage/UtilityPage';
 import Nav from '../Nav/Nav';
@@ -67,13 +66,6 @@ class App extends Component {
                 exact
                 path="/admin/home"
                 component={AdminLandingPage}
-              />
-              {/* This works the same as the other protected route, except that if the user is logged in,
-              they will see the info page instead. */}
-              <ProtectedRoute
-                exact
-                path="/info"
-                component={InfoPage}
               />
             </Fragment>
             {/* This 404 route needs to be last. */}
