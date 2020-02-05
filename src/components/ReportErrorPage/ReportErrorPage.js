@@ -28,10 +28,11 @@ export default function ReportErrorPage(props){
     const {zip, eia_state, program_id} = useParams();
     const history = useHistory();
     const dispatch = useCallback(useDispatch(), []);
-
     const {utility_name, program_name, id} = useSelector(state => program_id ? state.programDetails : state.utilityDataForReportPage);
     const [companyName, setCompanyName] = useState('');
     const [comments, setComments] = useState('');
+    const [email, setEmail] = useState('');
+    const [open, setOpen] = useState(false);
 
     useEffect(()=>{
         if(program_id){
@@ -49,9 +50,19 @@ export default function ReportErrorPage(props){
         }
     }, [utility_name, history]);
 
+    
+
     const postTicket = () => {
-        dispatch({type: 'POST_TICKET', payload: {zip, utility_name, program_name, program_id, comments} });
+        setOpen(true);
+        dispatch({type: 'POST_TICKET', payload: {zip, utility_name, program_name, program_id, comments, email} });
     }
+
+    const handleClickOpen = () => {
+        setOpen(true);
+        };
+        const handleClose = () => {
+        setOpen(false);
+        };
 
     let body;
     if(program_id && eia_state){
@@ -97,7 +108,13 @@ export default function ReportErrorPage(props){
                     value={comments}
                     onChange={e=>setComments(e.target.value)}
                 />
-                <ReportThankYou />
+                 <TextField 
+                    label='Email'
+                    placeholder='Your Email for Ticket Progress'
+                    value={email}
+                    onChange={e=>setEmail(e.target.value)}
+                />
+                <ReportThankYou open={open} goBack={goBack} />
                 <button className='button-default' onClick={() => postTicket()}>Submit</button>
             </Body>
         </Container>

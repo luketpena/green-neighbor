@@ -43,23 +43,15 @@ import Typography from '@material-ui/core/Typography';
       }))(MuiDialogActions);
         
 
-export default function ReportThankYou() {     
-    const [open, setOpen] = React.useState(false);
-
-    const handleClickOpen = () => {
-    setOpen(true);
-    };
-    const handleClose = () => {
-    setOpen(false);
-    };
+export default function ReportThankYou(props) {     
 
     return (
         <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      {/* <Button variant="outlined" color="primary" onClick={handleClickOpen}>
         Open dialog
-      </Button>
-      <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+      </Button> */}
+      <Dialog onClose={props.handleClose} aria-labelledby="customized-dialog-title" open={props.open}>
+        <DialogTitle id="customized-dialog-title" onClose={props.handleClose}>
           Thank You for submitting a ticket!
         </DialogTitle>
         <DialogContent dividers>
@@ -67,15 +59,15 @@ export default function ReportThankYou() {
             Our Team at Green Neighbor Challenge will begin to look into this quickly and we'll update you when it's been processed!
           </Typography>
           <Typography gutterBottom>
-            Your input and feedback is important to the Green Neighbor Project and every little bit of information you help with strengthens our community.
+            Your input and feedback is important to the Green Neighbor Project and every little bit of information you provide strengthens our community.
           </Typography>
           <Typography gutterBottom>
             If there is anything else you'd like to chime in on check out our <a href="https://www.facebook.com/GreenNeighborChallenge/" target="_blank">Facebook</a> and <a href="https://twitter.com/GreenNeighborCh" target="_blank">Twitter!</a> 
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
-            Save changes
+          <Button autoFocus onClick={props.handleClose} color="primary">
+            Continue
           </Button>
         </DialogActions>
       </Dialog>
