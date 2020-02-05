@@ -8,13 +8,10 @@ import {
 
 import {connect} from 'react-redux';
 
-import Nav from '../Nav/Nav';
-import Footer from '../Footer/Footer';
-
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import DetailsPage from '../DetailsPage/DetailsPage';
 import AboutPage from '../AboutPage/AboutPage';
-import UserPage from '../UserPage/UserPage';
+import AdminLandingPage from '../AdminLandingPage/AdminLandingPage';
 import InfoPage from '../InfoPage/InfoPage';
 import IntroductionPage from '../IntroductionPage/IntroductionPage';
 import UtilityPage from '../UtilityPage/UtilityPage';
@@ -34,6 +31,7 @@ class App extends Component {
           <Switch>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
             <Redirect exact from="/" to="/intro" />
+            <Redirect exact from='/admin' to='/admin/home' />
             {/* Visiting localhost:3000/about will show the about page.
             This is a route anyone can see, no login necessary */}
             <Route
@@ -48,7 +46,7 @@ class App extends Component {
             <ProtectedRoute
               exact
               path="/admin/home"
-              component={UserPage}
+              component={AdminLandingPage}
             />
             {/* This works the same as the other protected route, except that if the user is logged in,
             they will see the info page instead. */}
@@ -63,16 +61,21 @@ class App extends Component {
               path="/intro"
               component={IntroductionPage}
             />
-            {/* If none of the other routes matched, we will show a 404. */}
-            
-
-            {/* If none of the other route matched, we will show a 404. */}
-            <Route path="/details/:id/:zip" component={DetailsPage}/>
+  
+            <Route
+              path="/details/:id/:zip"
+              component={DetailsPage}
+            />
+            <Route
+              path="/utility/:zip"
+              component={UtilityPage}
+            />
+            <Route
+              path="/report/:zip/:eia_state?/:program_id?"
+              component={ReportErrorPage}
+            />
 
             {/* This 404 route needs to be last. */}
-            <Route path="/utility/:zip" component={UtilityPage}/>
-
-            <Route path="/report/:zip/:eia_state?/:program_id?" component={ReportErrorPage} />
             <Route render={() => <h1>404</h1>} />
             
           </Switch>
