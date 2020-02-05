@@ -246,12 +246,11 @@ export default function ProgramCard(props) {
 
   return (
     <ProgramCardBody detailsActive={detailsActive}>
-      {JSON.stringify(props.program)}
       <ProgramCardHeader>
         <ProgramCardTitleBox>
           <h5>{props.program.program_name}</h5>
           
-          <SelectButton className="button-primary" onClick={()=>history.push(`/details/${props.program.gpp_id}/${zip}`)}>Select</SelectButton>
+          <SelectButton className="button-primary" onClick={()=>history.push(`/details/${props.program.id}/${zip}`)}>Select</SelectButton>
         </ProgramCardTitleBox>
         <BarBox><EnergyBar program={props.program}/></BarBox>
         
