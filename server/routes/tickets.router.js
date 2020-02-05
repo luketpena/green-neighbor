@@ -53,8 +53,8 @@ router.post('/', async (req, res) => {
     try{
         const acceptedKeys = [
             'resolved', 'zip', 'utility_name',
-            'utility_id', 'program_name', 'program_id',
-            'comments'
+            'utility_id', 'program_name', 'gpp_id',
+            'email', 'comments'
         ];
         const config = [];
         const values = [];
