@@ -98,7 +98,7 @@ export default function UtilityPage(props) {
 
         <TitleBoxMain>
           <p>Showing results for</p>
-          <h2>{geocode}</h2>
+          <h2>{geocode || zip}</h2>
           <p>We found {programs.length} {(programs.length===1? 'company' : 'companies')} and {countPrograms()} energy {(countPrograms()===1? 'program' : 'programs')}.</p>
         </TitleBoxMain>
 
