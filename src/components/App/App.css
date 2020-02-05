@@ -1,10 +1,19 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+@font-face {
+  font-family: 'Leafy';
+  font-weight: 5;
+  src: local('Leafy'), url('../../fonts/leafy.otf') format('opentype');
+}
 
 :root {
-  --color-bkg-main: lightgreen;
-  --color-bkg-container: beige;
+  --color-bkg-main: #EEE;
+  --color-bkg-dark: #093A31;
+  --color-bkg-container: white;
   --color-bkg-highlight: white;
   --color-shadow: rgba(0,0,0,.5);
+
+  --color-primary: #137d65;
+  --color-primary-light: #20A073;
 
   --color-button-default-main: #CCC;
   --color-button-default-light: #EEE;
@@ -21,7 +30,9 @@
   --color-text-light: white;
   --color-text-dark: #222;
 
+  --font-header: 'Leafy', sans-serif;
   --font-button: 'Roboto', sans-serif;
+  --font-main: 'Roboto', sans-serif;
 }
 
 body {
@@ -65,16 +76,37 @@ body {
 }
 
 .button-default:hover, .button-primary:hover, .button-secondary:hover, .button-negative:hover {
+  background-color: var(--color-button-default-light);
   box-shadow: 0 6px 6px -4px var(--color-shadow);
   cursor: pointer;
-  background-color: var(--color-button-default-light);
 }
 
-.button-primary {background-color: var(--color-button-primary-main); color: var(--color-text-light)}
-.button-primary:hover {background-color: var(--color-button-primary-light); color: var(--color-text-light)}
+.button-wire {
+  font-size: 16px;
+  font-family: var(--font-button);
+  margin: 8px;
+  padding: 8px 24px;
+  text-shadow: 0 0 4px black;
+  background: none;
+  color: white;
+  border: 1px solid white;
+  transition: all .2s;
+  border-radius: 4px;
+}
 
-.button-secondary {background-color: var(--color-button-secondary-main); color: var(--color-text-light)}
-.button-secondary:hover {background-color: var(--color-button-secondary-light); color: var(--color-text-light)}
+.button-wire:hover {
+  color: black;
+  background-color: white;
+  cursor: pointer;
+  text-shadow: 0 0 0px black;
+  padding: 8px 32px;
+}
 
-.button-negative {background-color: var(--color-button-negative-main); color: var(--color-text-light)}
-.button-negative:hover {background-color: var(--color-button-negative-light); color: var(--color-text-light)}
+.button-primary {background-color: var(--color-primary); color: var(--color-text-light);}
+.button-primary:hover {background-color: var(--color-primary-light); color: var(--color-text-light);}
+
+.button-secondary {background-color: var(--color-button-secondary-main); color: var(--color-text-light);}
+.button-secondary:hover {background-color: var(--color-button-secondary-light); color: var(--color-text-light);}
+
+.button-negative {background-color: var(--color-button-negative-main); color: var(--color-text-light);}
+.button-negative:hover {background-color: var(--color-button-negative-light); color: var(--color-text-light);}

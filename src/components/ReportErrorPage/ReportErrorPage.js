@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useParams, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import {TextField} from '@material-ui/core';
+import ReportThankYou from '../ReportErrorPage/ReportThankYou';
 
 const Container = styled.div`
     height: 100vh;
@@ -25,11 +26,12 @@ const Body = styled.form`
 export default function ReportErrorPage(props){
 
     const {zip, eia_state, program_id} = useParams();
-    const [comments, setComments] = useState('');
+    const history = useHistory();
     const dispatch = useCallback(useDispatch(), []);
+
     const {utility_name, program_name, id} = useSelector(state => program_id ? state.programDetails : state.utilityDataForReportPage);
     const [companyName, setCompanyName] = useState('');
-    const history = useHistory();
+    const [comments, setComments] = useState('');
 
     useEffect(()=>{
         if(program_id){
@@ -59,16 +61,14 @@ export default function ReportErrorPage(props){
                 <p>{zip} - {utility_name} - {program_name}</p>
             </>
         )
-    }
-    else if(eia_state){
+    } else if(eia_state){
         body = (
             <>
                 <h1>Report Missing Program</h1>
                 <p>{zip} - {utility_name}</p>
             </>
         )
-    }
-    else if(zip){
+    } else if(zip){
         body = (
             <>
                 <h1>Report Missing Utility in {zip}</h1>
@@ -97,6 +97,7 @@ export default function ReportErrorPage(props){
                     value={comments}
                     onChange={e=>setComments(e.target.value)}
                 />
+                <ReportThankYou />
                 <button className='button-default' onClick={() => postTicket()}>Submit</button>
             </Body>
         </Container>

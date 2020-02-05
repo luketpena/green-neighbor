@@ -1,10 +1,11 @@
 
 -- NOTE: CSV Paths are hardcoded, you must set them to your appropriate path
 
-DROP TABLE "gpp";
-DROP TABLE "zips";
-DROP TABLE "user";
-DROP TABLE "tickets";
+
+DROP TABLE IF EXISTS "gpp";
+DROP TABLE IF EXISTS "zips";
+DROP TABLE IF EXISTS "user";
+DROP TABLE IF EXISTS "tickets";
 
 CREATE TABLE "user" (
   "id" SERIAL PRIMARY KEY,
@@ -61,8 +62,8 @@ CREATE TABLE "gpp" (
 	"waitlist" VARCHAR,
 	"sign_up_text" VARCHAR,
 	"sign_up_url" VARCHAR,
-	"date_updated" DATE,
-	"production" INT
+	"date_updated" DATE DEFAULT CURRENT_DATE,
+	"production" INT DEFAULT 0
 );
 
 CREATE TABLE "tickets" (

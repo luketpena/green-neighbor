@@ -38,7 +38,9 @@ export default function IntroductionPage(props) {
     let [zipInput, setZipInput] = useState('');
 
     function sendZipValue(){
-      history.push(`/utility/${zipInput}`)
+      if(zipInput && zipInput.length){
+        history.push(`/utility/${zipInput}`);
+      }
     }
 
   return(
