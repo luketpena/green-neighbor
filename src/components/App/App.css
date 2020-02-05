@@ -39,6 +39,7 @@ body {
   background-color: var(--color-bkg-main);
   margin: 0;
   height: 100vh;
+  font-family: var(--font-main);
 }
 
 .flex-center {

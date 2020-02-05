@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import Background from '../../images/bkg-forest-top.jpg';
 
+
 const BackgroundBox = styled.div`
   background-image: url(${Background});
   background-size: cover;
@@ -104,7 +105,7 @@ export default function IntroductionPage(props) {
         </ZipBox>
 
         <LearnBox>
-          <button className="button-default" onClick={()=>history.push("/faq")}>Learn who we are</button> 
+          <button className="button-default" onClick={()=>history.push("/about")}>Learn who we are</button> 
           <button className="button-default" onClick={()=>history.push("/contribute")}>How you can help</button>
           {/* update push links to when we had those pages set up */}
         </LearnBox>

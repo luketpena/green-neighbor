@@ -73,7 +73,8 @@ CREATE TABLE "tickets" (
 	"utility_name" VARCHAR,
 	"eia_state" VARCHAR,
 	"program_name" VARCHAR,
-	"program_id" VARCHAR,
+	"gpp_id" INT,
+	"email" VARCHAR,
 	"comments" VARCHAR
 );
 
