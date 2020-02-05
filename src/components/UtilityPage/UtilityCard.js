@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import {useHistory, useParams} from 'react-router-dom';
 
 import ProgramCard from './ProgramCard';
 
@@ -48,6 +49,9 @@ const EmptyProgramDiv = styled.div`
 
 export default function UtilityCard(props) {
 
+  const history = useHistory();
+  const {zip} = useParams();
+
   function renderPrograms() {
     if (props.company.programs.length>0) {
       return props.company.programs.map( (item,i)=>{
@@ -63,8 +67,9 @@ export default function UtilityCard(props) {
   return (
     <UtilityCardBody>
       <UtilityHeader>
+        
         <h3>{props.company.name}</h3>
-        <button className="button-default">Report missing program</button>
+        <button className="button-default" onClick={()=>history.push(`/report/${zip}/${props.company.eia_state}`)}>Report missing program</button>
       </UtilityHeader>
       <ProgramCardBox>
         {renderPrograms()}

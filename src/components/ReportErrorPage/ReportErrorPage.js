@@ -43,9 +43,6 @@ export default function ReportErrorPage(props){
 
     useEffect(()=>{
         setCompanyName(utility_name);
-        if(!utility_name){
-            history.push(`/report/${zip}`);
-        }
     }, [utility_name, history]);
 
     let body;

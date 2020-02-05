@@ -35,6 +35,7 @@ router.get('/:zip', async (req, res) => {
                     name: program.utility_name,
                     zip: program.zip,
                     eiaid: program.eiaid,
+                    eia_state: program.eia_state,
                     state: program.state,
                     programs: []
                 });
@@ -43,6 +44,7 @@ router.get('/:zip', async (req, res) => {
             delete program.eiaid;
             delete program.state;
             delete program.utility_name;
+            delete program.eia_state;
             if(program.program_name){
                 dataToSend[i].programs.push(program);
             }
