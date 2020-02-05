@@ -114,7 +114,7 @@ export default function ReportErrorPage(props){
                     value={email}
                     onChange={e=>setEmail(e.target.value)}
                 />
-                <ReportThankYou open={open} goBack={goBack} />
+                <ReportThankYou open={open} goBack={handleClose} />
                 <button className='button-default' onClick={() => postTicket()}>Submit</button>
             </Body>
         </Container>
