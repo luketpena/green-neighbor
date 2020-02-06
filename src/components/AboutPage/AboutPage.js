@@ -1,6 +1,19 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
+import Background from '../../images/bkg-forest-top.jpg';
+
+const BackgroundBox = styled.div`
+  background-image: url(${Background});
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  width: 100vw;
+  height: 175vh;
+  margin: 0;
+  padding: 32px;
+  box-sizing: border-box;
+`;
 
 const Container = styled.div`
 width: 90%;
@@ -13,8 +26,17 @@ grid-template-columns: 250px 850px ;
 `;
 
 const Header = styled.div`
-grid-area: Header Header;
-grid-row: 1;
+display: flex;
+  align-items: center;
+  justify-content: center;
+  
+color: white;
+text-shadow: 0 0 4px black;
+h1 {
+  font-family: var(--font-header);
+  font-size: 64px;
+  margin: 0;
+}
 `;
 
 const QBox = styled.div`
@@ -71,12 +93,14 @@ export default function AboutPage() {
   ];
 
   return(
-    <>
+    <BackgroundBox>
     <button className="button-default" onClick={()=>history.push("/intro")}>return home</button>
-    <Container>
-      <Header>
+    
+    <Header>
         <h1>Frequently Asked Questions</h1>
-      </Header>
+    </Header>
+    <Container>
+
 
       <QBox className="container">
          {faq.map((item,id)=>{return<button onClick={()=>document.getElementById(`faqanswer${id}`).scrollIntoView()}>{item.Q}</button>})}
@@ -86,6 +110,6 @@ export default function AboutPage() {
   {faq.map((answer,id)=>{return <div id={`faqanswer${id}`}><h2>{answer.Q}</h2><b>{answer.H}</b><p>{answer.A}</p></div>})}
       </ABox>
     </Container>
-    </>
+    </BackgroundBox>
   )
 }
