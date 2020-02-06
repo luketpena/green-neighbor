@@ -73,8 +73,10 @@ router.post('/', async (req, res) => {
         const query = `
             INSERT INTO "tickets" (${keys})
             VALUES (${values.join(', ')})`;
-
+            console.log(req.body);
         await pool.query(query, config);
+        
+        
 
         res.sendStatus(200);
     } catch (error) {

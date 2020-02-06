@@ -33,6 +33,7 @@ app.use('/api/details', detailsRouter);
 app.use('/api/tickets', ticketsRouter);
 app.use('/api/utilities', utilitiesRouter);
 
+
 // Serve static files
 app.use(express.static('build'));
 
