@@ -90,7 +90,6 @@ export default function IntroductionPage(props) {
   return(
     <BackgroundBox>
       <Container>
-
         <ZipBox>
             <h1>The Green Neighbor Challenge</h1>
             <h2>Find green energy near you.</h2>
@@ -109,7 +108,6 @@ export default function IntroductionPage(props) {
           <button className="button-default" onClick={()=>history.push("/contribute")}>How you can help</button>
           {/* update push links to when we had those pages set up */}
         </LearnBox>
-
       </Container>
     </BackgroundBox>
   )
