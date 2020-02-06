@@ -100,18 +100,21 @@ const ActionCard = styled.button`
   padding: 16px;
   background-color: rgba(255,255,255,.1);
   color: rgba(255,255,255,.8);
+
   transition: all .3s;
   border: none;
-  font-size:  1em;
   outline: none;
+  font-size:  1em;
+  
   
   p {
     font-family: var(--font-main);
     text-shadow: 0 0 8px black;
+    display: block;
   }
   .icon {
     display: block;
-    margin: 32px auto;
+    margin: 16px auto;
     font-size: 48px;
     transition: transform 1s;
   }
