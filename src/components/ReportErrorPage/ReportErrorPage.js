@@ -50,21 +50,20 @@ export default function ReportErrorPage(props){
         }
     }, [utility_name, history]);
 
-    
+    const postThenBack = () => {
+        dispatch({type: 'POST_TICKET', payload: {zip, utility_name, program_name, program_id, comments, email} });
+        history.goBack();
+    } 
 
     const postTicket = () => {
         setOpen(true);
-        dispatch({type: 'POST_TICKET', payload: {zip, utility_name, program_name, program_id, comments, email} });
-        
     }
 
-    const handleClickOpen = () => {
-        setOpen(true);
-        };
-        const handleClose = () => {
+    const handleClose = () => {
         setOpen(false);
         };
 
+    
     let body;
     if(program_id && eia_state){
         body = (
@@ -98,9 +97,11 @@ export default function ReportErrorPage(props){
         e.preventDefault();
     }
 
+    
+
     // const history = useHistory()
     return (
-        
+       
         <Container>
             <Body className="container" onSubmit={handleSubmit}>
                 {body}
@@ -117,7 +118,7 @@ export default function ReportErrorPage(props){
                     value={email}
                     onChange={e=>setEmail(e.target.value)}
                 />
-                <ReportThankYou open={open} handleClose={handleClose} />
+                <ReportThankYou open={open} postThenBack={postThenBack}  />
                 <button className='button-default' onClick={() => postTicket()}>Submit</button>
             </Body>
         </Container>
