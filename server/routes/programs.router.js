@@ -7,9 +7,28 @@ const dotenv = require('dotenv');
 dotenv.config();
 const gppCols =  require('../modules/gppColumns');
 
-/**
- * GET route template
- */
+//-----< GEOCODE API ROUTE >-----\\
+router.get('/geocode/:zip', (req,res)=>{
+  axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.params.zip}&sensor=true&key=${process.env.GEOCODE_API_KEY}`)
+      .then(response=>{
+          console.log(response.data);
+          if(response.data.results[0]){
+              res.send(response.data.results[0].formatted_address);
+          } else {
+              res.sendStatus(500);
+          }
+
+      }).catch(error=>{
+          console.log('Error getting geocode data from API:',error);   
+          res.sendStatus(400);
+      });
+});
+
+//-----< ZIPS TABLE ROUTES >-----\\
+/*
+  This route gets all of the utility companies in an area.
+  Joins with the gpp table to get all programs for that company and returns them in an array.
+*/
 router.get('/:zip', async (req, res) => {
     try {
         const zipsCols = [
@@ -57,6 +76,14 @@ router.get('/:zip', async (req, res) => {
     }
 });
 
+
+
+
+//-----< GPP TABLE ROUTES >-----\\
+
+/* 
+  Retrieves all of the details about a particular program by row ID.
+*/
 // replace * with specific columns: Zip, utility name, program, sign up link //
 router.get('/details/:id', async (req, res) => {
     try{
@@ -70,22 +97,10 @@ router.get('/details/:id', async (req, res) => {
     }
 });
 
-router.get('/geocode/:zip', (req,res)=>{
-    axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.params.zip}&sensor=true&key=${process.env.GEOCODE_API_KEY}`)
-        .then(response=>{
-            console.log(response.data);
-            if(response.data.results[0]){
-                res.send(response.data.results[0].formatted_address);
-            } else {
-                res.sendStatus(500);
-            }
-
-        }).catch(error=>{
-            console.log('Error getting geocode data from API:',error);   
-            res.sendStatus(400);
-        });
-});
-
+/*
+  Creates a new program in the gpp table
+  NOTE: Has commented out authentication requirements, but it should not require that. All users can post information.
+*/
 // router.post('/create', rejectUnauthenticated, async (req, res) => {
 router.post('/create', async (req, res) => {
     try{
@@ -110,6 +125,10 @@ router.post('/create', async (req, res) => {
     }
 });
 
+/*
+  Updates an existing program in the gpp table.
+  Requires authentication to allow modification.
+*/
 // router.put('/update/:id', rejectUnauthenticated, async (req, res) => {
 router.put('/update/:id', async (req, res) => {
     try{
@@ -132,6 +151,23 @@ router.put('/update/:id', async (req, res) => {
         res.sendStatus(500);
         console.log(error);
     }
+});
+
+/*
+  Deletes a program from the gpp table.
+  Requires authentication to permit deletion.
+*/
+router.delete('/:id', rejectUnauthenticated, async(req,res)=>{
+  try {
+    const query = `
+      DELETE FROM gpp WHERE id=$1;
+    `;
+    await pool.query(query, [req.params.id]);
+    res.sendStatus(200);
+  } catch(error) {
+    console.log('Error deleting program from gpp table:',error);
+    res.sendStatus(500);    
+  }
 });
 
 module.exports = router;
