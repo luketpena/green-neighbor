@@ -189,7 +189,7 @@ export default function DetailsPage() {
     switch(action) {
       case 'utility': history.push(`/utility/${zip}`); break;
       case 'about': history.push('/about'); break;
-      case 'report': history.push(`/report/${zip}`); break;
+      case 'report': history.push(`/report/${zip}/${details.eia_state}/${details.program_id}`); break;
       default: /* Always remember: keep React happy with default cases. */ break;
     }
   }
