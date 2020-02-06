@@ -11,7 +11,7 @@ import { faBullhorn, faScroll, faSeedling, faExclamation, faHandsHelping, faCare
 const ActionData = [
   {action: 'share', text: `Share with Friends`, icon: faBullhorn},
   {action: 'utility', text: `View other energy programs near you`, icon: faScroll},
-  {action: 'faq', text: `Discover Green Energy's Impact`, icon: faSeedling},
+  {action: 'about', text: `Discover Green Energy's Impact`, icon: faSeedling},
   {action: 'report', text: `Report a problem with this energy program`, icon: faExclamation},
   {action: 'contribute', text: `Discover how you can contribute`, icon: faHandsHelping}
 ];
@@ -187,9 +187,9 @@ export default function DetailsPage() {
 
   function clickAction(action) {
     switch(action) {
-      case 'utility':
-        history.push(`/utility/${zip}`)
-        break;
+      case 'utility': history.push(`/utility/${zip}`); break;
+      case 'about': history.push('/about'); break;
+      case 'report': history.push(`/report/${zip}`); break;
       default: /* Always remember: keep React happy with default cases. */ break;
     }
   }
