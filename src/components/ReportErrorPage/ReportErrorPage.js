@@ -5,8 +5,10 @@ import styled from 'styled-components';
 import {TextField} from '@material-ui/core';
 import ReportThankYou from '../ReportErrorPage/ReportThankYou';
 import Background from '../../images/bkg-forest-top.jpg';
+import { white } from 'color-name';
 
 const Container = styled.div`
+    color: white;
     height: 100vh;
     width: max-content;
     margin: auto auto;
@@ -27,13 +29,45 @@ const ImageBackground = styled.div`
 `;
 
 const Body = styled.form`
-
+    h1 {
+        font-family: var(--font-header);
+        font-size: 64px;
+        margin: 0;
+    }
+    h2 {
+        margin: 0;
+        font-family: var(--font-main);
+        font-weight: lighter;
+      }
+    
     height: max-content;
     text-align: center;
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
-`
+    color: white;
+    text-shadow: 0 0 4px black;
+`;
+ const Input = styled.input`
+ 
+    background-color: rgba(255,255,255,.1);
+    backdrop-filter: blur(0px);
+    outline: none;
+    margin: 10px;
+    border: 1px solid white;
+    text-shadow: 0 0 4px black;
+    color: white;
+    ::placeholder {
+        color: white;
+        opacity: .8;
+    }
+    font-size: 18px;
+    padding: 8px;
+    text-align: center;
+    border-radius: 4px;
+  
+  `;
+
 
 export default function ReportErrorPage(props){
 
@@ -92,7 +126,7 @@ export default function ReportErrorPage(props){
         body = (
             <>
                 <h1>Report Missing Utility in {zip}</h1>
-                <TextField
+                <Input
                     required
                     label='Utility Name'
                     value={companyName || ''}
@@ -110,25 +144,27 @@ export default function ReportErrorPage(props){
 
     // const history = useHistory()
     return (
-       <ImageBackground>
+       <ImageBackground >
             <Container>
-                <Body className="container" onSubmit={handleSubmit}>
+                <Body onSubmit={handleSubmit}>
                     {body}
-                    <TextField
+                    <Input 
+                        className="zip-input" 
+                        type="multiline"                  
                         label={ program_id ? "Description" : "Comments" }
                         placeholder='Provide more details about your issue'
                         multiline
                         value={comments}
                         onChange={e=>setComments(e.target.value)}
                     />
-                    <TextField 
+                    <Input 
                         label='Email'
                         placeholder='Your Email for Ticket Progress'
                         value={email}
                         onChange={e=>setEmail(e.target.value)}
                     />
                     <ReportThankYou open={open} postThenBack={postThenBack}  />
-                    <button className='button-default' onClick={() => postTicket()}>Submit</button>
+                    <button className='button-wire' onClick={() => postTicket()}>Submit</button>
                 </Body>
             </Container>
         </ImageBackground>
