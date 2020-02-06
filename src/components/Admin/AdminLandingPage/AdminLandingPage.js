@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 const Page = styled.div`
-  height: 100%;
+  height: 100vh;
   background-color: var(--color-bkg-dark);
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -45,9 +45,11 @@ export default function AdminLandingPage() {
   const {
     tickets_active: activeTickets,
     tickets_resolved: resolvedTickets,
-    records_live: liveRecords,
-    records_draft: draftRecords
+    programs_live: liveRecords,
+    programs_draft: draftRecords
   } = useSelector(state => state.adminLandingPageData);
+  const state = useSelector(state => state.adminLandingPageData);
+  console.log(state);
   const dispatch = useCallback(useDispatch(), []);
   useEffect(()=>{
     dispatch({type: 'GET_ADMIN_LANDING_DATA'});
@@ -58,12 +60,12 @@ export default function AdminLandingPage() {
       <Card
         headerText="Tickets"
         link='/admin/tickets'
-        body={[`${activeTickets} Active`, `${resolvedTickets} Resolved`]}
+        body={[`${activeTickets || 0} Active`, `${resolvedTickets || 0} Resolved`]}
       />
       <Card
         headerText="Records"
         link='/admin/records'
-        body={[`${liveRecords} Live`, `${draftRecords} Drafts`]}
+        body={[`${liveRecords || 0} Live`, `${draftRecords || 0} Drafts`]}
       />
       <Card
         headerText="Users"

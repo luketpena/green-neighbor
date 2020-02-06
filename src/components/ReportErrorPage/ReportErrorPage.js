@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useParams, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import {TextField} from '@material-ui/core';
+import ReportThankYou from '../ReportErrorPage/ReportThankYou';
 
 const Container = styled.div`
     height: 100vh;
@@ -27,10 +28,11 @@ export default function ReportErrorPage(props){
     const {zip, eia_state, program_id} = useParams();
     const history = useHistory();
     const dispatch = useCallback(useDispatch(), []);
-
     const {utility_name, program_name, id} = useSelector(state => program_id ? state.programDetails : state.utilityDataForReportPage);
     const [companyName, setCompanyName] = useState('');
     const [comments, setComments] = useState('');
+    const [email, setEmail] = useState('');
+    const [open, setOpen] = useState(false);
 
     useEffect(()=>{
         if(program_id){
@@ -44,6 +46,21 @@ export default function ReportErrorPage(props){
     useEffect(()=>{
         setCompanyName(utility_name);
     }, [utility_name, history]);
+
+    
+
+    const postTicket = () => {
+        setOpen(true);
+        dispatch({type: 'POST_TICKET', payload: {zip, utility_name, program_name, program_id, comments, email} });
+        
+    }
+
+    const handleClickOpen = () => {
+        setOpen(true);
+        };
+        const handleClose = () => {
+        setOpen(false);
+        };
 
     let body;
     if(program_id && eia_state){
@@ -78,7 +95,9 @@ export default function ReportErrorPage(props){
         e.preventDefault();
     }
 
+    // const history = useHistory()
     return (
+        
         <Container>
             <Body className="container" onSubmit={handleSubmit}>
                 {body}
@@ -89,7 +108,14 @@ export default function ReportErrorPage(props){
                     value={comments}
                     onChange={e=>setComments(e.target.value)}
                 />
-                <button className='button-default'>Submit</button>
+                 <TextField 
+                    label='Email'
+                    placeholder='Your Email for Ticket Progress'
+                    value={email}
+                    onChange={e=>setEmail(e.target.value)}
+                />
+                <ReportThankYou open={open} handleClose={handleClose} />
+                <button className='button-default' onClick={() => postTicket()}>Submit</button>
             </Body>
         </Container>
     )
