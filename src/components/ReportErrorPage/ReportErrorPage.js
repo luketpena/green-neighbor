@@ -4,6 +4,7 @@ import {useParams, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import {TextField} from '@material-ui/core';
 import ReportThankYou from '../ReportErrorPage/ReportThankYou';
+import Background from '../../images/bkg-forest-top.jpg';
 
 const Container = styled.div`
     height: 100vh;
@@ -15,7 +16,18 @@ const Container = styled.div`
     flex-direction: column;
 `;
 
+const ImageBackground = styled.div`
+    width: 100%;
+    margin: 0 auto;
+    background-image: url(${Background});
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+`;
+
 const Body = styled.form`
+
     height: max-content;
     text-align: center;
     display: flex;
@@ -98,26 +110,27 @@ export default function ReportErrorPage(props){
 
     // const history = useHistory()
     return (
-       
-        <Container>
-            <Body className="container" onSubmit={handleSubmit}>
-                {body}
-                <TextField
-                    label={ program_id ? "Description" : "Comments" }
-                    placeholder='Provide more details about your issue'
-                    multiline
-                    value={comments}
-                    onChange={e=>setComments(e.target.value)}
-                />
-                 <TextField 
-                    label='Email'
-                    placeholder='Your Email for Ticket Progress'
-                    value={email}
-                    onChange={e=>setEmail(e.target.value)}
-                />
-                <ReportThankYou open={open} postThenBack={postThenBack}  />
-                <button className='button-default' onClick={() => postTicket()}>Submit</button>
-            </Body>
-        </Container>
+       <ImageBackground>
+            <Container>
+                <Body className="container" onSubmit={handleSubmit}>
+                    {body}
+                    <TextField
+                        label={ program_id ? "Description" : "Comments" }
+                        placeholder='Provide more details about your issue'
+                        multiline
+                        value={comments}
+                        onChange={e=>setComments(e.target.value)}
+                    />
+                    <TextField 
+                        label='Email'
+                        placeholder='Your Email for Ticket Progress'
+                        value={email}
+                        onChange={e=>setEmail(e.target.value)}
+                    />
+                    <ReportThankYou open={open} postThenBack={postThenBack}  />
+                    <button className='button-default' onClick={() => postTicket()}>Submit</button>
+                </Body>
+            </Container>
+        </ImageBackground>
     )
 }
