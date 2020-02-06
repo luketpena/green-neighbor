@@ -1,6 +1,7 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
 /* 
   Gets just then name of a utility company and its ID.
@@ -36,6 +37,23 @@ router.post('/', async(req,res)=>{
   } catch(error) {
     res.send(500);
     console.log('Error posting new utility company:',error);
+  }
+});
+
+/* 
+  Deletes a utility company from the zips table.
+  Requires a user to be authenticated to permit deletion.
+*/
+router.delete('/:id', rejectUnauthenticated, async(req,res)=>{
+  try {
+    const query = `
+      DELETE FROM zips WHERE id=$1;
+    `;
+    await pool.query(query, [req.params.id]);
+    res.sendStatus(200);
+  } catch(error) {
+    res.send(500);
+    console.log('Error deleting utility company:',error);    
   }
 });
 
