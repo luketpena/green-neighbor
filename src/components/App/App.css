@@ -7,7 +7,7 @@
 
 :root {
   --color-bkg-main: #EEE;
-  --color-bkg-dark: #093A31;
+  --color-bkg-dark: rgb(23, 34, 48);
   --color-bkg-container: white;
   --color-bkg-highlight: white;
   --color-shadow: rgba(0,0,0,.5);
