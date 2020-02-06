@@ -39,7 +39,7 @@ const ZipBox = styled.div`
   
   h1 {
     font-family: var(--font-header);
-    font-size: 64px;
+    font-size: 6em;
     margin: 0;
   }
   h2 {

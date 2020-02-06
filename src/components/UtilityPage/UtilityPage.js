@@ -10,6 +10,7 @@ import UtilityList from './UtilityList';
 
 
 const Container = styled.div`
+  min-height: 100vh;
   width: 100%;
   margin: 0 auto;
   display: grid;
