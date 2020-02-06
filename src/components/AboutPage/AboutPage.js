@@ -9,7 +9,7 @@ const BackgroundBox = styled.div`
   background-attachment: fixed;
   background-position: center;
   width: 100vw;
-  height: 175vh;
+  height: 100vh;
   margin: 0;
   padding: 32px;
   box-sizing: border-box;
@@ -20,6 +20,7 @@ width: 90%;
 height: 500px;
 margin: 0 auto;
 display: grid;
+justify-content: center;
 grid-template-rows: 100px 1fr;
 grid-template-areas: "questions answers" ;
 grid-template-columns: 250px 850px ;
@@ -43,13 +44,25 @@ const QBox = styled.div`
 grid-area: questions;
 grid-row: 2;
 background-color: lightblue;
+height: 450px;
+
 `;
 
 const ABox = styled.div`
 grid-area: answers;
 grid-row: 2;
+height: 450px;
+overflow: scroll;
 `;
 
+const Adiv = styled.div`
+padding: 15px 0px 15px;
+
+height: 100%;
+background-color: ;
+
+
+`;
 
 export default function AboutPage() {
   const history = useHistory();
@@ -94,7 +107,7 @@ export default function AboutPage() {
 
   return(
     <BackgroundBox>
-    <button className="button-default" onClick={()=>history.push("/intro")}>return home</button>
+    <button className="button-default" onClick={()=>history.push("/intro")}>Home</button>
     
     <Header>
         <h1>Frequently Asked Questions</h1>
@@ -103,11 +116,11 @@ export default function AboutPage() {
 
 
       <QBox className="container">
-         {faq.map((item,id)=>{return<button onClick={()=>document.getElementById(`faqanswer${id}`).scrollIntoView()}>{item.Q}</button>})}
+        {faq.map((item,id)=>{return<button className="button-default" onClick={()=>document.getElementById(`faqanswer${id}`).scrollIntoView({inline: "center"})}>{item.Q}</button>})}
       </QBox>
       
       <ABox className="container">
-  {faq.map((answer,id)=>{return <div id={`faqanswer${id}`}><h2>{answer.Q}</h2><b>{answer.H}</b><p>{answer.A}</p></div>})}
+        {faq.map((answer,id)=>{return <Adiv id={`faqanswer${id}`}><h2>{answer.H}</h2><p>{answer.A}</p></Adiv>})}
       </ABox>
     </Container>
     </BackgroundBox>
