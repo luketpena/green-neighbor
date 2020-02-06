@@ -8,6 +8,8 @@ import Background from '../../images/bkg-forest-top.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBullhorn, faScroll, faSeedling, faExclamation, faHandsHelping, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
+import HomeButton from '../HomeButton/HomeButton';
+
 const ActionData = [
   {action: 'share', text: `Share with Friends`, icon: faBullhorn},
   {action: 'utility', text: `View other energy programs near you`, icon: faScroll},
@@ -21,8 +23,8 @@ const Container = styled.div`
   height: 100vh;
   margin: 0 auto;
   display: grid;
-  grid-template-areas: "main" "action";
-  grid-template-rows: 1fr auto;
+  grid-template-areas: "home" "main" "action";
+  grid-template-rows: auto 1fr auto;
   background-image: url(${Background});
   background-size: cover;
   background-attachment: fixed;
@@ -173,7 +175,7 @@ export default function DetailsPage() {
   const history = useHistory();
   const dispatch = useDispatch();
   const {id, zip} = useParams(); 
-  let [discoverActive, setDiscoverActive] = useState(true);
+  let [discoverActive, setDiscoverActive] = useState(false);
   
 
 
@@ -208,6 +210,7 @@ export default function DetailsPage() {
 
   return(
     <Container>
+      <HomeButton />
       <TitleDiv>
         <TitleMain>
           <h2>{details.utility_name} - {details.eiaid}</h2>
