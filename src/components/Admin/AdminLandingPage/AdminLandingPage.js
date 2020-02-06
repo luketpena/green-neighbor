@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 const Page = styled.div`
-  height: 100vh;
+  height: 100%;
   background-color: var(--color-bkg-dark);
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -29,23 +30,28 @@ function Card({headerText, body, link, ...otherProps}){
   return (
     <Box className='container' {...otherProps}>
       <h2>{headerText}</h2>
-      {body && body.map(entry => <Entry>{entry}</Entry>)}
+      {body && body.map((entry, i) => <Entry key={i}>{entry}</Entry>)}
       <button
-          className='button-primary'
-          onClick={()=>history.push(link)}
-        >
-          Go
-        </button>
+        className='button-primary'
+        onClick={()=>history.push(link)}
+      >
+        Go
+      </button>
     </Box>
   )
 }
 
 export default function AdminLandingPage() {
-
-  const activeTickets = 80;
-  const resolvedTickets = 100;
-  const liveRecords = 1234;
-  const draftRecords = 12;
+  const {
+    tickets_active: activeTickets,
+    tickets_resolved: resolvedTickets,
+    records_live: liveRecords,
+    records_draft: draftRecords
+  } = useSelector(state => state.adminLandingPageData);
+  const dispatch = useCallback(useDispatch(), []);
+  useEffect(()=>{
+    dispatch({type: 'GET_ADMIN_LANDING_DATA'});
+  },[dispatch]);
 
   return(
     <Page>
