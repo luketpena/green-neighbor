@@ -3,7 +3,7 @@ const pool = require('../modules/pool');
 const router = express.Router();
 
 // send in req.query the column name and value to search for
-router.get('/', async (req, res) => {
+router.get('/', rejectUnauthenticated, async (req, res) => {
     try{
         const equalQueries = [
             'id', 'resolved', 'zip', 'utility_id', 'program_id'
