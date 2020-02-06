@@ -29,19 +29,15 @@ const TitleBox = styled.div`
 
   position: relative;
   z-index: 1;
-
+  width: 100vw;
 
   grid-area: title;
   display: grid;
   grid-template-areas: "home" "main" "help";
   grid-template-rows: auto 1fr 80px;
-  justify-content: center;
   align-items: center;
 
   text-align: center;
-
-  
-
   text-shadow: 0px 0px 4px black;
   color: var(--color-text-light);
 
