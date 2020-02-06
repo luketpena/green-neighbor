@@ -31,8 +31,8 @@
   --color-text-dark: #222;
 
   --font-header: 'Leafy', sans-serif;
-  --font-button: 'Roboto', sans-serif;
-  --font-main: 'Roboto', sans-serif;
+  --font-button: "Roboto", "Helvetica", "Arial", sans-serif;
+  --font-main: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 body {

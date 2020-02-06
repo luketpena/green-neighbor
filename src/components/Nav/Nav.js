@@ -14,7 +14,15 @@ const Bar = styled.div`
 const LogOutButton = styled.button`
   color: white;
   background-color: rgba(0, 0, 0, 0);
-  border: none;
+  margin: 4px 16px 0px 16px;
+  height: min-content;
+  min-width: 7rem;
+  font-size: 0.875rem;
+  opacity: 0.7;
+  letter-spacing: 0.02857em;
+  line-height: 1.5;
+  font-weight: 500;
+  white-space: normal;
 `;
 
 export default function Nav(props){
@@ -69,6 +77,7 @@ export default function Nav(props){
           )}
         </Tabs>
         <LogOutButton
+          className='button-wire'
           onClick={() => dispatch({ type: 'LOGOUT' })}
         >
           Log Out
