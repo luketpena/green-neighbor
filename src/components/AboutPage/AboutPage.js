@@ -43,25 +43,27 @@ h1 {
 const QBox = styled.div`
 grid-area: questions;
 grid-row: 2;
-background-color: lightblue;
-height: 450px;
 
+height: 350px;
+display: flex;
+flex-direction: column;
+align-items: right;
 `;
 
 const ABox = styled.div`
 grid-area: answers;
 grid-row: 2;
-height: 450px;
+height: 350px;
 overflow: scroll;
+opacity: .82
 `;
 
 const Adiv = styled.div`
 padding: 15px 0px 15px;
-
+display: flex;
+flex-direction: column;
+align-items: center;
 height: 100%;
-background-color: ;
-
-
 `;
 
 export default function AboutPage() {
@@ -115,8 +117,8 @@ export default function AboutPage() {
     <Container>
 
 
-      <QBox className="container">
-        {faq.map((item,id)=>{return<button className="button-default" onClick={()=>document.getElementById(`faqanswer${id}`).scrollIntoView({inline: "center"})}>{item.Q}</button>})}
+      <QBox>
+        {faq.map((item,id)=>{return<button className="button-default" onClick={()=>document.getElementById(`faqanswer${id}`).scrollIntoView({behavior: "smooth"})}>{item.Q}</button>})}
       </QBox>
       
       <ABox className="container">
