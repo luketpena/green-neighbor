@@ -3,7 +3,7 @@ import {Link, useLocation} from 'react-router-dom';
 import {AppBar, Tabs, Tab, Toolbar} from '@material-ui/core';
 import a11yProps from '../../modules/a11yProps';
 import { useSelector, useDispatch } from 'react-redux';
-import {makeStyles} from '@material-ui/core';
+import {makeStyles, Button} from '@material-ui/core';
 import styled from 'styled-components';
 
 const Bar = styled.div`
@@ -11,18 +11,11 @@ const Bar = styled.div`
   justify-content: space-between;
 `
 
-const LogOutButton = styled.button`
-  color: white;
-  background-color: rgba(0, 0, 0, 0);
-  margin: 4px 16px 0px 16px;
-  min-width: 7rem;
-  font-size: 0.875rem;
-  opacity: 0.7;
-  letter-spacing: 0.02857em;
-  line-height: 1.5;
-  font-weight: 500;
-  white-space: normal;
-`;
+const ButtonStyle = {
+  color: 'white',
+  whiteSpace: 'nowrap',
+  marginLeft: '8px'
+}
 
 export default function Nav(props){
   const [value, setValue] = React.useState(0);
@@ -55,7 +48,7 @@ export default function Nav(props){
   }
 
   return(
-    <AppBar position='sticky'>
+    <AppBar position='fixed'>
       <Bar>
         <Tabs
           value={value}
@@ -75,12 +68,12 @@ export default function Nav(props){
             />
           )}
         </Tabs>
-        <LogOutButton
-          className='button-wire'
+        <Button
           onClick={() => dispatch({ type: 'LOGOUT' })}
+          style={ButtonStyle}
         >
           Log Out
-        </LogOutButton>
+        </Button>
       </Bar>
     </AppBar>
   );
