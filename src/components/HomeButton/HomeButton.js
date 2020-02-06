@@ -12,6 +12,7 @@ const Container = styled.div`
   align-items: flex-end;
   text-shadow: 0 0 8px black;
   padding: 16px;
+  box-sizing: border-box;
 
   .icon {
 

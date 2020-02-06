@@ -29,7 +29,7 @@ const TitleBox = styled.div`
 
   position: relative;
   z-index: 1;
-  width: 100vw;
+
 
   grid-area: title;
   display: grid;
