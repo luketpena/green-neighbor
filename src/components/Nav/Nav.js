@@ -1,46 +1,79 @@
 import React from 'react';
-import {useLocation} from 'react-router-dom';
-import LogOutButton from '../LogOutButton/LogOutButton';
-import {AppBar, Tabs, Tab} from '@material-ui/core';
+import {Link, useLocation} from 'react-router-dom';
+import {AppBar, Tabs, Tab, Toolbar} from '@material-ui/core';
 import a11yProps from '../../modules/a11yProps';
+import { useSelector, useDispatch } from 'react-redux';
+import {makeStyles} from '@material-ui/core';
+import styled from 'styled-components';
+
+const Bar = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+const LogOutButton = styled.button`
+  color: white;
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+`;
 
 export default function Nav(props){
   const [value, setValue] = React.useState(0);
-  const {pathname} = useLocation();
+  const {pathname: currentURL} = useLocation();
+  const dispatch = useDispatch();
+
+  const tabs = [
+    {name: 'Home', link: '/admin/home'},
+    {name: 'Tickets', link: '/admin/tickets'},
+    {name: 'Records', link: '/admin/records'},
+    {name: 'Users', link: '/admin/manageAdmins'},
+  ];
+
   React.useEffect(()=>{
-    console.log(pathname);
-    switch(pathname){
-      default:
-        setValue('/admin/home');
+    console.log(currentURL);
+    let i = 0;
+    for(; i < tabs.length; i++){
+      if(currentURL === tabs[i].link){
+        setValue(i);
         break;
+      }
     }
-  } ,[pathname]);
+    if(i === tabs.length) setValue(0);
+  }, [currentURL]);
+
+  // if not logged in, return null
+  const user = useSelector(state => state.user);
+  if(!user.id){
+    return null;
+  }
 
   return(
-    <AppBar>
-      <Tabs value={value} onChange={(e, v)=>setValue(v)}>
-        <Tab
-          aria-label="home"
-          value={'/admin/home'}
-          {...a11yProps(0)}
-          label='Home'
-        />
-      </Tabs>
+    <AppBar position='sticky'>
+      <Bar>
+        <Tabs
+          value={value}
+          onChange={(e, v)=>setValue(v)}
+          variant='scrollable'
+          scrollButtons='auto'
+        >
+          {tabs.map(({name, link}, i) => 
+            <Tab
+              key={i}
+              aria-label={name}
+              value={i}
+              label={name}
+              {...a11yProps(i)}
+              to={link}
+              component={Link}
+            />
+          )}
+        </Tabs>
+        <LogOutButton
+          onClick={() => dispatch({ type: 'LOGOUT' })}
+        >
+          Log Out
+        </LogOutButton>
+      </Bar>
     </AppBar>
   );
 };
-
-/*
-    <AppBar position="static" color="default">
-      <Tabs
-        value={activeTab}
-        onChange = {(e, v)=>setActiveTab(v)}
-        variant="fullWidth"
-      >
-        <Tab aria-label="Profile" icon={<AccountCircleIcon />} value={0} href="#home" {...a11yProps(0)} />
-        <Tab aria-label="User Search" icon={<SearchIcon />} value={1} href="#search" {...a11yProps(1)} />
-        <Tab aria-label="Connections" icon={<HowToRegIcon />} value={2} href="#connections" {...a11yProps(2)} />
-        <Tab aria-label="Available" icon={<RecentActorsIcon />} value={3} href="#available" {...a11yProps(3)} />
-      </Tabs>
-    </AppBar>
-*/
