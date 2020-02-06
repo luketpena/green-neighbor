@@ -24,7 +24,7 @@ router.get('/getName/:zip/:eia_state', async (req, res) => {
 /* 
   Posts a new utility company to the zips table.
 */
-router.post('/', async(req,res)=>{
+router.post('/', rejectUnauthenticated, async(req,res)=>{
   const {zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate} = req.body;
   const queryData = [zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate];
   try {
