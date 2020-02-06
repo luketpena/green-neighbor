@@ -1,7 +1,11 @@
 import React from 'react';
+import {useDispatch} from 'react-redux';
 import styled from 'styled-components';
 
+import UtilityRow from './UtilityRow';
+
 const Container = styled.div`
+  margin: 5%;
   h1 {
     text-align: center;
   }
@@ -76,6 +80,12 @@ const MainTable = styled.table`
 
 export default function RecordsPage() {
 
+  const dispatch = useDispatch();
+
+  function renderUtilities() {
+
+  }
+
   return(
     <Container>
         <h1>Record Management</h1>
@@ -117,6 +127,9 @@ export default function RecordsPage() {
                   <th>&nbsp;</th>
                 </tr>
               </thead>
+              <tbody>
+                {renderUtilities()}
+              </tbody>
             </MainTable>
           </MainBox>
         </ManageBox>
