@@ -1,5 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import {useDispatch} from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -41,16 +42,17 @@ import Typography from '@material-ui/core/Typography';
           padding: theme.spacing(1),
         },
       }))(MuiDialogActions);
+
+      
         
 
-export default function ReportThankYou(props) {     
+export default function ReportThankYou(props) {    
+    
 
     return (
         <div>
-      {/* <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open dialog
-      </Button> */}
-      <Dialog onClose={props.handleClose} aria-labelledby="customized-dialog-title" open={props.open}>
+      
+      <Dialog  aria-labelledby="customized-dialog-title" open={props.open}>
         <DialogTitle id="customized-dialog-title" onClose={props.handleClose}>
           Thank You for submitting a ticket!
         </DialogTitle>
@@ -66,7 +68,7 @@ export default function ReportThankYou(props) {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={props.handleClose} color="primary">
+          <Button autoFocus onClick={props.postThenBack} color="primary">
             Continue
           </Button>
         </DialogActions>
