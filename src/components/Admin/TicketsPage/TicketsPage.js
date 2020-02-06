@@ -1,7 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
 import { TextField } from '@material-ui/core';
 import {useLocation, useHistory} from 'react-router-dom';
+import writeQueries from '../../../modules/writeQueries';
+import parseQueries from '../../../modules/parseQueries';
 
 const Page = styled.div`
     min-height: 1000vh;
@@ -19,25 +22,10 @@ const textFieldStyle = {
 
 }
 
-const parseQueries = str => {
-    const queries = (str[0] === '?' ? str.substring(1) : str).split('&');
-    return queries.reduce((acc, query) => {
-        query = query.split('=');
-        acc[query[0]] = (query[1] || true);
-        return acc;
-    }, {});
-}
-
-const writeQueries = obj => {
-    return `?${Object.entries(obj)
-        .filter(([key, value]) => value)
-        .map(([key, value])=>`${key}=${value}`)
-        .join('&')}`;
-}
-
 export default function TicketsPage() {
     const history = useHistory();
     const {search} = useLocation();
+
     const {
         zip, program, utility, resolved,
         fromCompanies, fromUtility, fromProgram, offset
@@ -49,6 +37,15 @@ export default function TicketsPage() {
     const [showFromCompanies, setShowFromCompanies] = useState(fromCompanies || !(fromUtility || fromProgram));
     const [showFromUtility, setShowFromUtility] = useState(fromUtility || !(fromCompanies || fromProgram));
     const [showFromProgram, setShowFromProgram] = useState(fromProgram || !(fromCompanies || fromUtility));
+
+    const dispatch = useCallback(useDispatch(), []);
+
+    useEffect(()=>{
+        dispatch({type: 'GET_TICKETS', payload: {
+            zip, resolved, program_name: program, utility_name: utility, offset 
+        }});
+    }, [dispatch, zip, program, utility, resolved,
+        fromCompanies, fromUtility, fromProgram, offset]);
 
     const onSearch = e => {
         e.preventDefault();
@@ -87,6 +84,7 @@ export default function TicketsPage() {
                     Search
                 </button>
             </SearchArea>
+            
         </Page>
     )
 }

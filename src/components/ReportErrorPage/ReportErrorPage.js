@@ -76,6 +76,7 @@ export default function ReportErrorPage(props){
     const dispatch = useCallback(useDispatch(), []);
     const {utility_name, program_name, id} = useSelector(state => program_id ? state.programDetails : state.utilityDataForReportPage);
     const [companyName, setCompanyName] = useState('');
+    const [programName, setProgramName] = useState('');
     const [comments, setComments] = useState('');
     const [email, setEmail] = useState('');
     const [open, setOpen] = useState(false);
@@ -93,8 +94,15 @@ export default function ReportErrorPage(props){
         setCompanyName(utility_name);
     }, [utility_name, history]);
 
+    useEffect(()=>{
+        setProgramName(program_name);
+    }, [program_name, history]);
+
     const postThenBack = () => {
-        dispatch({type: 'POST_TICKET', payload: {zip, utility_name, program_name, program_id, comments, email} });
+        dispatch({type: 'POST_TICKET', payload: {
+            zip, utility_name: companyName,
+            program_name: programName, program_id, comments, email}
+        });
         history.goBack();
     } 
 
@@ -104,7 +112,7 @@ export default function ReportErrorPage(props){
 
     const handleClose = () => {
         setOpen(false);
-        };
+    };
 
     
     let body;
@@ -120,6 +128,12 @@ export default function ReportErrorPage(props){
             <>
                 <h1>Report Missing Program</h1>
                 <p>{zip} - {utility_name}</p>
+                <Input
+                    required
+                    label='Program Name'
+                    value={programName || ''}
+                    onChange={e=>setProgramName(e.target.value)}
+                />
             </>
         )
     } else if(zip){
