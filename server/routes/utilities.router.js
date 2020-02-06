@@ -44,7 +44,7 @@ router.post('/', async(req,res)=>{
   Deletes a utility company from the zips table.
   Requires a user to be authenticated to permit deletion.
 */
-router.delete('/:id', rejectUnauthenticated, async(req,res)=>{
+router.delete('/:id', rejectUnauthenticated async(req,res)=>{
   try {
     const query = `
       DELETE FROM zips WHERE id=$1;
@@ -54,6 +54,23 @@ router.delete('/:id', rejectUnauthenticated, async(req,res)=>{
   } catch(error) {
     res.send(500);
     console.log('Error deleting utility company:',error);    
+  }
+});
+
+router.put('/:id', rejectUnauthenticated, async(req,res)=>{
+  const {zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate} = req.body;
+  const queryData = [req.params.id, zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate];
+  try {
+    const query = `
+      UPDATE zips 
+      SET zip=$2, eiaid=$3, utility_name=$4, state=$5, eia_state=$6, bundled_avg_comm_rate=$7, bundled_avg_ind_rate=$8, bundled_avg_res_rate=$9, delivery_avg_comm_rate=$10, delivery_avg_ind_rate=$11, delivery_avg_res_rate=$12
+      WHERE id=$1;
+    `;
+    await pool.query(query, queryData);
+    res.sendStatus(200);
+  } catch(error) {
+    res.send(500);
+    console.log('Error updating existing utility company:',error);
   }
 });
 
