@@ -2,6 +2,10 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 
+/* 
+  Gets just then name of a utility company and its ID.
+  Used on the details page once a program is selected
+*/
 router.get('/getName/:zip/:eia_state', async (req, res) => {
     try{
         const query = `
@@ -12,8 +16,27 @@ router.get('/getName/:zip/:eia_state', async (req, res) => {
         res.send(rows[0]);
     } catch (error) {
         res.send(500);
-        console.log(error);
+        console.log('Error getting utility company name:',error);
     }
+});
+
+/* 
+  Posts a new utility company to the zips table.
+*/
+router.post('/', async(req,res)=>{
+  const {zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate} = req.body;
+  const queryData = [zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate];
+  try {
+    const query = `
+      INSERT INTO zips (zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);
+    `;
+    await pool.query(query, queryData);
+    res.sendStatus(201);
+  } catch(error) {
+    res.send(500);
+    console.log('Error posting new utility company:',error);
+  }
 });
 
 module.exports = router;

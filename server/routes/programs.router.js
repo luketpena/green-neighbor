@@ -7,9 +7,28 @@ const dotenv = require('dotenv');
 dotenv.config();
 const gppCols =  require('../modules/gppColumns');
 
-/**
- * GET route template
- */
+//-----< GEOCODE API ROUTE >-----\\
+router.get('/geocode/:zip', (req,res)=>{
+  axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.params.zip}&sensor=true&key=${process.env.GEOCODE_API_KEY}`)
+      .then(response=>{
+          console.log(response.data);
+          if(response.data.results[0]){
+              res.send(response.data.results[0].formatted_address);
+          } else {
+              res.sendStatus(500);
+          }
+
+      }).catch(error=>{
+          console.log('Error getting geocode data from API:',error);   
+          res.sendStatus(400);
+      });
+});
+
+//-----< ZIPS TABLE ROUTES >-----\\
+/*
+  This route gets all of the utility companies in an area.
+  Joins with the gpp table to get all programs for that company and returns them in an array.
+*/
 router.get('/:zip', async (req, res) => {
     try {
         const zipsCols = [
@@ -57,6 +76,11 @@ router.get('/:zip', async (req, res) => {
     }
 });
 
+
+
+
+//-----< GPP TABLE ROUTES >-----\\
+
 // replace * with specific columns: Zip, utility name, program, sign up link //
 router.get('/details/:id', async (req, res) => {
     try{
@@ -68,22 +92,6 @@ router.get('/details/:id', async (req, res) => {
         res.sendStatus(500);
         console.log('-------- ERROR GETTING PROGRAM DETAILS -------- \n', error);
     }
-});
-
-router.get('/geocode/:zip', (req,res)=>{
-    axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.params.zip}&sensor=true&key=${process.env.GEOCODE_API_KEY}`)
-        .then(response=>{
-            console.log(response.data);
-            if(response.data.results[0]){
-                res.send(response.data.results[0].formatted_address);
-            } else {
-                res.sendStatus(500);
-            }
-
-        }).catch(error=>{
-            console.log('Error getting geocode data from API:',error);   
-            res.sendStatus(400);
-        });
 });
 
 // router.post('/create', rejectUnauthenticated, async (req, res) => {
