@@ -11,10 +11,13 @@ import {connect} from 'react-redux';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import DetailsPage from '../DetailsPage/DetailsPage';
 import AboutPage from '../AboutPage/AboutPage';
-import AdminLandingPage from '../AdminLandingPage/AdminLandingPage';
 import IntroductionPage from '../IntroductionPage/IntroductionPage';
 import UtilityPage from '../UtilityPage/UtilityPage';
 import Nav from '../Nav/Nav';
+import AdminLandingPage from '../Admin/AdminLandingPage/AdminLandingPage.js';
+import ManageAdminsPage from '../Admin/ManageAdminsPage/ManageAdminsPage.js';
+import RecordsPage from '../Admin/RecordsPage/RecordsPage';
+import TicketsPage from '../Admin/TicketsPage/TicketsPage';
 
 import './App.css';
 import ReportErrorPage from '../ReportErrorPage/ReportErrorPage';
@@ -66,6 +69,21 @@ class App extends Component {
                 exact
                 path="/admin/home"
                 component={AdminLandingPage}
+              />
+              <ProtectedRoute
+                exact
+                path="/admin/manageAdmins"
+                component={ManageAdminsPage}
+              />
+              <ProtectedRoute
+                exact
+                path="/admin/records"
+                component={RecordsPage}
+              />
+              <ProtectedRoute
+                exact
+                path="/admin/tickets"
+                component={TicketsPage}
               />
             </Fragment>
             {/* This 404 route needs to be last. */}
