@@ -52,6 +52,7 @@ export default function ReportErrorPage(props){
     const postTicket = () => {
         setOpen(true);
         dispatch({type: 'POST_TICKET', payload: {zip, utility_name, program_name, program_id, comments, email} });
+        
     }
 
     const handleClickOpen = () => {
@@ -94,7 +95,9 @@ export default function ReportErrorPage(props){
         e.preventDefault();
     }
 
+    // const history = useHistory()
     return (
+        
         <Container>
             <Body className="container" onSubmit={handleSubmit}>
                 {body}
