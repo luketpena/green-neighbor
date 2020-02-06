@@ -81,6 +81,9 @@ router.get('/:zip', async (req, res) => {
 
 //-----< GPP TABLE ROUTES >-----\\
 
+/* 
+  Retrieves all of the details about a particular program by row ID.
+*/
 // replace * with specific columns: Zip, utility name, program, sign up link //
 router.get('/details/:id', async (req, res) => {
     try{
@@ -94,6 +97,10 @@ router.get('/details/:id', async (req, res) => {
     }
 });
 
+/*
+  Creates a new program in the gpp table
+  NOTE: Has commented out authentication requirements, but it should not require that. All users can post information.
+*/
 // router.post('/create', rejectUnauthenticated, async (req, res) => {
 router.post('/create', async (req, res) => {
     try{
@@ -118,6 +125,10 @@ router.post('/create', async (req, res) => {
     }
 });
 
+/*
+  Updates an existing program in the gpp table.
+  Requires authentication to allow modification.
+*/
 // router.put('/update/:id', rejectUnauthenticated, async (req, res) => {
 router.put('/update/:id', async (req, res) => {
     try{
@@ -140,6 +151,23 @@ router.put('/update/:id', async (req, res) => {
         res.sendStatus(500);
         console.log(error);
     }
+});
+
+/*
+  Deletes a program from the gpp table.
+  Requires authentication to permit deletion.
+*/
+router.delete('/:id', rejectUnauthenticated, async(req,res)=>{
+  try {
+    const query = `
+      DELETE FROM gpp WHERE id=$1;
+    `;
+    await pool.query(query, [req.params.id]);
+    res.sendStatus(200);
+  } catch(error) {
+    console.log('Error deleting program from gpp table:',error);
+    res.sendStatus(500);    
+  }
 });
 
 module.exports = router;

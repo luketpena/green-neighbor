@@ -44,7 +44,7 @@ router.post('/', async(req,res)=>{
   Deletes a utility company from the zips table.
   Requires a user to be authenticated to permit deletion.
 */
-router.delete('/:id', rejectUnauthenticated async(req,res)=>{
+router.delete('/:id', rejectUnauthenticated, async(req,res)=>{
   try {
     const query = `
       DELETE FROM zips WHERE id=$1;
@@ -57,6 +57,10 @@ router.delete('/:id', rejectUnauthenticated async(req,res)=>{
   }
 });
 
+/* 
+  Updates a utility company on the zips table.
+  Requires a user to be authenticated to permit modification.
+*/
 router.put('/:id', rejectUnauthenticated, async(req,res)=>{
   const {zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate} = req.body;
   const queryData = [req.params.id, zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate];
