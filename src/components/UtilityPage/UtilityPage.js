@@ -7,6 +7,7 @@ import Background from '../../images/bkg-forest-top.jpg';
 
 //-----< Component Imports >-----\\
 import UtilityList from './UtilityList';
+import HomeButton from '../HomeButton/HomeButton';
 
 
 const Container = styled.div`
@@ -32,8 +33,8 @@ const TitleBox = styled.div`
 
   grid-area: title;
   display: grid;
-  grid-template-areas: "main" "help";
-  grid-template-rows: 1fr 80px;
+  grid-template-areas: "home" "main" "help";
+  grid-template-rows: auto 1fr 80px;
   justify-content: center;
   align-items: center;
 
@@ -96,7 +97,7 @@ export default function UtilityPage(props) {
     <Container>
       
       <TitleBox>
-
+        <HomeButton />
         <TitleBoxMain>
           <p>Showing results for</p>
           <h2>{geocode || zip}</h2>

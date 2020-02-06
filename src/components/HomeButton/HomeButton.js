@@ -5,6 +5,7 @@ import { FontAwesomeIcon}  from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 
 const Container = styled.div`
+  width: 100vw;
   font-size: 4em;
   color: white;
   display: flex;
