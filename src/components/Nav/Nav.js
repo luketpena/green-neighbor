@@ -1,45 +1,87 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import LogOutButton from '../LogOutButton/LogOutButton';
-import './Nav.css';
+import {Link, useLocation} from 'react-router-dom';
+import {AppBar, Tabs, Tab, Toolbar} from '@material-ui/core';
+import a11yProps from '../../modules/a11yProps';
+import { useSelector, useDispatch } from 'react-redux';
+import {makeStyles} from '@material-ui/core';
+import styled from 'styled-components';
 
-const Nav = (props) => (
-  <div className="nav">
-    <Link to="/home">
-      <h2 className="nav-title">Prime Solo Project</h2>
-    </Link>
-    <div className="nav-right">
-      <Link className="nav-link" to="/home">
-        {/* Show this link if they are logged in or not,
-        but call this link 'Home' if they are logged in,
-        and call this link 'Login / Register' if they are not */}
-        {props.user.id ? 'Home' : 'Login / Register'}
-      </Link>
-      {/* Show the link to the info page and the logout button if the user is logged in */}
-      {props.user.id && (
-        <>
-          <Link className="nav-link" to="/info">
-            Info Page
-          </Link>
-          <LogOutButton className="nav-link"/>
-        </>
-      )}
-      {/* Always show this link since the about page is not protected */}
-      <Link className="nav-link" to="/about">
-        About
-      </Link>
-    </div>
-  </div>
-);
+const Bar = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
 
-// Instead of taking everything from state, we just want the user
-// object to determine if they are logged in
-// if they are logged in, we show them a few more links 
-// if you wanted you could write this code like this:
-// const mapStateToProps = ({ user }) => ({ user });
-const mapStateToProps = state => ({
-  user: state.user,
-});
+const LogOutButton = styled.button`
+  color: white;
+  background-color: rgba(0, 0, 0, 0);
+  margin: 4px 16px 0px 16px;
+  min-width: 7rem;
+  font-size: 0.875rem;
+  opacity: 0.7;
+  letter-spacing: 0.02857em;
+  line-height: 1.5;
+  font-weight: 500;
+  white-space: normal;
+`;
 
-export default connect(mapStateToProps)(Nav);
+export default function Nav(props){
+  const [value, setValue] = React.useState(0);
+  const {pathname: currentURL} = useLocation();
+  const dispatch = useDispatch();
+
+  const tabs = [
+    {name: 'Home', link: '/admin/home'},
+    {name: 'Tickets', link: '/admin/tickets'},
+    {name: 'Records', link: '/admin/records'},
+    {name: 'Users', link: '/admin/manageAdmins'},
+  ];
+
+  React.useEffect(()=>{
+    console.log(currentURL);
+    let i = 0;
+    for(; i < tabs.length; i++){
+      if(currentURL === tabs[i].link){
+        setValue(i);
+        break;
+      }
+    }
+    if(i === tabs.length) setValue(0);
+  }, [currentURL]);
+
+  // if not logged in, return null
+  const user = useSelector(state => state.user);
+  if(!user.id){
+    return null;
+  }
+
+  return(
+    <AppBar position='sticky'>
+      <Bar>
+        <Tabs
+          value={value}
+          onChange={(e, v)=>setValue(v)}
+          variant='scrollable'
+          scrollButtons='auto'
+        >
+          {tabs.map(({name, link}, i) => 
+            <Tab
+              key={i}
+              aria-label={name}
+              value={i}
+              label={name}
+              {...a11yProps(i)}
+              to={link}
+              component={Link}
+            />
+          )}
+        </Tabs>
+        <LogOutButton
+          className='button-wire'
+          onClick={() => dispatch({ type: 'LOGOUT' })}
+        >
+          Log Out
+        </LogOutButton>
+      </Bar>
+    </AppBar>
+  );
+};

@@ -35,6 +35,7 @@ router.get('/:zip', async (req, res) => {
                     name: program.utility_name,
                     zip: program.zip,
                     eiaid: program.eiaid,
+                    eia_state: program.eia_state,
                     state: program.state,
                     programs: []
                 });
@@ -43,6 +44,7 @@ router.get('/:zip', async (req, res) => {
             delete program.eiaid;
             delete program.state;
             delete program.utility_name;
+            delete program.eia_state;
             if(program.program_name){
                 dataToSend[i].programs.push(program);
             }
@@ -69,16 +71,19 @@ router.get('/details/:id', async (req, res) => {
 });
 
 router.get('/geocode/:zip', (req,res)=>{
+    axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.params.zip}&sensor=true&key=${process.env.GEOCODE_API_KEY}`)
+        .then(response=>{
+            console.log(response.data);
+            if(response.data.results[0]){
+                res.send(response.data.results[0].formatted_address);
+            } else {
+                res.sendStatus(500);
+            }
 
-  axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.params.zip}&sensor=true&key=${process.env.GEOCODE_API_KEY}`)
-  .then(response=>{
-    res.send(response.data.results[0].formatted_address);
-    console.log('Back from API request. Zip:',req.params.zip,'Key:',process.env.GEOCODE_API_KEY);
-    
-  }).catch(error=>{
-    console.log('Error getting geocode data from API:',error);   
-    res.sendStatus(400);
-  })
+        }).catch(error=>{
+            console.log('Error getting geocode data from API:',error);   
+            res.sendStatus(400);
+        });
 });
 
 // router.post('/create', rejectUnauthenticated, async (req, res) => {

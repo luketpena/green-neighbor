@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {
   HashRouter as Router,
   Route,
@@ -8,16 +8,16 @@ import {
 
 import {connect} from 'react-redux';
 
-import Nav from '../Nav/Nav';
-import Footer from '../Footer/Footer';
-
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import DetailsPage from '../DetailsPage/DetailsPage';
 import AboutPage from '../AboutPage/AboutPage';
-import UserPage from '../UserPage/UserPage';
-import InfoPage from '../InfoPage/InfoPage';
 import IntroductionPage from '../IntroductionPage/IntroductionPage';
 import UtilityPage from '../UtilityPage/UtilityPage';
+import Nav from '../Nav/Nav';
+import AdminLandingPage from '../Admin/AdminLandingPage/AdminLandingPage.js';
+import ManageAdminsPage from '../Admin/ManageAdminsPage/ManageAdminsPage.js';
+import RecordsPage from '../Admin/RecordsPage/RecordsPage';
+import TicketsPage from '../Admin/TicketsPage/TicketsPage';
 
 import './App.css';
 import ReportErrorPage from '../ReportErrorPage/ReportErrorPage';
@@ -34,6 +34,7 @@ class App extends Component {
           <Switch>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
             <Redirect exact from="/" to="/intro" />
+            <Redirect exact from='/admin' to='/admin/home' />
             {/* Visiting localhost:3000/about will show the about page.
             This is a route anyone can see, no login necessary */}
             <Route
@@ -41,38 +42,51 @@ class App extends Component {
               path="/about"
               component={AboutPage}
             />
-            {/* For protected routes, the view could show one of several things on the same route.
-            Visiting localhost:3000/home will show the UserPage if the user is logged in.
-            If the user is not logged in, the ProtectedRoute will show the 'Login' or 'Register' page.
-            Even though it seems like they are different pages, the user is always on localhost:3000/home */}
-            <ProtectedRoute
-              exact
-              path="/admin/home"
-              component={UserPage}
-            />
-            {/* This works the same as the other protected route, except that if the user is logged in,
-            they will see the info page instead. */}
-            <ProtectedRoute
-              exact
-              path="/info"
-              component={InfoPage}
-            />
-
             <Route
               exact
               path="/intro"
               component={IntroductionPage}
             />
-            {/* If none of the other routes matched, we will show a 404. */}
-            
-
-            {/* If none of the other route matched, we will show a 404. */}
-            <Route path="/details/:id/:zip" component={DetailsPage}/>
-
+            <Route
+              path="/details/:id/:zip"
+              component={DetailsPage}
+            />
+            <Route
+              path="/utility/:zip"
+              component={UtilityPage}
+            />
+            <Route
+              path="/report/:zip/:eia_state?/:program_id?"
+              component={ReportErrorPage}
+            />
+            <Fragment>
+              <Nav />
+              {/* For protected routes, the view could show one of several things on the same route.
+              Visiting /home will show the UserPage if the user is logged in.
+              If the user is not logged in, the ProtectedRoute will show the 'Login' or 'Register' page.
+              Even though it seems like they are different pages, the user is always on /admin/home */}
+              <ProtectedRoute
+                exact
+                path="/admin/home"
+                component={AdminLandingPage}
+              />
+              <ProtectedRoute
+                exact
+                path="/admin/manageAdmins"
+                component={ManageAdminsPage}
+              />
+              <ProtectedRoute
+                exact
+                path="/admin/records"
+                component={RecordsPage}
+              />
+              <ProtectedRoute
+                exact
+                path="/admin/tickets"
+                component={TicketsPage}
+              />
+            </Fragment>
             {/* This 404 route needs to be last. */}
-            <Route path="/utility/:zip" component={UtilityPage}/>
-
-            <Route path="/report/:zip/:eia_state?/:program_id?" component={ReportErrorPage} />
             <Route render={() => <h1>404</h1>} />
             
           </Switch>

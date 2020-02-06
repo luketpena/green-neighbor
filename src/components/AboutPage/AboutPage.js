@@ -1,18 +1,91 @@
-import React from 'react';
+import React, {useState} from 'react';
+import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 
-// This is one of our simplest components
-// It doesn't have local state, so it can be a function component.
-// It doesn't dispatch any redux actions or display any part of redux state
-// or even care what the redux state is, so it doesn't need 'connect()'
+const Container = styled.div`
+width: 90%;
+height: 500px;
+margin: 0 auto;
+display: grid;
+grid-template-rows: 100px 1fr;
+grid-template-areas: "questions answers" ;
+grid-template-columns: 250px 850px ;
+`;
 
-const AboutPage = () => (
-  <div>
-    <div>
-      <p>
-        This about page is for anyone to read!
-      </p>
-    </div>
-  </div>
-);
+const Header = styled.div`
+grid-area: Header Header;
+grid-row: 1;
+`;
 
-export default AboutPage;
+const QBox = styled.div`
+grid-area: questions;
+grid-row: 2;
+background-color: lightblue;
+`;
+
+const ABox = styled.div`
+grid-area: answers;
+grid-row: 2;
+`;
+
+
+export default function AboutPage() {
+  const history = useHistory();
+
+  const faq = [
+    {
+      Q: 'What is this?',
+      H: 'There is a future beyond pollution',
+      A: 'The Green Neighbor Challenge is a campaign and tool to help get us there. Air Pollution caused over 100,000 American deaths and cost the economy $1495/person in 2015. We don’t have to keep polluting in our backyards. Most Americans can choose clean energy today, for less than the cost of Netflix. When we choose one another, we create hope. When we do it together, a new future is born. Will you join us?'
+    },
+    {
+      Q: 'Am I Eligible?',
+      H: 'If You Have An Electric bill, you’re in!',  
+      A: 'We did some homework. Nearly 7 out of 10 homes have access to a Green Energy Program. For everyone else, we aim to help you lobby your utility, your public utility commission, and your elected representatives to make choosing green an option for everyone. Also, we still have some pretty cool ideas about how you can help spread The Green Neighbor Challenge just like everyone else! #WontYouBeMine?'
+    }, 
+    {
+      Q: 'Why Should I Sign Up?',
+      H: 'More Than I, There is Power in “Us”',
+      A: 'Our elected representatives are not representing ‘We The People.’ Our lifespans are falling. Inequality is rising. We don’t need jobs where the side effect is cancer. Over the last 20 years, for every $1 spent preventing air pollution, there were $30 in social benefits. Despite this, billions are given to fossil fuel companies. We can stop this. We can choose us. Together, we will breathe easy again.'
+    },
+    {
+      Q: 'What Does It Cost?',
+      H: 'Far Less Than A Trip to the doctor',
+      A: 'Right now, the average home on the average program would pay under $10 /month for 100% clean energy. That’s about $4/person and is often much less for folks in apartments. The annual cost of healthcare is now over $10,000/person. Not only can wind turbines and solar panels improve our health, but over their lifespan, will actually drive down program and energy costs until we all have affordable, clean energy.'
+    },
+    {
+      Q: 'How Does This Work?',
+      H: 'Electricity is magical. RECs are not.',
+      A: 'Your utility can measure how much energy is put on the grid, in the same way it measures how much you take off. When a unit of green energy is produced, a supplier receives a “Renewable Energy Certificate” or REC. When your utility buys your energy, they can also buy RECs to certify that it was green. So when you buy green energy, your utility “retires” RECs on your behalf. Every REC is unique and can be used only once.'
+    },
+    {
+      Q: 'Who Benefits?',
+      H: 'Everyone Except Fossil Fuel Tycoons',
+      A: 'We won’t pull punches. Developers and competitive green utilities stand to gain. But so do communities and farmers who lease land in exchange for a reliable source of clean income. Clean energy means clean jobs. No lung cancer required. Prairies, bees, and butterflies can be restored, pollinating nearby farms and purifying our water. Plus we all benefit from clean air, fewer doctor visits, and fewer climate disasters.'
+    },
+    {
+      Q: 'Can I Trust You?',
+      H: 'Let Us Be As Transparent as Clean Air',
+      A: 'We care about clean water and air. We love our neighbors. We collect no personal information. We sell no products. We are a certified non-profit. We are powered by the forceful (foolish) will of ordinary people who would rather hustle for grants than become another middleman looking for a slice of your pie. We owe a debt to those who came before us, we aim to pay forward to those who come after.'
+    },
+  ];
+
+  return(
+    <>
+    <button className="button-default" onClick={()=>history.push("/intro")}>return home</button>
+    <Container>
+      <Header>
+        <h1>Frequently Asked Questions</h1>
+      </Header>
+
+      <QBox className="container">
+         {faq.map((item,id)=>{return<button onClick={()=>document.getElementById(`faqanswer${id}`).scrollIntoView()}>{item.Q}</button>})}
+      </QBox>
+      
+      <ABox className="container">
+  {faq.map((answer,id)=>{return <div id={`faqanswer${id}`}><h2>{answer.Q}</h2><b>{answer.H}</b><p>{answer.A}</p></div>})}
+      </ABox>
+    </Container>
+    </>
+  )
+}
