@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {useParams} from 'react-router-dom';
+import {useParams, useHistory} from 'react-router-dom';
 import styled, {keyframes} from 'styled-components';
 
 import Background from '../../images/bkg-forest-top.jpg';
@@ -9,11 +9,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBullhorn, faScroll, faSeedling, faExclamation, faHandsHelping, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
 const ActionData = [
-  {text: `Share with Friends`, icon: faBullhorn},
-  {text: `View other energy programs near you`, icon: faScroll},
-  {text: `Discover Green Energy's Impact`, icon: faSeedling},
-  {text: `Report a problem with this energy program`, icon: faExclamation},
-  {text: `Discover how you can contribute`, icon: faHandsHelping}
+  {action: 'share', text: `Share with Friends`, icon: faBullhorn},
+  {action: 'utility', text: `View other energy programs near you`, icon: faScroll},
+  {action: 'faq', text: `Discover Green Energy's Impact`, icon: faSeedling},
+  {action: 'report', text: `Report a problem with this energy program`, icon: faExclamation},
+  {action: 'contribute', text: `Discover how you can contribute`, icon: faHandsHelping}
 ];
 
 const Container = styled.div`
@@ -170,9 +170,10 @@ const DiscoverBar = styled.div`
 export default function DetailsPage() {
 
   const details = useSelector(state => state.programDetails)
+  const history = useHistory();
   const dispatch = useDispatch();
-  const {id} = useParams(); 
-  let [discoverActive, setDiscoverActive] = useState(false);
+  const {id, zip} = useParams(); 
+  let [discoverActive, setDiscoverActive] = useState(true);
   
 
 
@@ -184,10 +185,19 @@ export default function DetailsPage() {
     event.target.blur();
   }
 
+  function clickAction(action) {
+    switch(action) {
+      case 'utility':
+        history.push(`/utility/${zip}`)
+        break;
+      default: /* Always remember: keep React happy with default cases. */ break;
+    }
+  }
+
   function renderActions() {
     return ActionData.map( (item,i)=>{
       return (
-        <ActionCard key={i} onMouseLeave={blurActions}>
+        <ActionCard key={i} onMouseLeave={blurActions} onClick={()=>clickAction(item.action)}>
           <FontAwesomeIcon className="icon" icon={item.icon}/>
           <p>{item.text}</p>
         </ActionCard>
