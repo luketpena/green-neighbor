@@ -9,19 +9,22 @@ const Container = styled.div`
   h1 {
     text-align: center;
   }
+  
 `;
 
 const ManageBox = styled.div`
-  background-color: gray;
   min-height: 500px;
   display: grid;
   grid-template-columns: 200px  1fr;
   grid-template-rows: 50px auto;
   grid-template-areas: "search filter" "search main";
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 8px 8px 0 rgba(0,0,0,.5);
 `;
 
 const SearchBox = styled.div`
-  background-color: red;
+  background-color: var(--color-primary);
   grid-area: search;
   padding: 8px;
   box-sizing: border-box;
@@ -38,29 +41,29 @@ const SearchBox = styled.div`
     display: block;
     margin: 0 auto;
   }
+  box-shadow: 0 0 8px 0 rgba(0,0,0,.5);
+  z-index: 1;
 `;
 
 const FilterBox = styled.div`
-  background-color: green;
+  background-color: var(--color-primary);
   grid-area: filter;
   display: flex;
   align-items: center;
 `;
 
 const FilterOption = styled.div`
-  background-color: lightgreen;
   margin: 8px;
   display: flex;
   align-items: center;
 `;
 
 const MainBox = styled.div`
-  background-color: blue;
   grid-area: main;
 `;
 
 const MainHeader = styled.div`
-  background-color: dodgerblue;
+  background-color: var(--color-bkg-dark);
   padding: 8px;
   box-sizing: border-box;
   
@@ -70,14 +73,19 @@ const MainHeader = styled.div`
   }
   p {
     text-align: center;
+    color: white;
   }
 `;
 
-const MainTable = styled.table`
+const MainTable = styled.div`
   width: 100%;
   border-collapse: collapse;
-  thead {
-    background-color: yellow;
+  .utility-row:nth-child(odd) {
+    background-color: #EEE;
+  }
+  .utility-row {
+    background-color: white;
+    font-family: var(--font-main);
   }
 `;
 
@@ -88,10 +96,11 @@ const PageButton = styled.button`
   background: none;
   border: none;
   outline: none;
-  color: ${props=>(props.page===props.index? 'red' : 'white')};
+  color: ${props=>(props.page===props.index? 'white' : 'rgba(255,255,255,.6)')};
   transition: transform .2s;
   &:hover {
     cursor: pointer;
+    color: white;
     transform: scale(1.2);
   }
 `;
@@ -99,6 +108,7 @@ const PageButton = styled.button`
 const PageBar = styled.div`
   display: flex;
   justify-content: center;
+  margin: 8px 0;
 `;
 
 
@@ -106,15 +116,22 @@ export default function RecordsPage() {
 
   const dispatch = useDispatch();
   const utilitiesCount = useSelector(state=>state.utilitiesCount);
+  const utilities = useSelector(state=>state.utilities);
   let [page, setPage] = useState(683);
 
 
   useEffect(()=>{
-    dispatch({type: 'GET_UTILITIES'});
-  },[utilitiesCount]);
+    dispatch({type: 'GET_UTILITIES', payload: page});
+  },[utilitiesCount, page]);
 
   function renderUtilities() {
+    return utilities.map( (item,i)=> {
+      return <UtilityRow key={i} utility={item}/>
+    });
+  }
 
+  function clickPage(goto) {
+    setPage(goto);
   }
 
   function renderPages() {
@@ -122,7 +139,7 @@ export default function RecordsPage() {
     const pageMax = Math.ceil(utilitiesCount/100);
 
     function returnPageButton(index,goto,text) {
-      return <PageButton key={index} index={index} page={page} onClick={()=>setPage(goto)}>{text}</PageButton>
+      return <PageButton key={index} index={index} page={page} onClick={()=>clickPage(goto)}>{text}</PageButton>
     }
 
     if (page>5) {pageList.push(returnPageButton(-1,0,'<<'))}
@@ -150,7 +167,6 @@ export default function RecordsPage() {
   return(
     <Container>
         <h1>Record Management</h1>
-        {Math.ceil(utilitiesCount/100)}
         <ManageBox>
 
           <SearchBox>
@@ -158,7 +174,7 @@ export default function RecordsPage() {
               <input type="number" placeholder="Zip Code" />
               <input type="text" placeholder="Utility Company" />
               <input type="text" placeholder="Energy Program" />
-              <button className="button-primary">Search</button>
+              <button className="button-default">Search</button>
             </form>
           </SearchBox>
 
@@ -181,19 +197,8 @@ export default function RecordsPage() {
               <button className="addButton button-primary">Add New Utility Company</button>
             </MainHeader>
             <MainTable>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Zip</th>
-                  <th>State</th>
-                  <th># Programs</th>
-                  <th>&nbsp;</th>
-                  <th>&nbsp;</th>
-                </tr>
-              </thead>
-              <tbody>
+
                 {renderUtilities()}
-              </tbody>
             </MainTable>
           </MainBox>
         </ManageBox>
