@@ -35,10 +35,12 @@ function Ticket({ticket}){
     )
 }
 
+let key = 0;
+
 export default function TicketsList(props){
     const tickets = useSelector(state => state.tickets.tickets);
 
     return !tickets ? null : tickets.map((ticket, i) =>
-        <Ticket ticket={ticket} key={i} />
+        <Ticket ticket={ticket} key={key++} />
     );
 }

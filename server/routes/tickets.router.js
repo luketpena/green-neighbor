@@ -12,6 +12,7 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
         const ilikeQueries = [
             'utility_name', 'program_name', 'comments'
         ];
+
         const config = [];
         const conditions = [];
         Object.entries(req.query).forEach(([key, value]) => {

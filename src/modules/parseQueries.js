@@ -12,7 +12,7 @@ const parseQueries = str => {
             query[1] = Number(query[1]);
         }
 
-        if(query[0] && query[0] !== '') acc[query[0]] = (query[1] || true);
+        if(query[0] && query[0] !== '') acc[query[0]] = query[1];
 
         return acc;
     }, {});

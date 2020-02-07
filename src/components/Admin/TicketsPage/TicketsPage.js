@@ -18,11 +18,10 @@ export default function TicketsPage() {
         zip, program, utility, resolved,
         fromCompanies, fromUtility, fromProgram, offset, comments
     } = parseQueries(search);
-    console.log(parseQueries(search));
     const [zipSearch, setZipSearch] = useState(zip || '');
     const [utilitySearch, setUtilitySearch] = useState(utility || '');
     const [programSearch, setProgramSearch] = useState(program || '');
-    const [showResolved, setShowResolved] = useState(!!resolved || false);
+    const [showResolved, setShowResolved] = useState(resolved);
     const [showFromCompanies, setShowFromCompanies] = useState(!!fromCompanies || !(fromUtility || fromProgram));
     const [showFromUtility, setShowFromUtility] = useState(!!fromUtility|| !(fromCompanies || fromProgram));
     const [showFromProgram, setShowFromProgram] = useState(!!fromProgram || !(fromCompanies || fromUtility));
@@ -66,7 +65,7 @@ export default function TicketsPage() {
         }
 
         if(page < pageMax - 6){
-            pageList.push(pageButton(pageMax, pageMax+1, '>>'));
+            pageList.push(pageButton(pageMax, pageMax - 1, '>>'));
         }
 
         return pageList;
@@ -77,7 +76,7 @@ export default function TicketsPage() {
             type: 'GET_TICKETS',
             payload: {
                 zip, resolved, program_name: program,
-                utility_name: utility, offset, comments
+                utility_name: utility, offset, comments,
             }
         });
     }, [dispatch, zip, program, utility, resolved,
@@ -100,7 +99,7 @@ export default function TicketsPage() {
             <h2>Tickets Management</h2>
             <ManageBox>
                 <SearchBox onSubmit={onSearch} aria-label="search box">
-                    <form>
+                    <form onSubmit={onSearch}>
                         <input
                             placeholder='Zip Code'
                             value={zipSearch}
@@ -155,12 +154,16 @@ export default function TicketsPage() {
                         <label>Program Errors</label>
                     </FilterOption>
                     <FilterOption>
-                        <input
-                            type="checkbox"
-                            checked={showResolved}
-                            onChange={()=>setShowResolved(!showResolved)}
-                        />
-                        <label>Show Resolved</label>
+                        <select
+                            value={showResolved}
+                            onChange={e=>{
+                                setShowResolved(e.target.value !== '' ? e.target.value : undefined)
+                            }}
+                        >
+                            <option value=''>Show All</option>
+                            <option value={true}>Show Resolved</option>
+                            <option value={false}>Show Unresolved</option>
+                        </select>
                     </FilterOption>
                 </FilterBox>
                 <MainBox>
