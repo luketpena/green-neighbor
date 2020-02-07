@@ -46,20 +46,20 @@ export default function NewAdmin() {
     useEffect(() =>  {
         console.log('Getting all users', usernames);
         dispatch({ type: 'GET_ADMIN_USERS' });
-    }, [] );
+    }, [usernames] );
 
     const adminUsers = useSelector(state => state.adminUsers );
 
     const addNewAdmin = () => {
         dispatch({ type: 'POST_NEW_ADMIN', payload: {username, password} });
-        dispatch({ type: 'GET_ADMIN_USERS'});
+        dispatch({ type: 'GET_ADMIN_USERS', usernames});
     }
 
 
     return(
       <Container>
           {JSON.stringify(adminUsers)}
-          <Body>
+          <Body onSubmit={addNewAdmin}>
             <h1>Add New Admin</h1>
             
                 <label htmlFor="name">New Name</label>
@@ -78,7 +78,7 @@ export default function NewAdmin() {
                     value={password} 
                     onChange={e=>setPassword(e.target.value)} 
                     tabIndex="2"></input>
-                <button>Submit</button>
+                <button >Submit</button>
             
           </Body>
           

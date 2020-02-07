@@ -25,6 +25,16 @@ router.get('/admins', rejectUnauthenticated, (req, res) => {
   }); 
 });
 
+// Handles POST request for adding new admins to the users table
+router.post('/admin', rejectUnauthenticated, (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  const queryText = `INSERT INTO "user" (username, password) VALUES ($1, $2);`;
+  pool.query(queryText, [username, password])
+  .then(() => res.sendStatus(201))
+  .catch(() => res.sendStatus(500));
+});
+
 // Handles POST request with new user data
 // The only thing different from this and every other post we've seen
 // is that the password gets encrypted before being inserted
