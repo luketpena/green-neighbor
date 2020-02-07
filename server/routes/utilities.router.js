@@ -25,15 +25,35 @@ router.get('/getName/:zip/:eia_state', async (req, res) => {
   Get the count of all utility companies in the database.
 */
 router.get('/count', async(req,res)=>{
-  try {
-    const query = `SELECT COUNT(id) FROM zips;`;
-    const result = await pool.query(query);
-    res.send(result.rows[0]);
-  } catch(error) {
-    res.sendStatus(500);
-    console.log('Error getting count of utilities:', error);
+  
+  res.sendStatus(200);
+  // try {
+  //   console.log(req.body);
     
-  }
+  //   const query = `SELECT COUNT(z.id) FROM zips z`;
+  //   for (let i=0; i<queryInputs.length; i++) {
+  //     if (queryInputs[i].value!=='') {
+  //       //>> Add WHERE on first found valid parameter or AND on subsequent parameters
+  //       query += (paramCount===0? 'WHERE ' : 'AND ');
+
+  //       //>> Increment the parameter count
+  //       paramCount++;
+  //       //>> Add the specific parameter text
+  //       switch(queryInputs[i].name) {
+  //         case 'state': 
+  //           query += `z.state ILIKE $${paramCount}`;
+  //           queryParams.push('%'+queryInputs[i].value+'%');
+  //           break;
+  //       }
+  //     }
+  //   }
+  //   const result = await pool.query(query,queryParams);
+  //   res.send(result.rows[0]);
+  // } catch(error) {
+  //   res.sendStatus(500);
+  //   console.log('Error getting count of utilities:', error);
+    
+  // }
 })
 
 /* 
@@ -43,7 +63,7 @@ router.get('/count', async(req,res)=>{
 router.get('/summary/:page', async(req,res)=>{
   try {
     const query = `
-    SELECT z.id, z.eia_state, z.utility_name, z.zip, z.state, COUNT(g.utility_name) as program_count, ARRAY_AGG(g.program_name) as program_list, ARRAY_AGG(g.id) as program_id FROM zips z
+    SELECT z.id, z.eia_state, z.utility_name, z.zip, z.state, COUNT(g.utility_name) as program_count, ARRAY_AGG(g.program_name) as program_list, ARRAY_AGG(g.id) as program_id, z.production FROM zips z
       LEFT JOIN gpp g ON z.eia_state=g.eia_state
       GROUP BY z.id
       LIMIT 100 OFFSET $1;

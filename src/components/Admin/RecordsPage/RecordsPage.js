@@ -119,19 +119,27 @@ export default function RecordsPage() {
 
   const dispatch = useDispatch();
   const utilitiesCount = useSelector(state=>state.utilitiesCount);
+  const utilitiesSearch = useSelector(state=>state.utilitiesSearch);
   const utilities = useSelector(state=>state.utilities);
 
-  let [page, setPage] = useState(683);
+  let [page, setPage] = useState(0);
   let [zip,setZip] = useState('');
   let [utility_name,setUtility_name] = useState('');
   let [program_name,setProgram_name] = useState('');
+  let [state, setState] = useState('');
   let [showActive, setShowActive] = useState(true);
   let [showDrafts, setShowDrafts] = useState(true);
 
+  let [mount, setMount] = useState(false);
+
 
   useEffect(()=>{
-    dispatch({type: 'GET_UTILITIES', payload: page});
-  },[utilitiesCount, page]);
+    dispatch({type: 'GET_UTILITIES', payload: {page, search: utilitiesSearch}});
+    if (!mount) {
+      setMount(true);
+      dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, showActive, showDrafts}});
+    }
+  },[utilitiesCount, utilitiesSearch, page]);
 
   function renderUtilities() {
     return utilities.map( (item,i)=> {
@@ -171,6 +179,7 @@ export default function RecordsPage() {
 
   function submitSearch(event) {
     event.preventDefault();
+    dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, showActive, showDrafts}});
   }
 
   return(
@@ -180,6 +189,7 @@ export default function RecordsPage() {
 
           <SearchBox>
             <form onSubmit={submitSearch}>
+              <input type="text" placeholder="State Abbreviation" onChange={event=>setState(event.target.value)} value={state} />
               <input type="number" placeholder="Zip Code" onChange={event=>setZip(event.target.value)} value={zip}/>
               <input type="text" placeholder="Utility Company" onChange={event=>setUtility_name(event.target.value)} value={utility_name}/>
               <input type="text" placeholder="Energy Program" onChange={event=>setProgram_name(event.target.value)} value={program_name}/>

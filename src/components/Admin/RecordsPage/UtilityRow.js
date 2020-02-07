@@ -96,6 +96,7 @@ export default function UtilityRow(props) {
 
   return (
     <Container className="utility-row">
+      {JSON.stringify(props.utility)}
       <InfoBox active={production}>
         <p>{utility_name}</p>
         <p>{state}</p>
