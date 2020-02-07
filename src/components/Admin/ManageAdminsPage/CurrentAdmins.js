@@ -22,7 +22,7 @@ export default function CurrentAdmin() {
                         <th>Username</th>
                         <th>Actions</th>
                     </tr>
-                    <tr>
+                    
                     {adminUsers.map((user,id) => {
                         return<tr>
                                 <td>{user.username}</td>
@@ -32,7 +32,7 @@ export default function CurrentAdmin() {
                         <td>
                             
                         </td>
-                    </tr>
+                    
             
                 </tbody>
             </table>
