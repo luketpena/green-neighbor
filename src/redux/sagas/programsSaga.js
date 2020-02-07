@@ -24,12 +24,16 @@ function* getGeocodeData(action) {
 
 function* getUtilities(action) {
   try {
-    const response = yield axios.get(`/api/utilities`);
-    yield put({type: 'SET_UTILITIES', payload: response.data});
+    const count = yield axios.get(`/api/utilities/count`);
+    yield put({type: 'SET_UTILITIES_COUNT', payload: count.data.count});
+    const summary = yield axios.get(`/api/utilities`);
+    yield put({type: 'SET_UTILITIES', payload: summary.data});
   } catch (error) {
     console.log(error);    
   }
 }
+
+
 
 function* programsSaga() {
   yield takeLatest('GET_PROGRAMS', getPrograms);
