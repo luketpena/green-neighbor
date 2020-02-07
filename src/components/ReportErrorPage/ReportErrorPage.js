@@ -153,9 +153,6 @@ export default function ReportErrorPage(props){
         setOpen(true);
     }
 
-    
-
-    // const history = useHistory()
     return (
        <ImageBackground >
             <Container>

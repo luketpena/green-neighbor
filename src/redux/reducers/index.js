@@ -27,6 +27,7 @@ const rootReducer = combineReducers({
   user, // will have an id and username if someone is logged in
   geocode: createReducer('SET_GEOCODE_DATA'),
   adminLandingPageData: createReducer('SET_ADMIN_LANDING_DATA', {}),
+  adminUsers: createReducer('SET_ADMIN_USERS'),
   tickets: createReducer('SET_TICKETS', {})
 });
 
