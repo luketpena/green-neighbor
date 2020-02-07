@@ -29,7 +29,48 @@ export default function TicketsPage() {
     const [commentSearch, setCommentSearch] = useState(comments || '');
     const dispatch = useCallback(useDispatch(), []);
     const ticketCount = useSelector(state=>state.tickets.count);
-    const pageCount = ticketCount/100;
+
+    const clickPage = (page) => {
+        const current = parseQueries(search);
+        current.offset = page * 100;
+        history.push(`/admin/tickets${writeQueries(current)}`)
+    }
+
+    const renderPages = () => {
+        const pageList = [];
+        const pageMax = Math.ceil(ticketCount / 100);
+        if(pageMax <= 1) return null;
+
+        const page = (offset / 100) || 0;
+        const pageButton = (index, goto, text) => {
+            return <PageButton
+                        key={index}
+                        index={index}
+                        page={page}
+                        onClick = {() => clickPage(goto)}
+                    >{text}</PageButton>
+        }
+        if(page > 5){
+            pageList.push(pageButton(-1, 0, '<<'));
+        }
+
+        if(page >= pageMax - 5) {
+            for(let i = Math.max(pageMax - 10, 0); i < pageMax; i++){
+                pageList.push(pageButton(i, i, i+1))
+            }
+        } else {
+            const min = Math.max(page - 4, 0);
+            for(let i = min; i < min + 10; i++){
+                pageList.push(pageButton(i, i, i+1));
+            }
+        }
+
+        if(page < pageMax - 6){
+            pageList.push(pageButton(pageMax, pageMax+1, '>>'));
+        }
+
+        return pageList;
+    }
 
     useEffect(()=>{
         dispatch({
@@ -123,6 +164,10 @@ export default function TicketsPage() {
                     </FilterOption>
                 </FilterBox>
                 <MainBox>
+                    <MainHeader>
+                        <p>Page {offset/100 + 1 || 1} of {Math.ceil(ticketCount / 100) || 1}</p>
+                        <PageBar>{renderPages()}</PageBar>
+                    </MainHeader>
                     <MainTable>
                         <thead>
                             <tr style={{position: 'sticky'}}>
