@@ -1,18 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {useParams, useHistory} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 
-const Container = styled.div`
-    color: white;
-    height: 100vh;
-    width: max-content;
-    margin: auto auto;
-    align-text: center;
-    justify-content: center;
-    display: flex;
-    flex-direction: column;
-`;
+
 
 const Body = styled.form`
     h1 {
@@ -38,17 +29,14 @@ const Body = styled.form`
 export default function NewAdmin() {
 
     const {usernames} = useParams();
-    const history = useHistory();
+   
     const dispatch = useDispatch(); 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    useEffect(() =>  {
-        console.log('Getting all users', usernames);
-        dispatch({ type: 'GET_ADMIN_USERS' });
-    }, [usernames] );
+   
 
-    const adminUsers = useSelector(state => state.adminUsers );
+    
 
     const addNewAdmin = () => {
         dispatch({ type: 'POST_NEW_ADMIN', payload: {username, password} });
@@ -57,8 +45,8 @@ export default function NewAdmin() {
 
 
     return(
-      <Container>
-          {JSON.stringify(adminUsers)}
+      
+        
           <Body onSubmit={addNewAdmin}>
             <h1>Add New Admin</h1>
             
@@ -82,6 +70,6 @@ export default function NewAdmin() {
             
           </Body>
           
-      </Container>
+      
     )
 }
