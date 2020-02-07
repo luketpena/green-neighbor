@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import Background from '../../images/bkg-forest-top.jpg';
+// fancy home button
 import HomeButton from '../HomeButton/HomeButton';
 // material-ui
 import PropTypes from 'prop-types';
@@ -45,6 +47,17 @@ const useStyles = makeStyles(theme => ({
     },
   }));
 
+  const BackgroundBox = styled.div`
+  background-image: url(${Background});
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  box-sizing: border-box;
+`;
+
 const Container = styled.div`
 display: grid;
 grid-template-areas: "menu details";
@@ -58,8 +71,8 @@ display: flex;
   align-items: center;
   justify-content: center;
   
-// color: white;
-// text-shadow: 0 0 4px black;
+color: white;
+text-shadow: 0 0 4px black;
 h1 {
   font-family: var(--font-header);
   font-size: 64px;
@@ -70,15 +83,21 @@ h1 {
 const Menu = styled.div`
 grid-area: menu;
 height: 400px;
-// background-color: lightgreen;
+background-color: white;
 grid-row: 2;
+display: flex;
+align-items: center;
+// opacity: .7;
 `;
 
 const Details = styled.div`
 grid-area: details;
 height: 400px;
-// background-color: lightblue;
+background-color: white;
 grid-row: 2;
+display: flex;
+align-items: center;
+// opacity: .4;
 `;
 
 export default function ContributePage() {
@@ -89,37 +108,40 @@ export default function ContributePage() {
       setValue(newValue);
     };
   return(
-      <>
+      <BackgroundBox>
         <HomeButton/>
         <Header>
             <h1>Contribute</h1>
         </Header>
-        <Container>
-            <Menu>
+        <Container >
+            <Menu className="container">
                 <Tabs
                     orientation="vertical"
                     value={value}
                     onChange={handleChange}
                     aria-label="Vertical tabs example"
                     className={classes.tabs}
+                    
                 >
+                    {/* labels based on scope doc */}
                     <Tab label="Provide Information" {...a11yProps(0)} />
                     <Tab label="Follow us on Social Media" {...a11yProps(1)} />
                     <Tab label="Make a Donation" {...a11yProps(2)} />
                 </Tabs>
             </Menu>
-            <Details>
+            <Details className="container">
+                {/* link to component or just have text */}
                 <TabPanel value={value} index={0}>
-                    Item One
+                    Information
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                    Item Two
+                    Socal Media Links
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                    Item Three
+                    Donation
                 </TabPanel>
             </Details>
         </Container>
-    </>
+    </BackgroundBox>
   )
 }
