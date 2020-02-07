@@ -46,14 +46,13 @@ export default function NewAdmin() {
     useEffect(() =>  {
         console.log('Getting all users', usernames);
         dispatch({ type: 'GET_ADMIN_USERS' });
-        
     }, [] );
 
     const adminUsers = useSelector(state => state.adminUsers );
 
     const addNewAdmin = () => {
         dispatch({ type: 'POST_NEW_ADMIN', payload: {username, password} });
-        dispatch({ type: 'GET_ADMIN_USERS', payload: username });
+        dispatch({ type: 'GET_ADMIN_USERS'});
     }
 
 

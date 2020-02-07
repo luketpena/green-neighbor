@@ -140,9 +140,6 @@ export default function ReportErrorPage(props){
         e.preventDefault();
     }
 
-    
-
-    // const history = useHistory()
     return (
        <ImageBackground >
             <Container>
