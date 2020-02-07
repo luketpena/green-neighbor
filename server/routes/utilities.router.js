@@ -40,14 +40,15 @@ router.get('/count', async(req,res)=>{
   Get a summary of all utility companies.
   NOTE: Filters and sorts will be added to this eventually.
 */
-router.get('/summary', async(req,res)=>{
+router.get('/summary/:page', async(req,res)=>{
   try {
     const query = `
       SELECT z.id, z.utility_name, z.zip, z.state, COUNT(g.utility_name) FROM zips z
       LEFT JOIN gpp g ON z.eia_state=g.eia_state
-      GROUP BY z.id;
+      GROUP BY z.id
+      LIMIT 100 OFFSET $1;
     `;
-    const result = await pool.query(query);
+    const result = await pool.query(query,[req.params.page*100]);
     res.send(result.rows);
   } catch(error) {
     res.sendStatus(500);

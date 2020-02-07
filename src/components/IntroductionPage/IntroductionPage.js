@@ -37,7 +37,7 @@ const Container = styled.div`
   display: grid;
   grid-template-areas: "main" "learn";
   grid-template-rows: 1fr auto;
-  border: 4px dashed white;
+  border: 4px solid white;
   height: 100%;
 
 `;
