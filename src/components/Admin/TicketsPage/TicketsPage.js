@@ -1,31 +1,31 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
-import { TextField, Table, TableHead } from '@material-ui/core';
+import {TextField, Table, TableHead, TableBody,
+        TableCell, TableRow, makeStyles } from '@material-ui/core';
 import {useLocation, useHistory} from 'react-router-dom';
 import writeQueries from '../../../modules/writeQueries';
 import parseQueries from '../../../modules/parseQueries';
 
+import TicketsList from './TicketsList';
+
 const Page = styled.div`
-    min-height: 1000vh;
     margin: 80px 16px 0px 16px;
-    display: grid;
-    grid-template-columns: 1fr 3fr;
 `;
 
 const SearchArea = styled.form`
-    display: flex;
-    flex-flow: column nowrap;
 `;
 
-const textFieldStyle = {
-
-}
+const useStyles = makeStyles({
+    table: {
+        overflow: 'scroll'
+    }
+})
 
 export default function TicketsPage() {
     const history = useHistory();
     const {search} = useLocation();
-
+    const classes = useStyles();
     const {
         zip, program, utility, resolved,
         fromCompanies, fromUtility, fromProgram, offset, comments
@@ -39,7 +39,7 @@ export default function TicketsPage() {
     const [showFromProgram, setShowFromProgram] = useState(fromProgram || !(fromCompanies || fromUtility));
     const [commentSearch, setCommentSearch] = useState(comments || '');
     const dispatch = useCallback(useDispatch(), []);
-    const {tickets, count: ticketCount} = useSelector(state=>state.tickets);
+    const ticketCount = useSelector(state=>state.tickets.count);
     const pageCount = ticketCount/100;
 
     useEffect(()=>{
@@ -67,8 +67,8 @@ export default function TicketsPage() {
 
     return(
         <Page>
+            <h2>Filters:</h2> 
             <SearchArea onSubmit={onSearch}>
-                <h2>Filters:</h2> 
                 <TextField
                     label='Zip Code'
                     value={zipSearch}
@@ -98,10 +98,18 @@ export default function TicketsPage() {
                     Search
                 </button>
             </SearchArea>
-            <Table>
+            <Table className={classes.table}>
                 <TableHead>
-                    
+                   <TableRow>
+                        <TableCell>Zip</TableCell>
+                        <TableCell>Utility</TableCell>
+                        <TableCell>Program</TableCell>
+                        <TableCell>Resolved</TableCell>
+                    </TableRow> 
                 </TableHead>
+                <TableBody>
+                    <TicketsList />
+                </TableBody>
             </Table>
         </Page>
     )

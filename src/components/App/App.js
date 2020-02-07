@@ -84,13 +84,9 @@ class App extends Component {
               path="/admin/tickets"
               component={TicketsPage}
             />
-            {/* This 404 route needs to be last. */}
-            <Route render={() => <h1>404</h1>} />
           </Fragment>
-
           {/* This 404 route needs to be last. */}
           <Route render={() => <h1>404</h1>} />
-          
         </Switch>
       </Router>
   )}

@@ -65,7 +65,6 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
 // and values = actual values to enter.
 router.post('/', async (req, res) => {
     try{
-        console.log(req.body)
         const acceptedKeys = [
             'resolved', 'zip', 'utility_name',
             'utility_id', 'program_name', 'gpp_id',
@@ -89,7 +88,6 @@ router.post('/', async (req, res) => {
             INSERT INTO "tickets" (${keys})
             VALUES (${values.join(', ')})`;
         await pool.query(query, config);
-        console.log(query, config);
         res.sendStatus(200);
     } catch (error) {
         res.sendStatus(500);
