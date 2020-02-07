@@ -9,9 +9,12 @@ const Container = styled.div`
 
 const InfoBox = styled.div`
   display: grid;
-  grid-template-columns: 1fr auto auto auto;
+  grid-template-columns: 4fr 1fr 1fr 1fr 1fr;
   p {
     margin: 0 8px;
+  }
+  .production {
+    color: ${props=>(props.active? 'var(--color-primary-light)' : '#AAA')}
   }
 `;
 
@@ -21,7 +24,7 @@ const ButtonBox = styled.div`
 
 export default function UtilityRow(props) {
 
-  const {id, utility_name, zip, state, count} = props.utility;
+  const {id, utility_name, zip, state, program_count, production} = props.utility;
 
   return (
     <Container className="utility-row">
@@ -29,7 +32,8 @@ export default function UtilityRow(props) {
         <p>{utility_name}</p>
         <p>{state}</p>
         <p>{zip}</p>
-        <p>{count} {(count===1? 'program' : 'programs')}</p>
+        <p>{program_count} {(program_count==1? 'program' : 'programs')}</p>
+        <p className="production" active={production}>{(production? 'Live' : 'Inactive')}</p>
       </InfoBox>
       <ButtonBox>
         <button className="button-default">Details</button>
