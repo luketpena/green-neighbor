@@ -6,7 +6,6 @@ const {rejectUnauthenticated} = require('../modules/authentication-middleware');
 // send in req.query the column name and value to search for
 router.get('/', rejectUnauthenticated, async (req, res) => {
     try{
-        console.log(req.body);
         const equalQueries = [
             'id', 'resolved', 'zip', 'utility_id', 'program_id'
         ];
@@ -52,7 +51,7 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
         const countResults = await pool.query(countQuery, config);
         const count = countResults.rows[0];
 
-        config.push(req.body.limit || 50, req.body.offset || 0);
+        config.push(req.body.limit || 100, req.body.offset || 0);
         const {rows: tickets} = await pool.query(ticketsQuery, config);
 
         res.send({tickets, count});
@@ -66,6 +65,7 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
 // and values = actual values to enter.
 router.post('/', async (req, res) => {
     try{
+        console.log(req.body)
         const acceptedKeys = [
             'resolved', 'zip', 'utility_name',
             'utility_id', 'program_name', 'gpp_id',
@@ -89,7 +89,7 @@ router.post('/', async (req, res) => {
             INSERT INTO "tickets" (${keys})
             VALUES (${values.join(', ')})`;
         await pool.query(query, config);
-
+        console.log(query, config);
         res.sendStatus(200);
     } catch (error) {
         res.sendStatus(500);

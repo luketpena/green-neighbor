@@ -175,8 +175,7 @@ export default function DetailsPage() {
   const history = useHistory();
   const dispatch = useDispatch();
   const {id, zip} = useParams(); 
-  let [discoverActive, setDiscoverActive] = useState(false);
-  
+  let [discoverActive, setDiscoverActive] = useState(false);  
 
 
   useEffect(()=>{
@@ -191,7 +190,7 @@ export default function DetailsPage() {
     switch(action) {
       case 'utility': history.push(`/utility/${zip}`); break;
       case 'about': history.push('/about'); break;
-      case 'report': history.push(`/report/${zip}/${details.eia_state}/${details.program_id}`); break;
+      case 'report': history.push(`/report/${zip}/${details.eia_state}/${details.id}`); break;
       default: /* Always remember: keep React happy with default cases. */ break;
     }
   }
