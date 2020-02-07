@@ -20,19 +20,18 @@ function Ticket({ticket}){
     }
 
     return(
-        <TableRow>
-            <TableCell>{zip}</TableCell>
-            <TableCell>{utility_name}</TableCell>
-            <TableCell>{program_name}</TableCell>
-            <TableCell>
-                <Checkbox
-                    value={resolvedChecked}
+        <tr>
+            <td>{zip}</td>
+            <td>{utility_name}</td>
+            <td>{program_name}</td>
+            <td>
+                <input
+                    type='checkbox'
                     checked={resolvedChecked}
                     onChange={onResolvedClicked}
-                    color='default'
                 />
-            </TableCell>
-        </TableRow>
+            </td>
+        </tr>
     )
 }
 

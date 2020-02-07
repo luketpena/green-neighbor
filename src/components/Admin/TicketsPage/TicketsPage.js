@@ -1,45 +1,19 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
-import {TextField, Table, TableHead, TableBody,
-        TableCell, TableRow, makeStyles, Checkbox,
-        FormGroup, FormLabel, FormControl, FormControlLabel
-    } from '@material-ui/core';
 import {useLocation, useHistory} from 'react-router-dom';
 import writeQueries from '../../../modules/writeQueries';
 import parseQueries from '../../../modules/parseQueries';
+import {Container, ManageBox, SearchBox, FilterBox,
+        FilterOption, MainBox, MainHeader, MainTable,
+        PageButton, PageBar
+    } from '../AdminUI';
 
 import TicketsList from './TicketsList';
-
-const Page = styled.div`
-    margin: 80px 16px 0px 16px;
-`;
-
-const SearchButton = styled.button`
-    max-width: 8rem;
-`;
-
-const Form = styled.form`
-    display: grid;
-    grid-template-areas:
-        'a b'
-        'c .';
-`;
-
-const useStyles = makeStyles({
-    table: {
-        overflow: 'scroll',
-        maxHeight: '100vh'
-    },
-    inputField: {
-        margin: '8px'
-    }
-})
 
 export default function TicketsPage() {
     const history = useHistory();
     const {search} = useLocation();
-    const classes = useStyles();
     const {
         zip, program, utility, resolved,
         fromCompanies, fromUtility, fromProgram, offset, comments
@@ -80,104 +54,82 @@ export default function TicketsPage() {
     }
 
     return(
-        <Page>
-            <h2>Filters:</h2> 
-            <Form onSubmit={onSearch} className={classes.form}>
-                <FormGroup aria-label="search bars" row>
-                    <TextField
-                        className={classes.inputField}
-                        label='Zip Code'
-                        value={zipSearch}
-                        type='number'
-                        onChange={e => setZipSearch(e.target.value)}
-                    />
-                    <TextField
-                        className={classes.inputField}
-                        label='Utility'
-                        value={utilitySearch}
-                        onChange={e => setUtilitySearch(e.target.value)}
-                    />
-                    <TextField
-                        className={classes.inputField}
-                        label='Program'
-                        value={programSearch}
-                        onChange={e => setProgramSearch(e.target.value)}
-                    />
-                    <TextField
-                        className={classes.inputField}
-                        label='Comment Text'
-                        value={commentSearch}
-                        onChange={e => setCommentSearch(e.target.value)}
-                    />
-                </FormGroup>
-                <FormGroup aria-label='filters' row>
-                    <FormControlLabel
-                        value={showFromCompanies}
-                        label='Missing Companies'
-                        control={
-                            <Checkbox
-                                checked={fromCompanies}
-                                onChange={()=>setShowFromCompanies(!showFromCompanies)}
-                                color='default'
-                            />
-                        }
-                    />
-                    <FormControlLabel
-                        value={showFromUtility}
-                        label='Missing Programs'
-                        control={
-                            <Checkbox
-                                checked={showFromUtility}
-                                onChange={()=>setShowFromUtility(!showFromUtility)}
-                                color='default'
-                            />
-                        }
-                    />
-                    <FormControlLabel
-                        value={fromProgram}
-                        label='Errors in Program'
-                        control={
-                            <Checkbox
-                                checked={fromUtility}
-                                onChange={()=>setShowFromProgram(!fromProgram)}
-                                color='default'
-                            />
-                        }
-                    />
-                    <FormControlLabel
-                        value={showResolved}
-                        label='Show Resolved'
-                        control={
-                            <Checkbox
-                                checked={showResolved}
-                                onChange={()=>setShowFromUtility(!setShowResolved)}
-                                color='default'
-                            />
-                        }
-                    />
-                </FormGroup>
-                <SearchButton
-                    className={classes.inputField}
-                    type='submit'
-                    role='submit'
-                    className='button-default'
-                >
-                    Search
-                </SearchButton>
-            </Form>
-            <Table className={classes.table}>
-                <TableHead>
-                   <TableRow>
-                        <TableCell>Zip</TableCell>
-                        <TableCell>Utility</TableCell>
-                        <TableCell>Program</TableCell>
-                        <TableCell>Resolved</TableCell>
-                    </TableRow> 
-                </TableHead>
-                <TableBody>
-                    <TicketsList />
-                </TableBody>
-            </Table>
-        </Page>
+        <Container>
+            <h2>Tickets Management</h2>
+            <ManageBox>
+                <SearchBox onSubmit={onSearch} aria-label="search box">
+                    <form>
+                        <input
+                            placeholder='Zip Code'
+                            value={zipSearch}
+                            type='number'
+                            onChange={e => setZipSearch(e.target.value)}
+                        />
+                        <input
+                            placeholder='Utility'
+                            value={utilitySearch}
+                            onChange={e => setUtilitySearch(e.target.value)}
+                        />
+                        <input
+                            placeholder='Program'
+                            value={programSearch}
+                            onChange={e => setProgramSearch(e.target.value)}
+                        />
+                        <input
+                            placeholder='Comment Text'
+                            value={commentSearch}
+                            onChange={e => setCommentSearch(e.target.value)}
+                        />
+                        <button
+                            type='submit'
+                            role='submit'
+                            className='button-default'
+                        >Search</button>
+                    </form>
+                </SearchBox>
+                <FilterBox>
+                    <FilterOption>
+                        <input
+                            type="checkbox"
+                            checked={showFromCompanies}
+                            onChange={()=>setShowFromCompanies(!showFromCompanies)}
+                        />
+                        <label>Missing Companies</label>
+                    </FilterOption>
+                    <FilterOption>
+                        <input
+                            type="checkbox"
+                            checked={showFromUtility}
+                            onChange={()=>setShowFromUtility(!showFromUtility)}
+                        />
+                        <label>Missing Programs</label>
+                    </FilterOption>
+                    <FilterOption>
+                        <input
+                            type="checkbox"
+                            checked={showFromProgram}
+                            onChange={()=>setShowFromProgram(!showFromProgram)}
+                        />
+                        <label>Program Errors</label>
+                    </FilterOption>
+                    <FilterOption>
+                        <input
+                            type="checkbox"
+                            checked={showResolved}
+                            onChange={()=>setShowResolved(!showResolved)}
+                        />
+                        <label>Show Resolved</label>
+                    </FilterOption>
+                </FilterBox>
+                <MainBox>
+                    <MainHeader>
+
+                    </MainHeader>
+                    <MainTable>
+
+                    </MainTable>
+                </MainBox>
+            </ManageBox>
+        </Container>
     )
 }

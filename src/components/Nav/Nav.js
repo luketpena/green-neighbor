@@ -47,7 +47,7 @@ export default function Nav(props){
   }
 
   return(
-    <AppBar position='fixed'>
+    <AppBar position='sticky'>
       <Bar>
         <Tabs
           value={value}

@@ -58,7 +58,7 @@ class App extends Component {
             path="/report/:zip/:eia_state?/:program_id?"
             component={ReportErrorPage}
           />
-          <Fragment>
+          <div className='adminPages'>
             <Nav />
             {/* For protected routes, the view could show one of several things on the same route.
             Visiting /home will show the UserPage if the user is logged in.
@@ -84,7 +84,7 @@ class App extends Component {
               path="/admin/tickets"
               component={TicketsPage}
             />
-          </Fragment>
+          </div>
           {/* This 404 route needs to be last. */}
           <Route render={() => <h1>404</h1>} />
         </Switch>
