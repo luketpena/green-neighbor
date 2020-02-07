@@ -18,6 +18,7 @@ import AdminLandingPage from '../Admin/AdminLandingPage/AdminLandingPage.js';
 import ManageAdminsPage from '../Admin/ManageAdminsPage/ManageAdminsPage.js';
 import RecordsPage from '../Admin/RecordsPage/RecordsPage';
 import TicketsPage from '../Admin/TicketsPage/TicketsPage';
+import ContributePage from '../ContributePage/ContributePage';
 
 import './App.css';
 import ReportErrorPage from '../ReportErrorPage/ReportErrorPage';
@@ -57,6 +58,10 @@ class App extends Component {
           <Route
             path="/report/:zip/:eia_state?/:program_id?"
             component={ReportErrorPage}
+          />
+          <Route
+            path="/contribute"
+            component={ContributePage}
           />
           <Fragment>
             <div className='adminPages'>

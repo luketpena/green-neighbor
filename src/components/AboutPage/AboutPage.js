@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
 import Background from '../../images/bkg-forest-top.jpg';
 import HomeButton from '../HomeButton/HomeButton';
 
@@ -68,7 +67,6 @@ height: 100%;
 `;
 
 export default function AboutPage() {
-  const history = useHistory();
 
   const faq = [
     {
@@ -111,7 +109,6 @@ export default function AboutPage() {
   return(
     <BackgroundBox>
       <HomeButton />
-    {/* <button className="button-default" onClick={()=>history.push("/intro")}>Home</button> */}
     
     <Header>
         <h1>Frequently Asked Questions</h1>
