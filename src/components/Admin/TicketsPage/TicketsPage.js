@@ -2,7 +2,9 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
 import {TextField, Table, TableHead, TableBody,
-        TableCell, TableRow, makeStyles } from '@material-ui/core';
+        TableCell, TableRow, makeStyles, Checkbox,
+        FormGroup, FormLabel, FormControl, FormControlLabel
+    } from '@material-ui/core';
 import {useLocation, useHistory} from 'react-router-dom';
 import writeQueries from '../../../modules/writeQueries';
 import parseQueries from '../../../modules/parseQueries';
@@ -13,9 +15,15 @@ const Page = styled.div`
     margin: 80px 16px 0px 16px;
 `;
 
-const SearchArea = styled.form`
-    display: flex;
-    flex-flow: row wrap;
+const SearchButton = styled.button`
+    max-width: 8rem;
+`;
+
+const Form = styled.form`
+    display: grid;
+    grid-template-areas:
+        'a b'
+        'c .';
 `;
 
 const useStyles = makeStyles({
@@ -39,10 +47,10 @@ export default function TicketsPage() {
     const [zipSearch, setZipSearch] = useState(zip || '');
     const [utilitySearch, setUtilitySearch] = useState(utility || '');
     const [programSearch, setProgramSearch] = useState(program || '');
-    const [showResolved, setShowResolved] = useState(resolved || false);
-    const [showFromCompanies, setShowFromCompanies] = useState(fromCompanies || !(fromUtility || fromProgram));
-    const [showFromUtility, setShowFromUtility] = useState(fromUtility || !(fromCompanies || fromProgram));
-    const [showFromProgram, setShowFromProgram] = useState(fromProgram || !(fromCompanies || fromUtility));
+    const [showResolved, setShowResolved] = useState(!!resolved || false);
+    const [showFromCompanies, setShowFromCompanies] = useState(!!fromCompanies || !(fromUtility || fromProgram));
+    const [showFromUtility, setShowFromUtility] = useState(!!fromUtility|| !(fromCompanies || fromProgram));
+    const [showFromProgram, setShowFromProgram] = useState(!!fromProgram || !(fromCompanies || fromUtility));
     const [commentSearch, setCommentSearch] = useState(comments || '');
     const dispatch = useCallback(useDispatch(), []);
     const ticketCount = useSelector(state=>state.tickets.count);
@@ -74,41 +82,89 @@ export default function TicketsPage() {
     return(
         <Page>
             <h2>Filters:</h2> 
-            <SearchArea onSubmit={onSearch}>
-                <TextField
-                    className={classes.inputField}
-                    label='Zip Code'
-                    value={zipSearch}
-                    type='number'
-                    onChange={e => setZipSearch(e.target.value)}
-                />
-                <TextField
-                    className={classes.inputField}
-                    label='Utility'
-                    value={utilitySearch}
-                    onChange={e => setUtilitySearch(e.target.value)}
-                />
-                <TextField
-                    className={classes.inputField}
-                    label='Program'
-                    value={programSearch}
-                    onChange={e => setProgramSearch(e.target.value)}
-                />
-                <TextField
-                    className={classes.inputField}
-                    label='Comment Text'
-                    value={commentSearch}
-                    onChange={e => setCommentSearch(e.target.value)}
-                />
-                <button
+            <Form onSubmit={onSearch} className={classes.form}>
+                <FormGroup aria-label="search bars" row>
+                    <TextField
+                        className={classes.inputField}
+                        label='Zip Code'
+                        value={zipSearch}
+                        type='number'
+                        onChange={e => setZipSearch(e.target.value)}
+                    />
+                    <TextField
+                        className={classes.inputField}
+                        label='Utility'
+                        value={utilitySearch}
+                        onChange={e => setUtilitySearch(e.target.value)}
+                    />
+                    <TextField
+                        className={classes.inputField}
+                        label='Program'
+                        value={programSearch}
+                        onChange={e => setProgramSearch(e.target.value)}
+                    />
+                    <TextField
+                        className={classes.inputField}
+                        label='Comment Text'
+                        value={commentSearch}
+                        onChange={e => setCommentSearch(e.target.value)}
+                    />
+                </FormGroup>
+                <FormGroup aria-label='filters' row>
+                    <FormControlLabel
+                        value={showFromCompanies}
+                        label='Missing Companies'
+                        control={
+                            <Checkbox
+                                checked={fromCompanies}
+                                onChange={()=>setShowFromCompanies(!showFromCompanies)}
+                                color='default'
+                            />
+                        }
+                    />
+                    <FormControlLabel
+                        value={showFromUtility}
+                        label='Missing Programs'
+                        control={
+                            <Checkbox
+                                checked={showFromUtility}
+                                onChange={()=>setShowFromUtility(!showFromUtility)}
+                                color='default'
+                            />
+                        }
+                    />
+                    <FormControlLabel
+                        value={fromProgram}
+                        label='Errors in Program'
+                        control={
+                            <Checkbox
+                                checked={fromUtility}
+                                onChange={()=>setShowFromProgram(!fromProgram)}
+                                color='default'
+                            />
+                        }
+                    />
+                    <FormControlLabel
+                        value={showResolved}
+                        label='Show Resolved'
+                        control={
+                            <Checkbox
+                                checked={showResolved}
+                                onChange={()=>setShowFromUtility(!setShowResolved)}
+                                color='default'
+                            />
+                        }
+                    />
+                </FormGroup>
+                <SearchButton
                     className={classes.inputField}
                     type='submit'
                     role='submit'
                     className='button-default'
                 >
                     Search
-                </button>
-            </SearchArea>
+                </SearchButton>
+            </Form>
             <Table className={classes.table}>
                 <TableHead>
                    <TableRow>

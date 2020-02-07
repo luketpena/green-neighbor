@@ -7,7 +7,7 @@ function Ticket({ticket}){
         id, resolved, zip, utility_name,
         program_name, email, comments
     } = ticket;
-    const [resolvedChecked, setResolvedChecked] = useState(resolved);
+    const [resolvedChecked, setResolvedChecked] = useState(!!resolved);
     const dispatch = useDispatch();
 
     const onResolvedClicked = e => {
@@ -26,8 +26,10 @@ function Ticket({ticket}){
             <TableCell>{program_name}</TableCell>
             <TableCell>
                 <Checkbox
+                    value={resolvedChecked}
                     checked={resolvedChecked}
                     onChange={onResolvedClicked}
+                    color='default'
                 />
             </TableCell>
         </TableRow>

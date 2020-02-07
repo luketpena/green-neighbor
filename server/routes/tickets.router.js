@@ -49,7 +49,7 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
         `;
 
         const countResults = await pool.query(countQuery, config);
-        const count = countResults.rows[0];
+        const {count} = countResults.rows[0];
 
         config.push(req.body.limit || 100, req.body.offset || 0);
         const {rows: tickets} = await pool.query(ticketsQuery, config);
