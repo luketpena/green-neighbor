@@ -18,6 +18,7 @@ export default function TicketsPage() {
         zip, program, utility, resolved,
         fromCompanies, fromUtility, fromProgram, offset, comments
     } = parseQueries(search);
+    console.log(parseQueries(search));
     const [zipSearch, setZipSearch] = useState(zip || '');
     const [utilitySearch, setUtilitySearch] = useState(utility || '');
     const [programSearch, setProgramSearch] = useState(program || '');
@@ -122,11 +123,18 @@ export default function TicketsPage() {
                     </FilterOption>
                 </FilterBox>
                 <MainBox>
-                    <MainHeader>
-
-                    </MainHeader>
                     <MainTable>
-
+                        <thead>
+                            <tr style={{position: 'sticky'}}>
+                                <th>Zip</th>
+                                <th>Company</th>
+                                <th>Program</th>
+                                <th>Resolved</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <TicketsList />
+                        </tbody>
                     </MainTable>
                 </MainBox>
             </ManageBox>

@@ -42,15 +42,3 @@ export default function TicketsList(props){
         <Ticket ticket={ticket} key={i} />
     );
 }
-
-/*
-    id: 8
-    resolved: false
-    zip: 55123
-    utility_name: "Northern States Power Co - Minnesota"
-    eia_state: null
-    program_name: "Windsource"
-    gpp_id: null
-    email: ""
-    comments: "aflk"
-*/

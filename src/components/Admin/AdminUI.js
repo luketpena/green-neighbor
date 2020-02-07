@@ -73,13 +73,13 @@ export const MainHeader = styled.div`
   }
 `;
 
-export const MainTable = styled.div`
+export const MainTable = styled.table`
   width: 100%;
   border-collapse: collapse;
-  .utility-row:nth-child(odd) {
+  tr:nth-child(odd) {
     background-color: #EEE;
   }
-  .utility-row {
+  tr{
     background-color: white;
     font-family: var(--font-main);
   }

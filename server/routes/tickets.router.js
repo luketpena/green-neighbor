@@ -53,7 +53,7 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
 
         config.push(req.body.limit || 100, req.body.offset || 0);
         const {rows: tickets} = await pool.query(ticketsQuery, config);
-
+        console.log(req.body, tickets, count);
         res.send({tickets, count});
     } catch (error) {
         res.sendStatus(500);
