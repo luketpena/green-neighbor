@@ -14,11 +14,17 @@ const Page = styled.div`
 `;
 
 const SearchArea = styled.form`
+    display: flex;
+    flex-flow: row wrap;
 `;
 
 const useStyles = makeStyles({
     table: {
-        overflow: 'scroll'
+        overflow: 'scroll',
+        maxHeight: '100vh'
+    },
+    inputField: {
+        margin: '8px'
     }
 })
 
@@ -70,27 +76,32 @@ export default function TicketsPage() {
             <h2>Filters:</h2> 
             <SearchArea onSubmit={onSearch}>
                 <TextField
+                    className={classes.inputField}
                     label='Zip Code'
                     value={zipSearch}
                     type='number'
                     onChange={e => setZipSearch(e.target.value)}
                 />
                 <TextField
+                    className={classes.inputField}
                     label='Utility'
                     value={utilitySearch}
                     onChange={e => setUtilitySearch(e.target.value)}
                 />
                 <TextField
+                    className={classes.inputField}
                     label='Program'
                     value={programSearch}
                     onChange={e => setProgramSearch(e.target.value)}
                 />
                 <TextField
+                    className={classes.inputField}
                     label='Comment Text'
                     value={commentSearch}
                     onChange={e => setCommentSearch(e.target.value)}
                 />
                 <button
+                    className={classes.inputField}
                     type='submit'
                     role='submit'
                     className='button-default'

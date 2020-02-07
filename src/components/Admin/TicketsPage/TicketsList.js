@@ -1,14 +1,35 @@
-import React from 'react';
-import {useSelector} from 'react-redux';
-import {CheckBox, TableCell, TableRow} from '@material-ui/core';
+import React, {useState} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {Checkbox, TableCell, TableRow} from '@material-ui/core';
 
 function Ticket({ticket}){
-    const {resolved, zip, utility_name, program_name, email, comments} = ticket;
+    const {
+        id, resolved, zip, utility_name,
+        program_name, email, comments
+    } = ticket;
+    const [resolvedChecked, setResolvedChecked] = useState(resolved);
+    const dispatch = useDispatch();
+
+    const onResolvedClicked = e => {
+        const value = !resolvedChecked;
+        dispatch({
+            type: 'SET_TICKET_RESOLVE',
+            payload: {id, value}
+        });
+        setResolvedChecked(value);
+    }
+
     return(
         <TableRow>
             <TableCell>{zip}</TableCell>
             <TableCell>{utility_name}</TableCell>
             <TableCell>{program_name}</TableCell>
+            <TableCell>
+                <Checkbox
+                    checked={resolvedChecked}
+                    onChange={onResolvedClicked}
+                />
+            </TableCell>
         </TableRow>
     )
 }

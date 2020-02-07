@@ -95,4 +95,17 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.put('/resolve/:id/:value', rejectUnauthenticated, async (req, res) => {
+    try{
+        const query = `
+            UPDATE "tickets" SET "resolved"=$1
+            WHERE "id"=$2`;
+        await pool.query(query, [req.params.value, req.params.id]);
+        res.sendStatus(200);
+    } catch (error) {
+        res.sendStatus(500);
+        console.log(error);
+    }
+})
+
 module.exports = router;
