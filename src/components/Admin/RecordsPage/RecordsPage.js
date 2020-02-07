@@ -56,6 +56,9 @@ const FilterOption = styled.div`
   margin: 8px;
   display: flex;
   align-items: center;
+  input:hover {
+    cursor: pointer;
+  }
 `;
 
 const MainBox = styled.div`
@@ -122,6 +125,8 @@ export default function RecordsPage() {
   let [zip,setZip] = useState('');
   let [utility_name,setUtility_name] = useState('');
   let [program_name,setProgram_name] = useState('');
+  let [showActive, setShowActive] = useState(true);
+  let [showDrafts, setShowDrafts] = useState(true);
 
 
   useEffect(()=>{
@@ -164,27 +169,31 @@ export default function RecordsPage() {
     return pageList;
   }
 
+  function submitSearch(event) {
+    event.preventDefault();
+  }
+
   return(
     <Container>
         <h1>Record Management</h1>
         <ManageBox>
 
           <SearchBox>
-            <form>
-              <input type="number" placeholder="Zip Code" />
-              <input type="text" placeholder="Utility Company" />
-              <input type="text" placeholder="Energy Program" />
+            <form onSubmit={submitSearch}>
+              <input type="number" placeholder="Zip Code" onChange={event=>setZip(event.target.value)} value={zip}/>
+              <input type="text" placeholder="Utility Company" onChange={event=>setUtility_name(event.target.value)} value={utility_name}/>
+              <input type="text" placeholder="Energy Program" onChange={event=>setProgram_name(event.target.value)} value={program_name}/>
               <button className="button-default">Search</button>
             </form>
           </SearchBox>
 
           <FilterBox>
             <FilterOption>
-              <input type="checkbox" />
+              <input type="checkbox" checked={showDrafts} onChange={event=>setShowDrafts(event.target.checked)}/>
               <label>Show Drafts</label>
             </FilterOption>
             <FilterOption>
-              <input type="checkbox" />
+              <input type="checkbox" checked={showActive} onChange={event=>setShowActive(event.target.checked)}/>
               <label>Show Active</label>
             </FilterOption>
           </FilterBox>
