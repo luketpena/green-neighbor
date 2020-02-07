@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import Background from '../../images/bkg-forest-top.jpg';
+import HomeButton from '../HomeButton/HomeButton';
 
 const BackgroundBox = styled.div`
   background-image: url(${Background});
@@ -11,7 +12,6 @@ const BackgroundBox = styled.div`
   width: 100vw;
   height: 100vh;
   margin: 0;
-  padding: 32px;
   box-sizing: border-box;
 `;
 
@@ -110,7 +110,8 @@ export default function AboutPage() {
 
   return(
     <BackgroundBox>
-    <button className="button-default" onClick={()=>history.push("/intro")}>Home</button>
+      <HomeButton />
+    {/* <button className="button-default" onClick={()=>history.push("/intro")}>Home</button> */}
     
     <Header>
         <h1>Frequently Asked Questions</h1>
