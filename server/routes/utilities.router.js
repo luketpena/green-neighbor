@@ -43,18 +43,20 @@ router.get('/count', async(req,res)=>{
 router.get('/summary/:page', async(req,res)=>{
   try {
     const query = `
-      SELECT z.id, z.utility_name, z.zip, z.state, COUNT(g.utility_name) as program_count, z.production FROM zips z
+    SELECT z.id, z.eia_state, z.utility_name, z.zip, z.state, COUNT(g.utility_name) as program_count, ARRAY_AGG(g.program_name) as program_list, ARRAY_AGG(g.id) as program_id FROM zips z
       LEFT JOIN gpp g ON z.eia_state=g.eia_state
       GROUP BY z.id
       LIMIT 100 OFFSET $1;
     `;
     const result = await pool.query(query,[req.params.page*100]);
+    
     res.send(result.rows);
   } catch(error) {
     res.sendStatus(500);
     console.log('Error getting utility summary list:', error);    
   }
 });
+
 
 
 /* 
@@ -71,7 +73,7 @@ router.post('/', async(req,res)=>{
     await pool.query(query, queryData);
     res.sendStatus(201);
   } catch(error) {
-    res.send(500);
+    res.sendStatus(500);
     console.log('Error posting new utility company:',error);
   }
 });
@@ -88,7 +90,7 @@ router.delete('/:id', rejectUnauthenticated, async(req,res)=>{
     await pool.query(query, [req.params.id]);
     res.sendStatus(200);
   } catch(error) {
-    res.send(500);
+    res.sendStatus(500);
     console.log('Error deleting utility company:',error);    
   }
 });
@@ -109,9 +111,24 @@ router.put('/:id', rejectUnauthenticated, async(req,res)=>{
     await pool.query(query, queryData);
     res.sendStatus(200);
   } catch(error) {
-    res.send(500);
-    console.log('Error updating existing utility company:',error);
+    res.sendStatus(500);
+    console.log('Error updating existing utility company:', error);
   }
 });
+
+/* 
+  Updates the production status of a utility company.
+*/
+router.put('/production/:id', rejectUnauthenticated, async(req,res)=>{
+  try {
+    const query = `UPDATE zips SET production=$1 WHERE id=$2;`;
+    await pool.query(query,[req.body.production,req.params.id]);
+    res.sendStatus(200);
+  } catch(error) {
+    res.sendStatus(500);
+    console.log('Error updating company production status:', error);
+    
+  }
+})
 
 module.exports = router;

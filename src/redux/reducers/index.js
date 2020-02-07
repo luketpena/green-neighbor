@@ -22,6 +22,7 @@ const rootReducer = combineReducers({
   utilityDataForReportPage: createReducer('SET_ERROR_UTILITY_INFO', {}),
   utilities: createReducer('SET_UTILITIES', []),
   utilitiesCount: createReducer('SET_UTILITIES_COUNT'),
+  utilitiesSearch: createReducer('SET_UTILITIES_SEARCH', {}),
   errors, // contains registrationMessage and loginMessage
   loginMode, // will have a value of 'login' or 'registration' to control which screen is shown
   user, // will have an id and username if someone is logged in

@@ -117,7 +117,11 @@ export default function RecordsPage() {
   const dispatch = useDispatch();
   const utilitiesCount = useSelector(state=>state.utilitiesCount);
   const utilities = useSelector(state=>state.utilities);
+
   let [page, setPage] = useState(683);
+  let [zip,setZip] = useState('');
+  let [utility_name,setUtility_name] = useState('');
+  let [program_name,setProgram_name] = useState('');
 
 
   useEffect(()=>{
@@ -126,12 +130,8 @@ export default function RecordsPage() {
 
   function renderUtilities() {
     return utilities.map( (item,i)=> {
-      return <UtilityRow key={i} utility={item}/>
+      return <UtilityRow key={i} utility={item} page={page}/>
     });
-  }
-
-  function clickPage(goto) {
-    setPage(goto);
   }
 
   function renderPages() {
@@ -139,24 +139,24 @@ export default function RecordsPage() {
     const pageMax = Math.ceil(utilitiesCount/100);
 
     function returnPageButton(index,goto,text) {
-      return <PageButton key={index} index={index} page={page} onClick={()=>clickPage(goto)}>{text}</PageButton>
+      return <PageButton key={index} index={index} page={page} onClick={()=>setPage(goto)}>{text}</PageButton>
     }
 
     if (page>5) {pageList.push(returnPageButton(-1,0,'<<'))}
     
-    
-
-    if (page<5) {
-      for (let i=0; i<10; i++) {
-        pageList.push(returnPageButton(i,i,i+1));
-      }
-    } else if (page>pageMax-6) {
-      for (let i=pageMax-10; i<pageMax; i++) {
-        pageList.push(returnPageButton(i,i,i+1));
-      }
-    } else {
-      for (let i=page-4; i<page+6; i++) {
-        pageList.push(returnPageButton(i,i,i+1));
+    if (pageMax>0) {
+      if (page<5) {
+        for (let i=0; i<10; i++) {
+          pageList.push(returnPageButton(i,i,i+1));
+        }
+      } else if (page>pageMax-6) {
+        for (let i=pageMax-10; i<pageMax; i++) {
+          pageList.push(returnPageButton(i,i,i+1));
+        }
+      } else {
+        for (let i=page-4; i<page+6; i++) {
+          pageList.push(returnPageButton(i,i,i+1));
+        }
       }
     }
 

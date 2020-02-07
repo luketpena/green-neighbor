@@ -33,11 +33,21 @@ function* getUtilities(action) {
   }
 }
 
+function* setUtilityProduction(action) {
+  try {
+    yield axios.put(`/api/utilities/production/${action.payload.id}`, {production: action.payload.production} );
+    yield put({type: 'GET_UTILITIES', payload: action.payload.page})
+  } catch(error) {
+    console.log(error);    
+  }
+}
+
 
 
 function* programsSaga() {
   yield takeLatest('GET_PROGRAMS', getPrograms);
   yield takeLatest('GET_UTILITIES', getUtilities);
+  yield takeLatest('SET_UTILITY_PRODUCTION', setUtilityProduction);
   yield takeLatest('GET_GEOCODE_DATA', getGeocodeData);
 }
 
