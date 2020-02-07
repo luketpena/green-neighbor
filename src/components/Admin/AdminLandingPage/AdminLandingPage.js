@@ -4,12 +4,10 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 const Page = styled.div`
-  height: 100vh;
-  background-color: var(--color-bkg-dark);
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: max-content;
-  padding: 30vh 15% 0% 15%;
+  padding: 25vh 15% 0% 15%;
 `;
 
 const Box = styled.div`

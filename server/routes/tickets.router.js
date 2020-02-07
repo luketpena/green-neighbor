@@ -6,13 +6,13 @@ const {rejectUnauthenticated} = require('../modules/authentication-middleware');
 // send in req.query the column name and value to search for
 router.get('/', rejectUnauthenticated, async (req, res) => {
     try{
-        console.log(req.body);
         const equalQueries = [
             'id', 'resolved', 'zip', 'utility_id', 'program_id'
         ];
         const ilikeQueries = [
             'utility_name', 'program_name', 'comments'
         ];
+
         const config = [];
         const conditions = [];
         Object.entries(req.query).forEach(([key, value]) => {
@@ -50,11 +50,10 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
         `;
 
         const countResults = await pool.query(countQuery, config);
-        const count = countResults.rows[0];
+        const {count} = countResults.rows[0];
 
-        config.push(req.body.limit || 50, req.body.offset || 0);
+        config.push(req.query.limit || 100, req.query.offset || 0);
         const {rows: tickets} = await pool.query(ticketsQuery, config);
-
         res.send({tickets, count});
     } catch (error) {
         res.sendStatus(500);
@@ -89,12 +88,24 @@ router.post('/', async (req, res) => {
             INSERT INTO "tickets" (${keys})
             VALUES (${values.join(', ')})`;
         await pool.query(query, config);
-
         res.sendStatus(200);
     } catch (error) {
         res.sendStatus(500);
         console.log(error);
     }
 });
+
+router.put('/resolve/:id/:value', rejectUnauthenticated, async (req, res) => {
+    try{
+        const query = `
+            UPDATE "tickets" SET "resolved"=$1
+            WHERE "id"=$2`;
+        await pool.query(query, [req.params.value, req.params.id]);
+        res.sendStatus(200);
+    } catch (error) {
+        res.sendStatus(500);
+        console.log(error);
+    }
+})
 
 module.exports = router;

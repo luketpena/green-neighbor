@@ -12,8 +12,17 @@ function* getTickets(action) {
   }
 }
 
+function* setTicketResolve(action){
+  try{
+    const response = yield axios.put(`/api/tickets/resolve/${action.payload.id}/${action.payload.value}`);
+  } catch (error) {
+      console.log(error);
+  }
+}
+
 function* ticketsSaga() {
   yield takeLatest('GET_TICKETS', getTickets);
+  yield takeLatest('SET_TICKET_RESOLVE', setTicketResolve);
 }
 
 export default ticketsSaga;
