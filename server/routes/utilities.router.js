@@ -27,36 +27,42 @@ router.get('/getName/:zip/:eia_state', async (req, res) => {
 router.get('/count', async(req,res)=>{
 
   console.log(req.query);
-  
-  
-  res.sendStatus(200);
-  // try {
-  //   console.log(req.body);
-    
-  //   const query = `SELECT COUNT(z.id) FROM zips z`;
-  //   for (let i=0; i<queryInputs.length; i++) {
-  //     if (queryInputs[i].value!=='') {
-  //       //>> Add WHERE on first found valid parameter or AND on subsequent parameters
-  //       query += (paramCount===0? 'WHERE ' : 'AND ');
 
-  //       //>> Increment the parameter count
-  //       paramCount++;
-  //       //>> Add the specific parameter text
-  //       switch(queryInputs[i].name) {
-  //         case 'state': 
-  //           query += `z.state ILIKE $${paramCount}`;
-  //           queryParams.push('%'+queryInputs[i].value+'%');
-  //           break;
-  //       }
-  //     }
-  //   }
-  //   const result = await pool.query(query,queryParams);
-  //   res.send(result.rows[0]);
-  // } catch(error) {
-  //   res.sendStatus(500);
-  //   console.log('Error getting count of utilities:', error);
+  
+  try {
+
+    let query = `SELECT COUNT(z.id) FROM zips z`;
+    const queryParams = [];
+
+    for (let [key,value] of Object.entries(req.query)) {
+      console.log(key, value);
+      switch(key) {
+        case 'state':
+          queryParams.push('%'+value+'%');
+          break;
+        default:
+          queryParams.push(Number(value));
+          break;
+      }
+      query += (queryParams.length===1? ' WHERE ' : ' AND ');
+      
+      switch(key) {
+        case 'state':
+          query += `z.state ILIKE $${queryParams.length}`
+          break;
+        case 'zip':
+          query += `z.zip=$${queryParams.length}`
+          break;
+      }
+    }
     
-  // }
+    const result = await pool.query(query,queryParams);
+    res.send(result.rows[0]);
+  } catch(error) {
+    res.sendStatus(500);
+    console.log('Error getting count of utilities:', error);
+    
+  }
 })
 
 /* 
