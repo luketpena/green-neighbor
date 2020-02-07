@@ -25,6 +25,9 @@ router.get('/getName/:zip/:eia_state', async (req, res) => {
   Get the count of all utility companies in the database.
 */
 router.get('/count', async(req,res)=>{
+
+  console.log(req.query);
+  
   
   res.sendStatus(200);
   // try {
@@ -76,8 +79,6 @@ router.get('/summary/:page', async(req,res)=>{
     console.log('Error getting utility summary list:', error);    
   }
 });
-
-
 
 /* 
   Posts a new utility company to the zips table.
