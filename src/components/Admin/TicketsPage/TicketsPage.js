@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import styled from 'styled-components';
 import {useLocation, useHistory} from 'react-router-dom';
+import TextField from '@material-ui/core/TextField';
 import writeQueries from '../../../modules/writeQueries';
 import parseQueries from '../../../modules/parseQueries';
 import {Container, ManageBox, SearchBox, FilterBox,
