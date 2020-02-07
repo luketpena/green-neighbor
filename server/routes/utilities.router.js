@@ -16,10 +16,45 @@ router.get('/getName/:zip/:eia_state', async (req, res) => {
         const {rows} = await pool.query(query, [req.params.zip, req.params.eia_state]);
         res.send(rows[0]);
     } catch (error) {
-        res.send(500);
+        res.sendStatus(500);
         console.log('Error getting utility company name:',error);
     }
 });
+
+/*
+  Get the count of all utility companies in the database.
+*/
+router.get('/count', async(req,res)=>{
+  try {
+    const query = `SELECT COUNT(id) FROM zips;`;
+    const result = await pool.query(query);
+    res.send(result.rows[0]);
+  } catch(error) {
+    res.sendStatus(500);
+    console.log('Error getting count of utilities:', error);
+    
+  }
+})
+
+/* 
+  Get a summary of all utility companies.
+  NOTE: Filters and sorts will be added to this eventually.
+*/
+router.get('/summary', async(req,res)=>{
+  try {
+    const query = `
+      SELECT z.id, z.utility_name, z.zip, z.state, COUNT(g.utility_name) FROM zips z
+      LEFT JOIN gpp g ON z.eia_state=g.eia_state
+      GROUP BY z.id;
+    `;
+    const result = await pool.query(query);
+    res.send(result.rows);
+  } catch(error) {
+    res.sendStatus(500);
+    console.log('Error getting utility summary list:', error);    
+  }
+});
+
 
 /* 
   Posts a new utility company to the zips table.

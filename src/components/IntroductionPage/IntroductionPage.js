@@ -1,8 +1,24 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import Background from '../../images/bkg-forest-top.jpg';
 
+
+const appear_step1 = keyframes`
+  0% {
+    opacity: 0;
+    transform: translate( 0, -10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate( 0, 0);
+  }
+`;
+const appear_step2 = keyframes`
+  0% {opacity: 0;}
+  50% {opacity: 0;}
+  100% {opacity: 1;}
+`;
 
 const BackgroundBox = styled.div`
   background-image: url(${Background});
@@ -36,6 +52,13 @@ const ZipBox = styled.div`
   justify-content: center;
   color: white;
   text-shadow: 0 0 4px black;
+
+  h1, h2 {
+    animation: 1s ${appear_step1} ease-in-out;
+  }
+  label, input, button {
+    animation: 1s ${appear_step2} ease-in;
+  }
   
   h1 {
     font-family: var(--font-header);
