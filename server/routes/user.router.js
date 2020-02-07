@@ -12,6 +12,19 @@ router.get('/', rejectUnauthenticated, (req, res) => {
   res.send(req.user);
 });
 
+// Handles GET request to get all admins that are current users
+router.get('/admins', rejectUnauthenticated, (req, res) => {
+  const username = req.body.username;
+  const queryText = `SELECT "user"."username", "user"."id" FROM "user";`;
+  pool.query(queryText, username)
+  .then(result => {
+    res.send(result.rows);
+  }).catch(error => {
+    console.log(`error getting admin list`, error);
+    res.sendStatus(500);
+  }); 
+});
+
 // Handles POST request with new user data
 // The only thing different from this and every other post we've seen
 // is that the password gets encrypted before being inserted

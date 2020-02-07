@@ -24,7 +24,8 @@ const rootReducer = combineReducers({
   loginMode, // will have a value of 'login' or 'registration' to control which screen is shown
   user, // will have an id and username if someone is logged in
   geocode: createReducer('SET_GEOCODE_DATA'),
-  adminLandingPageData: createReducer('SET_ADMIN_LANDING_DATA', {})
+  adminLandingPageData: createReducer('SET_ADMIN_LANDING_DATA', {}),
+  adminUsers: createReducer('SET_ADMIN_USERS'),
 });
 
 export default rootReducer;
