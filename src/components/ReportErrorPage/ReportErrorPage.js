@@ -47,6 +47,10 @@ const Body = styled.form`
     justify-content: center;
     color: white;
     text-shadow: 0 0 4px black;
+    background-color: rgba(0, 0, 0, 0.55);
+    padding: 16px;
+    border-radius: 16px;
+    box-shadow: 0 4px 4px -2px rgba(0, 0, 0, 0.4);
 `;
  const Input = styled.input`
  
@@ -76,6 +80,7 @@ export default function ReportErrorPage(props){
     const dispatch = useCallback(useDispatch(), []);
     const {utility_name, program_name, id} = useSelector(state => program_id ? state.programDetails : state.utilityDataForReportPage);
     const [companyName, setCompanyName] = useState('');
+    const [programName, setProgramName] = useState('');
     const [comments, setComments] = useState('');
     const [email, setEmail] = useState('');
     const [open, setOpen] = useState(false);
@@ -93,19 +98,18 @@ export default function ReportErrorPage(props){
         setCompanyName(utility_name);
     }, [utility_name, history]);
 
+    useEffect(()=>{
+        setProgramName(program_name);
+    }, [program_name, history]);
+
     const postThenBack = () => {
-        dispatch({type: 'POST_TICKET', payload: {zip, utility_name, program_name, program_id, comments, email} });
+        dispatch({type: 'POST_TICKET', payload: {
+            zip, utility_name: companyName,
+            program_name: programName, program_id,
+            comments, email}
+        });
         history.goBack();
-    } 
-
-    const postTicket = () => {
-        setOpen(true);
     }
-
-    const handleClose = () => {
-        setOpen(false);
-        };
-
     
     let body;
     if(program_id && eia_state){
@@ -120,6 +124,13 @@ export default function ReportErrorPage(props){
             <>
                 <h1>Report Missing Program</h1>
                 <p>{zip} - {utility_name}</p>
+                <Input
+                    required
+                    label='Program Name'
+                    placeholder='Program Name'
+                    value={programName || ''}
+                    onChange={e=>setProgramName(e.target.value)}
+                />
             </>
         )
     } else if(zip){
@@ -129,6 +140,7 @@ export default function ReportErrorPage(props){
                 <Input
                     required
                     label='Utility Name'
+                    placeholder='Utility Name'
                     value={companyName || ''}
                     onChange={e=>setCompanyName(e.target.value)}
                 />
@@ -138,6 +150,7 @@ export default function ReportErrorPage(props){
     
     const handleSubmit = e => {
         e.preventDefault();
+        setOpen(true);
     }
 
     return (
@@ -146,13 +159,12 @@ export default function ReportErrorPage(props){
                 <Body onSubmit={handleSubmit}>
                     {body}
                     <Input 
-                        className="zip-input" 
-                        type="multiline"                  
+                        className="zip-input"            
                         label={ program_id ? "Description" : "Comments" }
                         placeholder='Provide more details about your issue'
-                        multiline
                         value={comments}
                         onChange={e=>setComments(e.target.value)}
+                        required={program_id && eia_state}
                     />
                     <Input 
                         label='Email'
@@ -161,7 +173,7 @@ export default function ReportErrorPage(props){
                         onChange={e=>setEmail(e.target.value)}
                     />
                     <ReportThankYou open={open} postThenBack={postThenBack}  />
-                    <button className='button-wire' onClick={() => postTicket()}>Submit</button>
+                    <button className='button-wire'>Submit</button>
                 </Body>
             </Container>
         </ImageBackground>

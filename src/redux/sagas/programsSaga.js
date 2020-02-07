@@ -22,8 +22,22 @@ function* getGeocodeData(action) {
   }
 }
 
+function* getUtilities(action) {
+  try {
+    const count = yield axios.get(`/api/utilities/count`);
+    yield put({type: 'SET_UTILITIES_COUNT', payload: count.data.count});
+    const summary = yield axios.get(`/api/utilities/summary/${action.payload}`);
+    yield put({type: 'SET_UTILITIES', payload: summary.data});
+  } catch (error) {
+    console.log(error);    
+  }
+}
+
+
+
 function* programsSaga() {
   yield takeLatest('GET_PROGRAMS', getPrograms);
+  yield takeLatest('GET_UTILITIES', getUtilities);
   yield takeLatest('GET_GEOCODE_DATA', getGeocodeData);
 }
 

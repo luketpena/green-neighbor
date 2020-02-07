@@ -1,9 +1,10 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
 
-router.get('/overview', async (req, res) => {
+router.get('/overview', rejectUnauthenticated, async (req, res) => {
     try {
       const ticketQuery = `
         SELECT 

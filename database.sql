@@ -25,7 +25,8 @@ CREATE TABLE "zips" (
 	"bundled_avg_res_rate" FLOAT,
 	"delivery_avg_comm_rate" FLOAT,
 	"delivery_avg_ind_rate" FLOAT,
-	"delivery_avg_res_rate" FLOAT
+	"delivery_avg_res_rate" FLOAT,
+  "production" BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE "gpp" (

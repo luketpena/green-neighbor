@@ -16,15 +16,51 @@ router.get('/getName/:zip/:eia_state', async (req, res) => {
         const {rows} = await pool.query(query, [req.params.zip, req.params.eia_state]);
         res.send(rows[0]);
     } catch (error) {
-        res.send(500);
+        res.sendStatus(500);
         console.log('Error getting utility company name:',error);
     }
 });
 
+/*
+  Get the count of all utility companies in the database.
+*/
+router.get('/count', async(req,res)=>{
+  try {
+    const query = `SELECT COUNT(id) FROM zips;`;
+    const result = await pool.query(query);
+    res.send(result.rows[0]);
+  } catch(error) {
+    res.sendStatus(500);
+    console.log('Error getting count of utilities:', error);
+    
+  }
+})
+
+/* 
+  Get a summary of all utility companies.
+  NOTE: Filters and sorts will be added to this eventually.
+*/
+router.get('/summary/:page', async(req,res)=>{
+  try {
+    const query = `
+      SELECT z.id, z.utility_name, z.zip, z.state, COUNT(g.utility_name) as program_count, z.production FROM zips z
+      LEFT JOIN gpp g ON z.eia_state=g.eia_state
+      GROUP BY z.id
+      LIMIT 100 OFFSET $1;
+    `;
+    const result = await pool.query(query,[req.params.page*100]);
+    res.send(result.rows);
+  } catch(error) {
+    res.sendStatus(500);
+    console.log('Error getting utility summary list:', error);    
+  }
+});
+
+
 /* 
   Posts a new utility company to the zips table.
 */
-router.post('/', async(req,res)=>{
+router.post('/', rejectUnauthenticated, async(req,res)=>{
   const {zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate} = req.body;
   const queryData = [zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate];
   try {

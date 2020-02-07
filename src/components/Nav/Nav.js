@@ -30,7 +30,6 @@ export default function Nav(props){
   ];
 
   React.useEffect(()=>{
-    console.log(currentURL);
     let i = 0;
     for(; i < tabs.length; i++){
       if(currentURL === tabs[i].link){
@@ -48,13 +47,11 @@ export default function Nav(props){
   }
 
   return(
-    <AppBar position='fixed'>
+    <AppBar position='sticky'>
       <Bar>
         <Tabs
           value={value}
           onChange={(e, v)=>setValue(v)}
-          variant='scrollable'
-          scrollButtons='auto'
         >
           {tabs.map(({name, link}, i) => 
             <Tab

@@ -11,7 +11,6 @@ const gppCols =  require('../modules/gppColumns');
 router.get('/geocode/:zip', (req,res)=>{
   axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.params.zip}&sensor=true&key=${process.env.GEOCODE_API_KEY}`)
       .then(response=>{
-          console.log(response.data);
           if(response.data.results[0]){
               res.send(response.data.results[0].formatted_address);
           } else {
