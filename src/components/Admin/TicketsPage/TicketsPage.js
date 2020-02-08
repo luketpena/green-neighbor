@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useLocation, useHistory} from 'react-router-dom';
-import TextField from '@material-ui/core/TextField';
+import {Table, TableContainer, TableHead, TableCell, TableRow} from '@material-ui/core';
 import writeQueries from '../../../modules/writeQueries';
 import parseQueries from '../../../modules/parseQueries';
 import {Container, ManageBox, SearchBox, FilterBox,
@@ -171,19 +171,19 @@ export default function TicketsPage() {
                         <p>Page {offset/100 + 1 || 1} of {Math.ceil(ticketCount / 100) || 1}</p>
                         <PageBar>{renderPages()}</PageBar>
                     </MainHeader>
-                    <MainTable>
-                        <thead>
-                            <tr style={{position: 'sticky'}}>
-                                <th>Zip</th>
-                                <th>Company</th>
-                                <th>Program</th>
-                                <th>Resolved</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <TableContainer style={{maxHeight: '90vh'}}>
+                        <Table stickyHeader>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Zip</TableCell>
+                                    <TableCell>Company</TableCell>
+                                    <TableCell>Program</TableCell>
+                                    <TableCell>Resolved</TableCell>
+                                </TableRow>
+                            </TableHead>
                             <TicketsList />
-                        </tbody>
-                    </MainTable>
+                        </Table>
+                    </TableContainer>
                 </MainBox>
             </ManageBox>
         </Container>
