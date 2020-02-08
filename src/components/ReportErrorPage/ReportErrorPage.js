@@ -78,7 +78,9 @@ export default function ReportErrorPage(props){
     const {zip, eia_state, program_id} = useParams();
     const history = useHistory();
     const dispatch = useCallback(useDispatch(), []);
-    const {utility_name, program_name, id} = useSelector(state => program_id ? state.programDetails : state.utilityDataForReportPage);
+    const {
+        utility_name, program_name, zips_id, id: gpp_id
+    } = useSelector(state => program_id ? state.programDetails : state.utilityDataForReportPage);
     const [companyName, setCompanyName] = useState('');
     const [programName, setProgramName] = useState('');
     const [comments, setComments] = useState('');
@@ -103,11 +105,12 @@ export default function ReportErrorPage(props){
     }, [program_name, history]);
 
     const postThenBack = () => {
-        dispatch({type: 'POST_TICKET', payload: {
-            zip, utility_name: companyName,
-            program_name: programName, program_id,
-            comments, email}
-        });
+        const payload = {
+            zip, utility_name: companyName, eia_state,
+            program_name: programName, gpp_id, zips_id,
+            comments, email
+        }
+        dispatch({ type: 'POST_TICKET', payload });
         history.goBack();
     }
     

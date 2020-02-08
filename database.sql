@@ -71,6 +71,7 @@ CREATE TABLE "tickets" (
 	"id" SERIAL PRIMARY KEY,
 	"resolved" BOOLEAN DEFAULT FALSE,
 	"zip" INT,
+	"zips_id" INT,
 	"utility_name" VARCHAR,
 	"eia_state" VARCHAR,
 	"program_name" VARCHAR,

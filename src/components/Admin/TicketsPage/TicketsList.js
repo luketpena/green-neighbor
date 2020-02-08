@@ -7,11 +7,12 @@ const Resolved = styled.button`
     color: ${props=>(props.resolved? 'var(--color-primary)' : '#A53535')};
     background-color: rgba(0, 0, 0, 0);
     border: none;
+    outline: none;
     font-size: 1rem;
     transition: all .2s;
     &:hover {
         color: ${props=>(props.resolved? 'var(--color-primary-bright)' : '#333')};
-        transform: scale(1.1);
+        transform: scale(1.05);
         cursor: pointer;
     }
 `;

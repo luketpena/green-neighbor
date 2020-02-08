@@ -3,6 +3,7 @@ import axios from 'axios';
 
 function* postReportTicket(action) {
     try{
+        console.log(action.payload);
         yield axios.post('/api/tickets', action.payload);
         yield put({ type:'SET_TICKET', payload: action.payload });
     } catch (error) {

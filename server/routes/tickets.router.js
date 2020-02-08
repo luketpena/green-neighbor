@@ -65,10 +65,11 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
 // and values = actual values to enter.
 router.post('/', async (req, res) => {
     try{
+        console.log(req.body);
         const acceptedKeys = [
             'resolved', 'zip', 'utility_name',
             'utility_id', 'program_name', 'gpp_id',
-            'email', 'comments'
+            'email', 'comments', 'eia_state', 'zips_id'
         ];
         const config = [];
         const values = [];
