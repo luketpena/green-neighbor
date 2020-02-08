@@ -86,11 +86,9 @@ export const MainTableBody = styled.tbody`
   tr, th {
     background-color: white;
     border-bottom: 1px solid #ddd;
-    transition: all .2s;
     ${props=>props.hoverable && `
       &:hover {
         background-color: #DDEEFF;
-        transform: scale(1.01);
       }
     `}
 

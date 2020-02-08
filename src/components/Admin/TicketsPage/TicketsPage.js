@@ -37,6 +37,7 @@ export default function TicketsPage() {
         history.push(`/admin/tickets${writeQueries(current)}`)
     }
 
+    // Returns the page selector buttons
     const renderPages = () => {
         const pageList = [];
         const pageMax = Math.ceil(ticketCount / 100);
@@ -74,6 +75,7 @@ export default function TicketsPage() {
     }
 
     // on initial render, fetch tickets that we should be displaying
+    // based on what's in the URL
     useEffect(()=>{
         dispatch({
             type: 'GET_TICKETS',
@@ -89,14 +91,16 @@ export default function TicketsPage() {
         offset, comments
     ]);
 
+    // if a filter changes, update the search
     useEffect(()=>{
         if(hasMounted.current){
             onSearch();
         } else hasMounted.current = true;
     }, [showFromCompanies, showFromUtility,
-        showFromProgram, showResolved
-    ]);
+        showFromProgram, showResolved, onSearch]
+    );
 
+    // push current search to url
     const onSearch = e => {
         if(e) e.preventDefault();
         history.push(`/admin/tickets${writeQueries({
