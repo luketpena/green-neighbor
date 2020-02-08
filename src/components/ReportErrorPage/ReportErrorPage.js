@@ -79,7 +79,7 @@ export default function ReportErrorPage(props){
     const history = useHistory();
     const dispatch = useCallback(useDispatch(), []);
     const {
-        utility_name, program_name, zips_id, id: gpp_id
+        utility_name, program_name, zips_id
     } = useSelector(state => program_id ? state.programDetails : state.utilityDataForReportPage);
     const [companyName, setCompanyName] = useState('');
     const [programName, setProgramName] = useState('');
@@ -107,7 +107,7 @@ export default function ReportErrorPage(props){
     const postThenBack = () => {
         const payload = {
             zip, utility_name: companyName, eia_state,
-            program_name: programName, gpp_id, zips_id,
+            program_name: programName, gpp_id: program_id, zips_id,
             comments, email
         }
         dispatch({ type: 'POST_TICKET', payload });
