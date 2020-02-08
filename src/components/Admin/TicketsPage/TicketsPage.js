@@ -5,8 +5,7 @@ import writeQueries from '../../../modules/writeQueries';
 import parseQueries from '../../../modules/parseQueries';
 import {Container, ManageBox, SearchBox, FilterBox,
         FilterOption, MainBox, MainHeader, MainTable,
-        PageButton, PageBar, MainTableHead, MainTableCell,
-        MainTableRow
+        PageButton, PageBar, MainTableHead
     } from '../AdminUI';
 
 import TicketsList from './TicketsList';
@@ -173,12 +172,12 @@ export default function TicketsPage() {
                     </MainHeader>
                     <MainTable>
                         <MainTableHead>
-                            <MainTableRow>
+                            <tr>
                                 <th>Zip</th>
                                 <th>Company</th>
                                 <th>Program</th>
                                 <th>Resolved</th>
-                            </MainTableRow>
+                            </tr>
                         </MainTableHead>
                         <TicketsList />
                     </MainTable>

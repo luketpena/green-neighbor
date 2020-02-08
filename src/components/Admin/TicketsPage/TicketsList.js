@@ -21,18 +21,18 @@ function Ticket({ticket}){
     }
 
     return(
-        <MainTableRow>
-            <MainTableCell>{zip}</MainTableCell>
-            <MainTableCell>{utility_name}</MainTableCell>
-            <MainTableCell>{program_name}</MainTableCell>
-            <MainTableCell>
+        <tr>
+            <td>{zip}</td>
+            <td>{utility_name}</td>
+            <td>{program_name}</td>
+            <td>
                 <input
                     type='checkbox'
                     checked={resolvedChecked}
                     onChange={onResolvedClicked}
                 />
-            </MainTableCell>
-        </MainTableRow>
+            </td>
+        </tr>
     )
 }
 
@@ -42,7 +42,7 @@ export default function TicketsList(props){
     const tickets = useSelector(state => state.tickets.tickets);
 
     return !tickets ? null : (
-        <MainTableBody>
+        <MainTableBody hoverable>
             {tickets.map((ticket, i) =>
                 <Ticket ticket={ticket} key={key++} />
             )}

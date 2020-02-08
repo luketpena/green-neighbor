@@ -74,6 +74,7 @@ export const MainHeader = styled.div`
 `;
 
 export const MainTable = styled.table`
+  font-family: var(--font-main);
   width: 100%;
   border-collapse: collapse;
 `;
@@ -84,29 +85,29 @@ export const MainTableBody = styled.tbody`
   }
   tr, th {
     background-color: white;
-    font-family: var(--font-main);
     border-bottom: 1px solid #ddd;
+    ${props=>props.hoverable && `
+      &:hover {
+        background-color: #DDEEFF;
+      }
+    `}
+
+    td, th {
+      padding: 8px;
+    }
   }
 `;
 
 export const MainTableHead = styled.thead`
-  background-color: #CACACA;
+  background-color: #CACACF;
   text-align: left;
   font-weight: bold;
+  font-size: 1rem;
   border-bottom: 1px solid #ddd;
+  box-shadow: 0px, 8px, 4px, #555555;
   th {
-    padding: 8px;
-    font-weight: 1600;
-    font-family: var(--font-main);
+    padding: 10px 8px;
   }
-`;
-
-export const MainTableRow = styled.tr`
-
-`;
-
-export const MainTableCell = styled.td`
-  padding: 8px;
 `;
 
 export const PageButton = styled.button`
