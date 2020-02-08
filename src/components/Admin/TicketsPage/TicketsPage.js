@@ -21,9 +21,9 @@ export default function TicketsPage() {
     const [utilitySearch, setUtilitySearch] = useState(utility || '');
     const [programSearch, setProgramSearch] = useState(program || '');
     const [showResolved, setShowResolved] = useState(resolved);
-    const [showFromCompanies, setShowFromCompanies] = useState(!!fromCompanies || !(fromUtility || fromProgram));
-    const [showFromUtility, setShowFromUtility] = useState(!!fromUtility|| !(fromCompanies || fromProgram));
-    const [showFromProgram, setShowFromProgram] = useState(!!fromProgram || !(fromCompanies || fromUtility));
+    const [showFromCompanies, setShowFromCompanies] = useState(fromCompanies == false ? false : true);
+    const [showFromUtility, setShowFromUtility] = useState(fromUtility == false ? false : true);
+    const [showFromProgram, setShowFromProgram] = useState(fromProgram == false ? false : true);
     const [commentSearch, setCommentSearch] = useState(comments || '');
     const dispatch = useCallback(useDispatch(), []);
     const ticketCount = useSelector(state=>state.tickets.count);
@@ -76,6 +76,8 @@ export default function TicketsPage() {
             payload: {
                 zip, resolved, program_name: program,
                 utility_name: utility, offset, comments,
+                fromCompanies, fromUtility,
+                fromProgram
             }
         });
     }, [dispatch, zip, program, utility, resolved,
@@ -91,6 +93,10 @@ export default function TicketsPage() {
             fromUtility: showFromUtility, fromProgram: showFromProgram,
             comments: commentSearch
         })}`);
+    }
+
+    onFilterChange = () => {
+        
     }
 
     return(

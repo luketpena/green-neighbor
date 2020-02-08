@@ -25,6 +25,19 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
             }
         });
 
+        console.log(req.query, conditions);
+
+        const {fromCompanies, fromUtility, fromProgram} = req.query;
+        const isTrue = s => (s === 'true' || s === true);
+        if(isTrue(fromCompanies) || isTrue(fromUtility) || isTrue(fromProgram)){
+            const types = [];
+            if(isTrue(fromCompanies)) types.push('type=0');
+            if(isTrue(fromUtility)) types.push('type=1');
+            if(isTrue(fromProgram)) types.push('type=2');
+            console.log('types', types);
+            conditions.push(`(${types.join(' OR ')})`);
+        }
+
         let orderBy = 'id';
         if(req.query.orderBy){
             if( equalQueries.includes(req.query.orderBy) ||
@@ -37,21 +50,21 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
         const order = req.query.order && req.query.order.toUpperCase() === 'ASC' ?
             'ASC' : 'DESC';
 
+        const countQuery = `
+            SELECT COUNT(*) FROM "tickets"
+            ${conditions.length ? `WHERE ${conditions.join(' AND ')}`: ''}
+        `;
+        console.log(countQuery);
+
+        const countResults = await pool.query(countQuery, config);
+        const {count} = countResults.rows[0];
+
         const ticketsQuery = `
             SELECT * FROM "tickets"
             ${conditions.length ? `WHERE ${conditions.join(' AND ')}`: ''}
             ORDER BY ${orderBy} ${order}
             LIMIT $${config.length+1}
             OFFSET $${config.length+2}`;
-
-        const countQuery = `
-            SELECT COUNT(*) FROM "tickets"
-            ${conditions.length ? `WHERE ${conditions.join(' AND ')}`: ''}
-        `;
-
-        const countResults = await pool.query(countQuery, config);
-        const {count} = countResults.rows[0];
-
         config.push(req.query.limit || 100, req.query.offset || 0);
         const {rows: tickets} = await pool.query(ticketsQuery, config);
         res.send({tickets, count});
