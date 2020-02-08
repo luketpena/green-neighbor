@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {TableBody, TableCell, TableRow} from '@material-ui/core';
+import {MainTable, MainTableBody, MainTableHead,
+    MainTableRow, MainTableCell } from '../AdminUI';
 
 function Ticket({ticket}){
     const {
@@ -20,18 +21,18 @@ function Ticket({ticket}){
     }
 
     return(
-        <TableRow style={{'&:nth-child(odd)': {backgroundColor: '#DDDDDD'}}}>
-            <TableCell>{zip}</TableCell>
-            <TableCell>{utility_name}</TableCell>
-            <TableCell>{program_name}</TableCell>
-            <TableCell>
+        <MainTableRow>
+            <MainTableCell>{zip}</MainTableCell>
+            <MainTableCell>{utility_name}</MainTableCell>
+            <MainTableCell>{program_name}</MainTableCell>
+            <MainTableCell>
                 <input
                     type='checkbox'
                     checked={resolvedChecked}
                     onChange={onResolvedClicked}
                 />
-            </TableCell>
-        </TableRow>
+            </MainTableCell>
+        </MainTableRow>
     )
 }
 
@@ -41,10 +42,10 @@ export default function TicketsList(props){
     const tickets = useSelector(state => state.tickets.tickets);
 
     return !tickets ? null : (
-        <TableBody>
+        <MainTableBody>
             {tickets.map((ticket, i) =>
                 <Ticket ticket={ticket} key={key++} />
             )}
-        </TableBody>
+        </MainTableBody>
     );
 }

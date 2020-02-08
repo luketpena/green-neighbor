@@ -78,16 +78,25 @@ export const MainTable = styled.table`
   border-collapse: collapse;
 `;
 
-export const MainTableHead = styled.thead`
-  background-color: #CACACA;
-`;
-
 export const MainTableBody = styled.tbody`
   tr:nth-child(odd) {
     background-color: #EEE;
   }
-  tr{
+  tr, th {
     background-color: white;
+    font-family: var(--font-main);
+    border-bottom: 1px solid #ddd;
+  }
+`;
+
+export const MainTableHead = styled.thead`
+  background-color: #CACACA;
+  text-align: left;
+  font-weight: bold;
+  border-bottom: 1px solid #ddd;
+  th {
+    padding: 8px;
+    font-weight: 1600;
     font-family: var(--font-main);
   }
 `;
@@ -97,7 +106,7 @@ export const MainTableRow = styled.tr`
 `;
 
 export const MainTableCell = styled.td`
-
+  padding: 8px;
 `;
 
 export const PageButton = styled.button`
