@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useLocation, useHistory} from 'react-router-dom';
 import writeQueries from '../../../modules/writeQueries';
@@ -11,6 +11,7 @@ import {Container, ManageBox, SearchBox, FilterBox,
 import TicketsList from './TicketsList';
 
 export default function TicketsPage() {
+
     const history = useHistory();
     const {search} = useLocation();
     const {
@@ -27,6 +28,8 @@ export default function TicketsPage() {
     const [commentSearch, setCommentSearch] = useState(comments || '');
     const dispatch = useCallback(useDispatch(), []);
     const ticketCount = useSelector(state=>state.tickets.count);
+
+    const hasMounted = useRef(false);
 
     const clickPage = (page) => {
         const current = parseQueries(search);
@@ -70,6 +73,7 @@ export default function TicketsPage() {
         return pageList;
     }
 
+    // on initial render, fetch tickets that we should be displaying
     useEffect(()=>{
         dispatch({
             type: 'GET_TICKETS',
@@ -85,18 +89,22 @@ export default function TicketsPage() {
         offset, comments
     ]);
 
+    useEffect(()=>{
+        if(hasMounted.current){
+            onSearch();
+        } else hasMounted.current = true;
+    }, [showFromCompanies, showFromUtility,
+        showFromProgram, showResolved
+    ]);
+
     const onSearch = e => {
-        e.preventDefault();
+        if(e) e.preventDefault();
         history.push(`/admin/tickets${writeQueries({
             zip: zipSearch, program: programSearch, utility: utilitySearch,
             resolved: showResolved, fromCompanies: showFromCompanies,
             fromUtility: showFromUtility, fromProgram: showFromProgram,
             comments: commentSearch
         })}`);
-    }
-
-    onFilterChange = () => {
-        
     }
 
     return(
