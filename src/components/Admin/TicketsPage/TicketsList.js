@@ -1,7 +1,20 @@
 import React, {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {MainTable, MainTableBody, MainTableHead,
-    MainTableRow, MainTableCell } from '../AdminUI';
+import {MainTableBody} from '../AdminUI';
+import styled from 'styled-components';
+
+const Resolved = styled.button`
+    color: ${props=>(props.resolved? 'var(--color-primary)' : '#A53535')};
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    font-size: 1rem;
+    transition: all .2s;
+    &:hover {
+        color: ${props=>(props.resolved? 'var(--color-primary-bright)' : '#333')};
+        transform: scale(1.1);
+        cursor: pointer;
+    }
+`;
 
 function Ticket({ticket}){
     const {
@@ -26,11 +39,12 @@ function Ticket({ticket}){
             <td>{utility_name}</td>
             <td>{program_name}</td>
             <td>
-                <input
-                    type='checkbox'
-                    checked={resolvedChecked}
-                    onChange={onResolvedClicked}
-                />
+                <Resolved
+                    resolved={resolvedChecked}
+                    onClick={onResolvedClicked}
+                >
+                    {resolvedChecked ? 'Resolved' : 'Active'}
+                </Resolved>
             </td>
         </tr>
     )
