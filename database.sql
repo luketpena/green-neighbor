@@ -70,6 +70,10 @@ CREATE TABLE "gpp" (
 CREATE TABLE "tickets" (
 	"id" SERIAL PRIMARY KEY,
 	"resolved" BOOLEAN DEFAULT FALSE,
+	"type" INT,
+	-- 0: missing utility company
+	-- 1: missing program
+	-- 2: errors in program
 	"zip" INT,
 	"zips_id" INT,
 	"utility_name" VARCHAR,
