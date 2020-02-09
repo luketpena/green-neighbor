@@ -7,6 +7,7 @@ import programDetailsSaga from './programDetailsSaga';
 import utilityNameSaga from './utilityNameSaga';
 import adminLandingSaga from './adminLandingSaga';
 import reportSaga from './reportSaga';
+import adminUserSaga from './adminUserSaga';
 import ticketsSaga from './ticketsSaga';
 
 // rootSaga is the primary saga.
@@ -26,6 +27,7 @@ export default function* rootSaga() {
     registrationSaga(),
     userSaga(),
     adminLandingSaga(),
+    adminUserSaga(),
     ticketsSaga()
   ]);
 }

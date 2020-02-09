@@ -1,17 +1,32 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useLocation, useHistory} from 'react-router-dom';
-import TextField from '@material-ui/core/TextField';
 import writeQueries from '../../../modules/writeQueries';
 import parseQueries from '../../../modules/parseQueries';
+import styled from 'styled-components';
 import {Container, ManageBox, SearchBox, FilterBox,
         FilterOption, MainBox, MainHeader, MainTable,
-        PageButton, PageBar
+        PageButton, PageBar, MainTableHead
     } from '../AdminUI';
 
 import TicketsList from './TicketsList';
 
+const DetailsDisplayButton = styled.button`
+    color: ${props=>(props.active? 'var(--color-primary)' : '#A53535')};
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    transition: all .2s;
+    &:hover {
+        color: ${props=>(props.active? 'var(--color-primary-bright)' : '#333')};
+        transform: scale(1.05);
+        cursor: pointer;
+    }
+`;
+
 export default function TicketsPage() {
+
     const history = useHistory();
     const {search} = useLocation();
     const {
@@ -22,12 +37,16 @@ export default function TicketsPage() {
     const [utilitySearch, setUtilitySearch] = useState(utility || '');
     const [programSearch, setProgramSearch] = useState(program || '');
     const [showResolved, setShowResolved] = useState(resolved);
-    const [showFromCompanies, setShowFromCompanies] = useState(!!fromCompanies || !(fromUtility || fromProgram));
-    const [showFromUtility, setShowFromUtility] = useState(!!fromUtility|| !(fromCompanies || fromProgram));
-    const [showFromProgram, setShowFromProgram] = useState(!!fromProgram || !(fromCompanies || fromUtility));
+    const [showFromCompanies, setShowFromCompanies] = useState(fromCompanies == false ? false : true);
+    const [showFromUtility, setShowFromUtility] = useState(fromUtility == false ? false : true);
+    const [showFromProgram, setShowFromProgram] = useState(fromProgram == false ? false : true);
     const [commentSearch, setCommentSearch] = useState(comments || '');
     const dispatch = useCallback(useDispatch(), []);
+
     const ticketCount = useSelector(state=>state.tickets.count);
+    const showDetails = useSelector(state => state.adminTicketsDisplayDetails);
+
+    const hasMounted = useRef(false);
 
     const clickPage = (page) => {
         const current = parseQueries(search);
@@ -35,6 +54,7 @@ export default function TicketsPage() {
         history.push(`/admin/tickets${writeQueries(current)}`)
     }
 
+    // Returns the page selector buttons
     const renderPages = () => {
         const pageList = [];
         const pageMax = Math.ceil(ticketCount / 100);
@@ -71,12 +91,16 @@ export default function TicketsPage() {
         return pageList;
     }
 
+    // on initial render, fetch tickets that we should be displaying
+    // based on what's in the URL
     useEffect(()=>{
         dispatch({
             type: 'GET_TICKETS',
             payload: {
                 zip, resolved, program_name: program,
                 utility_name: utility, offset, comments,
+                fromCompanies, fromUtility,
+                fromProgram
             }
         });
     }, [dispatch, zip, program, utility, resolved,
@@ -84,14 +108,28 @@ export default function TicketsPage() {
         offset, comments
     ]);
 
+    // if a filter changes, update the search
+    useEffect(()=>{
+        if(hasMounted.current){
+            onSearch();
+        } else hasMounted.current = true;
+    }, [showFromCompanies, showFromUtility,
+        showFromProgram, showResolved, onSearch]
+    );
+
+    // push current search to url
     const onSearch = e => {
-        e.preventDefault();
+        if(e) e.preventDefault();
         history.push(`/admin/tickets${writeQueries({
             zip: zipSearch, program: programSearch, utility: utilitySearch,
             resolved: showResolved, fromCompanies: showFromCompanies,
             fromUtility: showFromUtility, fromProgram: showFromProgram,
             comments: commentSearch
         })}`);
+    }
+
+    const toggleShowDetails = e => {
+        dispatch({type: 'SET_TICKETS_DISPLAY', payload: !showDetails});
     }
 
     return(
@@ -172,17 +210,23 @@ export default function TicketsPage() {
                         <PageBar>{renderPages()}</PageBar>
                     </MainHeader>
                     <MainTable>
-                        <thead>
-                            <tr style={{position: 'sticky'}}>
+                        <MainTableHead>
+                            <tr>
                                 <th>Zip</th>
                                 <th>Company</th>
                                 <th>Program</th>
                                 <th>Resolved</th>
+                                <th>
+                                    <DetailsDisplayButton
+                                        active={showDetails}
+                                        onClick={toggleShowDetails}
+                                    >
+                                        {showDetails ? 'Hide':'Show'} Details
+                                    </DetailsDisplayButton>
+                                </th>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <TicketsList />
-                        </tbody>
+                        </MainTableHead>
+                        <TicketsList/>
                     </MainTable>
                 </MainBox>
             </ManageBox>
