@@ -14,6 +14,7 @@ import AboutPage from '../AboutPage/AboutPage';
 import IntroductionPage from '../IntroductionPage/IntroductionPage';
 import UtilityPage from '../UtilityPage/UtilityPage';
 import Nav from '../Nav/Nav';
+import NavBar from '../NavBar/NavBar';
 import AdminLandingPage from '../Admin/AdminLandingPage/AdminLandingPage.js';
 import ManageAdminsPage from '../Admin/ManageAdminsPage/ManageAdminsPage.js';
 import RecordsPage from '../Admin/RecordsPage/RecordsPage';
@@ -65,7 +66,7 @@ class App extends Component {
           />
           <Fragment>
             <div className='adminPages'>
-              <Nav />
+              <NavBar />
               {/* For protected routes, the view could show one of several things on the same route.
               Visiting /home will show the UserPage if the user is logged in.
               If the user is not logged in, the ProtectedRoute will show the 'Login' or 'Register' page.
