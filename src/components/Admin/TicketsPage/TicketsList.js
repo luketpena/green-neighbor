@@ -57,9 +57,12 @@ export default function TicketsList(props){
     const tickets = useSelector(state => state.tickets.tickets);
 
     return !tickets ? null : (
-        <MainTableBody hoverable>
+        <MainTableBody hoverable doubleLines>
             {tickets.map((ticket, i) =>
-                <Ticket ticket={ticket} key={key++} />
+                <Ticket
+                    ticket={ticket}
+                    key={key++}
+                />
             )}
         </MainTableBody>
     );

@@ -3,12 +3,27 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useLocation, useHistory} from 'react-router-dom';
 import writeQueries from '../../../modules/writeQueries';
 import parseQueries from '../../../modules/parseQueries';
+import styled from 'styled-components';
 import {Container, ManageBox, SearchBox, FilterBox,
         FilterOption, MainBox, MainHeader, MainTable,
         PageButton, PageBar, MainTableHead
     } from '../AdminUI';
 
 import TicketsList from './TicketsList';
+
+const DetailsDisplayButton = styled.button`
+    color: ${props=>(props.active? 'var(--color-primary)' : '#A53535')};
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    transition: all .2s;
+    &:hover {
+        color: ${props=>(props.active? 'var(--color-primary-bright)' : '#333')};
+        transform: scale(1.05);
+        cursor: pointer;
+    }
+`;
 
 export default function TicketsPage() {
 
@@ -27,7 +42,9 @@ export default function TicketsPage() {
     const [showFromProgram, setShowFromProgram] = useState(fromProgram == false ? false : true);
     const [commentSearch, setCommentSearch] = useState(comments || '');
     const dispatch = useCallback(useDispatch(), []);
+
     const ticketCount = useSelector(state=>state.tickets.count);
+    const showDetails = useSelector(state => state.adminTicketsDisplayDetails);
 
     const hasMounted = useRef(false);
 
@@ -109,6 +126,10 @@ export default function TicketsPage() {
             fromUtility: showFromUtility, fromProgram: showFromProgram,
             comments: commentSearch
         })}`);
+    }
+
+    const toggleShowDetails = e => {
+        dispatch({type: 'SET_TICKETS_DISPLAY', payload: !showDetails});
     }
 
     return(
@@ -195,9 +216,17 @@ export default function TicketsPage() {
                                 <th>Company</th>
                                 <th>Program</th>
                                 <th>Resolved</th>
+                                <th>
+                                    <DetailsDisplayButton
+                                        active={showDetails}
+                                        onClick={toggleShowDetails}
+                                    >
+                                        {showDetails ? 'Show':'Hide'} Details
+                                    </DetailsDisplayButton>
+                                </th>
                             </tr>
                         </MainTableHead>
-                        <TicketsList />
+                        <TicketsList/>
                     </MainTable>
                 </MainBox>
             </ManageBox>

@@ -12,8 +12,10 @@ export const ManageBox = styled.div`
   min-height: 500px;
   display: grid;
   grid-template-columns: 200px  1fr;
-  grid-template-rows: 50px auto;
-  grid-template-areas: "search filter" "search main";
+  grid-template-rows: max-content auto;
+  grid-template-areas:
+    "search filter"
+    "search main";
   overflow: hidden;
   border-radius: 8px;
   box-shadow: 0 8px 8px 0 rgba(0,0,0,.5);
@@ -45,6 +47,7 @@ export const FilterBox = styled.div`
   background-color: var(--color-primary);
   grid-area: filter;
   display: flex;
+  flex-flow: row wrap;
   align-items: center;
 `;
 
@@ -80,7 +83,9 @@ export const MainTable = styled.table`
 `;
 
 export const MainTableBody = styled.tbody`
-  tr:nth-child(odd) {
+  tr:${props=>props.doubleLines ?
+    'nth-child(odd)':'nth-child(4n):nth-child(4n-1)'
+  }{
     background-color: #EEE;
   }
   tr, th {
