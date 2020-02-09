@@ -25,8 +25,6 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
             }
         });
 
-        console.log(req.query, conditions);
-
         const {fromCompanies, fromUtility, fromProgram} = req.query;
         const isTrue = s => (s === 'true' || s === true);
         if(isTrue(fromCompanies) || isTrue(fromUtility) || isTrue(fromProgram)){
@@ -34,7 +32,6 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
             if(isTrue(fromCompanies)) types.push('type=0');
             if(isTrue(fromUtility)) types.push('type=1');
             if(isTrue(fromProgram)) types.push('type=2');
-            console.log('types', types);
             conditions.push(`(${types.join(' OR ')})`);
         }
 
@@ -54,7 +51,6 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
             SELECT COUNT(*) FROM "tickets"
             ${conditions.length ? `WHERE ${conditions.join(' AND ')}`: ''}
         `;
-        console.log(countQuery);
 
         const countResults = await pool.query(countQuery, config);
         const {count} = countResults.rows[0];

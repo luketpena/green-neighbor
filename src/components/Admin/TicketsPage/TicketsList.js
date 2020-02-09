@@ -17,13 +17,17 @@ const Resolved = styled.button`
     }
 `;
 
+const DetailsParagraph = styled.p`
+    margin: 0px;
+`;
+
 function Details({ticket}){
     const {email, comments} = ticket;
     return(
         <tr>
             <td colSpan={5}>
-                <p>{comments}</p>
-                <p>{email}</p>
+                <DetailsParagraph>{comments}</DetailsParagraph>
+                <DetailsParagraph>{email}</DetailsParagraph>
             </td>
         </tr>
     )
@@ -73,9 +77,9 @@ let key = 0;
 
 export default function TicketsList(props){
     const tickets = useSelector(state => state.tickets.tickets);
-
-    return !tickets ? null : (
-        <MainTableBody hoverable doubleLines>
+    const showDetails = useSelector(state => state.adminTicketsDisplayDetails);
+    return tickets ? (
+        <MainTableBody hoverable doubleLines={showDetails}>
             {tickets.map((ticket, i) =>
                 <Ticket
                     ticket={ticket}
@@ -83,5 +87,5 @@ export default function TicketsList(props){
                 />
             )}
         </MainTableBody>
-    );
+    ) : null;
 }

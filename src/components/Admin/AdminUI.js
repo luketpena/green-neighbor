@@ -84,13 +84,18 @@ export const MainTable = styled.table`
 
 export const MainTableBody = styled.tbody`
   tr:${props=>props.doubleLines ?
-    'nth-child(odd)':'nth-child(4n):nth-child(4n-1)'
+    `nth-child(4n):nth-child(4n-1)`:'nth-child(odd)'
   }{
     background-color: #EEE;
   }
+  ${props=>props.doubleLines ? `
+    nth-child(4n):{
+      border-bottom: 1px solid #ddd;
+    }` : ''}
   tr, th {
     background-color: white;
-    border-bottom: 1px solid #ddd;
+    ${props=>props.doubleLines ? 
+      '' : 'border-bottom: 1px solid #ddd;'};
     ${props=>props.hoverable && `
       &:hover {
         background-color: #DDEEFF;

@@ -215,7 +215,7 @@ export default function TicketsPage() {
                                 <th>Zip</th>
                                 <th>Company</th>
                                 <th>Program</th>
-                                <th>Resolved</th>
+                                <th style={{minWidth: '5rem'}}>Resolved</th>
                                 <th>
                                     <DetailsDisplayButton
                                         active={showDetails}
