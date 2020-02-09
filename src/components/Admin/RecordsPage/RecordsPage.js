@@ -56,6 +56,9 @@ const FilterOption = styled.div`
   margin: 8px;
   display: flex;
   align-items: center;
+  input:hover {
+    cursor: pointer;
+  }
 `;
 
 const MainBox = styled.div`
@@ -116,22 +119,34 @@ export default function RecordsPage() {
 
   const dispatch = useDispatch();
   const utilitiesCount = useSelector(state=>state.utilitiesCount);
+  const utilitiesSearch = useSelector(state=>state.utilitiesSearch);
   const utilities = useSelector(state=>state.utilities);
-  let [page, setPage] = useState(683);
+
+  let [page, setPage] = useState(0);
+  let [zip,setZip] = useState('');
+  let [utility_name,setUtility_name] = useState('');
+  let [program_name,setProgram_name] = useState('');
+  let [state, setState] = useState('');
+  let [active, setActive] = useState(true);
+  let [drafts, setDrafts] = useState(true);
+
+  let [show, setShow] = useState('all');
+
+  let [mount, setMount] = useState(false);
 
 
   useEffect(()=>{
-    dispatch({type: 'GET_UTILITIES', payload: page});
-  },[utilitiesCount, page]);
+    dispatch({type: 'GET_UTILITIES', payload: {page, search: utilitiesSearch}});
+    if (!mount) {
+      setMount(true);
+      dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show}});
+    }
+  },[utilitiesCount, utilitiesSearch, page]);
 
   function renderUtilities() {
     return utilities.map( (item,i)=> {
-      return <UtilityRow key={i} utility={item}/>
+      return <UtilityRow key={i} utility={item} page={page}/>
     });
-  }
-
-  function clickPage(goto) {
-    setPage(goto);
   }
 
   function renderPages() {
@@ -139,29 +154,34 @@ export default function RecordsPage() {
     const pageMax = Math.ceil(utilitiesCount/100);
 
     function returnPageButton(index,goto,text) {
-      return <PageButton key={index} index={index} page={page} onClick={()=>clickPage(goto)}>{text}</PageButton>
+      return <PageButton key={index} index={index} page={page} onClick={()=>setPage(goto)}>{text}</PageButton>
     }
 
     if (page>5) {pageList.push(returnPageButton(-1,0,'<<'))}
     
-    
-
-    if (page<5) {
-      for (let i=0; i<10; i++) {
-        pageList.push(returnPageButton(i,i,i+1));
-      }
-    } else if (page>pageMax-6) {
-      for (let i=pageMax-10; i<pageMax; i++) {
-        pageList.push(returnPageButton(i,i,i+1));
-      }
-    } else {
-      for (let i=page-4; i<page+6; i++) {
-        pageList.push(returnPageButton(i,i,i+1));
+    if (pageMax>0) {
+      if (page<5) {
+        for (let i=0; i<10; i++) {
+          pageList.push(returnPageButton(i,i,i+1));
+        }
+      } else if (page>pageMax-6) {
+        for (let i=pageMax-10; i<pageMax; i++) {
+          pageList.push(returnPageButton(i,i,i+1));
+        }
+      } else {
+        for (let i=page-4; i<page+6; i++) {
+          pageList.push(returnPageButton(i,i,i+1));
+        }
       }
     }
 
     if (page<pageMax-6) {pageList.push(returnPageButton(pageMax,pageMax-1,'>>'))}
     return pageList;
+  }
+
+  function submitSearch(event) {
+    event.preventDefault();
+    dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show}});
   }
 
   return(
@@ -170,21 +190,27 @@ export default function RecordsPage() {
         <ManageBox>
 
           <SearchBox>
-            <form>
-              <input type="number" placeholder="Zip Code" />
-              <input type="text" placeholder="Utility Company" />
-              <input type="text" placeholder="Energy Program" />
+            <form onSubmit={submitSearch}>
+              <input type="text" placeholder="State Abbreviation" onChange={event=>setState(event.target.value)} value={state} />
+              <input type="number" placeholder="Zip Code" onChange={event=>setZip(event.target.value)} value={zip}/>
+              <input type="text" placeholder="Utility Company" onChange={event=>setUtility_name(event.target.value)} value={utility_name}/>
+              <input type="text" placeholder="Energy Program" onChange={event=>setProgram_name(event.target.value)} value={program_name}/>
+              <select>
+                <option value="all">Show all</option>
+                <option value="drafts">Drafts only</option>
+                <option value="active">Active only</option>
+              </select>
               <button className="button-default">Search</button>
             </form>
           </SearchBox>
 
           <FilterBox>
             <FilterOption>
-              <input type="checkbox" />
+              <input type="checkbox" checked={drafts} onChange={event=>setDrafts(event.target.checked)}/>
               <label>Show Drafts</label>
             </FilterOption>
             <FilterOption>
-              <input type="checkbox" />
+              <input type="checkbox" checked={active} onChange={event=>setActive(event.target.checked)}/>
               <label>Show Active</label>
             </FilterOption>
           </FilterBox>
