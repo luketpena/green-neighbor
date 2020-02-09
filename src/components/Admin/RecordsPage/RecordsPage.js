@@ -127,8 +127,10 @@ export default function RecordsPage() {
   let [utility_name,setUtility_name] = useState('');
   let [program_name,setProgram_name] = useState('');
   let [state, setState] = useState('');
-  let [showActive, setShowActive] = useState(true);
-  let [showDrafts, setShowDrafts] = useState(true);
+  let [active, setActive] = useState(true);
+  let [drafts, setDrafts] = useState(true);
+
+  let [show, setShow] = useState('all');
 
   let [mount, setMount] = useState(false);
 
@@ -137,7 +139,7 @@ export default function RecordsPage() {
     dispatch({type: 'GET_UTILITIES', payload: {page, search: utilitiesSearch}});
     if (!mount) {
       setMount(true);
-      dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, showActive, showDrafts}});
+      dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show}});
     }
   },[utilitiesCount, utilitiesSearch, page]);
 
@@ -179,7 +181,7 @@ export default function RecordsPage() {
 
   function submitSearch(event) {
     event.preventDefault();
-    dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, showActive, showDrafts}});
+    dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show}});
   }
 
   return(
@@ -193,17 +195,22 @@ export default function RecordsPage() {
               <input type="number" placeholder="Zip Code" onChange={event=>setZip(event.target.value)} value={zip}/>
               <input type="text" placeholder="Utility Company" onChange={event=>setUtility_name(event.target.value)} value={utility_name}/>
               <input type="text" placeholder="Energy Program" onChange={event=>setProgram_name(event.target.value)} value={program_name}/>
+              <select>
+                <option value="all">Show all</option>
+                <option value="drafts">Drafts only</option>
+                <option value="active">Active only</option>
+              </select>
               <button className="button-default">Search</button>
             </form>
           </SearchBox>
 
           <FilterBox>
             <FilterOption>
-              <input type="checkbox" checked={showDrafts} onChange={event=>setShowDrafts(event.target.checked)}/>
+              <input type="checkbox" checked={drafts} onChange={event=>setDrafts(event.target.checked)}/>
               <label>Show Drafts</label>
             </FilterOption>
             <FilterOption>
-              <input type="checkbox" checked={showActive} onChange={event=>setShowActive(event.target.checked)}/>
+              <input type="checkbox" checked={active} onChange={event=>setActive(event.target.checked)}/>
               <label>Show Active</label>
             </FilterOption>
           </FilterBox>

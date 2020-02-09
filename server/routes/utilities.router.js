@@ -31,30 +31,55 @@ router.get('/count', async(req,res)=>{
   
   try {
 
-    let query = `SELECT COUNT(z.id) FROM zips z`;
+    let query = `
+      SELECT COUNT(z.id) FROM zips z
+      LEFT JOIN gpp g ON z.eia_state = g.eia_state
+    `;
     const queryParams = [];
+    let conjunctionCount = 0;
 
     for (let [key,value] of Object.entries(req.query)) {
-      console.log(key, value);
-      switch(key) {
-        case 'state':
-          queryParams.push('%'+value+'%');
-          break;
-        default:
-          queryParams.push(Number(value));
-          break;
-      }
-      query += (queryParams.length===1? ' WHERE ' : ' AND ');
       
       switch(key) {
         case 'state':
-          query += `z.state ILIKE $${queryParams.length}`
+        case 'utility_name':
+        case 'program_name':
+          queryParams.push('%'+value+'%');
+          break;
+        case 'show':
+          switch(value) {
+            case 'active': queryParams.push(true); break;
+            case 'drafts': queryParams.push(false); break;
+          }
           break;
         case 'zip':
-          query += `z.zip=$${queryParams.length}`
+          queryParams.push(Number(value));
           break;
       }
+
+      if (queryParams.length>0) {
+        console.log('Query params:',queryParams);
+        if (conjunctionCount<queryParams.length) {
+          query += (queryParams.length===1? ' WHERE ' : ' AND ');
+          conjunctionCount++;
+        }
+        
+      }
+      
+      switch(key) {
+        case 'state': query += `z.state ILIKE $${queryParams.length}`; break;
+        case 'zip': query += `z.zip=$${queryParams.length}`; break;
+        case 'utility_name': query += `z.utility_name ILIKE $${queryParams.length}`; break;
+        case 'program_name': query += `z.utility_name ILIKE $${queryParams.length}`; break;
+        case 'show': (value!=='all'? query += `z.production=$${queryParams.length}` : ''); break;
+      }
     }
+   
+      
+    query += ` GROUP BY z.id`;
+    query = 'SELECT COUNT(*) FROM (' + query + ') as utility_count';
+
+    console.log(query);
     
     const result = await pool.query(query,queryParams);
     res.send(result.rows[0]);
