@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation, useHistory} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
 
 
@@ -9,6 +10,9 @@ const Container = styled.div`
   display: grid;
   grid-template-areas: "buttons logout";
   grid-template-columns: 1fr auto;
+  position: sticky;
+  top: 0;
+  box-shadow: 0 4px 8px 2px rgba(0,0,0,.25);
 `;
 
 const ButtonBox = styled.div`
@@ -19,6 +23,17 @@ const ButtonBox = styled.div`
 
 const LogOutButton = styled.button`
   grid-area: logout;
+  background: none;
+  outline: none;
+  border: none;
+  color: white;
+  font-size: 1em;
+  width: 100px;
+  transition: all .2s;
+  &:hover{
+    background-color: var(--color-primary-light);
+    cursor: pointer;
+  }
 `;
 
 const NavButton = styled.button`
@@ -42,6 +57,7 @@ export default function NavBar() {
   const [value, setValue] = useState(0);
   const {pathname: currentURL} = useLocation();
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const tabs = [
     {name: 'Home', link: '/admin/home'},
@@ -50,7 +66,7 @@ export default function NavBar() {
     {name: 'Users', link: '/admin/manageAdmins'},
   ];
 
-  React.useEffect(()=>{
+  useEffect(()=>{
     let i = 0;
     for(; i < tabs.length; i++){
       if(currentURL === tabs[i].link){
@@ -68,12 +84,17 @@ export default function NavBar() {
     })
   }
 
+  const user = useSelector(state => state.user);
+  if(!user.id){
+    return null;
+  }
+
   return (
     <Container>
       <ButtonBox>
         {renderTabs()}
       </ButtonBox>
-      <LogOutButton>Log Out</LogOutButton>
+      <LogOutButton onClick={() => dispatch({ type: 'LOGOUT' })}>Log Out</LogOutButton>
     </Container>
   )
 }
