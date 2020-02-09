@@ -18,7 +18,7 @@ const Resolved = styled.button`
 `;
 
 const DetailsParagraph = styled.p`
-    margin: 0px;
+    margin: 0px 0px 8px 0px;
 `;
 
 function Details({ticket}){
@@ -27,7 +27,12 @@ function Details({ticket}){
         <tr>
             <td colSpan={5}>
                 <DetailsParagraph>{comments}</DetailsParagraph>
-                <DetailsParagraph>{email}</DetailsParagraph>
+                <DetailsParagraph>
+                    {email}&nbsp;
+                    <a href={`mailto:${email}`} >
+                        (open in mail client)
+                    </a>
+                </DetailsParagraph>
             </td>
         </tr>
     )
