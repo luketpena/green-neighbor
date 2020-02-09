@@ -28,7 +28,8 @@ const rootReducer = combineReducers({
   geocode: createReducer('SET_GEOCODE_DATA'),
   adminLandingPageData: createReducer('SET_ADMIN_LANDING_DATA', {}),
   adminUsers: createReducer('SET_ADMIN_USERS'),
-  tickets: createReducer('SET_TICKETS', {})
+  tickets: createReducer('SET_TICKETS', {}),
+  adminTicketsDisplayDetails: createReducer('SET_TICKETS_DISPLAY', false)
 });
 
 export default rootReducer;

@@ -1,3 +1,6 @@
+// converts strings with the format ?key=value&key2=value2 to objects.
+// strings like 'true' and 'false' will be converted to booleans,
+// as will numbers
 const parseQueries = str => {
     const queries = (str[0] === '?' ? str.substring(1) : str).split('&');
     return queries.reduce((acc, query) => {

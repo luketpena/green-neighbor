@@ -1,14 +1,41 @@
 import React, {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {Checkbox, TableCell, TableRow} from '@material-ui/core';
+import {MainTableBody} from '../AdminUI';
+import styled from 'styled-components';
+
+const Resolved = styled.button`
+    color: ${props=>(props.resolved? 'var(--color-primary)' : '#A53535')};
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    transition: all .2s;
+    &:hover {
+        color: ${props=>(props.resolved? 'var(--color-primary-bright)' : '#333')};
+        transform: scale(1.05);
+        cursor: pointer;
+    }
+`;
+
+function Details({ticket}){
+    const {email, comments} = ticket;
+    return(
+        <tr>
+            <td colSpan={5}>
+                <p>{comments}</p>
+                <p>{email}</p>
+            </td>
+        </tr>
+    )
+}
 
 function Ticket({ticket}){
     const {
-        id, resolved, zip, utility_name,
-        program_name, email, comments
+        id, resolved, zip, utility_name, program_name
     } = ticket;
     const [resolvedChecked, setResolvedChecked] = useState(!!resolved);
     const dispatch = useDispatch();
+    const showDetails = useSelector(state => state.adminTicketsDisplayDetails);
 
     const onResolvedClicked = e => {
         const value = !resolvedChecked;
@@ -20,18 +47,25 @@ function Ticket({ticket}){
     }
 
     return(
-        <tr>
-            <td>{zip}</td>
-            <td>{utility_name}</td>
-            <td>{program_name}</td>
-            <td>
-                <input
-                    type='checkbox'
-                    checked={resolvedChecked}
-                    onChange={onResolvedClicked}
-                />
-            </td>
-        </tr>
+        <>
+            <tr>
+                <td>{zip}</td>
+                <td>{utility_name}</td>
+                <td>{program_name}</td>
+                <td>
+                    <Resolved
+                        resolved={resolvedChecked}
+                        onClick={onResolvedClicked}
+                    >
+                        {resolvedChecked ? 'Resolved' : 'Active'}
+                    </Resolved>
+                </td>
+                <td>
+                    {!showDetails && <button>Details</button>}
+                </td>
+            </tr>
+            {showDetails && <Details ticket={ticket} />}
+        </>
     )
 }
 
@@ -40,7 +74,14 @@ let key = 0;
 export default function TicketsList(props){
     const tickets = useSelector(state => state.tickets.tickets);
 
-    return !tickets ? null : tickets.map((ticket, i) =>
-        <Ticket ticket={ticket} key={key++} />
+    return !tickets ? null : (
+        <MainTableBody hoverable doubleLines>
+            {tickets.map((ticket, i) =>
+                <Ticket
+                    ticket={ticket}
+                    key={key++}
+                />
+            )}
+        </MainTableBody>
     );
 }
