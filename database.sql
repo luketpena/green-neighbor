@@ -81,6 +81,7 @@ CREATE TABLE "tickets" (
 	"program_name" VARCHAR,
 	"gpp_id" INT,
 	"email" VARCHAR,
+	"date_submitted" DATE DEFAULT CURRENT_DATE,
 	"comments" VARCHAR
 );
 
