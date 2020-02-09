@@ -17,13 +17,25 @@ const Resolved = styled.button`
     }
 `;
 
+function Details({ticket}){
+    const {email, comments} = ticket;
+    return(
+        <tr>
+            <td colSpan={5}>
+                <p>{comments}</p>
+                <p>{email}</p>
+            </td>
+        </tr>
+    )
+}
+
 function Ticket({ticket}){
     const {
-        id, resolved, zip, utility_name,
-        program_name, email, comments
+        id, resolved, zip, utility_name, program_name
     } = ticket;
     const [resolvedChecked, setResolvedChecked] = useState(!!resolved);
     const dispatch = useDispatch();
+    const showDetails = useSelector(state => state.adminTicketsDisplayDetails);
 
     const onResolvedClicked = e => {
         const value = !resolvedChecked;
@@ -35,19 +47,25 @@ function Ticket({ticket}){
     }
 
     return(
-        <tr>
-            <td>{zip}</td>
-            <td>{utility_name}</td>
-            <td>{program_name}</td>
-            <td>
-                <Resolved
-                    resolved={resolvedChecked}
-                    onClick={onResolvedClicked}
-                >
-                    {resolvedChecked ? 'Resolved' : 'Active'}
-                </Resolved>
-            </td>
-        </tr>
+        <>
+            <tr>
+                <td>{zip}</td>
+                <td>{utility_name}</td>
+                <td>{program_name}</td>
+                <td>
+                    <Resolved
+                        resolved={resolvedChecked}
+                        onClick={onResolvedClicked}
+                    >
+                        {resolvedChecked ? 'Resolved' : 'Active'}
+                    </Resolved>
+                </td>
+                <td>
+                    {!showDetails && <button>Details</button>}
+                </td>
+            </tr>
+            {showDetails && <Details ticket={ticket} />}
+        </>
     )
 }
 

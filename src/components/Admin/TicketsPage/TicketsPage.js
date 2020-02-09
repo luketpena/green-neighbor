@@ -221,7 +221,7 @@ export default function TicketsPage() {
                                         active={showDetails}
                                         onClick={toggleShowDetails}
                                     >
-                                        {showDetails ? 'Show':'Hide'} Details
+                                        {showDetails ? 'Hide':'Show'} Details
                                     </DetailsDisplayButton>
                                 </th>
                             </tr>
