@@ -1,14 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {useParams, useHistory} from 'react-router-dom';
-import styled from 'styled-components';
+import {useParams} from 'react-router-dom';
+import UpdateAdminInfo from '../ManageAdminsPage/UpdateAdminInfo';
+// import styled from 'styled-components';
 
 
 
-export default function CurrentAdmin() {
+
+
+export default function CurrentAdmin(props) {
     const dispatch = useDispatch(); 
     const adminUsers = useSelector(state => state.adminUsers );
-    const {usernames, id} = useParams();
+    const {usernames} = useParams();
+    const [open, setOpen] = useState(false);
+
+    const editButton  = () => {
+        console.log('hitting edit button');
+    
+        setOpen(true);
+    }
+    const handleClose = () => {
+        setOpen(false);
+        };
 
     useEffect(() =>  {
         console.log('Getting all users', usernames);
@@ -20,12 +33,15 @@ export default function CurrentAdmin() {
 
     const deleteAdmin = (id) => {
         console.log('start deleteAdmin');
-        
         dispatch({ type: 'DELETE_ADMIN', payload: id});
-    }
+    };
+
+    
+
+    
 
     return(
-        
+        <div>
             <table>
                 <tbody>
                     <tr>
@@ -37,7 +53,7 @@ export default function CurrentAdmin() {
                         return<tr>
                             {JSON.stringify(user)}
                                 <td>{user.username}</td>
-                                <button>Update User Info</button>
+                                <button onClick={() => editButton()}>Update User Info</button>
                                 <button onClick={() => deleteAdmin(user.id)} >Remove</button>
                             </tr>})}                       
                         <td>
@@ -48,6 +64,7 @@ export default function CurrentAdmin() {
                 </tbody>
             </table>
         
-        
+            <UpdateAdminInfo open={open} />
+        </div>
     )
 }

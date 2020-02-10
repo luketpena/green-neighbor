@@ -102,9 +102,9 @@ export default function ReportErrorPage(props){
         setOpen(true);
     }
 
-    const handleClose = () => {
-        setOpen(false);
-        };
+    // const handleClose = () => {
+    //     setOpen(false);
+    //     };
 
     
     let body;

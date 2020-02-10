@@ -35,6 +35,23 @@ router.post('/admin', rejectUnauthenticated, (req, res) => {
   .catch(() => res.sendStatus(500));
 });
 
+// Handles UPDATING requests for when Admins change their user info.
+router.put('/admin/:id', rejectUnauthenticated, (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  const queryText = `
+    UPDATE "users"
+    SET username = $1, password = $2
+    WHERE user.id = $3`;
+    pool.query(queryText, [username, password])
+    .then((result) => {
+      res.sendStatus(200);
+    }).catch((error) => {
+      console.log('error updating admin user info router');
+      
+    })
+})
+
 // Handles POST request with new user data
 // The only thing different from this and every other post we've seen
 // is that the password gets encrypted before being inserted
