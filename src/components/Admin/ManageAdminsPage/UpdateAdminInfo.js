@@ -47,9 +47,10 @@ const DialogTitle = withStyles(styles)(props => {
   export default function UpdateAdminInfo(props) {
     const [username, setAdminUsername] = useState('');
     const [password, setAdminPassword] = useState('');
-    const dispatch = useDispatch(); 
-
+    const dispatch = useDispatch();
     
+
+   
 
     useEffect( () => {
         setAdminUsername(username);
@@ -60,9 +61,10 @@ const DialogTitle = withStyles(styles)(props => {
     }, [password]);
 
     // Function allows a Logged in Admin to update ONLY their own info.
-    const updateAdmin = (info) => {
+    const updateAdmin = () => {
         console.log('start updateAdmin');
-        dispatch({ type: 'UPDATE_ADMIN_INFO', payload: info});
+        dispatch({ type: 'UPDATE_ADMIN_INFO', payload: {username, password}});
+        props.close();
     };
 
     return (
@@ -93,8 +95,8 @@ const DialogTitle = withStyles(styles)(props => {
                 
             </DialogContent>
             <DialogActions>
-                <Button autoFocus onClick={updateAdmin} color="primary">
-                Continue
+                <Button autoFocus onClick={updateAdmin}  color="primary">
+                Save Changes
                 </Button>
             </DialogActions>
             </Dialog>

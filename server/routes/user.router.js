@@ -39,15 +39,16 @@ router.post('/admin', rejectUnauthenticated, (req, res) => {
 router.put('/admin/:id', rejectUnauthenticated, (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
+  const id = req.user.id;
   const queryText = `
-    UPDATE "users"
+    UPDATE "user"
     SET username = $1, password = $2
-    WHERE user.id = $3`;
-    pool.query(queryText, [username, password])
+    WHERE "user"."id" = $3`;
+    pool.query(queryText, [username, password, id])
     .then((result) => {
       res.sendStatus(200);
     }).catch((error) => {
-      console.log('error updating admin user info router');
+      console.log('error updating admin user info router', error);
       
     })
 })

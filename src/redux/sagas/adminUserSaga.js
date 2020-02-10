@@ -33,9 +33,10 @@ function* getAdminUsers() {
 
 // type: UPDATE
 function* updateAdminInfo (action) {
+  let id = action.payload.id
   try {
-    yield axios.put(`/api/user/admin/${action.payload}`);
     console.log('inside updateAdminInfo saga');
+    yield axios.put(`/api/user/admin/${id}`, action.payload);
     yield put({type: `GET_ADMIN_USERS`});
   }catch(error){
     console.log('error updating admin user info', error);
@@ -46,7 +47,7 @@ function* updateAdminInfo (action) {
     yield takeLatest('GET_ADMIN_USERS', getAdminUsers);
     yield takeLatest('POST_NEW_ADMIN', postAdminUser);
     yield takeLatest('DELETE_ADMIN', deleteAdminSaga);
-    yield takeLatest('UPDATE_ADMIN', updateAdminInfo);
+    yield takeLatest('UPDATE_ADMIN_INFO', updateAdminInfo);
   }
 
   

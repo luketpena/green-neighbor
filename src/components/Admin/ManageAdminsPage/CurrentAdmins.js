@@ -8,15 +8,15 @@ import UpdateAdminInfo from '../ManageAdminsPage/UpdateAdminInfo';
 
 
 
-export default function CurrentAdmin(props) {
+export default function CurrentAdmin() {
     const dispatch = useDispatch(); 
     const adminUsers = useSelector(state => state.adminUsers );
     const {usernames} = useParams();
     const [open, setOpen] = useState(false);
+    // const [close, setClose] = useState(true);
 
     const editButton  = () => {
         console.log('hitting edit button');
-    
         setOpen(true);
     }
     const handleClose = () => {
@@ -49,22 +49,21 @@ export default function CurrentAdmin(props) {
                         <th>Actions</th>
                     </tr>
                     
-                    {adminUsers.map((user) => {
-                        return<tr>
-                            {JSON.stringify(user)}
+                    {adminUsers.map((user, i) => {
+                        return<tr key={i}>
+                            {/* {JSON.stringify(user)} */}
                                 <td>{user.username}</td>
-                                <button onClick={() => editButton()}>Update User Info</button>
-                                <button onClick={() => deleteAdmin(user.id)} >Remove</button>
-                            </tr>})}                       
-                        <td>
-                            
-                        </td>
-                    
-            
+                                <td>
+                                    <button onClick={() => editButton()}>Update User Info</button>
+                                </td>
+                                <td> 
+                                    <button onClick={() => deleteAdmin(user.id)} >Remove</button>
+                                </td>   
+                            </tr>})}
                 </tbody>
             </table>
         
-            <UpdateAdminInfo open={open} />
+            <UpdateAdminInfo open={open} close={handleClose} />
         </div>
     )
 }
