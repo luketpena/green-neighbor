@@ -59,11 +59,14 @@ import HomeButton from '../HomeButton/HomeButton';
 `;
 
 const Container = styled.div`
+width: 90%;
+height: 500px;
+margin: 0 auto;
 display: grid;
 grid-template-areas: "menu details";
 grid-template-rows: 100px 1fr;
-grid-template-columns: 250px 400px;
-justify-content: center;
+grid-template-columns: 250px 850px;
+// justify-content: center;
 `;
 
 const Header = styled.div`
@@ -80,24 +83,29 @@ h1 {
 }
 `;
 
-// const Menu = styled.div`
-// grid-area: menu;
-// height: 400px;
-// background-color: white;
-// grid-row: 2;
-// display: flex;
-// align-items: center;
-// // opacity: .7;
-// `;
+const Menu = styled.div`
+grid-area: menu;
+height: 400px;
+grid-row: 2;
+display: flex;
+flex-direction: column;
+align-items: right;
+`;
 
 const Details = styled.div`
 grid-area: details;
-height: 400px;
-background-color: white;
 grid-row: 2;
+
+height: 400px;
+overflow: scroll;
+opacity: .82;
+`;
+const Div = styled.div`
+padding: 15px 0px 15px;
 display: flex;
+flex-direction: column;
 align-items: center;
-// opacity: .4;
+height: 100%;
 `;
 
 export default function ContributePage() {
@@ -114,8 +122,8 @@ export default function ContributePage() {
             <h1>Contribute</h1>
         </Header>
         <Container >
-            {/* <Menu className="container">
-                <Tabs
+             
+               {/* <Tabs
                     orientation="vertical"
                     value={value}
                     onChange={handleChange}
@@ -123,12 +131,17 @@ export default function ContributePage() {
                     className={classes.tabs}
                     
                 >
-                    {/* labels based on scope doc 
                     <Tab label="Provide Information" {...a11yProps(0)} />
                     <Tab label="Follow us on Social Media" {...a11yProps(1)} />
                     <Tab label="Make a Donation" {...a11yProps(2)} />
-                </Tabs>
-            </Menu> */}
+                </Tabs>*/}
+            <Menu>
+            <button className="button-primary" >Follow us on Socal Media</button>
+            {/* <button className="button-primary" >Provide Information</button>
+            <button className="button-primary" >Make a Donation</button> */}
+            </Menu> 
+
+            
             <Details className="container">
                 {/* link to component or just have text */}
                 {/* <TabPanel value={value} index={0}>
@@ -140,6 +153,14 @@ export default function ContributePage() {
                 <TabPanel value={value} index={2}>
                     Donation
                 </TabPanel> */}
+                <Div>
+                    <h2>FOLLOW US ON SOCIAL MEDIA</h2>
+                    <h3>AND SHARE US WITH YOUR NEIGHBORS</h3>
+                </Div>
+                {/* <Div>2</Div>
+                <Div>
+                    <h2>WE'RE A SMALL NON-PROFIT OPERTAION</h2>
+                </Div> */}
             </Details>
         </Container>
     </BackgroundBox>
