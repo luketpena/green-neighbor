@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {MainTableBody} from '../AdminUI';
 import styled from 'styled-components';
+import DetailsModal from './DetailsModal';
 
 const Resolved = styled.button`
     color: ${props=>(props.resolved? 'var(--color-primary)' : '#A53535')};
@@ -17,13 +18,19 @@ const Resolved = styled.button`
     }
 `;
 
+const DetailsParagraph = styled.p`
+    margin: 0px 0px 8px 0px;
+`;
+
 function Details({ticket}){
     const {email, comments} = ticket;
     return(
         <tr>
-            <td colSpan={5}>
-                <p>{comments}</p>
-                <p>{email}</p>
+            <td colSpan={6}>
+                <DetailsParagraph>Comments: {comments}</DetailsParagraph>
+                <DetailsParagraph>
+                    <a href={`mailto:${email}`} >{email}</a>
+                </DetailsParagraph>
             </td>
         </tr>
     )
@@ -31,7 +38,7 @@ function Details({ticket}){
 
 function Ticket({ticket}){
     const {
-        id, resolved, zip, utility_name, program_name
+        id, resolved, zip, utility_name, program_name, date_submitted
     } = ticket;
     const [resolvedChecked, setResolvedChecked] = useState(!!resolved);
     const dispatch = useDispatch();
@@ -46,9 +53,16 @@ function Ticket({ticket}){
         setResolvedChecked(value);
     }
 
+    const openModal = e => {
+        dispatch({type: 'SET_TICKET_MODAL_OPEN', payload: true});
+        dispatch({type: 'SET_TICKET_MODAL_TICKET', payload: ticket});
+    }
+
+    const date = new Date(date_submitted);
     return(
         <>
             <tr>
+                <td>{date.toLocaleDateString()}</td>
                 <td>{zip}</td>
                 <td>{utility_name}</td>
                 <td>{program_name}</td>
@@ -61,7 +75,11 @@ function Ticket({ticket}){
                     </Resolved>
                 </td>
                 <td>
-                    {!showDetails && <button>Details</button>}
+                    <button
+                        onClick={openModal}
+                    >
+                        Details
+                    </button>
                 </td>
             </tr>
             {showDetails && <Details ticket={ticket} />}
@@ -73,15 +91,20 @@ let key = 0;
 
 export default function TicketsList(props){
     const tickets = useSelector(state => state.tickets.tickets);
-
-    return !tickets ? null : (
-        <MainTableBody hoverable doubleLines>
-            {tickets.map((ticket, i) =>
-                <Ticket
-                    ticket={ticket}
-                    key={key++}
-                />
-            )}
+    const showDetails = useSelector(state => state.adminTicketsDisplayDetails);
+    return tickets ? (
+        <MainTableBody hoverable={!showDetails} doubleLines={showDetails}>
+            <DetailsModal />
+            {tickets.map((ticket, i) =>{
+                ticket.index = i;
+                return(
+                    <Ticket
+                        index={i}
+                        ticket={ticket}
+                        key={key++}
+                    />
+                )
+            })}
         </MainTableBody>
-    );
+    ) : null;
 }
