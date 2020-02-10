@@ -30,7 +30,9 @@ const rootReducer = combineReducers({
   adminLandingPageData: createReducer('SET_ADMIN_LANDING_DATA', {}),
   adminUsers: createReducer('SET_ADMIN_USERS'),
   tickets: createReducer('SET_TICKETS', {}),
-  adminTicketsDisplayDetails: createReducer('SET_TICKETS_DISPLAY', false)
+  adminTicketsDisplayDetails: createReducer('SET_TICKETS_DISPLAY', false),
+  adminTicketsModalOpen: createReducer('SET_TICKET_MODAL_OPEN', false),
+  adminTicketsModalTicket: createReducer('SET_TICKET_MODAL_TICKET', {})
 });
 
 export default rootReducer;

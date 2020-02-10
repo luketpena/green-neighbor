@@ -170,6 +170,7 @@ export default function ReportErrorPage(props){
                         required={program_id && eia_state}
                     />
                     <Input 
+                        type='email'
                         label='Email'
                         placeholder='Your Email for Ticket Progress'
                         value={email}

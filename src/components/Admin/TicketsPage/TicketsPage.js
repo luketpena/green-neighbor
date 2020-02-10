@@ -25,13 +25,19 @@ const DetailsDisplayButton = styled.button`
     }
 `;
 
+const OrderByOptions = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 8px 0px;
+`;
+
 export default function TicketsPage() {
 
     const history = useHistory();
     const {search} = useLocation();
     const {
         zip, program, utility, resolved,
-        fromCompanies, fromUtility, fromProgram, offset, comments
+        fromCompanies, fromUtility, fromProgram, offset, comments,
     } = parseQueries(search);
     const [zipSearch, setZipSearch] = useState(zip || '');
     const [utilitySearch, setUtilitySearch] = useState(utility || '');
@@ -41,6 +47,8 @@ export default function TicketsPage() {
     const [showFromUtility, setShowFromUtility] = useState(fromUtility == false ? false : true);
     const [showFromProgram, setShowFromProgram] = useState(fromProgram == false ? false : true);
     const [commentSearch, setCommentSearch] = useState(comments || '');
+    const [orderBy, setOrderBy] = useState(search.orderBy);
+    const [order, setOrder] = useState(search.order);
     const dispatch = useCallback(useDispatch(), []);
 
     const ticketCount = useSelector(state=>state.tickets.count);
@@ -100,7 +108,7 @@ export default function TicketsPage() {
                 zip, resolved, program_name: program,
                 utility_name: utility, offset, comments,
                 fromCompanies, fromUtility,
-                fromProgram
+                fromProgram, orderBy, order
             }
         });
     }, [dispatch, zip, program, utility, resolved,
@@ -124,7 +132,7 @@ export default function TicketsPage() {
             zip: zipSearch, program: programSearch, utility: utilitySearch,
             resolved: showResolved, fromCompanies: showFromCompanies,
             fromUtility: showFromUtility, fromProgram: showFromProgram,
-            comments: commentSearch
+            comments: commentSearch, orderBy, order
         })}`);
     }
 
@@ -159,6 +167,28 @@ export default function TicketsPage() {
                             value={commentSearch}
                             onChange={e => setCommentSearch(e.target.value)}
                         />
+                        <OrderByOptions>
+                            <label htmlFor='admin-tickets-order-by'>Order By: </label>
+                            <div>
+                                <select
+                                    id='admin-tickets-order-by'
+                                    value={orderBy}
+                                    onChange={e=>setOrderBy(e.target.value)}
+                                >
+                                    <option value='date_submitted'>Date Submitted</option>
+                                    <option value='zip'>Zip Code</option>
+                                    <option value='utility_name'>Utility Name</option>
+                                    <option value='program_name'>Program Name</option>
+                                </select>
+                                <select
+                                    value={order}
+                                    onChange={e=>setOrder(e.target.value)}
+                                >
+                                    <option value='DESC'>Descending</option>
+                                    <option value='ASC'>Ascending</option>
+                                </select>
+                            </div>
+                        </OrderByOptions>
                         <button
                             type='submit'
                             role='submit'
@@ -204,18 +234,19 @@ export default function TicketsPage() {
                         </select>
                     </FilterOption>
                 </FilterBox>
+                <MainHeader>
+                    <p>Page {offset/100 + 1 || 1} of {Math.ceil(ticketCount / 100) || 1}</p>
+                    <PageBar>{renderPages()}</PageBar>
+                </MainHeader>
                 <MainBox>
-                    <MainHeader>
-                        <p>Page {offset/100 + 1 || 1} of {Math.ceil(ticketCount / 100) || 1}</p>
-                        <PageBar>{renderPages()}</PageBar>
-                    </MainHeader>
                     <MainTable>
                         <MainTableHead>
                             <tr>
+                                <th>Date</th>
                                 <th>Zip</th>
                                 <th>Company</th>
                                 <th>Program</th>
-                                <th>Resolved</th>
+                                <th style={{minWidth: '5rem'}}>Resolved</th>
                                 <th>
                                     <DetailsDisplayButton
                                         active={showDetails}

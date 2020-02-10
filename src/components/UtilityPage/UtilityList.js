@@ -1,4 +1,5 @@
 import React from 'react';
+import {useHistory, useParams} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import styled from 'styled-components';
 
@@ -47,6 +48,8 @@ let keyIndex = 0;
 export default function UtilityList() {
 
   const programs = useSelector(state=>state.programs);
+  const history = useHistory();
+  const {zip} = useParams();
 
   function renderUtilities() {
     if (programs.length>0) {
@@ -58,7 +61,10 @@ export default function UtilityList() {
         <h2>Uh, oh.</h2>
         <h3>It looks like there are no utility companies listed in your area!</h3>
         <p>Help out your community by letting us know what companies are nearby.</p>
-        <button className="button-primary">Report missing utility company</button>
+        <button
+          className="button-primary"
+          onClick={()=>history.push(`/report/${zip}`)}
+        >Report missing utility company</button>
       </EmptyCompanyDiv>
     }
   }
