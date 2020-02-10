@@ -29,7 +29,7 @@ const SearchBox = styled.div`
   grid-area: search;
   padding: 8px;
   box-sizing: border-box;
-  input {
+  input, select {
     display: block;
     width: 100%;
     border: none;
