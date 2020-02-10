@@ -24,11 +24,10 @@ function* getGeocodeData(action) {
 }
 
 function* getUtilities(action) {
-  const {zip, state, utility_name, program_name, showActive, showDrafts} = action.payload.search;
   try {
     const count = yield axios.get(`/api/utilities/count/${writeQueries(action.payload.search)}`);
     yield put({type: 'SET_UTILITIES_COUNT', payload: count.data.count});
-    const summary = yield axios.get(`/api/utilities/summary/${action.payload.page}`,action.payload.search);
+    const summary = yield axios.get(`/api/utilities/summary/${action.payload.page}/${writeQueries(action.payload.search)}`,action.payload.search);
     yield put({type: 'SET_UTILITIES', payload: summary.data});
   } catch (error) {
     console.log(error);    

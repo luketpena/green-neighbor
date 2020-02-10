@@ -185,6 +185,7 @@ export default function RecordsPage() {
 
   function submitSearch(event) {
     event.preventDefault();
+    setPage(0);
     dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show}});
   }
 
