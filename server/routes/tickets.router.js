@@ -35,7 +35,7 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
             conditions.push(`(${types.join(' OR ')})`);
         }
 
-        let orderBy = 'id';
+        let orderBy = 'date_submitted';
         if(req.query.orderBy){
             if( equalQueries.includes(req.query.orderBy) ||
                 ilikeQueries.includes(req.query.orderBy) )
