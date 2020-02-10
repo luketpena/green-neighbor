@@ -3,49 +3,6 @@ import styled from 'styled-components';
 import Background from '../../images/bkg-forest-top.jpg';
 // fancy home button
 import HomeButton from '../HomeButton/HomeButton';
-// material-ui
-// import PropTypes from 'prop-types';
-// import { makeStyles } from '@material-ui/core/styles';
-// import Tabs from '@material-ui/core/Tabs';
-// import Tab from '@material-ui/core/Tab';
-// import Typography from '@material-ui/core/Typography';
-// import Box from '@material-ui/core/Box';
-
-// function TabPanel(props) {
-//   const { children, value, index, ...other } = props;
-
-//   return (
-//     <Typography
-//       component="div"
-//       role="tabpanel"
-//       hidden={value !== index}
-//       id={`vertical-tabpanel-${index}`}
-//       aria-labelledby={`vertical-tab-${index}`}
-//       {...other}
-//     >
-//       {value === index && <Box p={3}>{children}</Box>}
-//     </Typography>
-//   );
-// }
-
-// TabPanel.propTypes = {
-//   children: PropTypes.node,
-//   index: PropTypes.any.isRequired,
-//   value: PropTypes.any.isRequired,
-// };
-
-// function a11yProps(index) {
-//   return {
-//     id: `vertical-tab-${index}`,
-//     'aria-controls': `vertical-tabpanel-${index}`,
-//   };
-// }
-
-// const useStyles = makeStyles(theme => ({
-//     tabs: {
-//       borderRight: `1px solid ${theme.palette.divider}`,
-//     },
-//   }));
 
   const BackgroundBox = styled.div`
   background-image: url(${Background});
@@ -109,12 +66,6 @@ height: 100%;
 `;
 
 export default function ContributePage() {
-    // const classes = useStyles();
-    // const [value, setValue] = React.useState(0);
-  
-    // const handleChange = (event, newValue) => {
-    //   setValue(newValue);
-    // };
   return(
       <BackgroundBox>
         <HomeButton/>
@@ -122,45 +73,18 @@ export default function ContributePage() {
             <h1>Contribute</h1>
         </Header>
         <Container >
-             
-               {/* <Tabs
-                    orientation="vertical"
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="Vertical tabs example"
-                    className={classes.tabs}
-                    
-                >
-                    <Tab label="Provide Information" {...a11yProps(0)} />
-                    <Tab label="Follow us on Social Media" {...a11yProps(1)} />
-                    <Tab label="Make a Donation" {...a11yProps(2)} />
-                </Tabs>*/}
+
             <Menu>
-            <button className="button-primary" >Follow us on Socal Media</button>
-            {/* <button className="button-primary" >Provide Information</button>
-            <button className="button-primary" >Make a Donation</button> */}
+                <button className="button-primary" >Follow us on Socal Media</button>
             </Menu> 
 
-            
             <Details className="container">
-                {/* link to component or just have text */}
-                {/* <TabPanel value={value} index={0}>
-                    Information
-                </TabPanel>
-                <TabPanel value={value} index={1}>
-                    Socal Media Links
-                </TabPanel>
-                <TabPanel value={value} index={2}>
-                    Donation
-                </TabPanel> */}
                 <Div>
                     <h2>FOLLOW US ON SOCIAL MEDIA</h2>
                     <h3>AND SHARE US WITH YOUR NEIGHBORS</h3>
+                    <a href="https://twitter.com/GreenNeighborCh?ref_src=twsrc%5Etfw" class="twitter-follow-button" target="_blank" data-show-count="false">Follow @GreenNeighborCh</a>
+                    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                 </Div>
-                {/* <Div>2</Div>
-                <Div>
-                    <h2>WE'RE A SMALL NON-PROFIT OPERTAION</h2>
-                </Div> */}
             </Details>
         </Container>
     </BackgroundBox>
