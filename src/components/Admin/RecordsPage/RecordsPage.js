@@ -1,5 +1,6 @@
 import React, { useEffect, useState }  from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import { faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -110,6 +111,7 @@ const PageBar = styled.div`
 export default function RecordsPage() {
 
   const dispatch = useDispatch();
+  const history = useHistory();
   const utilitiesCount = useSelector(state=>state.utilitiesCount);
   const utilitiesSearch = useSelector(state=>state.utilitiesSearch);
   const utilities = useSelector(state=>state.utilities);
@@ -219,7 +221,10 @@ export default function RecordsPage() {
           <MainHeader>
             <p>Page {page+1} of {Math.ceil(utilitiesCount/100)}</p>
             <PageBar>{renderPages()}</PageBar>
-            <button className="addButton button-primary">Add New Utility Company</button>
+            <button
+              className="addButton button-primary"
+              onClick={()=>history.push('/admin/addUtility')}
+            >Add New Utility Company</button>
           </MainHeader>
 
           <MainBox>

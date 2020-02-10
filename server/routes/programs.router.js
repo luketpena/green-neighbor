@@ -100,8 +100,8 @@ router.get('/details/:id', async (req, res) => {
   Creates a new program in the gpp table
   NOTE: Has commented out authentication requirements, but it should not require that. All users can post information.
 */
-// router.post('/create', rejectUnauthenticated, async (req, res) => {
-router.post('/create', async (req, res) => {
+router.post('/create', rejectUnauthenticated, async (req, res) => {
+// router.post('/create', async (req, res) => {
     try{
         if(req.body.id) delete req.body.id;
         const injectors = [];
@@ -128,8 +128,8 @@ router.post('/create', async (req, res) => {
   Updates an existing program in the gpp table.
   Requires authentication to allow modification.
 */
-// router.put('/update/:id', rejectUnauthenticated, async (req, res) => {
-router.put('/update/:id', async (req, res) => {
+router.put('/update/:id', rejectUnauthenticated, async (req, res) => {
+// router.put('/update/:id', async (req, res) => {
     try{
         const config = [req.params.id];
         req.body.date_updated = new Date();
