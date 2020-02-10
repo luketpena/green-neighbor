@@ -63,4 +63,17 @@ router.post('/logout', (req, res) => {
   res.sendStatus(200);
 });
 
+// Allows am Admin to delete another admin. Admins CANNOT delete themselves.
+router.delete('/admin/:id', rejectUnauthenticated, (req, res) => {
+  console.log('In begin of Delete Admin', req.body);
+  const user = req.params;
+  let queryText = `DELETE FROM "user" WHERE "user"."id"=$1`
+  pool.query(queryText, [user.id])
+  .then((result) => { res.sendStatus(200);
+  }).catch((error) => {
+    console.log('error deleting an admin', error);
+    res.sendStatus(500);
+  });
+});
+
 module.exports = router;
