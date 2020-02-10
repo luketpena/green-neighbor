@@ -48,7 +48,7 @@ function stringifyQueries(query,paramsArray) {
       case 'program_name':
         final.params.push('%'+value+'%');
         final.string += conjunctionFunction(final.params);
-        final.string += `${(key==='program_name'? 'p':'z')}.${key} ILIKE $${final.params.length}`;
+        final.string += `${(key==='program_name'? 'g':'z')}.${key} ILIKE $${final.params.length}`;
         break;
       case 'show':
         switch(value) {
@@ -120,7 +120,6 @@ router.get('/summary/:page', async(req,res)=>{
     queryParams = [...modify.params];
       
     console.log('Final query params:',queryParams);
-    
     
     query += `
       GROUP BY z.id
