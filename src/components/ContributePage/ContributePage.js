@@ -4,6 +4,7 @@ import Background from '../../images/bkg-forest-top.jpg';
 // fancy home button
 import HomeButton from '../HomeButton/HomeButton';
 
+
   const BackgroundBox = styled.div`
   background-image: url(${Background});
   background-size: cover;
@@ -82,8 +83,23 @@ export default function ContributePage() {
                 <Div>
                     <h2>FOLLOW US ON SOCIAL MEDIA</h2>
                     <h3>AND SHARE US WITH YOUR NEIGHBORS</h3>
-                    <a href="https://twitter.com/GreenNeighborCh?ref_src=twsrc%5Etfw" class="twitter-follow-button" target="_blank" data-show-count="false">Follow @GreenNeighborCh</a>
-                    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                    <a class="twitter-follow-button"
+                       href="https://twitter.com/GreenNeighborCh?ref_src=twsrc%5Etfw"
+                       target="_blank"
+                       data-size="large"
+                       data-show-count="default">
+                       Follow Us on Twitter</a>
+
+                    <div>
+                        <div id="fb-root"></div>
+                            <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v6.0"></script>
+
+                        <div class="fb-page" data-href="https://www.facebook.com/GreenNeighborChallenge/" 
+                        data-tabs="timeline" data-width="" data-height="" data-small-header="true" 
+                        data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false">
+                            <blockquote cite="https://www.facebook.com/GreenNeighborChallenge/" class="fb-xfbml-parse-ignore">
+                                <a href="https://www.facebook.com/GreenNeighborChallenge/" target="_blank">Like Us on Facebook</a></blockquote></div>
+                    </div>
                 </Div>
             </Details>
         </Container>
