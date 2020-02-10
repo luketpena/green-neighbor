@@ -1,12 +1,11 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {MainTableBody} from '../AdminUI';
 import styled from 'styled-components';
-import {useHistory, useLocation} from 'react-router-dom';
 import {Modal} from '@material-ui/core';
 
 const ModalBody = styled.div`
     position: absolute;
+    max-width: 32rem;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -65,21 +64,25 @@ export default function DetailsModal(props){
                         ticket.date_submitted.toLocaleDateString()}
                     </p>
                     <p>Zip:</p><p>{ticket.zip}</p>
+                    {ticket.eia_state && 
+                        <>
+                            <p>EIAID - State:</p>
+                            <p>{ticket.eia_state}</p>
+                        </>
+                    }
                     <p>Utility:</p><p>{ticket.utility_name}</p>
                     {ticket.program_name &&
                         <>
                             <p>Program:</p><p>{ticket.program_name}</p>
                         </>
                     }
-                    {ticket.comments && ticket.comments !== '' &&
-                        <>
-                            <p style={{gridColumn: '1 / span 2', border: 'none'}}>
-                                Comment:
-                            </p>
-                            <p style={{gridColumn: '1 / span 2'}}>{ticket.comments}</p>
-                        </>
-                    }
                 </TicketInfo>
+                {ticket.comments && ticket.comments !== '' &&
+                    <>
+                        <p>Comment:</p>
+                        <p>{ticket.comments}</p>
+                    </>
+                }
                 <button
                     onClick={closeModal}
                     className='button-default'

@@ -27,7 +27,7 @@ function Details({ticket}){
     return(
         <tr>
             <td colSpan={6}>
-                <DetailsParagraph>Comments : {comments}</DetailsParagraph>
+                <DetailsParagraph>Comments: {comments}</DetailsParagraph>
                 <DetailsParagraph>
                     <a href={`mailto:${email}`} >{email}</a>
                 </DetailsParagraph>
@@ -74,13 +74,13 @@ function Ticket({ticket}){
                         {resolvedChecked ? 'Resolved' : 'Active'}
                     </Resolved>
                 </td>
-                <td>{!showDetails &&
+                <td>
                     <button
                         onClick={openModal}
                     >
                         Details
                     </button>
-                }</td>
+                </td>
             </tr>
             {showDetails && <Details ticket={ticket} />}
         </>
