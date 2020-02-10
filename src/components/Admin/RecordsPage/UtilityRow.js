@@ -11,6 +11,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 const Container = styled.tr`
   .production {
     color: ${props=>(props.production? 'green' : '#CCC')};
+    &:hover {
+      transform: scale(1.1);
+      cursor: pointer;
+    }
   }
   text-align: center;
 
