@@ -24,6 +24,52 @@ router.get('/getName/:zip/:eia_state', async (req, res) => {
 /*
   Get the count of all utility companies in the database.
 */
+
+function stringifyQueries(query,paramsArray) {
+
+  //>>Collects the starting data to modify and return
+  let final = {
+    string: '',
+    params: [...paramsArray],
+    paramsStart: paramsArray.length
+  };
+
+  //>> Adds the junction to reflect position in filter string
+  function conjunctionFunction(array) {
+    return (array.length===final.paramsStart+1? ' WHERE ' : ' AND ');
+  }
+
+  //>> Builds a string to filter by
+  for (let [key,value] of Object.entries(query)) {
+      
+    switch(key) {
+      case 'state':
+      case 'utility_name':
+      case 'program_name':
+        final.params.push('%'+value+'%');
+        final.string += conjunctionFunction(final.params);
+        final.string += `${(key==='program_name'? 'g':'z')}.${key} ILIKE $${final.params.length}`;
+        break;
+      case 'show':
+        switch(value) {
+          case 'active': final.params.push(true); break;
+          case 'drafts': final.params.push(false); break;
+        }   
+        if (value!=='all') {
+          final.string += conjunctionFunction(final.params);
+          final.string += `z.production=$${final.params.length}`;
+        }
+        break;
+      case 'zip':
+        final.params.push(Number(value));
+        final.string += conjunctionFunction(final.params);
+        final.string += `z.zip=$${final.params.length}`;
+        break;
+    }
+  }
+  return final;
+}
+
 router.get('/count', async(req,res)=>{
 
   console.log(req.query);
@@ -35,52 +81,18 @@ router.get('/count', async(req,res)=>{
       SELECT COUNT(z.id) FROM zips z
       LEFT JOIN gpp g ON z.eia_state = g.eia_state
     `;
-    const queryParams = [];
-    let conjunctionCount = 0;
-
-    for (let [key,value] of Object.entries(req.query)) {
-      
-      switch(key) {
-        case 'state':
-        case 'utility_name':
-        case 'program_name':
-          queryParams.push('%'+value+'%');
-          break;
-        case 'show':
-          switch(value) {
-            case 'active': queryParams.push(true); break;
-            case 'drafts': queryParams.push(false); break;
-          }
-          break;
-        case 'zip':
-          queryParams.push(Number(value));
-          break;
-      }
-
-      if (queryParams.length>0) {
-        console.log('Query params:',queryParams);
-        if (conjunctionCount<queryParams.length) {
-          query += (queryParams.length===1? ' WHERE ' : ' AND ');
-          conjunctionCount++;
-        }
-        
-      }
-      
-      switch(key) {
-        case 'state': query += `z.state ILIKE $${queryParams.length}`; break;
-        case 'zip': query += `z.zip=$${queryParams.length}`; break;
-        case 'utility_name': query += `z.utility_name ILIKE $${queryParams.length}`; break;
-        case 'program_name': query += `z.utility_name ILIKE $${queryParams.length}`; break;
-        case 'show': (value!=='all'? query += `z.production=$${queryParams.length}` : ''); break;
-      }
-    }
-   
+    let queryParams = [];
+    
+    const modify = stringifyQueries(req.query,queryParams);
+    query += modify.string;
+    queryParams = [...modify.params];
       
     query += ` GROUP BY z.id`;
     query = 'SELECT COUNT(*) FROM (' + query + ') as utility_count';
 
-    console.log(query);
+    console.log('Count query:',query);
     
+
     const result = await pool.query(query,queryParams);
     res.send(result.rows[0]);
   } catch(error) {
@@ -95,15 +107,39 @@ router.get('/count', async(req,res)=>{
   NOTE: Filters and sorts will be added to this eventually.
 */
 router.get('/summary/:page', async(req,res)=>{
+  //console.log(req.query);
+  
   try {
-    const query = `
-    SELECT z.id, z.eia_state, z.utility_name, z.zip, z.state, COUNT(g.utility_name) as program_count, ARRAY_AGG(g.program_name) as program_list, ARRAY_AGG(g.id) as program_id, z.production FROM zips z
-      LEFT JOIN gpp g ON z.eia_state=g.eia_state
-      GROUP BY z.id
-      LIMIT 100 OFFSET $1;
-    `;
-    const result = await pool.query(query,[req.params.page*100]);
+    let query = `
+      SELECT z.id, z.eia_state, z.utility_name, z.zip, z.state, COUNT(g.utility_name) as program_count, ARRAY_AGG(g.program_name) as program_list, ARRAY_AGG(g.id) as program_id, z.production FROM zips z
+      LEFT JOIN gpp g ON z.eia_state=g.eia_state`;
+
+    let queryParams = [req.params.page*100];
+    const modify = stringifyQueries(req.query,queryParams);
+    query += modify.string;
+    queryParams = [...modify.params];
+      
+
     
+    let order = '';
+    switch(req.query.order) {
+      case 'utility_name': order = 'z.utility_name'; break;
+      case 'state': order = 'z.state'; break;
+      case 'zip': order = 'z.zip'; break;
+      case 'program_count': order = 'program_count'; break;
+      case 'production': order = 'z.production'; break;
+    }
+
+    let dir = (req.query.orderDir==='ASC'? 'ASC' : 'DESC');
+    
+
+    query += `
+      GROUP BY z.id
+      ORDER BY ${order} ${dir}
+      LIMIT 100 OFFSET $1;`;
+
+      console.log('Final search query:',query);
+    const result = await pool.query(query,queryParams);
     res.send(result.rows);
   } catch(error) {
     res.sendStatus(500);
