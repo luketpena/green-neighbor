@@ -159,7 +159,7 @@ export default function RecordsPage() {
 
     if (page>5) {pageList.push(returnPageButton(-1,0,'<<'))}
     
-    if (pageMax>0) {
+    if (pageMax>9) {
       if (page<5) {
         for (let i=0; i<10; i++) {
           pageList.push(returnPageButton(i,i,i+1));
@@ -172,6 +172,10 @@ export default function RecordsPage() {
         for (let i=page-4; i<page+6; i++) {
           pageList.push(returnPageButton(i,i,i+1));
         }
+      } 
+    } else {
+      for (let i=0; i<pageMax; i++) {
+        pageList.push(returnPageButton(i,i,i+1));
       }
     }
 
@@ -205,14 +209,7 @@ export default function RecordsPage() {
           </SearchBox>
 
           <FilterBox>
-            <FilterOption>
-              <input type="checkbox" checked={drafts} onChange={event=>setDrafts(event.target.checked)}/>
-              <label>Show Drafts</label>
-            </FilterOption>
-            <FilterOption>
-              <input type="checkbox" checked={active} onChange={event=>setActive(event.target.checked)}/>
-              <label>Show Active</label>
-            </FilterOption>
+
           </FilterBox>
 
 
