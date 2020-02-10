@@ -23,7 +23,7 @@ function* getGeocodeData(action) {
   }
 }
 
-function* getUtilities(action) {
+function* getUtilities(action) {  
   try {
     const count = yield axios.get(`/api/utilities/count/${writeQueries(action.payload.search)}`);
     yield put({type: 'SET_UTILITIES_COUNT', payload: count.data.count});
@@ -37,7 +37,7 @@ function* getUtilities(action) {
 function* setUtilityProduction(action) {
   try {
     yield axios.put(`/api/utilities/production/${action.payload.id}`, {production: action.payload.production} );
-    yield put({type: 'GET_UTILITIES', payload: action.payload.page})
+    yield put({type: 'GET_UTILITIES', payload: {page: action.payload.page, search: action.payload.search} })
   } catch(error) {
     console.log(error);    
   }

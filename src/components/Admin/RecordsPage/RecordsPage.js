@@ -145,7 +145,7 @@ export default function RecordsPage() {
 
   function renderUtilities() {
     return utilities.map( (item,i)=> {
-      return <UtilityRow key={i} utility={item} page={page}/>
+      return <UtilityRow key={i} utility={item} page={page} search={utilitiesSearch}/>
     });
   }
 

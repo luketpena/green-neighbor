@@ -65,8 +65,8 @@ export default function UtilityRow(props) {
   const [open, setOpen] = useState(false);
 
   function toggleProduction() {
-    const myPayload = {id, production: !production, page: props.page};
-    dispatch({type: 'SET_UTILITY_PRODUCTION', payload: myPayload})
+    const myPayload = {id, production: !production, page: props.page, search: props.search};
+    dispatch({type: 'SET_UTILITY_PRODUCTION', payload: myPayload});
   }
 
   const handleClose = () => {
