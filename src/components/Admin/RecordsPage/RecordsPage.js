@@ -9,7 +9,6 @@ const Container = styled.div`
   h1 {
     text-align: center;
   }
-  
 `;
 
 const ManageBox = styled.div`
@@ -52,18 +51,11 @@ const FilterBox = styled.div`
   align-items: center;
 `;
 
-const FilterOption = styled.div`
-  margin: 8px;
-  display: flex;
-  align-items: center;
-  input:hover {
-    cursor: pointer;
-  }
-`;
 
 const MainBox = styled.div`
   grid-area: main;
   overflow-x: scroll;
+  background-color: white;
 `;
 
 
@@ -123,6 +115,7 @@ export default function RecordsPage() {
   let [utility_name,setUtility_name] = useState('');
   let [program_name,setProgram_name] = useState('');
   let [state, setState] = useState('');
+  let [order,setOrder] = useState('state');
 
   let [show, setShow] = useState('all');
 
@@ -131,9 +124,10 @@ export default function RecordsPage() {
 
   useEffect(()=>{
     dispatch({type: 'GET_UTILITIES', payload: {page, search: utilitiesSearch}});
+    
     if (!mount) {
       setMount(true);
-      dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show}});
+      dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show, order}});
     }
   },[utilitiesCount, utilitiesSearch, page]);
 
@@ -180,7 +174,12 @@ export default function RecordsPage() {
   function submitSearch(event) {
     event.preventDefault();
     setPage(0);
-    dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show}});
+    dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show, order}});
+  }
+
+  function triggerOrder(target) {
+    setOrder(target);
+    dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show, order: target}});
   }
 
   return(
@@ -218,11 +217,11 @@ export default function RecordsPage() {
             <MainTable className="admin-table">
                 <thead>
                   <tr>
-                    <th className="th-click">Company</th>
-                    <th className="th-click">State</th>
-                    <th className="th-click">Zip</th>
-                    <th className="th-click"># Programs</th>
-                    <th className="th-click">Status</th>
+                    <th className="th-click" onClick={()=>triggerOrder('utility_name')}>Company</th>
+                    <th className="th-click" onClick={()=>triggerOrder('state')}>State</th>
+                    <th className="th-click" onClick={()=>triggerOrder('zip')}>Zip</th>
+                    <th className="th-click" onClick={()=>triggerOrder('program_count')}># Programs</th>
+                    <th className="th-click" onClick={()=>triggerOrder('production')}>Status</th>
                     <th>&nbsp;</th>
                     <th>&nbsp;</th>
                   </tr>

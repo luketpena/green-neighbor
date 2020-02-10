@@ -121,13 +121,26 @@ router.get('/summary/:page', async(req,res)=>{
       
     console.log('Final query params:',queryParams);
     
+    let order = '';
+    console.log('Incoming order:',req.query.order);
+    
+    switch(req.query.order) {
+      case 'utility_name': order = 'z.utility_name'; break;
+      case 'state': order = 'z.state'; break;
+      case 'zip': order = 'z.zip'; break;
+      case 'program_count': order = 'program_count'; break;
+      case 'production': order = 'z.production'; break;
+    }
+    console.log('Order to set:',order);
+    
+
     query += `
       GROUP BY z.id
+      ORDER BY ${order} ASC
       LIMIT 100 OFFSET $1;`;
 
       console.log('Final search query:',query);
     const result = await pool.query(query,queryParams);
-    
     res.send(result.rows);
   } catch(error) {
     res.sendStatus(500);
