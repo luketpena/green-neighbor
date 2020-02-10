@@ -127,8 +127,6 @@ export default function RecordsPage() {
   let [utility_name,setUtility_name] = useState('');
   let [program_name,setProgram_name] = useState('');
   let [state, setState] = useState('');
-  let [active, setActive] = useState(true);
-  let [drafts, setDrafts] = useState(true);
 
   let [show, setShow] = useState('all');
 
