@@ -4,48 +4,48 @@ import Background from '../../images/bkg-forest-top.jpg';
 // fancy home button
 import HomeButton from '../HomeButton/HomeButton';
 // material-ui
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+// import PropTypes from 'prop-types';
+// import { makeStyles } from '@material-ui/core/styles';
+// import Tabs from '@material-ui/core/Tabs';
+// import Tab from '@material-ui/core/Tab';
+// import Typography from '@material-ui/core/Typography';
+// import Box from '@material-ui/core/Box';
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+// function TabPanel(props) {
+//   const { children, value, index, ...other } = props;
 
-  return (
-    <Typography
-      component="div"
-      role="tabpanel"
-      hidden={value !== index}
-      id={`vertical-tabpanel-${index}`}
-      aria-labelledby={`vertical-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box p={3}>{children}</Box>}
-    </Typography>
-  );
-}
+//   return (
+//     <Typography
+//       component="div"
+//       role="tabpanel"
+//       hidden={value !== index}
+//       id={`vertical-tabpanel-${index}`}
+//       aria-labelledby={`vertical-tab-${index}`}
+//       {...other}
+//     >
+//       {value === index && <Box p={3}>{children}</Box>}
+//     </Typography>
+//   );
+// }
 
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
+// TabPanel.propTypes = {
+//   children: PropTypes.node,
+//   index: PropTypes.any.isRequired,
+//   value: PropTypes.any.isRequired,
+// };
 
-function a11yProps(index) {
-  return {
-    id: `vertical-tab-${index}`,
-    'aria-controls': `vertical-tabpanel-${index}`,
-  };
-}
+// function a11yProps(index) {
+//   return {
+//     id: `vertical-tab-${index}`,
+//     'aria-controls': `vertical-tabpanel-${index}`,
+//   };
+// }
 
-const useStyles = makeStyles(theme => ({
-    tabs: {
-      borderRight: `1px solid ${theme.palette.divider}`,
-    },
-  }));
+// const useStyles = makeStyles(theme => ({
+//     tabs: {
+//       borderRight: `1px solid ${theme.palette.divider}`,
+//     },
+//   }));
 
   const BackgroundBox = styled.div`
   background-image: url(${Background});
@@ -80,15 +80,15 @@ h1 {
 }
 `;
 
-const Menu = styled.div`
-grid-area: menu;
-height: 400px;
-background-color: white;
-grid-row: 2;
-display: flex;
-align-items: center;
-// opacity: .7;
-`;
+// const Menu = styled.div`
+// grid-area: menu;
+// height: 400px;
+// background-color: white;
+// grid-row: 2;
+// display: flex;
+// align-items: center;
+// // opacity: .7;
+// `;
 
 const Details = styled.div`
 grid-area: details;
@@ -101,12 +101,12 @@ align-items: center;
 `;
 
 export default function ContributePage() {
-    const classes = useStyles();
-    const [value, setValue] = React.useState(0);
+    // const classes = useStyles();
+    // const [value, setValue] = React.useState(0);
   
-    const handleChange = (event, newValue) => {
-      setValue(newValue);
-    };
+    // const handleChange = (event, newValue) => {
+    //   setValue(newValue);
+    // };
   return(
       <BackgroundBox>
         <HomeButton/>
@@ -114,7 +114,7 @@ export default function ContributePage() {
             <h1>Contribute</h1>
         </Header>
         <Container >
-            <Menu className="container">
+            {/* <Menu className="container">
                 <Tabs
                     orientation="vertical"
                     value={value}
@@ -123,15 +123,15 @@ export default function ContributePage() {
                     className={classes.tabs}
                     
                 >
-                    {/* labels based on scope doc */}
+                    {/* labels based on scope doc 
                     <Tab label="Provide Information" {...a11yProps(0)} />
                     <Tab label="Follow us on Social Media" {...a11yProps(1)} />
                     <Tab label="Make a Donation" {...a11yProps(2)} />
                 </Tabs>
-            </Menu>
+            </Menu> */}
             <Details className="container">
                 {/* link to component or just have text */}
-                <TabPanel value={value} index={0}>
+                {/* <TabPanel value={value} index={0}>
                     Information
                 </TabPanel>
                 <TabPanel value={value} index={1}>
@@ -139,7 +139,7 @@ export default function ContributePage() {
                 </TabPanel>
                 <TabPanel value={value} index={2}>
                     Donation
-                </TabPanel>
+                </TabPanel> */}
             </Details>
         </Container>
     </BackgroundBox>
