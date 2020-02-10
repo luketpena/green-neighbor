@@ -119,11 +119,9 @@ router.get('/summary/:page', async(req,res)=>{
     query += modify.string;
     queryParams = [...modify.params];
       
-    console.log('Final query params:',queryParams);
+
     
     let order = '';
-    console.log('Incoming order:',req.query.order);
-    
     switch(req.query.order) {
       case 'utility_name': order = 'z.utility_name'; break;
       case 'state': order = 'z.state'; break;
@@ -131,12 +129,13 @@ router.get('/summary/:page', async(req,res)=>{
       case 'program_count': order = 'program_count'; break;
       case 'production': order = 'z.production'; break;
     }
-    console.log('Order to set:',order);
+
+    let dir = (req.query.orderDir==='ASC'? 'ASC' : 'DESC');
     
 
     query += `
       GROUP BY z.id
-      ORDER BY ${order} ASC
+      ORDER BY ${order} ${dir}
       LIMIT 100 OFFSET $1;`;
 
       console.log('Final search query:',query);

@@ -1,6 +1,8 @@
 import React, { useEffect, useState }  from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { faCaretUp } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import UtilityRow from './UtilityRow';
 
@@ -77,7 +79,9 @@ const MainHeader = styled.div`
 `;
 
 const MainTable = styled.table`
-  
+  .dir-btn {
+    transform: rotate(${(props=>props.orderDir==='DESC'? '0' : '180')}deg);
+  }
 `;
 
 const PageButton = styled.button`
@@ -115,7 +119,8 @@ export default function RecordsPage() {
   let [utility_name,setUtility_name] = useState('');
   let [program_name,setProgram_name] = useState('');
   let [state, setState] = useState('');
-  let [order,setOrder] = useState('state');
+  let [order, setOrder] = useState('state');
+  let [orderDir, setOrderDir] = useState('DESC');
 
   let [show, setShow] = useState('all');
 
@@ -174,12 +179,17 @@ export default function RecordsPage() {
   function submitSearch(event) {
     event.preventDefault();
     setPage(0);
-    dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show, order}});
+    dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show, order, orderDir}});
   }
 
   function triggerOrder(target) {
     setOrder(target);
-    dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show, order: target}});
+    dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show, order: target, orderDir}});
+  }
+
+  function triggerOrderDir(target) {
+    setOrderDir(target);
+    dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show, order, orderDir: target}});
   }
 
   return(
@@ -214,7 +224,7 @@ export default function RecordsPage() {
 
           <MainBox>
 
-            <MainTable className="admin-table">
+            <MainTable className="admin-table" orderDir={orderDir}>
                 <thead>
                   <tr>
                     <th className="th-click" onClick={()=>triggerOrder('utility_name')}>Company</th>
@@ -223,7 +233,7 @@ export default function RecordsPage() {
                     <th className="th-click" onClick={()=>triggerOrder('program_count')}># Programs</th>
                     <th className="th-click" onClick={()=>triggerOrder('production')}>Status</th>
                     <th>&nbsp;</th>
-                    <th>&nbsp;</th>
+                    <th className="th-click" onClick={()=>triggerOrderDir((orderDir==='ASC'? 'DESC' : 'ASC'))} > <FontAwesomeIcon className="dir-btn" icon={faCaretUp}/></th>
                   </tr>
                 </thead>
                 <tbody>

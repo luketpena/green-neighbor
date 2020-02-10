@@ -129,11 +129,11 @@ input[type=number]::-webkit-outer-spin-button {
   border-collapse: collapse;
   white-space: nowrap;
   border: none;
+  margin: 0;
 }
 
 .admin-table thead {
   background-color: var(--color-primary);
-  
   color: white;
 }
 
