@@ -12,9 +12,10 @@ export const ManageBox = styled.div`
   min-height: 500px;
   display: grid;
   grid-template-columns: 200px  1fr;
-  grid-template-rows: max-content auto;
+  grid-template-rows: max-content max-content auto;
   grid-template-areas:
     "search filter"
+    "search header"
     "search main";
   overflow: hidden;
   border-radius: 8px;
@@ -59,12 +60,14 @@ export const FilterOption = styled.div`
 
 export const MainBox = styled.div`
   grid-area: main;
+  overflow-x: scroll;
 `;
 
 export const MainHeader = styled.div`
   background-color: var(--color-bkg-dark);
   padding: 8px;
   box-sizing: border-box;
+  grid-area: header;
   
   .addButton  {
     display: block;
@@ -84,18 +87,18 @@ export const MainTable = styled.table`
 
 export const MainTableBody = styled.tbody`
   tr:${props=>props.doubleLines ?
-    `nth-child(4n):nth-child(4n-1)`:'nth-child(odd)'
+    `nth-child(4n)`:'nth-child(odd)'
   }{
-    background-color: #EEE;
+    background-color: #DDDDDD;
+    1px solid #CCCCCC;
   }
   ${props=>props.doubleLines ? `
-    nth-child(4n):{
-      border-bottom: 1px solid #ddd;
-    }` : ''}
+    tr:nth-child(4n-1){background-color: #DDDDDD;}
+  ` : ''}
   tr, th {
     background-color: white;
     ${props=>props.doubleLines ? 
-      '' : 'border-bottom: 1px solid #ddd;'};
+      '' : 'border-bottom: 1px solid #CCCCCC;'};
     ${props=>props.hoverable && `
       &:hover {
         background-color: #DDEEFF;

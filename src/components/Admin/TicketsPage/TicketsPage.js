@@ -204,14 +204,15 @@ export default function TicketsPage() {
                         </select>
                     </FilterOption>
                 </FilterBox>
+                <MainHeader>
+                    <p>Page {offset/100 + 1 || 1} of {Math.ceil(ticketCount / 100) || 1}</p>
+                    <PageBar>{renderPages()}</PageBar>
+                </MainHeader>
                 <MainBox>
-                    <MainHeader>
-                        <p>Page {offset/100 + 1 || 1} of {Math.ceil(ticketCount / 100) || 1}</p>
-                        <PageBar>{renderPages()}</PageBar>
-                    </MainHeader>
                     <MainTable>
                         <MainTableHead>
                             <tr>
+                                <th>Date</th>
                                 <th>Zip</th>
                                 <th>Company</th>
                                 <th>Program</th>
