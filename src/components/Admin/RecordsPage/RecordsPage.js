@@ -198,7 +198,7 @@ export default function RecordsPage() {
               <input type="number" placeholder="Zip Code" onChange={event=>setZip(event.target.value)} value={zip}/>
               <input type="text" placeholder="Utility Company" onChange={event=>setUtility_name(event.target.value)} value={utility_name}/>
               <input type="text" placeholder="Energy Program" onChange={event=>setProgram_name(event.target.value)} value={program_name}/>
-              <select>
+              <select onChange={event=>setShow(event.target.value)}>
                 <option value="all">Show all</option>
                 <option value="drafts">Drafts only</option>
                 <option value="active">Active only</option>
