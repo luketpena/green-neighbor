@@ -13,6 +13,7 @@ const Container = styled.div`
   position: sticky;
   top: 0;
   box-shadow: 0 4px 8px 2px rgba(0,0,0,.25);
+  z-index: 100;
 `;
 
 const ButtonBox = styled.div`

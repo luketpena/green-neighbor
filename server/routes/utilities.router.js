@@ -74,7 +74,6 @@ router.get('/count', async(req,res)=>{
         case 'show': (value!=='all'? query += `z.production=$${queryParams.length}` : ''); break;
       }
     }
-   
       
     query += ` GROUP BY z.id`;
     query = 'SELECT COUNT(*) FROM (' + query + ') as utility_count';
