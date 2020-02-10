@@ -17,7 +17,7 @@ const ManageBox = styled.div`
   display: grid;
   grid-template-columns: 200px  1fr;
   grid-template-rows: 50px auto;
-  grid-template-areas: "search filter" "search main";
+  grid-template-areas: "search filter" "search header" "search main";
   overflow: hidden;
   border-radius: 8px;
   box-shadow: 0 8px 8px 0 rgba(0,0,0,.5);
@@ -63,12 +63,16 @@ const FilterOption = styled.div`
 
 const MainBox = styled.div`
   grid-area: main;
+  overflow-x: scroll;
 `;
+
 
 const MainHeader = styled.div`
   background-color: var(--color-bkg-dark);
   padding: 8px;
   box-sizing: border-box;
+  
+  width: 100%;
   
   .addButton  {
     display: block;
@@ -80,16 +84,8 @@ const MainHeader = styled.div`
   }
 `;
 
-const MainTable = styled.div`
-  width: 100%;
-  border-collapse: collapse;
-  .utility-row:nth-child(odd) {
-    background-color: #EEE;
-  }
-  .utility-row {
-    background-color: white;
-    font-family: var(--font-main);
-  }
+const MainTable = styled.table`
+  
 `;
 
 const PageButton = styled.button`
@@ -211,17 +207,32 @@ export default function RecordsPage() {
 
           </FilterBox>
 
+          <MainHeader>
+            <p>Page {page+1} of {Math.ceil(utilitiesCount/100)}</p>
+            <PageBar>{renderPages()}</PageBar>
+            <button className="addButton button-primary">Add New Utility Company</button>
+          </MainHeader>
 
           <MainBox>
-            <MainHeader>
-              <p>Page {page+1} of {Math.ceil(utilitiesCount/100)}</p>
-              <PageBar>{renderPages()}</PageBar>
-              <button className="addButton button-primary">Add New Utility Company</button>
-            </MainHeader>
-            <MainTable>
 
-                {renderUtilities()}
+            <MainTable className="admin-table">
+                <thead>
+                  <tr>
+                    <th className="th-click">Company</th>
+                    <th className="th-click">State</th>
+                    <th className="th-click">Zip</th>
+                    <th className="th-click"># Programs</th>
+                    <th className="th-click">Status</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {renderUtilities()}
+                </tbody>
+                
             </MainTable>
+
           </MainBox>
         </ManageBox>
     </Container>

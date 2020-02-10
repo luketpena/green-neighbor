@@ -8,37 +8,19 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-const Container = styled.div`
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-`;
-
-const InfoBox = styled.div`
-  display: grid;
-  grid-template-columns: 4fr 1fr 1fr 1fr 1fr;
-  text-align: center;
-  align-items: center;
-  p {
-    margin: 0 8px;
-  }
-  p:first-child {
-    text-align: left;
-  }
+const Container = styled.tr`
   .production {
-    color: ${props=>(props.active? 'var(--color-primary)' : '#AAA')};
-    transition: all .2s;
-    &:hover {
-      color: ${props=>(props.active? 'var(--color-primary-light)' : '#666')};
-      transform: scale(1.2);
-      cursor: pointer;
-    }
+    color: ${props=>(props.production? 'green' : '#CCC')};
   }
+  text-align: center;
+
+  td:first-child {
+    text-align: left;
+    padding-left: 8px;
+  }
+
 `;
 
-const ButtonBox = styled.div`
-
-`;
 
 const ProgramBox = styled.div`
   display: grid;
@@ -49,6 +31,9 @@ const ProgramBox = styled.div`
   padding-left: 8px;
   &:hover {
     background-color: #EFEFEF;
+  }
+  .production {
+    color: red;
   }
 `;
 
@@ -95,20 +80,21 @@ export default function UtilityRow(props) {
   }
 
   return (
-    <Container className="utility-row">
-      <InfoBox active={production}>
-        <p>{utility_name}</p>
-        <p>{state}</p>
-        <p>{zip}</p>
-        <p>{program_count} {(program_count==1? 'program' : 'programs')}</p>
-        <p className="production" onClick={toggleProduction}>
-          {(production? 'Live' : 'Inactive')}
-        </p>
-      </InfoBox>
-      <ButtonBox>
-        <button className="button-default" onClick={()=>setOpen(true)}>Details</button>
-        <button className="button-default">Edit</button>
-      </ButtonBox>
+    <Container className="utility-row" production={production}>
+
+      <td>{utility_name}</td>
+      <td>{state}</td>
+      <td>{zip}</td>
+      <td>{program_count} {(program_count==1? 'program' : 'programs')}</td>
+      <td className="production">
+        <span onClick={toggleProduction}>{(production? 'Live' : 'Inactive')}</span>
+      
+      </td>
+
+
+      <td><button className="button-default" onClick={()=>setOpen(true)}>Details</button></td>
+      <td><button className="button-default">Edit</button></td>
+
 
       <Dialog
         open={open}
@@ -132,3 +118,4 @@ export default function UtilityRow(props) {
     </Container>
   )
 }
+
