@@ -113,6 +113,11 @@ export default function ReportErrorPage(props){
         dispatch({ type: 'POST_TICKET', payload });
         history.goBack();
     }
+
+    // const handleClose = () => {
+    //     setOpen(false);
+    //     };
+
     
     let body;
     if(program_id && eia_state){
