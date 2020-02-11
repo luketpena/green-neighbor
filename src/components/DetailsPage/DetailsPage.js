@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {useParams} from 'react-router-dom';
+import {useParams, useHistory} from 'react-router-dom';
 import styled, {keyframes} from 'styled-components';
 
 import Background from '../../images/bkg-forest-top.jpg';
@@ -8,12 +8,14 @@ import Background from '../../images/bkg-forest-top.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBullhorn, faScroll, faSeedling, faExclamation, faHandsHelping, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
+import HomeButton from '../HomeButton/HomeButton';
+
 const ActionData = [
-  {text: `Share with Friends`, icon: faBullhorn},
-  {text: `View other energy programs near you`, icon: faScroll},
-  {text: `Discover Green Energy's Impact`, icon: faSeedling},
-  {text: `Report a problem with this energy program`, icon: faExclamation},
-  {text: `Discover how you can contribute`, icon: faHandsHelping}
+  {action: 'share', text: `Share with Friends`, icon: faBullhorn},
+  {action: 'utility', text: `View other energy programs near you`, icon: faScroll},
+  {action: 'about', text: `Discover Green Energy's Impact`, icon: faSeedling},
+  {action: 'report', text: `Report a problem with this energy program`, icon: faExclamation},
+  {action: 'contribute', text: `Discover how you can contribute`, icon: faHandsHelping}
 ];
 
 const Container = styled.div`
@@ -21,8 +23,8 @@ const Container = styled.div`
   height: 100vh;
   margin: 0 auto;
   display: grid;
-  grid-template-areas: "main" "action";
-  grid-template-rows: 1fr auto;
+  grid-template-areas: "home" "main" "action";
+  grid-template-rows: auto 1fr auto;
   background-image: url(${Background});
   background-size: cover;
   background-attachment: fixed;
@@ -100,18 +102,21 @@ const ActionCard = styled.button`
   padding: 16px;
   background-color: rgba(255,255,255,.1);
   color: rgba(255,255,255,.8);
+
   transition: all .3s;
   border: none;
-  font-size:  1em;
   outline: none;
+  font-size:  1em;
+  
   
   p {
     font-family: var(--font-main);
     text-shadow: 0 0 8px black;
+    display: block;
   }
   .icon {
     display: block;
-    margin: 32px auto;
+    margin: 16px auto;
     font-size: 48px;
     transition: transform 1s;
   }
@@ -167,10 +172,10 @@ const DiscoverBar = styled.div`
 export default function DetailsPage() {
 
   const details = useSelector(state => state.programDetails)
+  const history = useHistory();
   const dispatch = useDispatch();
-  const {id} = useParams(); 
-  let [discoverActive, setDiscoverActive] = useState(false);
-  
+  const {id, zip} = useParams(); 
+  let [discoverActive, setDiscoverActive] = useState(false);  
 
 
   useEffect(()=>{
@@ -181,10 +186,19 @@ export default function DetailsPage() {
     event.target.blur();
   }
 
+  function clickAction(action) {
+    switch(action) {
+      case 'utility': history.push(`/utility/${zip}`); break;
+      case 'about': history.push('/about'); break;
+      case 'report': history.push(`/report/${zip}/${details.eia_state}/${details.id}`); break;
+      default: /* Always remember: keep React happy with default cases. */ break;
+    }
+  }
+
   function renderActions() {
     return ActionData.map( (item,i)=>{
       return (
-        <ActionCard key={i} onMouseLeave={blurActions}>
+        <ActionCard key={i} onMouseLeave={blurActions} onClick={()=>clickAction(item.action)}>
           <FontAwesomeIcon className="icon" icon={item.icon}/>
           <p>{item.text}</p>
         </ActionCard>
@@ -195,6 +209,7 @@ export default function DetailsPage() {
 
   return(
     <Container>
+      <HomeButton />
       <TitleDiv>
         <TitleMain>
           <h2>{details.utility_name} - {details.eiaid}</h2>
@@ -204,7 +219,7 @@ export default function DetailsPage() {
         <TitleAction>
           <p>Continue to the program website to sign up!</p>
           <a href = {details.sign_up_url}>
-            <button className="button-primary" >{details.sign_up_text || 'Go!'}</button>
+            <button className= "button-primary">{details.sign_up_text || 'Go!'}</button>
           </a>
         </TitleAction>
       </TitleDiv>

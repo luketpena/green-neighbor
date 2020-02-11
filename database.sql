@@ -25,7 +25,8 @@ CREATE TABLE "zips" (
 	"bundled_avg_res_rate" FLOAT,
 	"delivery_avg_comm_rate" FLOAT,
 	"delivery_avg_ind_rate" FLOAT,
-	"delivery_avg_res_rate" FLOAT
+	"delivery_avg_res_rate" FLOAT,
+  "production" BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE "gpp" (
@@ -69,12 +70,18 @@ CREATE TABLE "gpp" (
 CREATE TABLE "tickets" (
 	"id" SERIAL PRIMARY KEY,
 	"resolved" BOOLEAN DEFAULT FALSE,
+	"type" INT,
+	-- 0: missing utility company
+	-- 1: missing program
+	-- 2: errors in program
 	"zip" INT,
+	"zips_id" INT,
 	"utility_name" VARCHAR,
 	"eia_state" VARCHAR,
 	"program_name" VARCHAR,
 	"gpp_id" INT,
 	"email" VARCHAR,
+	"date_submitted" DATE DEFAULT CURRENT_DATE,
 	"comments" VARCHAR
 );
 

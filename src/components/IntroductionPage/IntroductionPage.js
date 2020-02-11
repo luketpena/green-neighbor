@@ -1,8 +1,24 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import Background from '../../images/bkg-forest-top.jpg';
 
+
+const appear_step1 = keyframes`
+  0% {
+    opacity: 0;
+    transform: translate( 0, -10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate( 0, 0);
+  }
+`;
+const appear_step2 = keyframes`
+  0% {opacity: 0;}
+  50% {opacity: 0;}
+  100% {opacity: 1;}
+`;
 
 const BackgroundBox = styled.div`
   background-image: url(${Background});
@@ -21,7 +37,7 @@ const Container = styled.div`
   display: grid;
   grid-template-areas: "main" "learn";
   grid-template-rows: 1fr auto;
-  border: 4px dashed white;
+  border: 4px solid white;
   height: 100%;
 
 `;
@@ -36,10 +52,17 @@ const ZipBox = styled.div`
   justify-content: center;
   color: white;
   text-shadow: 0 0 4px black;
+
+  h1, h2 {
+    animation: 1s ${appear_step1} ease-in-out;
+  }
+  label, input, button {
+    animation: 1s ${appear_step2} ease-in;
+  }
   
   h1 {
     font-family: var(--font-header);
-    font-size: 64px;
+    font-size: 6em;
     margin: 0;
   }
   h2 {
@@ -90,7 +113,6 @@ export default function IntroductionPage(props) {
   return(
     <BackgroundBox>
       <Container>
-
         <ZipBox>
             <h1>The Green Neighbor Challenge</h1>
             <h2>Find green energy near you.</h2>
@@ -109,7 +131,6 @@ export default function IntroductionPage(props) {
           <button className="button-default" onClick={()=>history.push("/contribute")}>How you can help</button>
           {/* update push links to when we had those pages set up */}
         </LearnBox>
-
       </Container>
     </BackgroundBox>
   )
