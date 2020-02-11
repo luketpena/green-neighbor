@@ -6,6 +6,7 @@ import { faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import UtilityRow from './UtilityRow';
+import UtilityModal from './UtilityModal';
 
 const Container = styled.div`
   margin: 5%;
@@ -197,6 +198,7 @@ export default function RecordsPage() {
   return(
     <Container>
         <h1>Record Management</h1>
+        <UtilityModal />
         <ManageBox>
 
           <SearchBox>
@@ -234,10 +236,7 @@ export default function RecordsPage() {
                   <tr>
                     <th className="th-click" onClick={()=>triggerOrder('utility_name')}>Company</th>
                     <th className="th-click" onClick={()=>triggerOrder('state')}>State</th>
-                    <th className="th-click" onClick={()=>triggerOrder('zip')}>Zip</th>
                     <th className="th-click" onClick={()=>triggerOrder('program_count')}># Programs</th>
-                    <th className="th-click" onClick={()=>triggerOrder('production')}>Status</th>
-                    <th>&nbsp;</th>
                     <th className="th-click" onClick={()=>triggerOrderDir((orderDir==='ASC'? 'DESC' : 'ASC'))} > <FontAwesomeIcon className="dir-btn" icon={faCaretUp}/></th>
                   </tr>
                 </thead>

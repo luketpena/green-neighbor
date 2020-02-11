@@ -93,7 +93,7 @@ class App extends Component {
                 component={TicketsPage}
               />
               <ProtectedRoute
-                exact path="/admin/addUtility"
+                exact path="/admin/addUtility/:id?"
                 component={AddUtilityPage}
               />
             </div>

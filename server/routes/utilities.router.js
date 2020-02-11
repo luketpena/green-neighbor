@@ -78,7 +78,7 @@ router.get('/count', async(req,res)=>{
   try {
 
     let query = `
-      SELECT COUNT(z.id) FROM zips z
+      SELECT COUNT(DISTINCT z.eia_state) FROM zips z
       LEFT JOIN gpp g ON z.eia_state = g.eia_state
     `;
     let queryParams = [];
@@ -86,19 +86,12 @@ router.get('/count', async(req,res)=>{
     const modify = stringifyQueries(req.query,queryParams);
     query += modify.string;
     queryParams = [...modify.params];
-      
-    query += ` GROUP BY z.id`;
-    query = 'SELECT COUNT(*) FROM (' + query + ') as utility_count';
-
-    console.log('Count query:',query);
-    
-
+  
     const result = await pool.query(query,queryParams);
     res.send(result.rows[0]);
   } catch(error) {
     res.sendStatus(500);
     console.log('Error getting count of utilities:', error);
-    
   }
 })
 
@@ -111,8 +104,17 @@ router.get('/summary/:page', async(req,res)=>{
   
   try {
     let query = `
-      SELECT z.id, z.eia_state, z.utility_name, z.zip, z.state, COUNT(g.utility_name) as program_count, ARRAY_AGG(g.program_name) as program_list, ARRAY_AGG(g.id) as program_id, z.production FROM zips z
-      LEFT JOIN gpp g ON z.eia_state=g.eia_state`;
+    SELECT ARRAY_AGG(id ORDER BY zip) as ids, eia_state, utility_name,
+      ARRAY_AGG(zip ORDER BY zip) as zips, state, program_count, program_list,
+      program_id, ARRAY_AGG(production ORDER BY zip) as production
+    FROM (
+      SELECT z.id, z.eia_state, z.utility_name, z.zip, z.state,
+        COUNT(g.utility_name) as program_count,
+        ARRAY_AGG(g.program_name ORDER BY g.id) as program_list,
+        ARRAY_AGG(g.id ORDER BY g.id) as program_id, z.production FROM zips z
+      LEFT JOIN gpp g ON z.eia_state=g.eia_state
+      GROUP BY z.id
+    `;
 
     let queryParams = [req.params.page*100];
     const modify = stringifyQueries(req.query,queryParams);
@@ -123,23 +125,24 @@ router.get('/summary/:page', async(req,res)=>{
     
     let order = '';
     switch(req.query.order) {
-      case 'utility_name': order = 'z.utility_name'; break;
-      case 'state': order = 'z.state'; break;
-      case 'zip': order = 'z.zip'; break;
+      case 'utility_name': order = 'utility_name'; break;
+      case 'state': order = 'state'; break;
+      case 'zip': order = 'zips'; break;
       case 'program_count': order = 'program_count'; break;
-      case 'production': order = 'z.production'; break;
+      case 'production': order = 'production'; break;
     }
 
     let dir = (req.query.orderDir==='ASC'? 'ASC' : 'DESC');
     
 
     query += `
-      GROUP BY z.id
+      ) AS td
+      GROUP BY eia_state, utility_name, state, program_count, program_list, program_id
       ORDER BY ${order} ${dir}
       LIMIT 100 OFFSET $1;`;
 
-      console.log('Final search query:',query);
     const result = await pool.query(query,queryParams);
+
     res.send(result.rows);
   } catch(error) {
     res.sendStatus(500);
