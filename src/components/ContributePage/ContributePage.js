@@ -3,49 +3,7 @@ import styled from 'styled-components';
 import Background from '../../images/bkg-forest-top.jpg';
 // fancy home button
 import HomeButton from '../HomeButton/HomeButton';
-// material-ui
-// import PropTypes from 'prop-types';
-// import { makeStyles } from '@material-ui/core/styles';
-// import Tabs from '@material-ui/core/Tabs';
-// import Tab from '@material-ui/core/Tab';
-// import Typography from '@material-ui/core/Typography';
-// import Box from '@material-ui/core/Box';
 
-// function TabPanel(props) {
-//   const { children, value, index, ...other } = props;
-
-//   return (
-//     <Typography
-//       component="div"
-//       role="tabpanel"
-//       hidden={value !== index}
-//       id={`vertical-tabpanel-${index}`}
-//       aria-labelledby={`vertical-tab-${index}`}
-//       {...other}
-//     >
-//       {value === index && <Box p={3}>{children}</Box>}
-//     </Typography>
-//   );
-// }
-
-// TabPanel.propTypes = {
-//   children: PropTypes.node,
-//   index: PropTypes.any.isRequired,
-//   value: PropTypes.any.isRequired,
-// };
-
-// function a11yProps(index) {
-//   return {
-//     id: `vertical-tab-${index}`,
-//     'aria-controls': `vertical-tabpanel-${index}`,
-//   };
-// }
-
-// const useStyles = makeStyles(theme => ({
-//     tabs: {
-//       borderRight: `1px solid ${theme.palette.divider}`,
-//     },
-//   }));
 
   const BackgroundBox = styled.div`
   background-image: url(${Background});
@@ -59,11 +17,14 @@ import HomeButton from '../HomeButton/HomeButton';
 `;
 
 const Container = styled.div`
+width: 90%;
+height: 500px;
+margin: 0 auto;
 display: grid;
 grid-template-areas: "menu details";
 grid-template-rows: 100px 1fr;
-grid-template-columns: 250px 400px;
-justify-content: center;
+grid-template-columns: 250px 850px;
+// justify-content: center;
 `;
 
 const Header = styled.div`
@@ -80,33 +41,32 @@ h1 {
 }
 `;
 
-// const Menu = styled.div`
-// grid-area: menu;
-// height: 400px;
-// background-color: white;
-// grid-row: 2;
-// display: flex;
-// align-items: center;
-// // opacity: .7;
-// `;
+const Menu = styled.div`
+grid-area: menu;
+height: 400px;
+grid-row: 2;
+display: flex;
+flex-direction: column;
+align-items: right;
+`;
 
 const Details = styled.div`
 grid-area: details;
-height: 400px;
-background-color: white;
 grid-row: 2;
+
+height: 400px;
+overflow: scroll;
+opacity: .82;
+`;
+const Div = styled.div`
+padding: 15px 0px 15px;
 display: flex;
+flex-direction: column;
 align-items: center;
-// opacity: .4;
+height: 100%;
 `;
 
 export default function ContributePage() {
-    // const classes = useStyles();
-    // const [value, setValue] = React.useState(0);
-  
-    // const handleChange = (event, newValue) => {
-    //   setValue(newValue);
-    // };
   return(
       <BackgroundBox>
         <HomeButton/>
@@ -114,32 +74,33 @@ export default function ContributePage() {
             <h1>Contribute</h1>
         </Header>
         <Container >
-            {/* <Menu className="container">
-                <Tabs
-                    orientation="vertical"
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="Vertical tabs example"
-                    className={classes.tabs}
-                    
-                >
-                    {/* labels based on scope doc 
-                    <Tab label="Provide Information" {...a11yProps(0)} />
-                    <Tab label="Follow us on Social Media" {...a11yProps(1)} />
-                    <Tab label="Make a Donation" {...a11yProps(2)} />
-                </Tabs>
-            </Menu> */}
+
+            <Menu>
+                <button className="button-primary" >Follow us on Socal Media</button>
+            </Menu> 
+
             <Details className="container">
-                {/* link to component or just have text */}
-                {/* <TabPanel value={value} index={0}>
-                    Information
-                </TabPanel>
-                <TabPanel value={value} index={1}>
-                    Socal Media Links
-                </TabPanel>
-                <TabPanel value={value} index={2}>
-                    Donation
-                </TabPanel> */}
+                <Div>
+                    <h2>FOLLOW US ON SOCIAL MEDIA</h2>
+                    <h3>AND SHARE US WITH YOUR NEIGHBORS</h3>
+                    <a class="twitter-follow-button"
+                       href="https://twitter.com/GreenNeighborCh?ref_src=twsrc%5Etfw"
+                       target="_blank"
+                       data-size="large"
+                       data-show-count="default">
+                       Follow Us on Twitter</a>
+
+                    <div>
+                        <div id="fb-root"></div>
+                            <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v6.0"></script>
+
+                        <div class="fb-page" data-href="https://www.facebook.com/GreenNeighborChallenge/" 
+                        data-tabs="timeline" data-width="" data-height="" data-small-header="true" 
+                        data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false">
+                            <blockquote cite="https://www.facebook.com/GreenNeighborChallenge/" class="fb-xfbml-parse-ignore">
+                                <a href="https://www.facebook.com/GreenNeighborChallenge/" target="_blank">Like Us on Facebook</a></blockquote></div>
+                    </div>
+                </Div>
             </Details>
         </Container>
     </BackgroundBox>
