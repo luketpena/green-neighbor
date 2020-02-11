@@ -1,9 +1,10 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
+const {rejectUnauthenticated} = require('../modules/authentication-middleware');
 
 // send in req.query the column name and value to search for
-router.get('/', async (req, res) => {
+router.get('/', rejectUnauthenticated, async (req, res) => {
     try{
         const equalQueries = [
             'id', 'resolved', 'zip', 'utility_id', 'program_id'
@@ -11,6 +12,7 @@ router.get('/', async (req, res) => {
         const ilikeQueries = [
             'utility_name', 'program_name', 'comments'
         ];
+
         const config = [];
         const conditions = [];
         Object.entries(req.query).forEach(([key, value]) => {
@@ -23,7 +25,17 @@ router.get('/', async (req, res) => {
             }
         });
 
-        let orderBy = 'id';
+        const {fromCompanies, fromUtility, fromProgram} = req.query;
+        const isTrue = s => (s === 'true' || s === true);
+        if(isTrue(fromCompanies) || isTrue(fromUtility) || isTrue(fromProgram)){
+            const types = [];
+            if(isTrue(fromCompanies)) types.push('type=0');
+            if(isTrue(fromUtility)) types.push('type=1');
+            if(isTrue(fromProgram)) types.push('type=2');
+            conditions.push(`(${types.join(' OR ')})`);
+        }
+
+        let orderBy = 'date_submitted';
         if(req.query.orderBy){
             if( equalQueries.includes(req.query.orderBy) ||
                 ilikeQueries.includes(req.query.orderBy) )
@@ -32,15 +44,26 @@ router.get('/', async (req, res) => {
             }
         }
 
-        const order = req.query.order.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
+        const order = req.query.order && req.query.order.toUpperCase() === 'ASC' ?
+            'ASC' : 'DESC';
 
-        const query = `
+        const countQuery = `
+            SELECT COUNT(*) FROM "tickets"
+            ${conditions.length ? `WHERE ${conditions.join(' AND ')}`: ''}
+        `;
+
+        const countResults = await pool.query(countQuery, config);
+        const {count} = countResults.rows[0];
+
+        const ticketsQuery = `
             SELECT * FROM "tickets"
             ${conditions.length ? `WHERE ${conditions.join(' AND ')}`: ''}
-            ORDER BY ${orderBy} ${order}`;
-
-        const {rows} = await pool.query(query, config);
-        res.send(rows);
+            ORDER BY ${orderBy} ${order}
+            LIMIT $${config.length+1}
+            OFFSET $${config.length+2}`;
+        config.push(req.query.limit || 100, req.query.offset || 0);
+        const {rows: tickets} = await pool.query(ticketsQuery, config);
+        res.send({tickets, count});
     } catch (error) {
         res.sendStatus(500);
         console.log(error);
@@ -53,12 +76,16 @@ router.post('/', async (req, res) => {
     try{
         const acceptedKeys = [
             'resolved', 'zip', 'utility_name',
-            'utility_id', 'program_name', 'gpp_id',
-            'email', 'comments'
+            'program_name', 'gpp_id',
+            'email', 'comments', 'eia_state', 'zips_id',
+            'type'
         ];
         const config = [];
         const values = [];
-
+        
+        if(req.body.gpp_id) req.body.type = 2;
+        else if(req.body.zips_id) req.body.type = 1;
+        else req.body.type = 0;
         // for each key in req.body that is in acceptedKeys,
         // add $1 or $2 etc to values, add the value itself to
         // config, and map into keys the key itself.
@@ -73,14 +100,25 @@ router.post('/', async (req, res) => {
         const query = `
             INSERT INTO "tickets" (${keys})
             VALUES (${values.join(', ')})`;
-
         await pool.query(query, config);
-
         res.sendStatus(200);
     } catch (error) {
         res.sendStatus(500);
         console.log(error);
     }
 });
+
+router.put('/resolve/:id/:value', rejectUnauthenticated, async (req, res) => {
+    try{
+        const query = `
+            UPDATE "tickets" SET "resolved"=$1
+            WHERE "id"=$2`;
+        await pool.query(query, [req.params.value, req.params.id]);
+        res.sendStatus(200);
+    } catch (error) {
+        res.sendStatus(500);
+        console.log(error);
+    }
+})
 
 module.exports = router;
