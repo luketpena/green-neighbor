@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  
+  background-color: red;
+  height: 100%;
 `;
 
 const Stepper = styled.div`
@@ -86,7 +87,6 @@ export default function SubmissionForm() {
 
   return (
     <Container>
-      {currentStep}
       <Stepper>
         <StepBox>
           {renderSteps()}
