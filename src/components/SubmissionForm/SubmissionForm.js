@@ -2,18 +2,20 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  background-color: red;
   height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
 `;
 
 const Stepper = styled.div`
-
+  height: 50px;
 `;
 
 const StepBox = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 100%;
+  height: 100%;
 `;
 
 const Step = styled.button`
@@ -22,7 +24,7 @@ const Step = styled.button`
   outline: none;
   margin: 0;
   padding: 0;
-  height: 100px;
+  height: 100%;
   position: relative;
   font-size: 1em;
   color: ${props=>(props.currentStep===props.index? 'white' : 'black')};
@@ -63,6 +65,34 @@ const ProgressBar = styled.div`
   transition: all .5s;
 `;
 
+const FormBox = styled.div`
+  display: grid;
+  box-sizing: border-box;
+  padding: 0 5%;
+  
+  grid-template-areas: "header" "main" "buttons";
+  grid-template-rows: auto 1fr auto;
+  h1 {
+    grid-area: header;
+    text-align: center;
+  }
+`;
+
+const FormArea = styled.div`
+  background-color: white;
+  grid-area: main;
+  border-radius: 16px;
+  box-shadow: 0 8px 8px -4px rgba(0,0,0,.5);
+`;
+
+const FormButtons = styled.div`
+  padding: 16px;
+  button {
+    display: grid;
+    margin: 0 auto;
+  }
+`;
+
 const steps = [
   {name: 'Source'},
   {name: 'Pricing'},
@@ -85,6 +115,14 @@ export default function SubmissionForm() {
     });
   }
 
+  function renderNextButton() {
+    if (currentStep===steps.length-1) {
+      return <button className="button-primary">Submit</button>
+    } else {
+      return <button onClick={()=>setCurrentStep(currentStep+1)} className="button-default">Next</button>
+    }
+  }
+
   return (
     <Container>
       <Stepper>
@@ -95,6 +133,18 @@ export default function SubmissionForm() {
           <ProgressBar num={steps.length} currentStep={currentStep}/>
         </ProgressBox>
       </Stepper>
+
+
+      <FormBox>
+        <h1>Submission Form</h1>
+        <FormArea>
+
+        </FormArea>
+        <FormButtons>
+          {renderNextButton()}
+        </FormButtons>
+      </FormBox>
+
     </Container>
   )
 }
