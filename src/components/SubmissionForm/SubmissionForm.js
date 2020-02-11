@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 
+import SubmitSources from './SubmitSources';
+
 const Container = styled.div`
   height: 100%;
   display: grid;
@@ -93,7 +95,7 @@ const FormButtons = styled.div`
 `;
 
 const steps = [
-  {name: 'Source'},
+  {name: 'Sources'},
   {name: 'Pricing'},
   {name: 'Contract'},
   {name: 'Details'},
@@ -152,7 +154,7 @@ export default function SubmissionForm() {
         <h1>Submission Form</h1>
 
         <FormArea>
-          
+          <SubmitSources />
         </FormArea>
 
         <FormButtons>
