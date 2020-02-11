@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import errors from './errorsReducer';
 import loginMode from './loginModeReducer';
 import user from './userReducer';
+import submissionFormReducer from './submissionFormReducer';
 // import geocode from './geocodeReducer';
 
 // rootReducer is the primary reducer for our entire project
@@ -32,7 +33,8 @@ const rootReducer = combineReducers({
   tickets: createReducer('SET_TICKETS', {}),
   adminTicketsDisplayDetails: createReducer('SET_TICKETS_DISPLAY', false),
   adminTicketsModalOpen: createReducer('SET_TICKET_MODAL_OPEN', false),
-  adminTicketsModalTicket: createReducer('SET_TICKET_MODAL_TICKET', {})
+  adminTicketsModalTicket: createReducer('SET_TICKET_MODAL_TICKET', {}),
+  submissionFormReducer,
 });
 
 export default rootReducer;
