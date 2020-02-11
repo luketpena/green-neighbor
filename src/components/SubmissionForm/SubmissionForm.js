@@ -87,10 +87,9 @@ const FormArea = styled.div`
 
 const FormButtons = styled.div`
   padding: 16px;
-  button {
-    display: grid;
-    margin: 0 auto;
-  }
+  display: flex;
+  justify-content: center;
+
 `;
 
 const steps = [
@@ -115,11 +114,25 @@ export default function SubmissionForm() {
     });
   }
 
-  function renderNextButton() {
-    if (currentStep===steps.length-1) {
-      return <button className="button-primary">Submit</button>
+  function renderButtons() {
+    if (currentStep===0) {
+      if (currentStep===steps.length-1) {
+        return <button className="button-primary">Submit</button>
+      } else {
+        return <button onClick={()=>setCurrentStep(currentStep+1)} className="button-default">Next</button>
+      }
     } else {
-      return <button onClick={()=>setCurrentStep(currentStep+1)} className="button-default">Next</button>
+      if (currentStep===steps.length-1) {
+        return <>
+          <button onClick={()=>setCurrentStep(currentStep-1)} className="button-default">Back</button>
+          <button className="button-primary">Submit</button>
+          </>
+      } else {
+        return <>
+        <button onClick={()=>setCurrentStep(currentStep-1)} className="button-default">Back</button>
+          <button onClick={()=>setCurrentStep(currentStep+1)} className="button-default">Next</button>
+          </>
+      }
     }
   }
 
@@ -137,11 +150,13 @@ export default function SubmissionForm() {
 
       <FormBox>
         <h1>Submission Form</h1>
-        <FormArea>
 
+        <FormArea>
+          
         </FormArea>
+
         <FormButtons>
-          {renderNextButton()}
+          {renderButtons()}
         </FormButtons>
       </FormBox>
 
