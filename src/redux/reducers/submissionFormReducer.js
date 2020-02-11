@@ -3,8 +3,7 @@ const submissionFormReducer = (state = {}, action) => {
         case 'SET_SUBMISSION_FORM':
             return action.payload;
         case 'UPDATE_SUBMISSION_FORM':
-            state[action.payload.key] = action.payload.value;
-            return state;
+            return {...state, ...action.payload};
         case 'CLEAR_SUBMISSION_FORM':
             return {};
         default:
