@@ -35,6 +35,7 @@
   --font-main: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
+
 body {
   background-color: var(--color-bkg-main);
   margin: 0;
@@ -121,4 +122,39 @@ input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
   margin: 0; 
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  white-space: nowrap;
+  border: none;
+  margin: 0;
+}
+
+.admin-table thead {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.admin-table th {
+  height: 48px;
+  transition: all .2s;
+}
+
+.th-click:hover {
+  cursor: pointer;
+  background-color: var(--color-primary-light);
+}
+
+.admin-table tbody tr:nth-child(odd) {
+  background-color: #f6f6f6;
+}
+.admin-table tbody tr {
+  background-color: white;
+  font-family: var(--font-main);
+}
+
+.admin-table tbody tr:hover {
+  background-color: rgb(220,245,235);
 }

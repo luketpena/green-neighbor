@@ -12,8 +12,11 @@ export const ManageBox = styled.div`
   min-height: 500px;
   display: grid;
   grid-template-columns: 200px  1fr;
-  grid-template-rows: 50px auto;
-  grid-template-areas: "search filter" "search main";
+  grid-template-rows: max-content max-content auto;
+  grid-template-areas:
+    "search filter"
+    "search header"
+    "search main";
   overflow: hidden;
   border-radius: 8px;
   box-shadow: 0 8px 8px 0 rgba(0,0,0,.5);
@@ -45,6 +48,7 @@ export const FilterBox = styled.div`
   background-color: var(--color-primary);
   grid-area: filter;
   display: flex;
+  flex-flow: row wrap;
   align-items: center;
 `;
 
@@ -56,12 +60,14 @@ export const FilterOption = styled.div`
 
 export const MainBox = styled.div`
   grid-area: main;
+  overflow-x: scroll;
 `;
 
 export const MainHeader = styled.div`
   background-color: var(--color-bkg-dark);
   padding: 8px;
   box-sizing: border-box;
+  grid-area: header;
   
   .addButton  {
     display: block;
@@ -74,14 +80,46 @@ export const MainHeader = styled.div`
 `;
 
 export const MainTable = styled.table`
+  font-family: var(--font-main);
   width: 100%;
   border-collapse: collapse;
-  tr:nth-child(odd) {
-    background-color: #EEE;
+`;
+
+export const MainTableBody = styled.tbody`
+  tr:${props=>props.doubleLines ?
+    `nth-child(4n)`:'nth-child(odd)'
+  }{
+    background-color: #DDDDDD;
+    1px solid #CCCCCC;
   }
-  tr{
+  ${props=>props.doubleLines ? `
+    tr:nth-child(4n-1){background-color: #DDDDDD;}
+  ` : ''}
+  tr, th {
     background-color: white;
-    font-family: var(--font-main);
+    ${props=>props.doubleLines ? 
+      '' : 'border-bottom: 1px solid #CCCCCC;'};
+    ${props=>props.hoverable && `
+      &:hover {
+        background-color: #DDEEFF;
+      }
+    `}
+
+    td, th {
+      padding: 8px;
+    }
+  }
+`;
+
+export const MainTableHead = styled.thead`
+  background-color: #CACACF;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1rem;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0px, 8px, 4px, #555555;
+  th {
+    padding: 10px 8px;
   }
 `;
 
