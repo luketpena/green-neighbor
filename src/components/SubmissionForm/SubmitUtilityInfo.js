@@ -1,13 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import styled from 'styled-components';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTimes} from '@fortawesome/free-solid-svg-icons';
 
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 const Container = styled.div`
@@ -182,9 +179,9 @@ export default function SubmitUtilityInfo() {
 
   return (
     <Container>
-
       <BasicBox>
         <h3>Basic Info</h3>
+        <button onClick={()=>dispatch({type: 'GET_EDIT_INFO_UTILITY', payload: 1})}>Get</button>
         <label>Utility Name: </label>
         <input 
           type="text" 
