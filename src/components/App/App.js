@@ -13,13 +13,14 @@ import DetailsPage from '../DetailsPage/DetailsPage';
 import AboutPage from '../AboutPage/AboutPage';
 import IntroductionPage from '../IntroductionPage/IntroductionPage';
 import UtilityPage from '../UtilityPage/UtilityPage';
-import Nav from '../Nav/Nav';
 import NavBar from '../NavBar/NavBar';
 import AdminLandingPage from '../Admin/AdminLandingPage/AdminLandingPage.js';
 import ManageAdminsPage from '../Admin/ManageAdminsPage/ManageAdminsPage.js';
 import RecordsPage from '../Admin/RecordsPage/RecordsPage';
 import TicketsPage from '../Admin/TicketsPage/TicketsPage';
 import ContributePage from '../ContributePage/ContributePage';
+import AddUtilityPage from '../Admin/AddUtilityPage/AddUtilityPage';
+import SubmissionForm from '../SubmissionForm/SubmissionForm';
 
 import './App.css';
 import ReportErrorPage from '../ReportErrorPage/ReportErrorPage';
@@ -65,7 +66,7 @@ class App extends Component {
             component={ContributePage}
           />
           <Fragment>
-            <div className='adminPages'>
+            <div className='admin-pages'>
               <NavBar />
               {/* For protected routes, the view could show one of several things on the same route.
               Visiting /home will show the UserPage if the user is logged in.
@@ -90,6 +91,15 @@ class App extends Component {
                 exact
                 path="/admin/tickets"
                 component={TicketsPage}
+              />
+              <ProtectedRoute
+                exact path="/admin/addUtility/:id?"
+                component={AddUtilityPage}
+              />
+              <ProtectedRoute
+                exact
+                path="/admin/submit"
+                component={SubmissionForm}
               />
             </div>
           </Fragment>

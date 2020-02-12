@@ -44,11 +44,15 @@ function stringifyQueries(query,paramsArray) {
       
     switch(key) {
       case 'state':
-      case 'utility_name':
       case 'program_name':
         final.params.push('%'+value+'%');
         final.string += conjunctionFunction(final.params);
         final.string += `${(key==='program_name'? 'g':'z')}.${key} ILIKE $${final.params.length}`;
+        break;
+      case 'utility_name':
+        final.params.push(`%${value}%`);
+        final.string += conjunctionFunction(final.params);
+        final.string += `u.${key} ILIKE $${final.params.length}`;
         break;
       case 'show':
         switch(value) {
@@ -70,35 +74,24 @@ function stringifyQueries(query,paramsArray) {
   return final;
 }
 
-router.get('/count', async(req,res)=>{
-
-  console.log(req.query);
-
-  
+router.get('/count', async(req,res)=>{  
   try {
 
     let query = `
-      SELECT COUNT(z.id) FROM zips z
+      SELECT COUNT(DISTINCT z.eia_state) FROM zips z
       LEFT JOIN gpp g ON z.eia_state = g.eia_state
+      JOIN utilities u ON z.eia_state = u.eia_state
     `;
     let queryParams = [];
     
     const modify = stringifyQueries(req.query,queryParams);
     query += modify.string;
     queryParams = [...modify.params];
-      
-    query += ` GROUP BY z.id`;
-    query = 'SELECT COUNT(*) FROM (' + query + ') as utility_count';
-
-    console.log('Count query:',query);
-    
-
     const result = await pool.query(query,queryParams);
     res.send(result.rows[0]);
   } catch(error) {
     res.sendStatus(500);
     console.log('Error getting count of utilities:', error);
-    
   }
 })
 
@@ -111,35 +104,54 @@ router.get('/summary/:page', async(req,res)=>{
   
   try {
     let query = `
-      SELECT z.id, z.eia_state, z.utility_name, z.zip, z.state, COUNT(g.utility_name) as program_count, ARRAY_AGG(g.program_name) as program_list, ARRAY_AGG(g.id) as program_id, z.production FROM zips z
-      LEFT JOIN gpp g ON z.eia_state=g.eia_state`;
+    SELECT ARRAY_AGG("zips") as zips, eia_state, utility_name, state,
+    program_count, programs, production, utility_id
+    FROM (
+      SELECT json_build_object('id', z.id, 'zip', z.zip) as "zips",
+        z.eia_state, u.utility_name, z.state,
+        COUNT(g.utility_name) as program_count,
+        u.production AS production, u.id AS utility_id,
+        array_agg(
+          jsonb_build_object('name', g.program_name, 'id', g.id, 'production', g.production)
+          ORDER BY g.id
+        ) as programs
+      FROM zips as z
+      LEFT JOIN gpp g ON z.eia_state=g.eia_state
+      JOIN utilities u ON u.eia_state=z.eia_state
+    `;
 
     let queryParams = [req.params.page*100];
     const modify = stringifyQueries(req.query,queryParams);
     query += modify.string;
     queryParams = [...modify.params];
-      
-
     
     let order = '';
     switch(req.query.order) {
-      case 'utility_name': order = 'z.utility_name'; break;
-      case 'state': order = 'z.state'; break;
-      case 'zip': order = 'z.zip'; break;
+      case 'utility_name': order = 'utility_name'; break;
+      case 'state': order = 'state'; break;
+      case 'zip': order = 'zips'; break;
       case 'program_count': order = 'program_count'; break;
-      case 'production': order = 'z.production'; break;
+      // case 'production': order = 'production'; break;
     }
 
     let dir = (req.query.orderDir==='ASC'? 'ASC' : 'DESC');
     
 
     query += `
-      GROUP BY z.id
+      GROUP BY z.id, u.utility_name, u.production, u.id
+      ) AS td
+      GROUP BY eia_state, utility_name, state, program_count,
+        programs, production, utility_id
       ORDER BY ${order} ${dir}
       LIMIT 100 OFFSET $1;`;
 
-      console.log('Final search query:',query);
     const result = await pool.query(query,queryParams);
+
+    // AFAIK, there is no way to prevent Postgres from
+    // returning a null JSON
+    result.rows.forEach(item => {
+      item.programs.filter(program => program.id !== null);
+    });
     res.send(result.rows);
   } catch(error) {
     res.sendStatus(500);
@@ -151,12 +163,12 @@ router.get('/summary/:page', async(req,res)=>{
   Posts a new utility company to the zips table.
 */
 router.post('/', rejectUnauthenticated, async(req,res)=>{
-  const {zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate} = req.body;
+  const {zip, eiaid, state, eia_state} = req.body;
   const queryData = [zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate];
   try {
     const query = `
-      INSERT INTO zips (zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);
+      INSERT INTO zips (zip, eiaid, state, eia_state)
+      VALUES ($1, $2, $3, $4);
     `;
     await pool.query(query, queryData);
     res.sendStatus(201);
@@ -188,12 +200,12 @@ router.delete('/:id', rejectUnauthenticated, async(req,res)=>{
   Requires a user to be authenticated to permit modification.
 */
 router.put('/:id', rejectUnauthenticated, async(req,res)=>{
-  const {zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate} = req.body;
-  const queryData = [req.params.id, zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate];
+  const {zip, eiaid, state, eia_state} = req.body;
+  const queryData = [req.params.id, zip, eiaid, state, eia_state];
   try {
     const query = `
       UPDATE zips 
-      SET zip=$2, eiaid=$3, utility_name=$4, state=$5, eia_state=$6, bundled_avg_comm_rate=$7, bundled_avg_ind_rate=$8, bundled_avg_res_rate=$9, delivery_avg_comm_rate=$10, delivery_avg_ind_rate=$11, delivery_avg_res_rate=$12
+      SET zip=$2, eiaid=$3, state=$4, eia_state=$5
       WHERE id=$1;
     `;
     await pool.query(query, queryData);
@@ -209,7 +221,7 @@ router.put('/:id', rejectUnauthenticated, async(req,res)=>{
 */
 router.put('/production/:id', rejectUnauthenticated, async(req,res)=>{
   try {
-    const query = `UPDATE zips SET production=$1 WHERE id=$2;`;
+    const query = `UPDATE utilities SET production=$1 WHERE id=$2;`;
     await pool.query(query,[req.body.production,req.params.id]);
     res.sendStatus(200);
   } catch(error) {
