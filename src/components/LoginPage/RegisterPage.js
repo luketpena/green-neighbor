@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import TextField from '@material-ui/core/TextField';
-import {Page, Form, margin, Header} from './styles.js';
+import {Page, Form, Header} from './styles.js';
 
 class RegisterPage extends Component {
   state = {

@@ -137,7 +137,7 @@ export default function RecordsPage() {
       setMount(true);
       dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show, order}});
     }
-  },[utilitiesCount, utilitiesSearch, page]);
+  },[utilitiesCount, utilitiesSearch, page, dispatch, mount, order, program_name, show, state, utility_name, zip]);
 
   function renderUtilities() {
     return utilities.map( (item,i)=> {

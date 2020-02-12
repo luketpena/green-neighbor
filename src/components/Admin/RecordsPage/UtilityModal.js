@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 // 014212442
 
@@ -66,7 +65,7 @@ export default function UtilityModal(props){
     const utility = useSelector(state => state.adminRecordsModalUtility);
     const {
       eia_state, utility_name,
-      zips, state, program_count,
+      zips, 
       programs, utility_id
     } = utility;
     const [production, setProduction] = useState(utility.production);
