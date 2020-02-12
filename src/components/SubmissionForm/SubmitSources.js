@@ -44,7 +44,6 @@ export default function SubmitSources() {
     {name: 'bio', value: 0, active: false},
     {name: 'hydro', value: 0, active: false},
     {name: 'geo', value: 0, active: false},
-    {name: 'other', value: 0, active: false},
   ]);
 
   function changeSourceList(index, target, value) {
@@ -53,13 +52,25 @@ export default function SubmitSources() {
     setSourceList(copy);
   }
 
+  function sumSources() {
+    let sum = 0;
+    for (let i=0; i<sourceList.length; i++) {
+      sum += sourceList[i].value;
+    }
+    return Number(sum.toFixed(2));
+  }
+
   function renderSources() {
     return sourceList.map( (item,i)=>{
       return (
         <SourceItem key={i}>
           <input type="checkbox" checked={sourceList[i].active} onChange={event=>changeSourceList(i,'active',event.target.checked)}/>
           <label>{capitalize(item.name)}</label>
-          <input type="number" value={sourceList[i].value*100} onChange={event=>changeSourceList(i,'value',event.target.value/100)}/>
+          <input 
+            type="number" 
+            value={ Math.round(sourceList[i].value*100) }  
+            onChange={event=>changeSourceList(i,'value', Number( (event.target.value/100).toFixed(2)) )} 
+            onBlur={event=> changeSourceList(i,'value', Number(((event.target.value/100)-Math.max(0,sumSources()-1)).toFixed(2)) )}/>
           <label>%</label>
         </SourceItem>
       )
@@ -72,6 +83,7 @@ export default function SubmitSources() {
     <Container>
       <h2>Sources</h2>
       {JSON.stringify(sourceList)}
+      Sum of Sources: {1-sumSources()}
       <EnergyBox>
         <EnergyBar sourceList={sourceList} key={Math.random} program={{
           wind: sourceList[0].value,
@@ -79,7 +91,7 @@ export default function SubmitSources() {
           bio: sourceList[2].value,
           hydro: sourceList[3].value,
           geo: sourceList[4].value,
-          other: sourceList[5].value
+          other: Math.max(Number( (1-sumSources()).toFixed(2)), 0)
           }}/>
       </EnergyBox>
       <SourceBox>
