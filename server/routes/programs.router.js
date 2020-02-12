@@ -149,7 +149,6 @@ router.put('/update/:id', rejectUnauthenticated, async (req, res) => {
             UPDATE "gpp" SET ${cols}
             WHERE "gpp"."id"=$1`;
 
-        console.log(query, config);
         await pool.query(query, config);
         res.sendStatus(200);
     } catch (error) {

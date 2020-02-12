@@ -67,7 +67,7 @@ export default function EnergyBar(props) {
 
   function renderBars() {
     return sortEnergy().map( (item,i)=>{
-    return <Bar bar={item} key={i} select={select} index={i} onClick={()=>setSelect(i)} onMouseLeave={()=>setSelect(-1)}>{item.name} {item.value*100}%</Bar>
+    return <Bar bar={item} key={i} select={select} index={i} onClick={()=>setSelect(i)} onMouseLeave={()=>setSelect(-1)}>{item.name} { parseInt((item.value*100).toString()) }%</Bar>
     })
   }
 

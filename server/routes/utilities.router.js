@@ -150,12 +150,46 @@ router.get('/summary/:page', async(req,res)=>{
     // AFAIK, there is no way to prevent Postgres from
     // returning a null JSON
     result.rows.forEach(item => {
-      item.programs.filter(program => program.id !== null);
+      if(item.programs[0].id === null){
+        item.programs.pop();
+      }
     });
     res.send(result.rows);
   } catch(error) {
     res.sendStatus(500);
     console.log('Error getting utility summary list:', error);    
+  }
+});
+
+/* 
+  Gets the info to edit a single utility company 
+*/
+router.get('/edit/:id', rejectUnauthenticated, async(req,res)=>{
+
+  try {
+    const query = `
+      SELECT ARRAY_AGG(distinct jsonb_build_object('id', z.id, 'zip', z.zip)) as "zips",
+      u.utility_name,
+          z.eia_state,
+          z.eiaid,
+          z.state,
+          u.bundled_avg_comm_rate,
+          u.bundled_avg_ind_rate,
+          u.bundled_avg_res_rate,
+          u.delivery_avg_comm_rate, 
+          u.delivery_avg_ind_rate,
+          u.delivery_avg_res_rate,
+          u.production AS production, u.id AS utility_id
+        FROM zips as z
+        JOIN utilities u ON u.eia_state=z.eia_state
+        WHERE u.id=$1
+        GROUP BY z.eia_state, z.state, z.eiaid, u.utility_name, utility_id, u.production, u.id;
+    `;
+    const response = await pool.query(query,[req.params.id]);
+    res.send(response.rows[0])
+  } catch(error) {
+    console.log('Error getting utility to edit:',error);
+    res.sendStatus(500);
   }
 });
 
@@ -229,6 +263,6 @@ router.put('/production/:id', rejectUnauthenticated, async(req,res)=>{
     console.log('Error updating company production status:', error);
     
   }
-})
+});
 
 module.exports = router;
