@@ -37,10 +37,7 @@ export default function UtilityRow(props) {
 
   const dispatch = useDispatch();
 
-  const {id, utility_name, utility_id,
-    state, program_count, program_list,
-    program_id
-  } = props.utility;
+  const {utility_name, utility_id, state, program_count} = props.utility;
 
   const [production, setProduction] = useState(props.utility.production);
   useEffect(()=>{
