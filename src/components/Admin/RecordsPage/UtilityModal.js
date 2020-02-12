@@ -15,15 +15,15 @@ const ProgramTitle = styled.span`
 
 export default function UtilityModal(props){
     const dispatch = useDispatch();
-    const {ids, eia_state, utility_name, zips, state, program_count,
-        program_list, program_id, production} = useSelector(state => state.adminRecordsModalUtility);
+    const {eia_state, utility_name, zips, state, program_count,
+        program_list, program_id} = useSelector(state => state.adminRecordsModalUtility);
     const open = useSelector(state => state.adminRecordsModalOpen);
-    console.log({ids, eia_state, utility_name, zips, state, program_count,
-        program_list, program_id, production});
+    console.log({eia_state, utility_name, zips, state, program_count,
+        program_list, program_id});
     const close = () => {
         dispatch({type: 'SET_ADMIN_RECORDS_MODAL_OPEN', payload: false});
     }
-
+ 
     return (
         <Dialog
             open={open}
@@ -38,7 +38,18 @@ export default function UtilityModal(props){
           </ProgramTitle>
         </DialogTitle>
         <DialogContent>
-            
+          <table className='admin-table'>
+            <thead>
+              <tr>
+                <th>
+                  Company
+                </th>
+                <th>
+                  EIA-State
+                </th>
+              </tr>
+            </thead>
+          </table>
         </DialogContent>
         <DialogActions>
           <button className="button-default" onClick={close} >

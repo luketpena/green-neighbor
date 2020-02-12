@@ -104,14 +104,14 @@ router.get('/summary/:page', async(req,res)=>{
   
   try {
     let query = `
-    SELECT ARRAY_AGG(id ORDER BY zip) as ids, eia_state, utility_name,
-      ARRAY_AGG(zip ORDER BY zip) as zips, state, program_count, program_list,
-      program_id, ARRAY_AGG(production ORDER BY zip) as production
+    SELECT ARRAY_AGG("zips") as zips, eia_state, utility_name, state,
+    program_count, programs
     FROM (
-      SELECT z.id, z.eia_state, z.utility_name, z.zip, z.state,
+      SELECT json_build_object('id', z.id, 'production', z.production, 'zip', z.zip) as "zips",
+        z.eia_state, z.utility_name, z.state,
         COUNT(g.utility_name) as program_count,
-        ARRAY_AGG(g.program_name ORDER BY g.id) as program_list,
-        ARRAY_AGG(g.id ORDER BY g.id) as program_id, z.production FROM zips z
+        array_agg( jsonb_build_object('name', g.program_name, 'id', g.id) ORDER BY g.id) as programs
+      FROM zips as z
       LEFT JOIN gpp g ON z.eia_state=g.eia_state
       GROUP BY z.id
     `;
@@ -137,10 +137,11 @@ router.get('/summary/:page', async(req,res)=>{
 
     query += `
       ) AS td
-      GROUP BY eia_state, utility_name, state, program_count, program_list, program_id
+      GROUP BY eia_state, utility_name, state, program_count, programs
       ORDER BY ${order} ${dir}
       LIMIT 100 OFFSET $1;`;
 
+    console.log(query);
     const result = await pool.query(query,queryParams);
 
     res.send(result.rows);
