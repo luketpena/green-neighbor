@@ -25,7 +25,7 @@ export default function CurrentAdmin() {
     useEffect(() =>  {
         console.log('Getting all users', usernames);
         dispatch({ type: 'GET_ADMIN_USERS' });
-    }, [usernames] );
+    }, [usernames, dispatch] );
 
     
 
