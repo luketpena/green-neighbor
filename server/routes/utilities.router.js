@@ -105,12 +105,12 @@ router.get('/summary/:page', async(req,res)=>{
   try {
     let query = `
     SELECT ARRAY_AGG("zips") as zips, eia_state, utility_name, state,
-    program_count, programs, production
+    program_count, programs, production, utility_id
     FROM (
       SELECT json_build_object('id', z.id, 'zip', z.zip) as "zips",
         z.eia_state, u.utility_name, z.state,
         COUNT(g.utility_name) as program_count,
-        u.production AS production,
+        u.production AS production, u.id AS utility_id,
         array_agg(
           jsonb_build_object('name', g.program_name, 'id', g.id, 'production', g.production)
           ORDER BY g.id
@@ -138,9 +138,10 @@ router.get('/summary/:page', async(req,res)=>{
     
 
     query += `
-      GROUP BY z.id, u.utility_name, u.production
+      GROUP BY z.id, u.utility_name, u.production, u.id
       ) AS td
-      GROUP BY eia_state, utility_name, state, program_count, programs, production
+      GROUP BY eia_state, utility_name, state, program_count,
+        programs, production, utility_id
       ORDER BY ${order} ${dir}
       LIMIT 100 OFFSET $1;`;
 
@@ -215,7 +216,7 @@ router.put('/:id', rejectUnauthenticated, async(req,res)=>{
 */
 router.put('/production/:id', rejectUnauthenticated, async(req,res)=>{
   try {
-    const query = `UPDATE gpp SET production=$1 WHERE id=$2;`;
+    const query = `UPDATE utilities SET production=$1 WHERE id=$2;`;
     await pool.query(query,[req.body.production,req.params.id]);
     res.sendStatus(200);
   } catch(error) {

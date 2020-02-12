@@ -1,6 +1,20 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import styled from 'styled-components';
+
+const ProductionButton = styled.button`
+    color: ${props=>(props.live? 'var(--color-primary)' : '#A53535')};
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    transition: all .2s;
+    &:hover {
+        color: ${props=>(props.live? 'var(--color-primary-bright)' : '#333')};
+        transform: scale(1.05);
+        cursor: pointer;
+    }
+`;
 
 const Container = styled.tr`
   .production {
@@ -23,11 +37,27 @@ export default function UtilityRow(props) {
 
   const dispatch = useDispatch();
 
-  const {id, utility_name, state, program_count, program_list, program_id, production} = props.utility;
+  const {id, utility_name, utility_id,
+    state, program_count, program_list,
+    program_id
+  } = props.utility;
+
+  const [production, setProduction] = useState(props.utility.production);
+  useEffect(()=>{
+    setProduction(props.utility.production);
+  }, [props.utility.production]);
 
   function toggleProduction() {
-    const myPayload = {id, production: !production, page: props.page, search: props.search};
-    dispatch({type: 'SET_UTILITY_PRODUCTION', payload: myPayload});
+    dispatch({
+      type: 'SET_UTILITY_PRODUCTION',
+      payload: {
+        id: utility_id,
+        production: !production,
+        page: props.page,
+        search: props.search
+      }
+    });
+    setProduction(!production);
   }
 
   function openModal(){
@@ -40,6 +70,14 @@ export default function UtilityRow(props) {
       <td>{utility_name}</td>
       <td>{state}</td>
       <td>{program_count} {(program_count==1? 'program' : 'programs')}</td>
+      <td>
+        <ProductionButton
+          onClick={toggleProduction}
+          live={production}
+        >
+          {production ? 'Active' : 'Inactive'}
+        </ProductionButton>
+      </td>
       <td>
         <button
           className="button-default"
