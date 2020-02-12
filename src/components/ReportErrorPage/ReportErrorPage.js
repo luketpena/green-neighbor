@@ -92,7 +92,7 @@ export default function ReportErrorPage(props){
         else if(zip && eia_state){
             dispatch({type: 'GET_UTILITY_NAME', payload: {zip, eia_state}});
         }
-    }, [dispatch]);
+    }, [dispatch, zip, program_id, eia_state]);
 
     useEffect(()=>{
         setCompanyName(utility_name);
