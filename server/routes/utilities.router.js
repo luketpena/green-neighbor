@@ -110,7 +110,10 @@ router.get('/summary/:page', async(req,res)=>{
       SELECT json_build_object('id', z.id, 'production', z.production, 'zip', z.zip) as "zips",
         z.eia_state, z.utility_name, z.state,
         COUNT(g.utility_name) as program_count,
-        array_agg( jsonb_build_object('name', g.program_name, 'id', g.id) ORDER BY g.id) as programs
+        array_agg(
+          jsonb_build_object('name', g.program_name, 'id', g.id, 'production', g.production)
+          ORDER BY g.id
+        ) as programs
       FROM zips as z
       LEFT JOIN gpp g ON z.eia_state=g.eia_state
     `;
