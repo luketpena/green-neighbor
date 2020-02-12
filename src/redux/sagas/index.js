@@ -9,6 +9,7 @@ import adminLandingSaga from './adminLandingSaga';
 import reportSaga from './reportSaga';
 import adminUserSaga from './adminUserSaga';
 import ticketsSaga from './ticketsSaga';
+import submissionSaga from './submissionSaga';
 
 
 // rootSaga is the primary saga.
@@ -29,6 +30,7 @@ export default function* rootSaga() {
     userSaga(),
     adminLandingSaga(),
     adminUserSaga(),
-    ticketsSaga()
+    ticketsSaga(),
+    submissionSaga(),
   ]);
 }
