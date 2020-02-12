@@ -35,6 +35,24 @@ router.post('/admin', rejectUnauthenticated, (req, res) => {
   .catch(() => res.sendStatus(500));
 });
 
+// Handles UPDATING requests for when Admins change their user info.
+router.put('/admin/:id', rejectUnauthenticated, (req, res) => {
+  const username = req.body.username;
+  const password = encryptLib.encryptPassword(req.body.password);
+  const id = req.user.id;
+  const queryText = `
+    UPDATE "user"
+    SET username = $1, password = $2
+    WHERE "user"."id" = $3`;
+    pool.query(queryText, [username, password, id])
+    .then((result) => {
+      res.sendStatus(200);
+    }).catch((error) => {
+      console.log('error updating admin user info router', error);
+      
+    })
+})
+
 // Handles POST request with new user data
 // The only thing different from this and every other post we've seen
 // is that the password gets encrypted before being inserted
@@ -61,6 +79,19 @@ router.post('/logout', (req, res) => {
   // Use passport's built-in method to log out the user
   req.logout();
   res.sendStatus(200);
+});
+
+// Allows am Admin to delete another admin. Admins CANNOT delete themselves.
+router.delete('/admin/:id', rejectUnauthenticated, (req, res) => {
+  console.log('In begin of Delete Admin', req.body);
+  const user = req.params;
+  let queryText = `DELETE FROM "user" WHERE "user"."id"=$1`
+  pool.query(queryText, [user.id])
+  .then((result) => { res.sendStatus(200);
+  }).catch((error) => {
+    console.log('error deleting an admin', error);
+    res.sendStatus(500);
+  });
 });
 
 module.exports = router;

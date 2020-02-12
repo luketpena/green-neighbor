@@ -21,6 +21,7 @@ import RecordsPage from '../Admin/RecordsPage/RecordsPage';
 import TicketsPage from '../Admin/TicketsPage/TicketsPage';
 import ContributePage from '../ContributePage/ContributePage';
 import AddUtilityPage from '../Admin/AddUtilityPage/AddUtilityPage';
+import SubmissionForm from '../SubmissionForm/SubmissionForm';
 
 import './App.css';
 import ReportErrorPage from '../ReportErrorPage/ReportErrorPage';
@@ -66,7 +67,7 @@ class App extends Component {
             component={ContributePage}
           />
           <Fragment>
-            <div className='adminPages'>
+            <div className='admin-pages'>
               <NavBar />
               {/* For protected routes, the view could show one of several things on the same route.
               Visiting /home will show the UserPage if the user is logged in.
@@ -95,6 +96,11 @@ class App extends Component {
               <ProtectedRoute
                 exact path="/admin/addUtility/:id?"
                 component={AddUtilityPage}
+              />
+              <ProtectedRoute
+                exact
+                path="/admin/submit"
+                component={SubmissionForm}
               />
             </div>
           </Fragment>

@@ -6,6 +6,8 @@ import NewAdmin from '../ManageAdminsPage/NewAdmin';
 import CurrentAdmin from'../ManageAdminsPage/CurrentAdmins';
 
 
+
+
 const ImageBackground = styled.div`
 height: 100vh;
     width: 100%;
@@ -17,14 +19,27 @@ height: 100vh;
     background-repeat: no-repeat;
 `;
 
+const Container = styled.div`
+    color: white;
+    height: 100vh;
+    width: max-content;
+    margin: auto auto;
+    align-text: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+`;
+
 export default function ManageAdminsPage() {
 
   return(
     <ImageBackground>
+      <Container>
         <NewAdmin 
         />
         <CurrentAdmin 
         /> 
+      </Container>
     </ImageBackground>
   )
 }
