@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 
+import SubmitSources from './SubmitSources';
 import PricingForm from './PricingForm';
 
 const Container = styled.div`
@@ -95,7 +96,7 @@ const FormButtons = styled.div`
 `;
 
 const steps = [
-  {name: 'Source'},
+  {name: 'Source', component: <SubmitSources />},
   {name: 'Pricing', component: <PricingForm /> },
   {name: 'Contract'},
   {name: 'Details'},
