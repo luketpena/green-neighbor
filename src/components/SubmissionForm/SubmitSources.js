@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import {useDispatch} from 'react-redux';
 import styled from 'styled-components';
 
 import EnergyBar from '../EnergyBar/EnergyBar';
@@ -42,7 +43,6 @@ const capitalize = (s) => {
 
 export default function SubmitSources() {
 
-
   const [sourceList, setSourceList] = useState([
     {name: 'wind', value: 0, active: false},
     {name: 'solar', value: .2, active: false},
@@ -50,6 +50,21 @@ export default function SubmitSources() {
     {name: 'hydro', value: 0, active: false},
     {name: 'geo', value: 0, active: false},
   ]);
+
+  const dispatch = useDispatch();
+  const sources = {
+    wind: sourceList[0].value,
+    solar: sourceList[1].value,
+    bio: sourceList[2].value,
+    hydro: sourceList[3].value,
+    geo: sourceList[4].value,
+    other: Math.max(Number( (1-sumSources()).toFixed(2)), 0)
+  }
+  useEffect(()=>{
+    dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: sources})
+  },[dispatch, sourceList]);
+
+  
 
   function changeSourceList(index, target, value) {
     let copy = [...sourceList];
@@ -81,7 +96,6 @@ export default function SubmitSources() {
     });
   }
 
-  let count = 0;
 
   return (
     <Container>
