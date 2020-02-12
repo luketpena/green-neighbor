@@ -48,9 +48,6 @@ const DialogTitle = withStyles(styles)(props => {
     const [username, setAdminUsername] = useState('');
     const [password, setAdminPassword] = useState('');
     const dispatch = useDispatch();
-    
-
-   
 
     useEffect( () => {
         setAdminUsername(username);

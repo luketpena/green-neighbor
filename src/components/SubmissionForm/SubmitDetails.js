@@ -55,27 +55,52 @@ export default function SubmitDetails() {
                     <label>Green-e Certified</label>
                     <input 
                         type="checkbox" 
-                        value={greenE}></input>
+                        value={greenE}
+                        onChange={e=>setGreenE(e.target.value)}
+                        >
+                    </input>
                     <label>Recs Retired</label>
                     <input 
                         type="checkbox" 
-                        value={recsRetired}></input>
+                        value={recsRetired}
+                        onChange={e=>setRecsRetired(e.target.value)}
+                        >
+                    </input>
                     <label>Recs Neutral</label>
                     <input 
                         type="checkbox" 
-                        value={recsNeutral}></input>
+                        value={recsNeutral}
+                        onChange={e=>setRecsNeutral(e.target.value)}
+                        >
+                    </input>
                     <label>Retail</label>
                     <input 
                         type="checkbox" 
-                        value={retail}></input>
+                        value={retail}
+                        onChange={e=>setRetail(e.target.value)}
+                        >
+                    </input>
                     <label>Waitlist Available</label>
                     <input 
                         type="checkbox" 
-                        value={waitlist}></input>
+                        value={waitlist}
+                        onChange={e=>setWaitlist(e.target.value)}
+                        >
+                    </input>
                     <label>Sign Up or Enroll Link</label>
-                    <input type="checkbox" value={urlLink}></input>
+                    <input 
+                        type="checkbox" 
+                        value={urlLink}
+                        onChange={e=>setUrlLink(e.target.value)}
+                    >
+                    </input>
                     <label>Sign Up or Enroll Text</label>
-                    <input type="checkbox" value={urlText}></input>
+                    <input 
+                        type="checkbox" 
+                        value={urlText}
+                        onChange={e=>setGreenE(e.target.value)}
+                        >
+                    </input>
                 </form>
             )
     }
