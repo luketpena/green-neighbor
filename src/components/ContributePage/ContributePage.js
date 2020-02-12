@@ -79,8 +79,6 @@ export default function ContributePage() {
             document.getElementsByClassName("facebook-embed")[0].appendChild(script)
         }, []);
 
- 
-
   return(
       <BackgroundBox>
         <HomeButton/>
@@ -108,14 +106,21 @@ export default function ContributePage() {
                             data-show-count="default">
                                 Follow @GreenNeighborCh
                             </a>
-                       </div>
+                        </div>
 
-                    <div className="facebook-embed">
-                        <div class="fb-like" data-href="https://www.facebook.com/GreenNeighborChallenge/" 
-                        data-width="279" data-layout="standard" data-action="like" data-size="large" data-share="true"></div>
+                        <div className="facebook-embed">
+                            <div class="fb-like" data-href="https://www.facebook.com/GreenNeighborChallenge/" 
+                            data-width="279" data-layout="standard" data-action="like" data-size="large" data-share="true"></div>
                         </div>
                 </Div>
-
+                <Div>
+                    <h3>Keep up to date with what we are doing</h3>
+                    <a className="button-default" href="https://mailchi.mp/f38a195f62f3/jointheneighborhood" target="_blank">Click Me for News Letter</a>
+                </Div>
+                <Div>
+                    <h3>Help bring the Green Neighbor Challenge to life!</h3>
+                    <a className="button-default" href="https://actionnetwork.org/fundraising/green-neighbor-challenge-fundraising-page" target="_blank">Click Me to Donate</a>
+                </Div>
             </Details>
         </Container>
     </BackgroundBox>
