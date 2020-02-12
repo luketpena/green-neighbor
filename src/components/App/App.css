@@ -113,7 +113,7 @@ body {
 
 /* Begin Input Styling */
 
-.input-container {
+/* .input-container {
   max-width: 25em;
   margin: 2em auto;
   width: 95%;
@@ -142,7 +142,7 @@ input, textarea {
 }
 label {
   font-size: .8125em; /* 13/16 */
-  position: absolute; 
+  /* position: absolute; 
   top: 1.23em;
   left: 1.23em;
   color: #f1773b;
@@ -153,13 +153,13 @@ label {
 .js-hide-label label {
   opacity: 0; 
   top: 1.5em
-}
+} */
 
 /* End Input Styling */
 
 /* Begin Form Styling */
 
-.form-admin ul {
+/* .form-admin ul {
   background: white;
   margin-bottom: 1em;
 }
@@ -174,7 +174,7 @@ label {
 }
 .form-admin li:last-child {
   border-bottom: 1px solid #ccc;
-}
+} */
 
 /* End Form Styling */
 

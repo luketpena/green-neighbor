@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import SubmitSources from './SubmitSources';
 import PricingForm from './PricingForm';
+import SubmitDetails from './SubmitDetails';
 
 const Container = styled.div`
   height: 100%;
@@ -96,10 +97,11 @@ const FormButtons = styled.div`
 `;
 
 const steps = [
+  {name: 'Details', component: <SubmitDetails />},
   {name: 'Source', component: <SubmitSources />},
   {name: 'Pricing', component: <PricingForm /> },
   {name: 'Contract'},
-  {name: 'Details'},
+  
 ];
 
 export default function SubmissionForm() {
