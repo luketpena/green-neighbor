@@ -141,7 +141,7 @@ export default function RecordsPage() {
 
   function renderUtilities() {
     return utilities.map( (item,i)=> {
-      return <UtilityRow key={i} utility={item} page={page} search={utilitiesSearch}/>
+      return <UtilityRow key={i} index={i} utility={item} page={page} search={utilitiesSearch}/>
     });
   }
 
@@ -198,7 +198,7 @@ export default function RecordsPage() {
   return(
     <Container>
         <h1>Record Management</h1>
-        <UtilityModal />
+        <UtilityModal page={page} search={utilitiesSearch} />
         <ManageBox>
 
           <SearchBox>

@@ -63,17 +63,35 @@ function Program({program}){
 
 export default function UtilityModal(props){
     const dispatch = useDispatch();
+    const utility = useSelector(state => state.adminRecordsModalUtility);
     const {
-        eia_state, utility_name,
-        zips, state, program_count,
-        programs
-    } = useSelector(state => state.adminRecordsModalUtility);
+      eia_state, utility_name,
+      zips, state, program_count,
+      programs, utility_id
+    } = utility;
+    const [production, setProduction] = useState(utility.production);
+    useEffect(()=>{
+      setProduction(utility.production);
+    }, [utility.production]);
+
     const open = useSelector(state => state.adminRecordsModalOpen);
-    console.log({eia_state, utility_name, zips, state, program_count,
-        programs});
+
     const close = () => {
         dispatch({type: 'SET_ADMIN_RECORDS_MODAL_OPEN', payload: false});
     }
+
+    const toggleProduction = () => {
+      dispatch({
+        type: 'SET_UTILITY_PRODUCTION',
+        payload: {
+          id: utility_id,
+          production: !production,
+          page: props.page,
+          search: props.search
+        }
+      });
+      setProduction(!production);
+    }  
  
     return (
         <Dialog
@@ -85,7 +103,10 @@ export default function UtilityModal(props){
         >
         <DialogTitle id="alert-dialog-title">
           <ProgramTitle>
-            Programs for {utility_name}
+            Programs for {utility_name} - <ProductionButton
+              live={production}
+              onClick={toggleProduction}
+            >{production?'Active':'Inactive'}</ProductionButton>
           </ProgramTitle>
         </DialogTitle>
         <DialogContent>

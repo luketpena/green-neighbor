@@ -61,7 +61,13 @@ export default function UtilityRow(props) {
   }
 
   function openModal(){
-    dispatch({type: 'SET_RECORDS_MODAL_UTILITY', payload: props.utility});
+    dispatch({
+      type: 'SET_RECORDS_MODAL_UTILITY',
+      payload: {
+        index: props.index,
+        ...props.utility
+      }
+    });
     dispatch({type: 'SET_ADMIN_RECORDS_MODAL_OPEN', payload: true});
   }
 
