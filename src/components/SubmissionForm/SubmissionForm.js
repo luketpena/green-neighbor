@@ -97,8 +97,8 @@ const FormButtons = styled.div`
 `;
 
 const steps = [
-  {name: 'Info', component: <SubmitUtilityInfo />},
   {name: 'Source', component: <SubmitSources />},
+  {name: 'Info', component: <SubmitUtilityInfo />},
   {name: 'Pricing', component: <PricingForm /> },
   {name: 'Contract'},
   {name: 'Details'},
