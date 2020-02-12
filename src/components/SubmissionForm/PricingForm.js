@@ -18,6 +18,18 @@ export default function PricingForm(props){
     const [blocks, setBlocks] = useState(form.block_size_kwh && form.block_size_kwh.split(';') || []);
     const [newBlockSizeKwh, setNewBlockSizeKwh] = useState('');
 
+    const formatAsCurrency = (str, func) => {
+        str = str.replace(/[^0-9.]/g, '').split('.', 2);
+        if(str.lenth > 1 && str[1].length > 2){
+            str[1] = str[1].substring(0, 2);
+        }
+        str = str.join('.');
+        if(func){
+            func(str);
+        }
+        return str;
+    }
+
     const updateSubmissionForm = obj => {
         dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: obj});
     }
@@ -71,12 +83,12 @@ export default function PricingForm(props){
                     <label htmlFor='submission-cost-min'>Min: </label>
                     <input
                         type="number"
-                        onChange={e => setCostRangeMin(!!e.target.vaule)}
+                        onChange={e => formatAsCurrency(e.target.value, setCostRangeMin)}
                         placeholder='5.00'
                         step="0.01"
                         value={costRangeMin}
                         onBlur={()=>updateSubmissionForm({
-                            cost_range:`${costRangeMin}-${costRangeMax}`
+                            cost_range: `${costRangeMin}-${costRangeMax}`
                         })}
                     />
                     <label htmlFor='submission-cost-max'>Max: </label>
@@ -85,9 +97,9 @@ export default function PricingForm(props){
                         step="0.01"
                         placeholder="10.00"
                         value={costRangeMax}
-                        onChange={e => setCostRangeMax(!!e.target.value)}
+                        onChange={e => formatAsCurrency(e.target.value, setCostRangeMax)}
                         onBlur={()=>updateSubmissionForm({
-                            cost_range:`${costRangeMin}-${costRangeMax}`
+                            cost_range: `${costRangeMin}-${costRangeMax}`
                         })}
                     />
                 </>:<> {/* END costIsRange === true, BEGIN costIsRange===false */}
@@ -96,7 +108,7 @@ export default function PricingForm(props){
                         id='submission-cost-kwh'
                         type="number"
                         value={costKwh}
-                        onChange={e => setCostKwh(e.target.value)}
+                        onChange={e => formatAsCurrency(e.target.value, setCostKwh)}
                         step="0.01"
                         onBlur={e => updateSubmissionForm({
                             cost_kwh: costKwh, cost_range: undefined
