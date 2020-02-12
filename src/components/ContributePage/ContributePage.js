@@ -24,7 +24,7 @@ display: grid;
 grid-template-areas: "menu details";
 grid-template-rows: 100px 1fr;
 grid-template-columns: 250px 850px;
-// justify-content: center;
+justify-content: center;
 `;
 
 const Header = styled.div`
@@ -56,7 +56,7 @@ grid-row: 2;
 
 height: 400px;
 overflow: scroll;
-opacity: .82;
+background-color:rgba(250,250,250,0.8);
 `;
 const Div = styled.div`
 padding: 15px 0px 15px;
@@ -71,8 +71,15 @@ export default function ContributePage() {
             const script = document.createElement("script");
             script.src = "https://platform.twitter.com/widgets.js";
             document.getElementsByClassName("twitter-embed")[0].appendChild(script)
-        }, [])
-    
+        }, []);
+
+        useEffect(()=>{
+            const script = document.createElement("script");
+            script.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v6.0";
+            document.getElementsByClassName("facebook-embed")[0].appendChild(script)
+        }, []);
+
+ 
 
   return(
       <BackgroundBox>
@@ -84,12 +91,15 @@ export default function ContributePage() {
 
             <Menu>
                 <button className="button-primary" >Follow us on Socal Media</button>
+                <button className="button-primary" >News Letter</button>
+                <button className="button-primary" >Donation</button>
             </Menu> 
 
             <Details className="container">
                 <Div>
                     <h2>FOLLOW US ON SOCIAL MEDIA</h2>
                     <h3>AND SHARE US WITH YOUR NEIGHBORS</h3>
+
                         <div className="twitter-embed">
                             <a className="twitter-follow-button"
                             href="https://twitter.com/GreenNeighborCh?ref_src=twsrc%5Etfw"
@@ -100,20 +110,14 @@ export default function ContributePage() {
                             </a>
                        </div>
 
-                    <div>
-                        <div id="fb-root"></div>
-                            <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v6.0"></script>
-
-                        <div class="fb-page" data-href="https://www.facebook.com/GreenNeighborChallenge/" 
-                        data-tabs="timeline" data-width="" data-height="" data-small-header="true" 
-                        data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false">
-                            <blockquote cite="https://www.facebook.com/GreenNeighborChallenge/" class="fb-xfbml-parse-ignore">
-                                <a href="https://www.facebook.com/GreenNeighborChallenge/" target="_blank">Like Us on Facebook</a></blockquote></div>
-                    </div>
+                    <div className="facebook-embed">
+                        <div class="fb-like" data-href="https://www.facebook.com/GreenNeighborChallenge/" 
+                        data-width="279" data-layout="standard" data-action="like" data-size="large" data-share="true"></div>
+                        </div>
                 </Div>
+
             </Details>
         </Container>
     </BackgroundBox>
   )
-
 }
