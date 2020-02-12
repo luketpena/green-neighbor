@@ -2,10 +2,8 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useParams, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
-import {TextField} from '@material-ui/core';
 import ReportThankYou from '../ReportErrorPage/ReportThankYou';
 import Background from '../../images/bkg-forest-top.jpg';
-import { white } from 'color-name';
 
 const Container = styled.div`
     color: white;
@@ -113,11 +111,6 @@ export default function ReportErrorPage(props){
         dispatch({ type: 'POST_TICKET', payload });
         history.goBack();
     }
-
-    // const handleClose = () => {
-    //     setOpen(false);
-    //     };
-
     
     let body;
     if(program_id && eia_state){
