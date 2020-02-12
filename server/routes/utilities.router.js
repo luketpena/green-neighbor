@@ -113,7 +113,6 @@ router.get('/summary/:page', async(req,res)=>{
         array_agg( jsonb_build_object('name', g.program_name, 'id', g.id) ORDER BY g.id) as programs
       FROM zips as z
       LEFT JOIN gpp g ON z.eia_state=g.eia_state
-      GROUP BY z.id
     `;
 
     let queryParams = [req.params.page*100];
@@ -136,12 +135,13 @@ router.get('/summary/:page', async(req,res)=>{
     
 
     query += `
+      GROUP BY z.id
       ) AS td
       GROUP BY eia_state, utility_name, state, program_count, programs
       ORDER BY ${order} ${dir}
       LIMIT 100 OFFSET $1;`;
 
-    console.log(query);
+    console.log(query, queryParams);
     const result = await pool.query(query,queryParams);
 
     res.send(result.rows);

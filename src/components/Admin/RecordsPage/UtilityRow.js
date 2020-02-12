@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useDispatch} from 'react-redux';
 import styled from 'styled-components';
 
@@ -17,22 +17,6 @@ const Container = styled.tr`
     padding-left: 8px;
   }
 
-`;
-
-
-const ProgramBox = styled.div`
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  border-bottom: 1px solid #CCC;
-  transition: all .2s;
-  padding-left: 8px;
-  &:hover {
-    background-color: #EFEFEF;
-  }
-  .production {
-    color: red;
-  }
 `;
 
 export default function UtilityRow(props) {

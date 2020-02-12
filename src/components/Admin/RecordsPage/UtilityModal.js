@@ -7,19 +7,27 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+// 014212442
 
 const ProgramTitle = styled.span`
   display: block;
   min-width: 500px;
 `;
 
+const ProgramsList = styled.div`
+
+`;
+
 export default function UtilityModal(props){
     const dispatch = useDispatch();
-    const {eia_state, utility_name, zips, state, program_count,
-        program_list, program_id} = useSelector(state => state.adminRecordsModalUtility);
+    const {
+        eia_state, utility_name,
+        zips, state, program_count,
+        programs
+    } = useSelector(state => state.adminRecordsModalUtility);
     const open = useSelector(state => state.adminRecordsModalOpen);
     console.log({eia_state, utility_name, zips, state, program_count,
-        program_list, program_id});
+        programs});
     const close = () => {
         dispatch({type: 'SET_ADMIN_RECORDS_MODAL_OPEN', payload: false});
     }
@@ -38,18 +46,11 @@ export default function UtilityModal(props){
           </ProgramTitle>
         </DialogTitle>
         <DialogContent>
-          <table className='admin-table'>
-            <thead>
-              <tr>
-                <th>
-                  Company
-                </th>
-                <th>
-                  EIA-State
-                </th>
-              </tr>
-            </thead>
-          </table>
+          <p>EIA - State: {eia_state}</p>
+          <p>Programs:</p>
+          <div>
+
+          </div>
         </DialogContent>
         <DialogActions>
           <button className="button-default" onClick={close} >
