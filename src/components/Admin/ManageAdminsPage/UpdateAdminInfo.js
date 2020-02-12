@@ -48,9 +48,6 @@ const DialogTitle = withStyles(styles)(props => {
     const [username, setAdminUsername] = useState('');
     const [password, setAdminPassword] = useState('');
     const dispatch = useDispatch();
-    
-
-   
 
     useEffect( () => {
         setAdminUsername(username);
@@ -75,16 +72,14 @@ const DialogTitle = withStyles(styles)(props => {
             </DialogTitle>
             <DialogContent dividers>
                 <form>
-                    <Input
-                        className="zip-input"
+                    <input                    
                         type="text"
                         label="New Username"
                         placeholder="New Username"
                         value={username}
                         onChange={e=>setAdminUsername(e.target.value)}
                     />
-                    <Input
-                        className="zip-input"
+                    <input
                         type="text"
                         label="New Password"
                         placeholder="Don't Share Your Password!"
@@ -96,7 +91,7 @@ const DialogTitle = withStyles(styles)(props => {
             </DialogContent>
             <DialogActions>
                 <Button autoFocus onClick={updateAdmin}  color="primary">
-                Save Changes
+                    Save Changes
                 </Button>
             </DialogActions>
             </Dialog>
