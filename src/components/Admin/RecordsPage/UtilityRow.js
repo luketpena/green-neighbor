@@ -72,7 +72,7 @@ export default function UtilityRow(props) {
     <Container className="utility-row" production={production}>
       <td>{utility_name}</td>
       <td>{state}</td>
-      <td>{program_count} {(program_count==1? 'program' : 'programs')}</td>
+      <td>{program_count} {(program_count===1? 'program' : 'programs')}</td>
       <td>
         <ProductionButton
           onClick={toggleProduction}
