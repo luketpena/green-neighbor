@@ -44,11 +44,15 @@ function stringifyQueries(query,paramsArray) {
       
     switch(key) {
       case 'state':
-      case 'utility_name':
       case 'program_name':
         final.params.push('%'+value+'%');
         final.string += conjunctionFunction(final.params);
         final.string += `${(key==='program_name'? 'g':'z')}.${key} ILIKE $${final.params.length}`;
+        break;
+      case 'utility_name':
+        final.params.push(`%${value}%`);
+        final.string += conjunctionFunction(final.params);
+        final.string += `u.${key} ILIKE $${final.params.length}`;
         break;
       case 'show':
         switch(value) {
@@ -76,13 +80,13 @@ router.get('/count', async(req,res)=>{
     let query = `
       SELECT COUNT(DISTINCT z.eia_state) FROM zips z
       LEFT JOIN gpp g ON z.eia_state = g.eia_state
+      JOIN utilities u ON z.eia_state = u.eia_state
     `;
     let queryParams = [];
     
     const modify = stringifyQueries(req.query,queryParams);
     query += modify.string;
     queryParams = [...modify.params];
-  
     const result = await pool.query(query,queryParams);
     res.send(result.rows[0]);
   } catch(error) {
@@ -120,8 +124,6 @@ router.get('/summary/:page', async(req,res)=>{
     const modify = stringifyQueries(req.query,queryParams);
     query += modify.string;
     queryParams = [...modify.params];
-      
-
     
     let order = '';
     switch(req.query.order) {
@@ -192,12 +194,12 @@ router.delete('/:id', rejectUnauthenticated, async(req,res)=>{
   Requires a user to be authenticated to permit modification.
 */
 router.put('/:id', rejectUnauthenticated, async(req,res)=>{
-  const {zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate} = req.body;
-  const queryData = [req.params.id, zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate];
+  const {zip, eiaid, state, eia_state} = req.body;
+  const queryData = [req.params.id, zip, eiaid, state, eia_state];
   try {
     const query = `
       UPDATE zips 
-      SET zip=$2, eiaid=$3, utility_name=$4, state=$5, eia_state=$6, bundled_avg_comm_rate=$7, bundled_avg_ind_rate=$8, bundled_avg_res_rate=$9, delivery_avg_comm_rate=$10, delivery_avg_ind_rate=$11, delivery_avg_res_rate=$12
+      SET zip=$2, eiaid=$3, state=$4, eia_state=$5
       WHERE id=$1;
     `;
     await pool.query(query, queryData);
