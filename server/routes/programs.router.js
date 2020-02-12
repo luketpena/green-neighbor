@@ -41,7 +41,8 @@ router.get('/:zip', async (req, res) => {
         FROM "zips" LEFT JOIN  (
             SELECT * FROM "gpp" WHERE "gpp"."production"=1
         ) AS "gpp" ON "zips"."eia_state"="gpp"."eia_state"
-        WHERE "zips"."zip"=$1;`;
+        LEFT JOIN "utilities" on "zips"."eia_state"="utilities"."eia_state"
+        WHERE "zips"."zip"=$1 AND "utilities"."production"=true;`;
         let programs = await pool.query(query, [req.params.zip]);
         programs = programs.rows;
         const dataToSend = [];
