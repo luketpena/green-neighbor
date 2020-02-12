@@ -13,13 +13,13 @@ import DetailsPage from '../DetailsPage/DetailsPage';
 import AboutPage from '../AboutPage/AboutPage';
 import IntroductionPage from '../IntroductionPage/IntroductionPage';
 import UtilityPage from '../UtilityPage/UtilityPage';
-import Nav from '../Nav/Nav';
 import NavBar from '../NavBar/NavBar';
 import AdminLandingPage from '../Admin/AdminLandingPage/AdminLandingPage.js';
 import ManageAdminsPage from '../Admin/ManageAdminsPage/ManageAdminsPage.js';
 import RecordsPage from '../Admin/RecordsPage/RecordsPage';
 import TicketsPage from '../Admin/TicketsPage/TicketsPage';
 import ContributePage from '../ContributePage/ContributePage';
+import AddUtilityPage from '../Admin/AddUtilityPage/AddUtilityPage';
 import SubmissionForm from '../SubmissionForm/SubmissionForm';
 
 import './App.css';
@@ -91,6 +91,10 @@ class App extends Component {
                 exact
                 path="/admin/tickets"
                 component={TicketsPage}
+              />
+              <ProtectedRoute
+                exact path="/admin/addUtility/:id?"
+                component={AddUtilityPage}
               />
               <ProtectedRoute
                 exact

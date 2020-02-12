@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import errors from './errorsReducer';
 import loginMode from './loginModeReducer';
 import user from './userReducer';
+import submissionFormReducer from './submissionFormReducer';
 // import geocode from './geocodeReducer';
 
 // rootReducer is the primary reducer for our entire project
@@ -11,7 +12,11 @@ import user from './userReducer';
 // creates a reducer that, when string is sent, sets state to action.payload.
 // The parameter str sets the correct string, and type sets the starting state. Type defaults to [].
 const createReducer = (str, type=[]) => {
-  return (state=type, action) => action.type === str ? action.payload : state;
+  return (state=type, action) => {
+    if(action.type === str) return action.payload;
+    else if(action.type === 'DELETE_ALL') return type;
+    else return state;
+  }
 }
 
 // Lets make a bigger object for our store, with the objects from our reducers.
@@ -32,7 +37,10 @@ const rootReducer = combineReducers({
   tickets: createReducer('SET_TICKETS', {}),
   adminTicketsDisplayDetails: createReducer('SET_TICKETS_DISPLAY', false),
   adminTicketsModalOpen: createReducer('SET_TICKET_MODAL_OPEN', false),
-  adminTicketsModalTicket: createReducer('SET_TICKET_MODAL_TICKET', {})
+  adminTicketsModalTicket: createReducer('SET_TICKET_MODAL_TICKET', {}),
+  submissionFormReducer,
+  adminRecordsModalUtility: createReducer('SET_RECORDS_MODAL_UTILITY', {}),
+  adminRecordsModalOpen: createReducer('SET_ADMIN_RECORDS_MODAL_OPEN', false)
 });
 
 export default rootReducer;
