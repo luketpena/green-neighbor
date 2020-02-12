@@ -10,23 +10,28 @@ const Container = styled.div`
 `;
 
 const SourceBox = styled.div`
-  max-width: 300px;
+  max-width: 120px;
   width: 100%;
-  margin: 0 auto;
+  margin: 50px auto;
 `;
 
 const SourceItem = styled.div`
   display: grid;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns: 1fr auto auto;
   input[type="number"] {
     text-align: right;
+    width: 32px;
   }
   margin: 8px 0;
 `;
 
 const EnergyBox = styled.div`
-  width: 100%;
+  width: 90%;
   height: 32px;
+  margin: 0 auto;
+  border-radius: 32px;
+  overflow: hidden;
+  margin-top: 50px;
 `;
 
 const capitalize = (s) => {
@@ -64,7 +69,6 @@ export default function SubmitSources() {
     return sourceList.map( (item,i)=>{
       return (
         <SourceItem key={i}>
-          <input type="checkbox" checked={sourceList[i].active} onChange={event=>changeSourceList(i,'active',event.target.checked)}/>
           <label>{capitalize(item.name)}</label>
           <input 
             type="number" 
@@ -82,8 +86,6 @@ export default function SubmitSources() {
   return (
     <Container>
       <h2>Sources</h2>
-      {JSON.stringify(sourceList)}
-      Sum of Sources: {1-sumSources()}
       <EnergyBox>
         <EnergyBar sourceList={sourceList} key={Math.random} program={{
           wind: sourceList[0].value,
