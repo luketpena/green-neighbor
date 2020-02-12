@@ -1,6 +1,9 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 
+import SubmitSources from './SubmitSources';
+import PricingForm from './PricingForm';
+
 const Container = styled.div`
   height: 100%;
   display: grid;
@@ -93,8 +96,8 @@ const FormButtons = styled.div`
 `;
 
 const steps = [
-  {name: 'Source'},
-  {name: 'Pricing'},
+  {name: 'Source', component: <SubmitSources />},
+  {name: 'Pricing', component: <PricingForm /> },
   {name: 'Contract'},
   {name: 'Details'},
 ];
@@ -146,15 +149,11 @@ export default function SubmissionForm() {
           <ProgressBar num={steps.length} currentStep={currentStep}/>
         </ProgressBox>
       </Stepper>
-
-
       <FormBox>
         <h1>Submission Form</h1>
-
         <FormArea>
-          
+          {steps[currentStep].component}  
         </FormArea>
-
         <FormButtons>
           {renderButtons()}
         </FormButtons>

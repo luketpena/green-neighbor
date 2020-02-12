@@ -29,31 +29,33 @@ const Bar = styled.div`
 
 export default function EnergyBar(props) {
 
-  const [energy] = useState([
-    {name: 'Wind', value: props.program.wind, color: 'skyblue'}, 
-    {name: 'Solar', value: props.program.solar, color: 'orange'}, 
-    {name: 'Bio', value: props.program.bio, color: 'limegreen'}, 
-    {name: 'Hydro', value: props.program.hydro, color: 'dodgerblue'}, 
-    {name: 'Geo', value: props.program.geo, color: 'orangered'}, 
-    {name: 'Other', value: props.program.other, color: 'rebeccapurple'}]);
   const [hover] = useState(-1);
   const [select,setSelect] = useState(-1);
 
   function sortEnergy() {
+
+    const energyStarter= [
+      {name: 'Wind', value: props.program.wind, color: 'skyblue'}, 
+      {name: 'Solar', value: props.program.solar, color: 'orange'}, 
+      {name: 'Bio', value: props.program.bio, color: 'limegreen'}, 
+      {name: 'Hydro', value: props.program.hydro, color: 'dodgerblue'}, 
+      {name: 'Geo', value: props.program.geo, color: 'orangered'}, 
+      {name: 'Other', value: props.program.other, color: 'rebeccapurple'}];
+    
     let copy = [];
     
-    for (let i=0; i<energy.length; i++) {
-      if (energy[i].value) {
+    for (let i=0; i<energyStarter.length; i++) {
+      if (energyStarter[i].value) {
         //Pushing to the start when it is the first source
         if (copy.length===0) {
-          copy.push(energy[i]);
+          copy.push(energyStarter[i]);
         } else {
           for (let j=0; j<copy.length; j++) {
-            if (copy[j].value<energy[i].value) {
-              copy.splice(j,0,energy[i]);
+            if (copy[j].value<energyStarter[i].value) {
+              copy.splice(j,0,energyStarter[i]);
               break;
             } else if(j===copy.length-1) {
-              copy.push(energy[i]);
+              copy.push(energyStarter[i]);
               break;
             }
           }
