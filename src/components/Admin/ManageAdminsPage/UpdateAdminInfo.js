@@ -75,16 +75,16 @@ const DialogTitle = withStyles(styles)(props => {
             </DialogTitle>
             <DialogContent dividers>
                 <form>
-                    <Input
-                        className="zip-input"
+                    <input
+                        
                         type="text"
                         label="New Username"
                         placeholder="New Username"
                         value={username}
                         onChange={e=>setAdminUsername(e.target.value)}
                     />
-                    <Input
-                        className="zip-input"
+                    <input
+                    
                         type="text"
                         label="New Password"
                         placeholder="Don't Share Your Password!"

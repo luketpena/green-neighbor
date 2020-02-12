@@ -16,7 +16,9 @@ const Body = styled.form`
         font-family: var(--font-main);
         font-weight: lighter;
       }
-    
+    label {
+        color: #f1773b;
+    }
     height: max-content;
     text-align: center;
     display: flex;
@@ -49,25 +51,33 @@ export default function NewAdmin() {
         
           <Body onSubmit={addNewAdmin}>
             <h1>Add New Admin</h1>
-            
-                <label htmlFor="name">New Name</label>
-                <input 
-                    type="text" 
-                    placeholder="Username" 
-                    id="name" 
-                    value={username} 
-                    onChange={e=>setUsername(e.target.value)} 
-                    tabIndex="1"></input>
-                <label htmlFor="password">Password</label>
-                <input 
-                    type="text" 
-                    placeholder="Password" 
-                    id="password" 
-                    value={password} 
-                    onChange={e=>setPassword(e.target.value)} 
-                    tabIndex="2"></input>
-                <button >Submit</button>
-            
+                <form>
+                    <ul>
+                        <li>
+                            <label htmlFor="name">New Name</label>
+                                <input 
+                                    type="text" 
+                                    placeholder="Username" 
+                                    id="name" 
+                                    value={username} 
+                                    onChange={e=>setUsername(e.target.value)} 
+                                    tabIndex="1">
+                                </input>
+                            </li>
+                            <li>
+                                <label htmlFor="password">Password</label>
+                                <input 
+                                    type="text" 
+                                    placeholder="Password" 
+                                    id="password" 
+                                    value={password} 
+                                    onChange={e=>setPassword(e.target.value)} 
+                                    tabIndex="2">   
+                                </input>
+                            </li>        
+                            <button >Submit</button>
+                    </ul>
+                </form>
           </Body>
           
       
