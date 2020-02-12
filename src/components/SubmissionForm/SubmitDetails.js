@@ -1,4 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import {useDispatch} from 'react-redux';
+
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -23,6 +25,7 @@ const DetailsBox = styled.div`
 
 export default function SubmitDetails() {
 
+    // List of values declared for state of form
     const [greenE, setGreenE] = useState();
     const [recsRetired, setRecsRetired] = useState();
     const [recsNeutral, setRecsNeutral] = useState();
@@ -30,6 +33,18 @@ export default function SubmitDetails() {
     const [waitlist, setWaitlist] = useState();
     const [urlLink, setUrlLink] = useState();
     const [urlText, setUrlText] = useState();
+
+    const dispatch = useDispatch();
+
+    // List for on sets for above input values
+    useEffect( () => { setGreenE( greenE ); }, [greenE] );
+    useEffect( () => { setRecsRetired( recsRetired ); }, [recsRetired] );
+    useEffect( () => { setRecsNeutral( recsNeutral); }, [recsNeutral] );
+    useEffect( () => { setRetail( retail ); }, [retail] );
+    useEffect( () => { setWaitlist( waitlist ); }, [waitlist] );
+    useEffect( () => { setUrlLink( urlLink ); }, [urlLink] );
+    useEffect( () => { setUrlText( urlText ); }, [urlText] );
+
 
 
     function renderDetails() {
