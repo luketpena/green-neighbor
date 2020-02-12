@@ -15,8 +15,10 @@ export default function PricingForm(props){
     const [creditKwh, setCreditKwh] = useState(form.credit_kwh || '');
     const [blocksAvailable, setBlocksAvailable] = useState(form.blocks_available || 'No');
     const [blocksAvailableMinMaxValue, setBlocksAvailableMinMaxValue] = useState(2);
-    const [blocks, setBlocks] = useState(form.block_size_kwh && form.block_size_kwh.split(';') || []);
+    const [blockSizes, setBlockSizes] = useState(form.block_size_kwh && form.block_size_kwh.split(';') || []);
+    const [blockCosts, setBlockCosts] = useState(form.block_cost && form.block_cost.split(';') || []);
     const [newBlockSizeKwh, setNewBlockSizeKwh] = useState('');
+    const [newBlockCost, setNewBlockCost] = useState(''); 
 
     const formatAsCurrency = (str, func) => {
         str.replace(/[^0-9.]/g, '');
@@ -25,6 +27,15 @@ export default function PricingForm(props){
             str[1] = str[1].substring(0, 2);
         }
         str = str.join('.');
+        if(func){
+            func(str);
+        }
+        return str;
+    }
+
+    const formatAsInteger = (str, func) => {
+        str.replace(/[^0-9.]/g, '');
+        str = str.split('.', 2).join('.')
         if(func){
             func(str);
         }
@@ -56,16 +67,27 @@ export default function PricingForm(props){
     const addBlock = e => {
         e.preventDefault();
         if(newBlockSizeKwh === '') return;
-        blocks.push(newBlockSizeKwh);
-        updateSubmissionForm({block_size_kwh: blocks.join(';')});
-        setBlocks(blocks);
+        blockSizes.push(newBlockSizeKwh);
+        blockCosts.push(newBlockCost);
+
+        updateSubmissionForm({
+            block_size_kwh: blockSizes.join(';'),
+            block_cost: blockCosts.join(';')
+        });
+        setBlockSizes(blockSizes);
+        setBlockCosts(blockCosts);
         setNewBlockSizeKwh('');
     }
 
     const removeBlock = (index) => {
-        blocks.splice(index, 1);
-        updateSubmissionForm({block_size_kwh: blocks.join(';')})
-        setBlocks(blocks);
+        blockSizes.splice(index, 1);
+        blockCosts.splice(index, 1);
+        updateSubmissionForm({
+            block_size_kwh: blockSizes.join(';'),
+            block_cost: blockCosts.join(';')
+        })
+        setBlockSizes(blockSizes);
+        setBlockCosts(blockCosts);
     }
 
     return (
@@ -135,7 +157,7 @@ export default function PricingForm(props){
                         value={creditKwh}
                         type="number"
                         onChange={e => setCreditKwh(e.target.value)}
-                        onBlur={e=>updateSubmissionForm({credit_kwh: creditKwh})}
+                        onBlur={e => updateSubmissionForm({credit_kwh: creditKwh})}
                         placeholder='2.99'
                     />
                 </>
@@ -161,19 +183,42 @@ export default function PricingForm(props){
                     <input
                         id='submission-blocks-available-min-max'
                         value={blocksAvailableMinMaxValue}
-                        onChange={e=>setBlocksAvailableMinMaxValue(e.target.value)}
+                        onChange={e=>{
+                            formatAsInteger(e.target.value, setBlocksAvailableMinMaxValue);
+                        }}
                         onBlur={updateBlocksAvailable}
                     />
                 </>
             }
-            {blocksAvailable!=='No' &&
+            {blocksAvailable !== 'No' &&
                 <>
                     <p>Blocks (kWh):</p>
-                    {blocks.map((block, i) => 
-                        <button key={i} onClick={()=>removeBlock(i)} >
-                            {block}
-                        </button>
-                    )}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Size</th>
+                                <th>Cost</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {blockSizes.map((blockSize, i) => 
+                            <td>
+                                <td>
+                                    {blockSize}
+                                </td>
+                                <td>
+                                    {blockCosts[i]}
+                                </td>
+                                <td>
+                                    <button key={i} onClick={()=>removeBlock(i)} >
+                                        remove
+                                    </button>
+                                </td>
+                            </td>
+                        )}
+                        </tbody>
+                    </table>
                     <form onSubmit={addBlock}>
                         <label htmlFor='submission-add-block'>
                             Block Size (kWh):
@@ -182,7 +227,20 @@ export default function PricingForm(props){
                             id='submission-add-block'
                             type='number'
                             value={newBlockSizeKwh}
-                            onChange={e=>setNewBlockSizeKwh(e.target.value)}
+                            onChange={e=>{
+                                formatAsInteger(e.target.value, setNewBlockSizeKwh);
+                            }}
+                        />
+                        <label htmlFor='submission-add-block-cost'>
+                            Block Size (kWh):
+                        </label>
+                        <input
+                            id='submission-add-block-cost'
+                            type='number'
+                            value={newBlockCost}
+                            onChange={e=>{
+                                formatAsCurrency(e.target.value, setNewBlockCost);
+                            }}
                         />
                         <button type='submit'>Add Block</button>
                     </form>
