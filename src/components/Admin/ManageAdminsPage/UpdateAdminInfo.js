@@ -75,8 +75,7 @@ const DialogTitle = withStyles(styles)(props => {
             </DialogTitle>
             <DialogContent dividers>
                 <form>
-                    <input
-                        
+                    <input                    
                         type="text"
                         label="New Username"
                         placeholder="New Username"
@@ -84,7 +83,6 @@ const DialogTitle = withStyles(styles)(props => {
                         onChange={e=>setAdminUsername(e.target.value)}
                     />
                     <input
-                    
                         type="text"
                         label="New Password"
                         placeholder="Don't Share Your Password!"
@@ -96,7 +94,7 @@ const DialogTitle = withStyles(styles)(props => {
             </DialogContent>
             <DialogActions>
                 <Button autoFocus onClick={updateAdmin}  color="primary">
-                Save Changes
+                    Save Changes
                 </Button>
             </DialogActions>
             </Dialog>
