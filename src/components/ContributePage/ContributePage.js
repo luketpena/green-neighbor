@@ -101,6 +101,7 @@ export default function ContributePage() {
                         <div className="twitter-embed">
                             <a className="twitter-follow-button"
                             href="https://twitter.com/GreenNeighborCh?ref_src=twsrc%5Etfw"
+                            rel="noopener noreferrer"
                             target="_blank"
                             data-size="large"
                             data-show-count="default">
@@ -115,11 +116,11 @@ export default function ContributePage() {
                 </Div>
                 <Div>
                     <h3>Keep up to date with what we are doing</h3>
-                    <a className="button-default" href="https://mailchi.mp/f38a195f62f3/jointheneighborhood" target="_blank">Click Me for News Letter</a>
+                    <a className="button-default" href="https://mailchi.mp/f38a195f62f3/jointheneighborhood" target="_blank" rel="noopener noreferrer">Click Me for News Letter</a>
                 </Div>
                 <Div>
                     <h3>Help bring the Green Neighbor Challenge to life!</h3>
-                    <a className="button-default" href="https://actionnetwork.org/fundraising/green-neighbor-challenge-fundraising-page" target="_blank">Click Me to Donate</a>
+                    <a className="button-default" href="https://actionnetwork.org/fundraising/green-neighbor-challenge-fundraising-page" target="_blank" rel="noopener noreferrer">Click Me to Donate</a>
                 </Div>
             </Details>
         </Container>
