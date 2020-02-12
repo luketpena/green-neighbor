@@ -102,7 +102,7 @@ const steps = [
   {name: 'Source', component: <SubmitSources />},
   {name: 'Pricing', component: <PricingForm /> },
   {name: 'Contract'},
-  {name: 'Details'},
+  {name: 'Details', component: <SubmitDetails />},
   
 ];
 

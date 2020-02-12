@@ -31,9 +31,10 @@ export default function SubmitDetails() {
     const [waitlist, setWaitlist] = useState();
     const [urlLink, setUrlLink] = useState();
     const [urlText, setUrlText] = useState();
+    const dispatch = useDispatch();
 
    const updateSubmissionForm = obj => {
-       dispatch = ({ type: 'UPDATE_FORM_SUBMISSION', payload: obj })
+       dispatch({ type: 'UPDATE_FORM_SUBMISSION', payload: obj })
    }
 
     // List for on sets for above input values
@@ -89,20 +90,23 @@ export default function SubmitDetails() {
                         type="checkbox" 
                         value={waitlist}
                         onChange={e=>setWaitlist(e.target.value)}
+                        onBlur={e=>updateSubmissionForm({waitlist: waitlist})}
                         >
                     </input>
-                    <label>Sign Up or Enroll Link</label>
+                    <label>Sign Up or Enroll Link:</label>
                     <input 
-                        type="checkbox" 
+                        type="text" 
                         value={urlLink}
                         onChange={e=>setUrlLink(e.target.value)}
+                        onBlur={e=>updateSubmissionForm({sign_up_url: urlLink})}
                     >
                     </input>
-                    <label>Sign Up or Enroll Text</label>
+                    <label>Sign Up or Enroll Text:</label>
                     <input 
-                        type="checkbox" 
+                        type="text" 
                         value={urlText}
                         onChange={e=>setUrlText(e.target.value)}
+                        onBlur={e=>updateSubmissionForm({sign_up_text: urlText})}
                         >
                     </input>
                 </form>
