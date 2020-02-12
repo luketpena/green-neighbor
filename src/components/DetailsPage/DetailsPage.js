@@ -180,7 +180,7 @@ export default function DetailsPage() {
 
   useEffect(()=>{
     dispatch({type: 'GET_PROGRAM_DETAILS', payload: id});
-  }, [id]);
+  }, [id, dispatch]);
 
   function blurActions(event) {
     event.target.blur();
