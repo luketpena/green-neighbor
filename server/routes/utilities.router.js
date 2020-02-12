@@ -150,7 +150,9 @@ router.get('/summary/:page', async(req,res)=>{
     // AFAIK, there is no way to prevent Postgres from
     // returning a null JSON
     result.rows.forEach(item => {
-      item.programs.filter(program => program.id !== null);
+      if(item.programs[0].id === null){
+        item.programs.pop();
+      }
     });
     res.send(result.rows);
   } catch(error) {
