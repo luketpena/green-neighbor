@@ -31,7 +31,7 @@ router.get('/geocode/:zip', (req,res)=>{
 router.get('/:zip', async (req, res) => {
     try {
         const zipsCols = [
-            'zip', 'eiaid', 'utility_name',
+            'zip', 'eiaid',
             'state', 'eia_state'
         ]
         const cols = gppCols.filter(col => !zipsCols.includes(col));
@@ -41,7 +41,8 @@ router.get('/:zip', async (req, res) => {
         FROM "zips" LEFT JOIN  (
             SELECT * FROM "gpp" WHERE "gpp"."production"=1
         ) AS "gpp" ON "zips"."eia_state"="gpp"."eia_state"
-        WHERE "zips"."zip"=$1;`;
+        LEFT JOIN "utilities" on "zips"."eia_state"="utilities"."eia_state"
+        WHERE "zips"."zip"=$1 AND "utilities"."production"=true;`;
         let programs = await pool.query(query, [req.params.zip]);
         programs = programs.rows;
         const dataToSend = [];
@@ -100,8 +101,8 @@ router.get('/details/:id', async (req, res) => {
   Creates a new program in the gpp table
   NOTE: Has commented out authentication requirements, but it should not require that. All users can post information.
 */
-// router.post('/create', rejectUnauthenticated, async (req, res) => {
-router.post('/create', async (req, res) => {
+router.post('/create', rejectUnauthenticated, async (req, res) => {
+// router.post('/create', async (req, res) => {
     try{
         if(req.body.id) delete req.body.id;
         const injectors = [];
@@ -128,14 +129,18 @@ router.post('/create', async (req, res) => {
   Updates an existing program in the gpp table.
   Requires authentication to allow modification.
 */
-// router.put('/update/:id', rejectUnauthenticated, async (req, res) => {
-router.put('/update/:id', async (req, res) => {
+router.put('/update/:id', rejectUnauthenticated, async (req, res) => {
+// router.put('/update/:id', async (req, res) => {
     try{
         const config = [req.params.id];
-        req.body.date_updated = new Date();
-        const cols = Object.entries(req.body)
-            .filter(([key]) => gppCols.includes(key))
-            .map(([key, value], i) => {
+        const entries = Object.entries(req.body).filter(([key]) => gppCols.includes(key));
+
+        // if all that's changing is "production" status, don't
+        // update date_updated
+        if(entries.length > 1 || entries[0][0] !== 'production'){
+            entries.push(['date_updated', new Date()]);
+        }
+        const cols = entries.map(([key, value], i) => {
                 config.push(value);
                 return `${key}=$${config.length}`;
             }).join(', ');
@@ -144,6 +149,7 @@ router.put('/update/:id', async (req, res) => {
             UPDATE "gpp" SET ${cols}
             WHERE "gpp"."id"=$1`;
 
+        console.log(query, config);
         await pool.query(query, config);
         res.sendStatus(200);
     } catch (error) {

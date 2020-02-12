@@ -1,4 +1,5 @@
 
+
 -- NOTE: CSV Paths are hardcoded, you must set them to your appropriate path
 
 
@@ -6,6 +7,7 @@ DROP TABLE IF EXISTS "gpp";
 DROP TABLE IF EXISTS "zips";
 DROP TABLE IF EXISTS "user";
 DROP TABLE IF EXISTS "tickets";
+DROP TABLE IF EXISTS "utilities";
 
 CREATE TABLE "user" (
   "id" SERIAL PRIMARY KEY,
@@ -17,16 +19,21 @@ CREATE TABLE "zips" (
 	"id" SERIAL PRIMARY KEY,
 	"zip" INT,
 	"eiaid" INT,
-	"utility_name" VARCHAR,
 	"state" VARCHAR,
+	"eia_state" VARCHAR
+);
+
+CREATE TABLE "utilities" (
+	"id" SERIAL PRIMARY KEY,
 	"eia_state" VARCHAR,
+	"utility_name" VARCHAR,
 	"bundled_avg_comm_rate" FLOAT,
 	"bundled_avg_ind_rate" FLOAT,
 	"bundled_avg_res_rate" FLOAT,
 	"delivery_avg_comm_rate" FLOAT,
 	"delivery_avg_ind_rate" FLOAT,
 	"delivery_avg_res_rate" FLOAT,
-  "production" BOOLEAN DEFAULT FALSE
+  	"production" BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE "gpp" (
@@ -105,8 +112,13 @@ BEGIN;
 	);
 
 	\copy "t" FROM './green_neighbor_zips.tsv' DELIMITER E'\t' CSV HEADER;
-	INSERT INTO "zips" ("zip", "eiaid", "utility_name", "state", "eia_state", "bundled_avg_comm_rate", "bundled_avg_ind_rate", "bundled_avg_res_rate", "delivery_avg_comm_rate", "delivery_avg_ind_rate", "delivery_avg_res_rate")
-	SELECT "zip", "eiaid", "utility_name", "state", "eia_state", "bundled_avg_comm_rate", "bundled_avg_ind_rate", "bundled_avg_res_rate", "delivery_avg_comm_rate", "delivery_avg_ind_rate", "delivery_avg_res_rate" FROM "t";
+	INSERT INTO "zips" ("zip", "eiaid", "state", "eia_state")
+	SELECT "zip", "eiaid", "state", "eia_state" FROM "t";
+
+	INSERT INTO "utilities" ("utility_name", "eia_state", "bundled_avg_comm_rate", "bundled_avg_ind_rate", "bundled_avg_res_rate", "delivery_avg_comm_rate", "delivery_avg_ind_rate", "delivery_avg_res_rate")
+	SELECT "utility_name", "eia_state", "bundled_avg_comm_rate", "bundled_avg_ind_rate", "bundled_avg_res_rate", "delivery_avg_comm_rate", "delivery_avg_ind_rate", "delivery_avg_res_rate"
+	FROM "t"
+	GROUP BY "utility_name", "eia_state", "bundled_avg_comm_rate", "bundled_avg_ind_rate", "bundled_avg_res_rate", "delivery_avg_comm_rate", "delivery_avg_ind_rate", "delivery_avg_res_rate";
 COMMIT;
 
 BEGIN;
@@ -168,5 +180,11 @@ BEGIN;
 	\copy "alldata" FROM './green_neighbor_data.tsv' DELIMITER E'\t' CSV HEADER;
 	
 	INSERT INTO "gpp" ("eiaid", "utility_name", "state", "eia_state", "program_id", "program_name", "wind", "solar", "bio", "hydro", "geo", "other", "cost_kwh", "cost_range", "credit_yn", "credit_kwh", "blocks_available", "block_size_kwh", "block_cost", "percentage_options", "percentage_range", "contract_length", "monthly_min", "termination_fee", "termination_cost", "green_e", "recs_retired", "revenue_neutral", "retail", "waitlist", "sign_up_text", "sign_up_url", "date_updated", "production"
-		) SELECT "EIAID", "Utility Name", "State", "eiaSTATE", "ProgramID", "Program Name", "Wind", "Solar", "Bio", "Hydro", "Geo", "Other", "Cost (c/kwh)", "Cost Range (c/kwh)", "Credit (Y/N)", "Credit (c/kwh)", "Blocks Available", "Block Size (kWh)", "Block Cost ($)", "Percentage Options", "Percentage Range", "Contract Length", "Monthly Minimum", "Termination Fee", "Termination Cost", "Green-e", "RECs Retired?", "Revenue Neutral", "Retail", "Waitlist (Y/N)", "Link to Sign-up Form", "Sign-Up URL", "Date Updated", "Production" FROM "alldata";
+		) SELECT "EIAID", "Utility Name", "State", "eiaSTATE", "ProgramID", "Program Name", "Wind", "Solar", "Bio", "Hydro", "Geo", "Other", "Cost (c/kwh)", "Cost Range (c/kwh)", "Credit (Y/N)", "Credit (c/kwh)", "Blocks Available", "Block Size (kWh)", "Block Cost ($)", "Percentage Options", "Percentage Range", "Contract Length", "Monthly Minimum", "Termination Fee", "Termination Cost", "Green-e", "RECs Retired?", "Revenue Neutral", "Retail", "Waitlist (Y/N)", "Link to Sign-up Form", "Sign-Up URL", "Date Updated", "Production"
+		FROM "alldata";
+
+	UPDATE "utilities" SET "production"=true
+		FROM "gpp" 
+		WHERE "utilities"."eia_state"="gpp"."eia_state"
+		AND "gpp"."production"=1;
 COMMIT;

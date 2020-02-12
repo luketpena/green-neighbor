@@ -44,7 +44,10 @@ body {
 }
 
 .admin-pages {
-  background-color: linen;
+  min-height: 100vh;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
 }
 
 .flex-center {

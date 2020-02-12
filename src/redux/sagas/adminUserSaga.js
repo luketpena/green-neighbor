@@ -14,15 +14,42 @@ function* getAdminUsers() {
   function* postAdminUser(action) {
     try{
       yield axios.post('/api/user/admin', action.payload);
-      yield put({ type: 'SET_NEW_ADMIN', payload: action.payload });
+      yield put({ type: 'SET_NEW_ADMIN', payload: action.payload});
     } catch (error) {
       console.log('error posting new admin', error);
     }
   }
-  
+
+  //type: DELETE
+  function* deleteAdminSaga (action) {
+    try{
+        yield axios.delete(`/api/user/admin/${action.payload}`);
+        console.log('Inside deleteAdminSaga');
+        yield put({ type: 'GET_ADMIN_USERS'});
+    }catch(error){
+        console.log('error deleting game in saga', error);    
+    }
+}
+
+// type: UPDATE
+function* updateAdminInfo (action) {
+  let id = action.payload.id
+  try {
+    console.log('inside updateAdminInfo saga');
+    yield axios.put(`/api/user/admin/${id}`, action.payload);
+    yield put({type: `GET_ADMIN_USERS`});
+  }catch(error){
+    console.log('error updating admin user info', error);
+  }
+}
+ // root 
   function* adminUserSaga() {
     yield takeLatest('GET_ADMIN_USERS', getAdminUsers);
     yield takeLatest('POST_NEW_ADMIN', postAdminUser);
+    yield takeLatest('DELETE_ADMIN', deleteAdminSaga);
+    yield takeLatest('UPDATE_ADMIN_INFO', updateAdminInfo);
   }
+
+  
 
 export default adminUserSaga;

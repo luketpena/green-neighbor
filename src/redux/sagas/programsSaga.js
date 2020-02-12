@@ -34,6 +34,14 @@ function* getUtilities(action) {
   }
 }
 
+function* editProgram(action) {
+  try {
+    yield axios.put(`/api/programs/update/${action.payload.id}`, {production: action.payload.production} );
+  } catch(error) {
+    console.log(error);    
+  }
+}
+
 function* setUtilityProduction(action) {
   try {
     yield axios.put(`/api/utilities/production/${action.payload.id}`, {production: action.payload.production} );
@@ -50,6 +58,7 @@ function* programsSaga() {
   yield takeLatest('GET_UTILITIES', getUtilities);
   yield takeLatest('SET_UTILITY_PRODUCTION', setUtilityProduction);
   yield takeLatest('GET_GEOCODE_DATA', getGeocodeData);
+  yield takeLatest('EDIT_PROGRAM', editProgram);
 }
 
 export default programsSaga;
