@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS "gpp";
 DROP TABLE IF EXISTS "zips";
 DROP TABLE IF EXISTS "user";
 DROP TABLE IF EXISTS "tickets";
+DROP TABLE IF EXISTS "utilities";
 
 CREATE TABLE "user" (
   "id" SERIAL PRIMARY KEY,
@@ -18,16 +19,21 @@ CREATE TABLE "zips" (
 	"id" SERIAL PRIMARY KEY,
 	"zip" INT,
 	"eiaid" INT,
-	"utility_name" VARCHAR,
 	"state" VARCHAR,
+	"eia_state" VARCHAR
+);
+
+CREATE TABLE "utilities" (
+	"id" SERIAL PRIMARY KEY,
 	"eia_state" VARCHAR,
+	"utility_name" VARCHAR,
 	"bundled_avg_comm_rate" FLOAT,
 	"bundled_avg_ind_rate" FLOAT,
 	"bundled_avg_res_rate" FLOAT,
 	"delivery_avg_comm_rate" FLOAT,
 	"delivery_avg_ind_rate" FLOAT,
 	"delivery_avg_res_rate" FLOAT,
-  "production" BOOLEAN DEFAULT FALSE
+  	"production" BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE "gpp" (
@@ -106,8 +112,13 @@ BEGIN;
 	);
 
 	\copy "t" FROM './green_neighbor_zips.tsv' DELIMITER E'\t' CSV HEADER;
-	INSERT INTO "zips" ("zip", "eiaid", "utility_name", "state", "eia_state", "bundled_avg_comm_rate", "bundled_avg_ind_rate", "bundled_avg_res_rate", "delivery_avg_comm_rate", "delivery_avg_ind_rate", "delivery_avg_res_rate")
-	SELECT "zip", "eiaid", "utility_name", "state", "eia_state", "bundled_avg_comm_rate", "bundled_avg_ind_rate", "bundled_avg_res_rate", "delivery_avg_comm_rate", "delivery_avg_ind_rate", "delivery_avg_res_rate" FROM "t";
+	INSERT INTO "zips" ("zip", "eiaid", "state", "eia_state")
+	SELECT "zip", "eiaid", "state", "eia_state" FROM "t";
+
+	INSERT INTO "utilities" ("utility_name", "eia_state", "bundled_avg_comm_rate", "bundled_avg_ind_rate", "bundled_avg_res_rate", "delivery_avg_comm_rate", "delivery_avg_ind_rate", "delivery_avg_res_rate")
+	SELECT "utility_name", "eia_state", "bundled_avg_comm_rate", "bundled_avg_ind_rate", "bundled_avg_res_rate", "delivery_avg_comm_rate", "delivery_avg_ind_rate", "delivery_avg_res_rate"
+	FROM "t"
+	GROUP BY "utility_name", "eia_state", "bundled_avg_comm_rate", "bundled_avg_ind_rate", "bundled_avg_res_rate", "delivery_avg_comm_rate", "delivery_avg_ind_rate", "delivery_avg_res_rate";
 COMMIT;
 
 BEGIN;

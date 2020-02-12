@@ -101,17 +101,19 @@ router.get('/summary/:page', async(req,res)=>{
   try {
     let query = `
     SELECT ARRAY_AGG("zips") as zips, eia_state, utility_name, state,
-    program_count, programs
+    program_count, programs, production
     FROM (
-      SELECT json_build_object('id', z.id, 'production', z.production, 'zip', z.zip) as "zips",
-        z.eia_state, z.utility_name, z.state,
+      SELECT json_build_object('id', z.id, 'zip', z.zip) as "zips",
+        z.eia_state, u.utility_name, z.state,
         COUNT(g.utility_name) as program_count,
+        u.production AS production,
         array_agg(
           jsonb_build_object('name', g.program_name, 'id', g.id, 'production', g.production)
           ORDER BY g.id
         ) as programs
       FROM zips as z
       LEFT JOIN gpp g ON z.eia_state=g.eia_state
+      JOIN utilities u ON u.eia_state=z.eia_state
     `;
 
     let queryParams = [req.params.page*100];
@@ -127,16 +129,16 @@ router.get('/summary/:page', async(req,res)=>{
       case 'state': order = 'state'; break;
       case 'zip': order = 'zips'; break;
       case 'program_count': order = 'program_count'; break;
-      case 'production': order = 'production'; break;
+      // case 'production': order = 'production'; break;
     }
 
     let dir = (req.query.orderDir==='ASC'? 'ASC' : 'DESC');
     
 
     query += `
-      GROUP BY z.id
+      GROUP BY z.id, u.utility_name, u.production
       ) AS td
-      GROUP BY eia_state, utility_name, state, program_count, programs
+      GROUP BY eia_state, utility_name, state, program_count, programs, production
       ORDER BY ${order} ${dir}
       LIMIT 100 OFFSET $1;`;
 
@@ -153,12 +155,12 @@ router.get('/summary/:page', async(req,res)=>{
   Posts a new utility company to the zips table.
 */
 router.post('/', rejectUnauthenticated, async(req,res)=>{
-  const {zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate} = req.body;
+  const {zip, eiaid, state, eia_state} = req.body;
   const queryData = [zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate];
   try {
     const query = `
-      INSERT INTO zips (zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);
+      INSERT INTO zips (zip, eiaid, state, eia_state)
+      VALUES ($1, $2, $3, $4);
     `;
     await pool.query(query, queryData);
     res.sendStatus(201);

@@ -31,7 +31,7 @@ router.get('/geocode/:zip', (req,res)=>{
 router.get('/:zip', async (req, res) => {
     try {
         const zipsCols = [
-            'zip', 'eiaid', 'utility_name',
+            'zip', 'eiaid',
             'state', 'eia_state'
         ]
         const cols = gppCols.filter(col => !zipsCols.includes(col));
