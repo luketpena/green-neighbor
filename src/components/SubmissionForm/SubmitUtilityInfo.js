@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useDispatch} from 'react-redux';
 import styled from 'styled-components';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTimes} from '@fortawesome/free-solid-svg-icons';
@@ -60,7 +61,7 @@ const ZipBox = styled.div`
     padding: 8px 16px;
     width: 200px;
 
-    
+
 
     button {
       border: none;
@@ -123,22 +124,24 @@ const states = [ 'AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM
 
 export default function SubmitUtilityInfo() {
 
+  const dispatch = useDispatch();
+
   const [zipInput, setZipInput] = useState('');
-  const [zips, setZips] = useState([555,555,555]);
+  const [zips, setZips] = useState([]);
   const [state,setState] = useState('State');
   const [utility_name, setUtility_name] = useState('');
   const [eiaid,setEiaid] = useState('');
 
   const [deleteZip, setDeleteZip] = useState(-1);
 
-  const [comm_bundled, setComm_bundled] = useState('');
-  const [comm_delivery, setComm_delivery] = useState('');
+  const [bundled_avg_comm_rate, setComm_bundled] = useState('');
+  const [delivery_avg_comm_rate, setComm_delivery] = useState('');
 
-  const [ind_bundled, setInd_bundled] = useState('');
-  const [ind_delivery, setInd_delivery] = useState('');
+  const [bundled_avg_ind_rate, setInd_bundled] = useState('');
+  const [delivery_avg_ind_rate, setInd_delivery] = useState('');
 
-  const [res_bundled, setRes_bundled] = useState('');
-  const [res_delivery, setRes_delivery] = useState('');
+  const [bundled_avg_res_rate, setRes_bundled] = useState('');
+  const [delivery_avg_res_rate, setRes_delivery] = useState('');
 
   function renderStates() {
     return states.map( (item,i)=>{
@@ -163,7 +166,9 @@ export default function SubmitUtilityInfo() {
 
   function submitZip(event) {
     event.preventDefault();
-    setZips([...zips,zipInput]);
+    const newZips = [...zips,zipInput];
+    setZips(newZips);
+    dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {zips: newZips}})
     setZipInput('');
   }
 
@@ -172,6 +177,7 @@ export default function SubmitUtilityInfo() {
     copy.splice(deleteZip,1);
     setDeleteZip(-1);
     setZips(copy);
+    dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {zips: copy}})
   }
 
   return (
@@ -185,6 +191,7 @@ export default function SubmitUtilityInfo() {
           placeholder="Enter the name of the utility company"
           value={utility_name}
           onChange={event=>setUtility_name(event.target.value)}
+          onBlur={()=>dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {utility_name} })}
           />
         
         <LocationBox>
@@ -195,10 +202,14 @@ export default function SubmitUtilityInfo() {
               placeholder="Enter the EIA ID"
               value={eiaid}
               onChange={event=>setEiaid(event.target.value)}
+              onBlur={()=>dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {eiaid} })}
               />
           </EiaBox>
 
-          <select value={state} onChange={event=>setState(event.target.value)}>
+          <select 
+            value={state} 
+            onChange={event=>setState(event.target.value)}
+            onBlur={()=>dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {state} })}>
             <option disabled>State</option>
             {renderStates()}
           </select>
@@ -208,25 +219,25 @@ export default function SubmitUtilityInfo() {
         <label className="rate-title">Commercial Rates</label>
         <RateBox>
           <label>Bundled</label>
-          <input type="number" value={comm_bundled} onChange={event=>setComm_bundled(event.target.value)}/>
+          <input type="number" value={bundled_avg_comm_rate} onChange={event=>setComm_bundled(event.target.value)} onBlur={()=>dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {bundled_avg_comm_rate} })}/>
           <label>Delivery</label>
-          <input type="number" value={comm_delivery} onChange={event=>setComm_delivery(event.target.value)}/>
+          <input type="number" value={delivery_avg_comm_rate} onChange={event=>setComm_delivery(event.target.value)} onBlur={()=>dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {delivery_avg_comm_rate} })}/>
         </RateBox>
 
         <label className="rate-title">Individual Rates</label>
         <RateBox>
           <label>Bundled</label>
-          <input type="number" value={ind_bundled} onChange={event=>setInd_bundled(event.target.value)}/>
+          <input type="number" value={bundled_avg_ind_rate} onChange={event=>setInd_bundled(event.target.value)} onBlur={()=>dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {bundled_avg_ind_rate} })}/>
           <label>Delivery</label>
-          <input type="number" value={ind_delivery} onChange={event=>setInd_delivery(event.target.value)}/>
+          <input type="number" value={delivery_avg_ind_rate} onChange={event=>setInd_delivery(event.target.value)} onBlur={()=>dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {delivery_avg_ind_rate} })}/>
         </RateBox>
 
         <label className="rate-title">Residential Rates</label>
         <RateBox>
           <label>Bundled</label>
-          <input type="number" value={res_bundled} onChange={event=>setRes_bundled(event.target.value)}/>
+          <input type="number" value={bundled_avg_res_rate} onChange={event=>setRes_bundled(event.target.value)} onBlur={()=>dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {bundled_avg_res_rate} })}/>
           <label>Delivery</label>
-          <input type="number" value={res_delivery} onChange={event=>setRes_delivery(event.target.value)}/>
+          <input type="number" value={delivery_avg_res_rate} onChange={event=>setRes_delivery(event.target.value)} onBlur={()=>dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {delivery_avg_res_rate} })}/>
         </RateBox>
       </BasicBox>
 
