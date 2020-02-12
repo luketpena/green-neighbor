@@ -70,11 +70,7 @@ function stringifyQueries(query,paramsArray) {
   return final;
 }
 
-router.get('/count', async(req,res)=>{
-
-  console.log(req.query);
-
-  
+router.get('/count', async(req,res)=>{  
   try {
 
     let query = `
@@ -144,7 +140,6 @@ router.get('/summary/:page', async(req,res)=>{
       ORDER BY ${order} ${dir}
       LIMIT 100 OFFSET $1;`;
 
-    console.log(query, queryParams);
     const result = await pool.query(query,queryParams);
 
     res.send(result.rows);
@@ -216,7 +211,7 @@ router.put('/:id', rejectUnauthenticated, async(req,res)=>{
 */
 router.put('/production/:id', rejectUnauthenticated, async(req,res)=>{
   try {
-    const query = `UPDATE zips SET production=$1 WHERE id=$2;`;
+    const query = `UPDATE gpp SET production=$1 WHERE id=$2;`;
     await pool.query(query,[req.body.production,req.params.id]);
     res.sendStatus(200);
   } catch(error) {
