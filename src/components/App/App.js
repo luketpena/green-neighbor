@@ -13,7 +13,6 @@ import DetailsPage from '../DetailsPage/DetailsPage';
 import AboutPage from '../AboutPage/AboutPage';
 import IntroductionPage from '../IntroductionPage/IntroductionPage';
 import UtilityPage from '../UtilityPage/UtilityPage';
-import Nav from '../Nav/Nav';
 import NavBar from '../NavBar/NavBar';
 import AdminLandingPage from '../Admin/AdminLandingPage/AdminLandingPage.js';
 import ManageAdminsPage from '../Admin/ManageAdminsPage/ManageAdminsPage.js';
