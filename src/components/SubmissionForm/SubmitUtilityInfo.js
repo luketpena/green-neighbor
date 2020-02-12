@@ -22,7 +22,8 @@ const states = [ 'AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM
 
 export default function SubmitUtilityInfo() {
 
-
+  const [zipInput, setZipInput] = useState('');
+  const [zips, setZips] = useState([]);
 
   function renderStates() {
     return states.map( (item,i)=>{
@@ -32,6 +33,24 @@ export default function SubmitUtilityInfo() {
         </option>
       )
     });
+  }
+
+  function renderZips() {
+    return zips.map( (item,i)=>{
+      return <li key={i}>{item} <button onClick={()=>removeZip(i)}>x</button></li>
+    })
+  }
+
+  function submitZip(event) {
+    event.preventDefault();
+    setZips([...zips,zipInput]);
+    setZipInput('');
+  }
+
+  function removeZip(index) {
+    let copy = [...zips];
+    copy.splice(index,1);
+    setZips(copy);
   }
 
   return (
@@ -51,7 +70,15 @@ export default function SubmitUtilityInfo() {
       </BasicBox>
 
       <ZipBox>
-        
+        <h3>Zip Codes</h3>
+        <form onSubmit={submitZip}>
+          <input type="number" placeholder="Enter zip code" value={zipInput} onChange={event=>setZipInput(event.target.value)}/>
+          <button>Add Zip</button>
+        </form>
+
+        <ul>
+          {renderZips()}
+        </ul>
       </ZipBox>
 
     </Container>
