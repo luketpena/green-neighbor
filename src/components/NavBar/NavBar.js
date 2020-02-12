@@ -77,7 +77,7 @@ export default function NavBar() {
       }
     }
     if(i === tabs.length) setValue(0);
-  }, [currentURL]);
+  }, [currentURL, tabs]);
 
 
   function renderTabs() {
