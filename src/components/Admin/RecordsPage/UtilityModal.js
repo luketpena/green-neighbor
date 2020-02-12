@@ -14,8 +14,8 @@ const ProgramTitle = styled.span`
   min-width: 500px;
 `;
 
-const ProgramsList = styled.div`
-
+const List = styled.div`
+  margin: 1rem;
 `;
 
 export default function UtilityModal(props){
@@ -47,10 +47,20 @@ export default function UtilityModal(props){
         </DialogTitle>
         <DialogContent>
           <p>EIA - State: {eia_state}</p>
-          <p>Programs:</p>
-          <div>
-
-          </div>
+          <h3>Programs:</h3>
+          <List>
+            {programs && programs.map(({name, id})=>
+              <p key={id}>
+                {name || `Unnamed Program (ID #${id})`}
+              </p>
+            )}
+          </List>
+          <h3>Active Zips:</h3>
+          <List>
+            <p>
+              {zips && zips.map(a => a.zip).join(', ')}
+            </p>
+          </List>
         </DialogContent>
         <DialogActions>
           <button className="button-default" onClick={close} >
