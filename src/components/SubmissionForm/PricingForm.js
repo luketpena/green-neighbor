@@ -19,8 +19,9 @@ export default function PricingForm(props){
     const [newBlockSizeKwh, setNewBlockSizeKwh] = useState('');
 
     const formatAsCurrency = (str, func) => {
-        str = str.replace(/[^0-9.]/g, '').split('.', 2);
-        if(str.lenth > 1 && str[1].length > 2){
+        str.replace(/[^0-9.]/g, '');
+        str = str.split('.', 2);
+        if(str[1] && str[1].length > 2){
             str[1] = str[1].substring(0, 2);
         }
         str = str.join('.');
