@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import SubmitSources from './SubmitSources';
 import PricingForm from './PricingForm';
+import ContractForm from './ContractForm';
 
 const Container = styled.div`
   height: 100%;
@@ -96,9 +97,10 @@ const FormButtons = styled.div`
 `;
 
 const steps = [
+  {name: 'Contract', component: <ContractForm />},
   {name: 'Source', component: <SubmitSources />},
   {name: 'Pricing', component: <PricingForm /> },
-  {name: 'Contract'},
+  // move Contract back here
   {name: 'Details'},
 ];
 
