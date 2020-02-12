@@ -23,7 +23,14 @@ const DetailsBox = styled.div`
 
 export default function SubmitDetails() {
 
-    const [detailList, setDetailList] = useState();
+    const [greenE, setGreenE] = useState();
+    const [recsRetired, setRecsRetired] = useState();
+    const [recsNeutral, setRecsNeutral] = useState();
+    const [retail, setRetail] = useState();
+    const [waitlist, setWaitlist] = useState();
+    const [urlLink, setUrlLink] = useState();
+    const [urlText, setUrlText] = useState();
+
 
     function renderDetails() {
         
@@ -31,15 +38,25 @@ export default function SubmitDetails() {
                 
                 <form >
                     <label>Green-e Certified</label>
-                    <input type="checkbox" value={greenE}></input>
+                    <input 
+                        type="checkbox" 
+                        value={greenE}></input>
                     <label>Recs Retired</label>
-                    <input type="checkbox" value={recsRetired}></input>
+                    <input 
+                        type="checkbox" 
+                        value={recsRetired}></input>
                     <label>Recs Neutral</label>
-                    <input type="checkbox" value={recsNeutral}></input>
+                    <input 
+                        type="checkbox" 
+                        value={recsNeutral}></input>
                     <label>Retail</label>
-                    <input type="checkbox" value={retail}></input>
+                    <input 
+                        type="checkbox" 
+                        value={retail}></input>
                     <label>Waitlist Available</label>
-                    <input type="checkbox" value={waitlist}></input>
+                    <input 
+                        type="checkbox" 
+                        value={waitlist}></input>
                     <label>Sign Up or Enroll Link</label>
                     <input type="checkbox" value={urlLink}></input>
                     <label>Sign Up or Enroll Text</label>
