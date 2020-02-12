@@ -9,8 +9,6 @@ const Container = styled.div`
   }
 `;
 
-
-
 const DetailsBox = styled.div`
   width: 90%;
   height: 100%;
@@ -28,22 +26,24 @@ export default function SubmitDetails() {
     // List of values declared for state of form
     const [greenE, setGreenE] = useState();
     const [recsRetired, setRecsRetired] = useState();
-    const [recsNeutral, setRecsNeutral] = useState();
+    const [revsNeutral, setRevsNeutral] = useState();
     const [retail, setRetail] = useState();
     const [waitlist, setWaitlist] = useState();
     const [urlLink, setUrlLink] = useState();
     const [urlText, setUrlText] = useState();
 
-    const dispatch = useDispatch();
+   const updateSubmissionForm = obj => {
+       dispatch = ({ type: 'UPDATE_FORM_SUBMISSION', payload: obj })
+   }
 
     // List for on sets for above input values
-    useEffect( () => { setGreenE( greenE ); }, [greenE] );
-    useEffect( () => { setRecsRetired( recsRetired ); }, [recsRetired] );
-    useEffect( () => { setRecsNeutral( recsNeutral); }, [recsNeutral] );
-    useEffect( () => { setRetail( retail ); }, [retail] );
-    useEffect( () => { setWaitlist( waitlist ); }, [waitlist] );
-    useEffect( () => { setUrlLink( urlLink ); }, [urlLink] );
-    useEffect( () => { setUrlText( urlText ); }, [urlText] );
+    // useEffect( () => { setGreenE( greenE ); }, [greenE] );
+    // useEffect( () => { setRecsRetired( recsRetired ); }, [recsRetired] );
+    // useEffect( () => { setRecsNeutral( recsNeutral); }, [recsNeutral] );
+    // useEffect( () => { setRetail( retail ); }, [retail] );
+    // useEffect( () => { setWaitlist( waitlist ); }, [waitlist] );
+    // useEffect( () => { setUrlLink( urlLink ); }, [urlLink] );
+    // useEffect( () => { setUrlText( urlText ); }, [urlText] );
 
 
 
@@ -57,6 +57,7 @@ export default function SubmitDetails() {
                         type="checkbox" 
                         value={greenE}
                         onChange={e=>setGreenE(e.target.value)}
+                        onBlur={e=>updateSubmissionForm({green_e: greenE})}
                         >
                     </input>
                     <label>Recs Retired</label>
@@ -64,13 +65,15 @@ export default function SubmitDetails() {
                         type="checkbox" 
                         value={recsRetired}
                         onChange={e=>setRecsRetired(e.target.value)}
+                        onBlur={e=>updateSubmissionForm({recs_retired: recsRetired})}
                         >
                     </input>
-                    <label>Recs Neutral</label>
+                    <label>Revenue Neutral</label>
                     <input 
                         type="checkbox" 
-                        value={recsNeutral}
-                        onChange={e=>setRecsNeutral(e.target.value)}
+                        value={revsNeutral}
+                        onChange={e=>setRevsNeutral(e.target.value)}
+                        onBlur={e=>updateSubmissionForm({revenue_neutral: revsNeutral})}
                         >
                     </input>
                     <label>Retail</label>
@@ -78,6 +81,7 @@ export default function SubmitDetails() {
                         type="checkbox" 
                         value={retail}
                         onChange={e=>setRetail(e.target.value)}
+                        onBlur={e=>updateSubmissionForm({retail: retail})}
                         >
                     </input>
                     <label>Waitlist Available</label>
@@ -98,7 +102,7 @@ export default function SubmitDetails() {
                     <input 
                         type="checkbox" 
                         value={urlText}
-                        onChange={e=>setGreenE(e.target.value)}
+                        onChange={e=>setUrlText(e.target.value)}
                         >
                     </input>
                 </form>
