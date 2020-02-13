@@ -161,6 +161,38 @@ router.get('/summary/:page', async(req,res)=>{
   }
 });
 
+
+router.get('/details/:id', async (req, res) => {
+  try{
+      const query = `
+          SELECT ARRAY_AGG("zips") as zips, eia_state, utility_name, state,
+          program_count, programs, production, utility_id
+          FROM (
+          SELECT json_build_object('id', z.id, 'zip', z.zip) as "zips",
+              z.eia_state, u.utility_name, z.state,
+              COUNT(g.utility_name) as program_count,
+              u.production AS production, u.id AS utility_id,
+              array_agg(
+                  jsonb_build_object('name', g.program_name, 'id', g.id, 'production', g.production)
+                  ORDER BY g.id
+              ) as programs
+          FROM zips as z
+          LEFT JOIN gpp g ON z.eia_state=g.eia_state
+          JOIN utilities u ON u.eia_state=z.eia_state
+          WHERE u.id=$1
+          GROUP BY z.id, u.utility_name, u.production, u.id
+          ) AS td
+          GROUP BY eia_state, utility_name, state, program_count,
+            programs, production, utility_id
+      `
+      const response = await pool.query(query, [req.params.id]);
+      res.send(response.rows[0]);
+  } catch(error){
+      res.sendStatus(500);
+      console.log('-------- ERROR GETTING UTILITY DETAILS -------- \n', error);
+  }
+});
+
 /* 
   Gets the info to edit a single utility company 
 */

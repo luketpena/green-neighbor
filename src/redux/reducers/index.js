@@ -13,7 +13,7 @@ import submissionFormReducer from './submissionFormReducer';
 // The parameter str sets the correct string, and type sets the starting state. Type defaults to [].
 const createReducer = (str, type=[]) => {
   return (state=type, action) => {
-    if(action.type === str) return action.payload;
+    if(action.type === str && action.hasOwnProperty('payload')) return action.payload;
     else if(action.type === 'DELETE_ALL') return type;
     else return state;
   }
