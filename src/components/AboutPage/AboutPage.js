@@ -53,8 +53,8 @@ const ABox = styled.div`
 grid-area: answers;
 grid-row: 2;
 height: 350px;
-overflow: scroll;
-opacity: .82;
+overflow-y: scroll;
+background-color:rgba(250,250,250,0.8);
 font-family: var(--font-main);
 `;
 
