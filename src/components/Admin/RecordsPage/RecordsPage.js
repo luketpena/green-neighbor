@@ -240,6 +240,7 @@ export default function RecordsPage() {
                     <th className="th-click" onClick={()=>triggerOrder('state')}>State</th>
                     <th className="th-click" onClick={()=>triggerOrder('program_count')}># Programs</th>
                     <th>&nbsp;</th>
+                    <th>&nbsp;</th>
                     <th className="th-click" onClick={()=>triggerOrderDir((orderDir==='ASC'? 'DESC' : 'ASC'))} > <FontAwesomeIcon className="dir-btn" icon={faCaretUp}/></th>
                   </tr>
                 </thead>
