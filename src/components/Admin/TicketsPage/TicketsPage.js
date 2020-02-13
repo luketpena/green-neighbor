@@ -43,6 +43,7 @@ export default function TicketsPage() {
     const [utilitySearch, setUtilitySearch] = useState(utility || '');
     const [programSearch, setProgramSearch] = useState(program || '');
     const [showResolved, setShowResolved] = useState(resolved);
+    // Use of == is intentional: catches boolean values and string values of 'true' and 'false'
     const [showFromCompanies, setShowFromCompanies] = useState(fromCompanies == false ? false : true);
     const [showFromUtility, setShowFromUtility] = useState(fromUtility == false ? false : true);
     const [showFromProgram, setShowFromProgram] = useState(fromProgram == false ? false : true);
@@ -116,25 +117,31 @@ export default function TicketsPage() {
         offset, comments
     ]);
 
+    
+
     // if a filter changes, update the search
     useEffect(()=>{
         if(hasMounted.current){
             onSearch();
         } else hasMounted.current = true;
     }, [showFromCompanies, showFromUtility,
-        showFromProgram, showResolved, onSearch]
+        showFromProgram, showResolved]
     );
 
     // push current search to url
-    const onSearch = e => {
-        if(e) e.preventDefault();
-        history.push(`/admin/tickets${writeQueries({
-            zip: zipSearch, program: programSearch, utility: utilitySearch,
-            resolved: showResolved, fromCompanies: showFromCompanies,
-            fromUtility: showFromUtility, fromProgram: showFromProgram,
-            comments: commentSearch, orderBy, order
-        })}`);
+    function onSearch(e) {
+      if(e) e.preventDefault();
+      history.push(`/admin/tickets${writeQueries({
+          zip: zipSearch, program: programSearch, utility: utilitySearch,
+          resolved: showResolved, fromCompanies: showFromCompanies,
+          fromUtility: showFromUtility, fromProgram: showFromProgram,
+          comments: commentSearch, orderBy, order
+      })}`);
     }
+
+    
+
+    
 
     const toggleShowDetails = e => {
         dispatch({type: 'SET_TICKETS_DISPLAY', payload: !showDetails});

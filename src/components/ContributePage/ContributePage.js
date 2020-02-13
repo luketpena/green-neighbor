@@ -101,6 +101,7 @@ export default function ContributePage() {
                         <div className="twitter-embed">
                             <a className="twitter-follow-button"
                             href="https://twitter.com/GreenNeighborCh?ref_src=twsrc%5Etfw"
+                            rel="noopener noreferrer"
                             target="_blank"
                             data-size="large"
                             data-show-count="default">

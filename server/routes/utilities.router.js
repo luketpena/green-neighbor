@@ -150,7 +150,9 @@ router.get('/summary/:page', async(req,res)=>{
     // AFAIK, there is no way to prevent Postgres from
     // returning a null JSON
     result.rows.forEach(item => {
-      item.programs.filter(program => program.id !== null);
+      if(item.programs[0].id === null){
+        item.programs.pop();
+      }
     });
     res.send(result.rows);
   } catch(error) {
@@ -160,17 +162,117 @@ router.get('/summary/:page', async(req,res)=>{
 });
 
 /* 
+  Gets the info to edit a single utility company 
+*/
+router.get('/edit/:id', rejectUnauthenticated, async(req,res)=>{
+
+  try {
+    const query = `
+      SELECT ARRAY_AGG(distinct jsonb_build_object('id', z.id, 'zip', z.zip)) as "zips",
+      u.utility_name,
+          z.eia_state,
+          z.eiaid,
+          z.state,
+          u.bundled_avg_comm_rate,
+          u.bundled_avg_ind_rate,
+          u.bundled_avg_res_rate,
+          u.delivery_avg_comm_rate, 
+          u.delivery_avg_ind_rate,
+          u.delivery_avg_res_rate,
+          u.production AS production, u.id AS utility_id
+        FROM zips as z
+        JOIN utilities u ON u.eia_state=z.eia_state
+        WHERE u.id=$1
+        GROUP BY z.eia_state, z.state, z.eiaid, u.utility_name, utility_id, u.production, u.id;
+    `;
+    const response = await pool.query(query,[req.params.id]);
+    res.send(response.rows[0])
+  } catch(error) {
+    console.log('Error getting utility to edit:',error);
+    res.sendStatus(500);
+  }
+});
+
+/* 
   Posts a new utility company to the zips table.
 */
 router.post('/', rejectUnauthenticated, async(req,res)=>{
-  const {zip, eiaid, state, eia_state} = req.body;
-  const queryData = [zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate];
+ 
+  let keys = [];
+  let values = [];
+  let zip_keys = [];
+  let zip_values = [];
+
+   //>> Collect the info from the req.body into usable arrays
+  for (let [key,value] of Object.entries(req.body)) {
+    if (value!=='') {
+      switch(key) {
+        case 'zips':
+        case 'eiaid':
+          /* Do nothing */ 
+          break;
+        case 'state':
+          if (req.body.hasOwnProperty('eiaid')) {
+            keys.push('eia_state');
+            values.push(`${req.body.eiaid}${req.body.state}`);
+          }
+          break;
+        default:
+          keys.push(key);
+          values.push(value);
+      }
+    }
+  }
+  console.log('-----------------POSTING NEW UTILITY COMPANY');
+  console.log('Collected data:',keys,values);
+  
+  //>> Construct the query from those arrays
+  let query = `INSERT INTO utilities (${keys.toString()}) VALUES (${keys.map((key,i)=>`$${i+1}`).toString()});`;
+
+  //>> Construct queries if zips are present
+  if (req.body.hasOwnProperty('zips')) {
+    //>> Collect the info from the req.body into usable arrays
+   
+
+    for (let [key,value] of Object.entries(req.body)) {
+      if (value!=='') {
+        switch(key) {
+          case 'state':
+            zip_keys.push(key);
+            zip_values.push(value);
+            break;
+          case 'eiaid':
+            zip_keys.push(key);
+            zip_values.push(value);
+            if (req.body.hasOwnProperty('state')) {
+              zip_keys.push('eia_state');
+              zip_values.push(`${req.body.eiaid}${req.body.state}`);
+            }
+          default:
+            /* Do nothing */
+        }
+      }
+    }
+    //>> Construct the query from those arrays
+    let zip_query = `INSERT INTO zips (zip,${zip_keys.toString()}) VALUES ($1,${zip_keys.map((key,i)=>`$${i+2}`).toString()})`;
+    console.log('Zip info:',req.body.zips[0],zip_values);
+    console.log('Zip query:',zip_query);
+    
+    
+    
+  }
+
+  console.log(query);
+  
   try {
-    const query = `
-      INSERT INTO zips (zip, eiaid, state, eia_state)
-      VALUES ($1, $2, $3, $4);
-    `;
-    await pool.query(query, queryData);
+    await pool.query(query,values);
+
+    if (zip_keys.length>0) {
+      for (let i=0; i<req.body.zips; i++) {
+        await pool.query(zip_query,[req.body.zips[i], ...zip_values])
+      }
+    }
+
     res.sendStatus(201);
   } catch(error) {
     res.sendStatus(500);
@@ -229,6 +331,6 @@ router.put('/production/:id', rejectUnauthenticated, async(req,res)=>{
     console.log('Error updating company production status:', error);
     
   }
-})
+});
 
 module.exports = router;

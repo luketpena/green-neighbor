@@ -37,10 +37,7 @@ export default function UtilityRow(props) {
 
   const dispatch = useDispatch();
 
-  const {id, utility_name, utility_id,
-    state, program_count, program_list,
-    program_id
-  } = props.utility;
+  const {utility_name, utility_id, state, program_count} = props.utility;
 
   const [production, setProduction] = useState(props.utility.production);
   useEffect(()=>{
@@ -75,7 +72,7 @@ export default function UtilityRow(props) {
     <Container className="utility-row" production={production}>
       <td>{utility_name}</td>
       <td>{state}</td>
-      <td>{program_count} {(program_count==1? 'program' : 'programs')}</td>
+      <td>{program_count} {(program_count===1? 'program' : 'programs')}</td>
       <td>
         <ProductionButton
           onClick={toggleProduction}
