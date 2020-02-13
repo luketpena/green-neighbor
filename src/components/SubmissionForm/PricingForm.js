@@ -24,6 +24,13 @@ const Text = styled.p`
     margin: 4px;
 `;
 
+const InputGrid = styled.form`
+    margin: 4px;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-gap: 4px;
+`;
+
 export default function PricingForm(props){
     const dispatch = useDispatch();
     const form = useSelector(state => state.submissionFormReducer);
@@ -45,8 +52,6 @@ export default function PricingForm(props){
 
     const asCurrency = str => str.match(/[0-9]*\.?[0-9]{0,2}/)[0] || '';
     const asInteger = str => str.match(/[0-9]*/)[0] || '';
-
-    const formatAsInteger = (str) => str.match(/[0-9]*/) || '';
 
     const updateSubmissionForm = obj => {
         dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: obj});
@@ -83,6 +88,7 @@ export default function PricingForm(props){
         setBlockSizes(blockSizes);
         setBlockCosts(blockCosts);
         setNewBlockSizeKwh('');
+        setNewBlockCost('');
     }
 
     const removeBlock = (index) => {
@@ -216,67 +222,68 @@ export default function PricingForm(props){
                         />
                     </Input>
                 }
-                {blocksAvailable !== 'No' &&
-                    <>
-                        <Text>Blocks (kWh):</Text>
-                        {blockSizes.length ? 
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Size</th>
-                                        <th>Cost</th>
-                                        <th>&nbsp;</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                {blockSizes.map((blockSize, i) => 
+            {blocksAvailable !== 'No' &&
+                <InputGrid onSubmit={addBlock}>
+                    <label htmlFor='submission-add-block'>
+                        Block Size (kWh):
+                    </label>
+                    <input
+                        id='submission-add-block'
+                        type='text'
+                        placeholder='100'
+                        value={newBlockCost}
+                        onChange={e=> setNewBlockCost(asInteger(e.target.value))}
+                    />
+                    <label htmlFor='submission-add-block-cost'>
+                        Block Cost:
+                    </label>
+                    <input
+                        id='submission-add-block-cost'
+                        type='text'
+                        placeholder='5.00'
+                        value={newBlockSizeKwh}
+                        onChange={e=>{
+                            setNewBlockSizeKwh(asCurrency(e.target.value));
+                        }}
+                    />
+                    <br />
+                    <button type='submit'>Add Block</button>
+                </InputGrid>
+            }
+            {blocksAvailable !== 'No' &&
+                <div>
+                    <span>Blocks (kWh):</span>
+                    {blockSizes.length ?
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Size</th>
+                                    <th>Cost</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {blockSizes.map((blockSize, i) => 
+                                <tr key={i}>
                                     <td>
-                                        <td>
-                                            {blockSize}
-                                        </td>
-                                        <td>
-                                            {blockCosts[i]}
-                                        </td>
-                                        <td>
-                                            <button key={i} onClick={()=>removeBlock(i)} >
-                                                remove
-                                            </button>
-                                        </td>
+                                        {blockSize}
                                     </td>
-                                )}
-                                </tbody>
-                            </table>
-                        : <Text>No Blocks Listed</Text>
-                        }
-                        <form onSubmit={addBlock}>
-                            <Input>
-                                <label htmlFor='submission-add-block'>
-                                    Block Size (kWh):
-                                </label>
-                                <input
-                                    id='submission-add-block'
-                                    type='text'
-                                    value={newBlockCost}
-                                    onChange={e=> setNewBlockCost(asInteger(e.target.value))}
-                                />
-                            </Input>
-                            <Input>
-                                <label htmlFor='submission-add-block-cost'>
-                                    Block Cost:
-                                </label>
-                                <input
-                                    id='submission-add-block-cost'
-                                    type='text'
-                                    value={newBlockSizeKwh}
-                                    onChange={e=>{
-                                        setNewBlockSizeKwh(asCurrency(e.target.value));
-                                    }}
-                                />
-                            </Input>
-                            <button type='submit'>Add Block</button>
-                        </form>
-                    </>
-                }
+                                    <td>
+                                        {blockCosts[i]}
+                                    </td>
+                                    <td>
+                                        <button key={i} onClick={()=>removeBlock(i)} >
+                                            Remove
+                                        </button>
+                                    </td>
+                                </tr>
+                            )}
+                            </tbody>
+                        </table>
+                    : <center>No Blocks Listed</center>
+                    }
+                </div>
+            }
             </InputRow>
         </Container>
     );
