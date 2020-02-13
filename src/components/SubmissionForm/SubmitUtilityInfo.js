@@ -183,7 +183,7 @@ export default function SubmitUtilityInfo() {
     <Container>
       <BasicBox>
         <h3>Basic Info</h3>
-        <label>Utility Name: </label>
+        <label>Utility Name<span className="required">*</span></label>
         <input 
           type="text" 
           placeholder="Enter the name of the utility company"
@@ -192,9 +192,10 @@ export default function SubmitUtilityInfo() {
           onBlur={()=>dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {utility_name} })}
           />
         
+        
         <LocationBox>
           <EiaBox>
-            <label>EIA ID: </label>
+            <label>EIA ID<span className="required">*</span></label>
             <input 
               type="number" 
               placeholder="Enter the EIA ID"
@@ -202,6 +203,7 @@ export default function SubmitUtilityInfo() {
               onChange={event=>setEiaid(event.target.value)}
               onBlur={()=>dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {eiaid} })}
               />
+              
           </EiaBox>
 
           <select 
@@ -211,6 +213,7 @@ export default function SubmitUtilityInfo() {
             <option disabled>State</option>
             {renderStates()}
           </select>
+          <span className="required">*</span>
         </LocationBox>
         
 
