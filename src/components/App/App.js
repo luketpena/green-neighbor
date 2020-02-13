@@ -93,7 +93,7 @@ class App extends Component {
               />
               <ProtectedRoute
                 exact
-                path="/admin/submit"
+                path="/admin/submit/:action/:subject"
                 component={SubmissionForm}
               />
             </div>

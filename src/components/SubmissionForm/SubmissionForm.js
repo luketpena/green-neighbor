@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 
 import SubmitSources from './SubmitSources';
@@ -110,6 +111,8 @@ export default function SubmissionForm() {
 
   const [currentStep, setCurrentStep] = useState(0);
 
+  const { action, subject } = useParams();
+
   function renderSteps() {
     return steps.map( (item,i)=>{
       return (
@@ -143,18 +146,29 @@ export default function SubmissionForm() {
     }
   }
 
+  function renderStepper() {
+    if (subject==='program') {
+      return (
+        <>
+          <StepBox>
+          {renderSteps()}
+          </StepBox>
+          <ProgressBox num={steps.length}>
+            <ProgressBar num={steps.length} currentStep={currentStep}/>
+          </ProgressBox>
+        </>
+      )
+    }
+  }
+
   return (
     <Container>
       <Stepper>
-        <StepBox>
-          {renderSteps()}
-        </StepBox>
-        <ProgressBox num={steps.length}>
-          <ProgressBar num={steps.length} currentStep={currentStep}/>
-        </ProgressBox>
+        {renderStepper()}
       </Stepper>
       <FormBox>
         <h1>Submission Form</h1>
+        {action} {subject}
         <FormArea>
           {steps[currentStep].component}  
         </FormArea>
