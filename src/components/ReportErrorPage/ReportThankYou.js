@@ -62,7 +62,7 @@ export default function ReportThankYou(props) {
               Your input and feedback is important to the Green Neighbor Project and every little bit of information you provide strengthens our community.
             </Typography>
             <Typography gutterBottom>
-              If there is anything else you'd like to chime in on check out our <a href="https://www.facebook.com/GreenNeighborChallenge/" target="_blank">Facebook</a> and <a href="https://twitter.com/GreenNeighborCh" target="_blank">Twitter!</a> 
+              If there is anything else you'd like to chime in on check out our <a href="https://www.facebook.com/GreenNeighborChallenge/" target="_blank">Facebook</a>  and  <a href="https://twitter.com/GreenNeighborCh" target="_blank">Twitter!</a> 
             </Typography>
           </DialogContent>
           <DialogActions>
