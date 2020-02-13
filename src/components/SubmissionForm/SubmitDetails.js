@@ -4,16 +4,31 @@ import {useDispatch} from 'react-redux';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  h2 {
-    text-align: center;
-  }
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    label {
+        display: inline-block;
+        padding-left: 15px;
+        
+      }
+      label {
+        display: inline-block;
+        padding-right: 10px;
+        white-space: nowrap;
+      }
+      input {
+        vertical-align: middle;
+      }
+      label span {
+        vertical-align: middle;
+      }
 `;
 
 const DetailsBox = styled.div`
   width: 90%;
   height: 100%;
   margin: 0 auto;
-  border-radius: 32px;
   overflow: hidden;
   margin-top: 50px;
 `;
@@ -52,7 +67,8 @@ export default function SubmitDetails() {
         
             return(
                 
-                <form >
+                <Container >
+                    
                     <label>Green-e Certified</label>
                     <input 
                         type="checkbox" 
@@ -109,7 +125,8 @@ export default function SubmitDetails() {
                         onBlur={e=>updateSubmissionForm({sign_up_text: urlText})}
                         >
                     </input>
-                </form>
+                    
+                </Container>
             )
     }
 
