@@ -10,7 +10,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 const ProgramTitle = styled.span`
   display: block;
-  min-width: 500px;
 `;
 
 const List = styled.div`
@@ -91,7 +90,11 @@ export default function UtilityModal(props){
         }
       });
       setProduction(!production);
-    }  
+    } 
+
+    const openEdit = () => {
+      dispatch({type: 'GET_EDIT_INFO_UTILITY', payload: utility_id});
+    }
  
     return (
         <Dialog
@@ -103,10 +106,17 @@ export default function UtilityModal(props){
         >
         <DialogTitle id="alert-dialog-title">
           <ProgramTitle>
-            Programs for {utility_name} - <ProductionButton
+            Programs for {utility_name} -
+            <ProductionButton
               live={production}
               onClick={toggleProduction}
-            >{production?'Active':'Inactive'}</ProductionButton>
+            >
+              {production ? 'Active' : 'Inactive'}
+            </ProductionButton>
+            -
+            <button className='button-default' onClick={openEdit}>
+              Edit
+            </button>
           </ProgramTitle>
         </DialogTitle>
         <DialogContent>
