@@ -15,7 +15,7 @@ export default function PricingForm(props){
 
     const [length, setLength] = useState('');
     const [minimum, setMinimum] = useState('');
-    const [termination, setTermination] = useState();
+    const [termination, setTermination] = useState('');
     const [termination_cost, setTermination_cost] = useState('');
 
     const updateSubmissionForm = obj => {
@@ -55,11 +55,11 @@ export default function PricingForm(props){
                     <input
                         type="text"
                         value={termination_cost}
+                        onChange={e=>setTermination_cost(e.target.value)}
+                        onBlur={e=>updateSubmissionForm({termination_cost: termination_cost})}
                     />
                 </>
                 }
-                
-                
         </Container>
     )
 }
