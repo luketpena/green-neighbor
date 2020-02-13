@@ -1,5 +1,6 @@
 import React from 'react';
 import {useSelector, useDispatch} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import {Modal} from '@material-ui/core';
 
@@ -36,6 +37,7 @@ const TicketInfo = styled.div`
 `;
 
 export default function DetailsModal(props){
+    const history = useHistory();
     const dispatch = useDispatch();
     const open = useSelector(state => state.adminTicketsModalOpen);
     const ticket = useSelector(state => state.adminTicketsModalTicket);
@@ -43,6 +45,8 @@ export default function DetailsModal(props){
     const closeModal = e => {
         dispatch({type: 'SET_TICKET_MODAL_OPEN', payload: false});
     }
+
+    console.log(ticket);
 
     return(
         <Modal

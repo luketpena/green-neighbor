@@ -10,9 +10,9 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 router.get('/getName/:zip/:eia_state', async (req, res) => {
     try{
         const query = `
-            SELECT "id" AS "zips_id", "utility_name"
-            FROM "zips"
-            WHERE "zip"=$1 AND "eia_state"=$2`
+            SELECT "zips"."id" AS "zips_id", "utilities"."utility_name"
+            FROM "zips" JOIN "utilities" ON "zips"."eia_state"="utilities"."eia_state"
+            WHERE "zips"."zip"=$1 AND "zips"."eia_state"=$2`
         const {rows} = await pool.query(query, [req.params.zip, req.params.eia_state]);
         res.send(rows[0]);
     } catch (error) {
