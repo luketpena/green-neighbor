@@ -195,6 +195,8 @@ export default function RecordsPage() {
     dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show, order, orderDir: target}});
   }
 
+
+
   return(
     <Container>
         <h1>Record Management</h1>

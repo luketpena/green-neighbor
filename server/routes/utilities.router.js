@@ -197,14 +197,24 @@ router.get('/edit/:id', rejectUnauthenticated, async(req,res)=>{
   Posts a new utility company to the zips table.
 */
 router.post('/', rejectUnauthenticated, async(req,res)=>{
-  const {zip, eiaid, state, eia_state} = req.body;
-  const queryData = [zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate];
+  let collectedData = [];
+  for (let [key,value] of Object.entries(req.body)) {
+    collectedData.push({key, value});
+  }
+  console.log('-----------------POSTING NEW UTILITY COMPANY');
+  console.log('Collected data:',collectedData);
+  
+  
+  //const {zip, eiaid, state, eia_state} = req.body;
+  //const queryData = [zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate];
+  
+  
   try {
     const query = `
       INSERT INTO zips (zip, eiaid, state, eia_state)
       VALUES ($1, $2, $3, $4);
     `;
-    await pool.query(query, queryData);
+    //await pool.query(query, queryData);
     res.sendStatus(201);
   } catch(error) {
     res.sendStatus(500);

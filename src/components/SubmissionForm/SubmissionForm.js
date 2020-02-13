@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useDispatch} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -113,6 +114,7 @@ const capitalize = (s) => {
 export default function SubmissionForm() {
 
   const [currentStep, setCurrentStep] = useState(0);
+  const dispatch = useDispatch();
 
   const { action, subject } = useParams();
 
@@ -127,12 +129,16 @@ export default function SubmissionForm() {
     });
   }
 
+  function clickSubmit() {
+    dispatch({type: `${action.toUpperCase()}_${subject.toUpperCase()}`})
+  }
+
   function renderButtons() {
     switch(subject) {
       case 'program':
         if (currentStep===0) {
           if (currentStep===steps.length-1) {
-            return <button className="button-primary">Submit</button>
+            return <button onClick={clickSubmit} className="button-primary">Submit</button>
           } else {
             return <button onClick={()=>setCurrentStep(currentStep+1)} className="button-default">Next</button>
           }
@@ -152,7 +158,7 @@ export default function SubmissionForm() {
         break;
       case 'utility':
         return (
-          <button className="button-primary">Submit</button>
+          <button onClick={clickSubmit} className="button-primary">Submit</button>
         )
     }
   }
