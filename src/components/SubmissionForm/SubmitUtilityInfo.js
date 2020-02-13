@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTimes} from '@fortawesome/free-solid-svg-icons';
@@ -43,6 +44,7 @@ const ZipBox = styled.div`
   border-left: 2px dashed #DDD;
   box-sizing: border-box;
   padding: 16px;
+  
 
 
   ul {
@@ -58,7 +60,7 @@ const ZipBox = styled.div`
     padding: 8px 16px;
     width: 200px;
 
-
+    overflow-y: scroll;
 
     button {
       border: none;
@@ -124,9 +126,11 @@ const states = [ 'AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM
 export default function SubmitUtilityInfo() {
 
   const dispatch = useDispatch();
+  const submissionData = useSelector(state=>state.submissionFormReducer);
+  const { action } = useParams();
 
   const [zipInput, setZipInput] = useState('');
-  const [zips, setZips] = useState([]);
+  const [zips, setZips] = useState(((action==='edit' && submissionData.zips)? submissionData.zips : []));
   const [state,setState] = useState('State');
   const [utility_name, setUtility_name] = useState('');
   const [eiaid,setEiaid] = useState('');
@@ -157,7 +161,7 @@ export default function SubmitUtilityInfo() {
       return (
       <li key={i}>
         <button onClick={()=>setDeleteZip(i)}><FontAwesomeIcon icon={faTimes}/></button>
-        {item} 
+        {item.zip} 
         </li>
       );
     })
@@ -183,7 +187,7 @@ export default function SubmitUtilityInfo() {
     <Container>
       <BasicBox>
         <h3>Basic Info</h3>
-        <label>Utility Name: </label>
+        <label>Utility Name<span className="required">*</span></label>
         <input 
           type="text" 
           placeholder="Enter the name of the utility company"
@@ -192,9 +196,10 @@ export default function SubmitUtilityInfo() {
           onBlur={()=>dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {utility_name} })}
           />
         
+        
         <LocationBox>
           <EiaBox>
-            <label>EIA ID: </label>
+            <label>EIA ID<span className="required">*</span></label>
             <input 
               type="number" 
               placeholder="Enter the EIA ID"
@@ -202,6 +207,7 @@ export default function SubmitUtilityInfo() {
               onChange={event=>setEiaid(event.target.value)}
               onBlur={()=>dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {eiaid} })}
               />
+              
           </EiaBox>
 
           <select 
@@ -211,6 +217,7 @@ export default function SubmitUtilityInfo() {
             <option disabled>State</option>
             {renderStates()}
           </select>
+          <span className="required">*</span>
         </LocationBox>
         
 
@@ -253,7 +260,7 @@ export default function SubmitUtilityInfo() {
 
       <Dialog open={(deleteZip!==-1)}>
         <PopUpContent>
-          <DialogTitle>{(deleteZip!==-1? <span>Delete ZIP {zips[deleteZip]}?</span> : <span>Delete ZIP</span>)}</DialogTitle>
+          <DialogTitle>{(deleteZip!==-1? <span>Delete ZIP {zips[deleteZip].zip}?</span> : <span>Delete ZIP</span>)}</DialogTitle>
         
           <button className="button-negative" onClick={removeZip}>Delete</button>
           <button className="button-default" onClick={()=>setDeleteZip(-1)}>Cancel</button>

@@ -43,6 +43,11 @@ body {
   font-family: var(--font-main);
 }
 
+.required {
+  color: red;
+  margin-right: 8px;
+}
+
 .admin-pages {
   min-height: 100vh;
   height: 100%;

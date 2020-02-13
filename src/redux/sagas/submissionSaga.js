@@ -5,6 +5,7 @@ function* getEditInfoUtility(action) {
   try {
     const response = yield axios.get('/api/utilities/edit/'+action.payload);
     yield put({type: 'SET_SUBMISSION_FORM', payload: response.data});
+    yield put({type: 'SET_EDIT_READY', payload: true});
   } catch(error) {
     console.log('error getting edit info for utility company:',error);    
   }
