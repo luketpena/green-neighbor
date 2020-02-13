@@ -61,7 +61,7 @@ function stringifyQueries(query,paramsArray) {
         }   
         if (value!=='all') {
           final.string += conjunctionFunction(final.params);
-          final.string += `z.production=$${final.params.length}`;
+          final.string += `u.production=$${final.params.length}`;
         }
         break;
       case 'zip':
