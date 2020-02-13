@@ -1,5 +1,45 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import styled from 'styled-components';
+
+const Container = styled.div`
+    display: flex;
+    flex-flow: column wrap;
+`;
+
+const InputRow = styled.div`
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    margin: 8px;
+`;
+
+const Input = styled.div`
+    white-space: nowrap;
+    & > * {
+        margin: 0px 4px
+    }
+    margin: 4px
+`;
+
+const InputGrid = styled.form`
+    margin: 4px 8px;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-auto-rows: max-content;
+    grid-gap: 4px;
+`;
+
+const BlocksTableContainer = styled.div`
+    justify-self: flex-end;
+`;
+
+const BlocksTable = styled.table`
+    th, td {
+        text-align: center;
+        min-width: 5rem;
+    }
+`;
 
 export default function PricingForm(props){
     const dispatch = useDispatch();
@@ -15,21 +55,13 @@ export default function PricingForm(props){
     const [creditKwh, setCreditKwh] = useState(form.credit_kwh || '');
     const [blocksAvailable, setBlocksAvailable] = useState(form.blocks_available || 'No');
     const [blocksAvailableMinMaxValue, setBlocksAvailableMinMaxValue] = useState(2);
-    const [blocks, setBlocks] = useState(form.block_size_kwh && form.block_size_kwh.split(';') || []);
+    const [blockSizes, setBlockSizes] = useState(form.block_size_kwh && form.block_size_kwh.split(';') || []);
+    const [blockCosts, setBlockCosts] = useState(form.block_cost && form.block_cost.split(';') || []);
     const [newBlockSizeKwh, setNewBlockSizeKwh] = useState('');
+    const [newBlockCost, setNewBlockCost] = useState(''); 
 
-    const formatAsCurrency = (str, func) => {
-        str.replace(/[^0-9.]/g, '');
-        str = str.split('.', 2);
-        if(str[1] && str[1].length > 2){
-            str[1] = str[1].substring(0, 2);
-        }
-        str = str.join('.');
-        if(func){
-            func(str);
-        }
-        return str;
-    }
+    const asCurrency = str => str.match(/[0-9]*\.?[0-9]{0,2}/)[0] || '';
+    const asInteger = str => str.match(/[0-9]*/)[0] || '';
 
     const updateSubmissionForm = obj => {
         dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: obj});
@@ -55,139 +87,217 @@ export default function PricingForm(props){
 
     const addBlock = e => {
         e.preventDefault();
-        if(newBlockSizeKwh === '') return;
-        blocks.push(newBlockSizeKwh);
-        updateSubmissionForm({block_size_kwh: blocks.join(';')});
-        setBlocks(blocks);
+        if(newBlockSizeKwh === '' || newBlockCost === '') return;
+        blockSizes.push(newBlockSizeKwh);
+        blockCosts.push(newBlockCost);
+
+        updateSubmissionForm({
+            block_size_kwh: blockSizes.join(';'),
+            block_cost: blockCosts.join(';')
+        });
+        setBlockSizes(blockSizes);
+        setBlockCosts(blockCosts);
         setNewBlockSizeKwh('');
+        setNewBlockCost('');
     }
 
     const removeBlock = (index) => {
-        blocks.splice(index, 1);
-        updateSubmissionForm({block_size_kwh: blocks.join(';')})
-        setBlocks(blocks);
+        blockSizes.splice(index, 1);
+        blockCosts.splice(index, 1);
+        updateSubmissionForm({
+            block_size_kwh: blockSizes.join(';'),
+            block_cost: blockCosts.join(';')
+        })
+        setBlockSizes(blockSizes);
+        setBlockCosts(blockCosts);
     }
 
     return (
-        <div>
-            <label htmlFor='submission-cost-model'>Cost </label>
-            <select
-                id='submission-cost-model'
-                value={costIsRange}
-                onChange={costModelToggle}
-            >
-                <option value={0}>per kWh</option>
-                <option value={1}>Range</option>
-            </select>
-            {costIsRange ?
-                <>
-                    <label htmlFor='submission-cost-min'>Min: </label>
-                    <input
-                        type="number"
-                        onChange={e => formatAsCurrency(e.target.value, setCostRangeMin)}
-                        placeholder='5.00'
-                        step="0.01"
-                        value={costRangeMin}
-                        onBlur={()=>updateSubmissionForm({
-                            cost_range: `${costRangeMin}-${costRangeMax}`
-                        })}
-                    />
-                    <label htmlFor='submission-cost-max'>Max: </label>
-                    <input
-                        type="number"
-                        step="0.01"
-                        placeholder="10.00"
-                        value={costRangeMax}
-                        onChange={e => formatAsCurrency(e.target.value, setCostRangeMax)}
-                        onBlur={()=>updateSubmissionForm({
-                            cost_range: `${costRangeMin}-${costRangeMax}`
-                        })}
-                    />
-                </>:<> {/* END costIsRange === true, BEGIN costIsRange===false */}
-                    <label htmlFor='submission-cost-kwh'>Cost kWh</label>
-                    <input
-                        id='submission-cost-kwh'
-                        type="number"
-                        value={costKwh}
-                        onChange={e => formatAsCurrency(e.target.value, setCostKwh)}
-                        step="0.01"
-                        onBlur={e => updateSubmissionForm({
-                            cost_kwh: costKwh, cost_range: undefined
-                        })}
-                    />
-                </>
-            }
-            <label htmlFor='submission-credit-yn'>Credit: </label>
-            <select
-                value={creditYesNo}
-                onChange={e=>setCreditYesNo(e.target.value)}
-                onBlur={e=>updateSubmissionForm({credit_yn: creditYesNo})}
-            >
-                <option value={'No'}>No</option>
-                <option value={'Yes'}>Yes</option>
-                <option value={'Included'}>Included</option>
-            </select>
-            {creditYesNo === 'Yes' && 
-                <>
-                    <label htmlFor='submission-credit-kwh'>Credit / kWh: </label>
-                    <input
-                        id='submission-credit-kwh'
-                        value={creditKwh}
-                        type="number"
-                        onChange={e => setCreditKwh(e.target.value)}
-                        onBlur={e=>updateSubmissionForm({credit_kwh: creditKwh})}
-                        placeholder='2.99'
-                    />
-                </>
-            }
-            <label htmlFor='submission-blocks-available'>Blocks Available: </label>
-            <select
-                id='submission-blocks-available'
-                value={blocksAvailable}
-                onChange={e=>setBlocksAvailable(e.target.value)}
-                onBlur={updateBlocksAvailable}
-            >
-                <option>No</option>
-                <option>Fixed</option>
-                <option>Any</option>
-                <option>Min</option>
-                <option>Max</option>
-            </select>
-            {(blocksAvailable === 'Min' || blocksAvailable === 'Max') && 
-                <>
-                    <label htmlFor='submission-blocks-available-min-max'>
-                        {blocksAvailable} Blocks:&nbsp;
+        <Container>
+            <InputRow>
+                <Input>
+                    <label htmlFor='submission-cost-model'>
+                        Cost Model:
                     </label>
-                    <input
-                        id='submission-blocks-available-min-max'
-                        value={blocksAvailableMinMaxValue}
-                        onChange={e=>setBlocksAvailableMinMaxValue(e.target.value)}
-                        onBlur={updateBlocksAvailable}
-                    />
-                </>
-            }
-            {blocksAvailable!=='No' &&
-                <>
-                    <p>Blocks (kWh):</p>
-                    {blocks.map((block, i) => 
-                        <button key={i} onClick={()=>removeBlock(i)} >
-                            {block}
-                        </button>
-                    )}
-                    <form onSubmit={addBlock}>
-                        <label htmlFor='submission-add-block'>
-                            Block Size (kWh):
+                    <select
+                        id='submission-cost-model'
+                        value={costIsRange}
+                        onChange={costModelToggle}
+                    >
+                        <option value={0}>Per kWh</option>
+                        <option value={1}>Range</option>
+                    </select>
+                </Input>
+                {costIsRange ?
+                    <>
+                        <Input>
+                            <label htmlFor='submission-cost-min'>Min: </label>
+                            <input
+                                type="text"
+                                onChange={e => setCostRangeMin(asCurrency(e.target.value))}
+                                placeholder='5.00'
+                                value={costRangeMin}
+                                onBlur={()=>updateSubmissionForm({
+                                    cost_range: `${costRangeMin}-${costRangeMax}`
+                                })}
+                            />
+                        </Input>
+                        <Input>
+                            <label htmlFor='submission-cost-max'>Max: </label>
+                            <input
+                                type="text"
+                                placeholder="10.00"
+                                value={costRangeMax}
+                                onChange={e => setCostRangeMax(asCurrency(e.target.value))}
+                                onBlur={()=>updateSubmissionForm({
+                                    cost_range: `${costRangeMin}-${costRangeMax}`
+                                })}
+                            />
+                        </Input>
+                    </> :
+                    <Input> {/* END costIsRange === true, BEGIN costIsRange===false */}
+                        <label htmlFor='submission-cost-kwh'>
+                            Cost kWh:
                         </label>
                         <input
-                            id='submission-add-block'
-                            type='number'
-                            value={newBlockSizeKwh}
-                            onChange={e=>setNewBlockSizeKwh(e.target.value)}
+                            id='submission-cost-kwh'
+                            type="text"
+                            placeholder="2.00"
+                            value={costKwh}
+                            onChange={e => setCostKwh(asCurrency(e.target.value))}
+                            step="0.01"
+                            onBlur={e => updateSubmissionForm({
+                                cost_kwh: costKwh, cost_range: undefined
+                            })}
                         />
-                        <button type='submit'>Add Block</button>
-                    </form>
-                </>
+                    </Input>
+                }
+            </InputRow>
+            <InputRow>
+                <Input>
+                    <label htmlFor='submission-credit-yn'>Credit: </label>
+                    <select
+                        value={creditYesNo}
+                        onChange={e=>setCreditYesNo(e.target.value)}
+                        onBlur={e=>updateSubmissionForm({credit_yn: creditYesNo})}
+                    >
+                        <option value={'No'}>No</option>
+                        <option value={'Yes'}>Yes</option>
+                        <option value={'Included'}>Included</option>
+                    </select>
+                </Input>
+                {creditYesNo === 'Yes' && 
+                    <Input>
+                        <label htmlFor='submission-credit-kwh'>Credit / kWh: </label>
+                        <input
+                            id='submission-credit-kwh'
+                            value={creditKwh}
+                            type="text"
+                            onChange={e => setCreditKwh(asCurrency(e.target.value))}
+                            onBlur={e => updateSubmissionForm({credit_kwh: creditKwh})}
+                            placeholder='2.99'
+                        />
+                    </Input>
+                }
+            </InputRow>
+            <InputRow space={blocksAvailable !== 'No' ? 'space-evenly' : 'flex-start'}>
+                <Input>
+                    <label htmlFor='submission-blocks-available'>Blocks Available: </label>
+                    <select
+                        id='submission-blocks-available'
+                        value={blocksAvailable}
+                        onChange={e=>setBlocksAvailable(e.target.value)}
+                        onBlur={updateBlocksAvailable}
+                    >
+                        <option>No</option>
+                        <option>Fixed</option>
+                        <option>Any</option>
+                        <option>Min</option>
+                        <option>Max</option>
+                    </select>
+                </Input>
+                {(blocksAvailable === 'Min' || blocksAvailable === 'Max') && 
+                    <Input>
+                        <label htmlFor='submission-blocks-available-min-max'>
+                            {blocksAvailable} Blocks:&nbsp;
+                        </label>
+                        <input
+                            id='submission-blocks-available-min-max'
+                            type='text'
+                            value={blocksAvailableMinMaxValue}
+                            onChange={e=>{
+                                setBlocksAvailableMinMaxValue(asInteger(e.target.value));
+                            }}
+                            onBlur={updateBlocksAvailable}
+                        />
+                    </Input>
+                }
+            {blocksAvailable !== 'No' &&
+                <InputGrid>
+                    <label htmlFor='submission-add-block'>
+                        Block Size (kWh):
+                    </label>
+                    <input
+                        id='submission-add-block'
+                        type='text'
+                        placeholder='100'
+                        value={newBlockSizeKwh}
+                        onChange={e=> setNewBlockSizeKwh(asInteger(e.target.value))}
+                    />
+                    <label htmlFor='submission-add-block-cost'>
+                        Block Cost:
+                    </label>
+                    <input
+                        id='submission-add-block-cost'
+                        type='text'
+                        placeholder='5.00'
+                        value={newBlockCost}
+                        onChange={e=>{
+                            setNewBlockCost(asCurrency(e.target.value));
+                        }}
+                    />
+                    <br />
+                    <button
+                        type='submit'
+                        className='button-default half-padding'
+                    >
+                        Add Block
+                    </button>
+                </InputGrid>
             }
-        </div>
-    )
+            {blocksAvailable !== 'No' &&
+                <BlocksTableContainer>
+                    <BlocksTable className='admin-table'>
+                        <thead>
+                            <tr>
+                                <th>Size (kWh)</th>
+                                <th>Cost</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {blockSizes.length ? blockSizes.map((blockSize, i) => 
+                            <tr key={i}>
+                                <td>
+                                    {blockSize}
+                                </td>
+                                <td>
+                                    {blockCosts[i]}
+                                </td>
+                                <td>
+                                    <button key={i} onClick={()=>removeBlock(i)} >
+                                        Remove
+                                    </button>
+                                </td>
+                            </tr>
+                        ) : <tr><td colSpan={2}>No Blocks Added</td><td></td></tr>}
+                        </tbody>
+                    </BlocksTable>
+                </BlocksTableContainer>
+            }
+            </InputRow>
+            <InputRow>
+            </InputRow>
+        </Container>
+    );
 }
