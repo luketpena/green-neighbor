@@ -47,6 +47,42 @@ export default function DetailsModal(props){
     }
 
     console.log(ticket);
+    const onEditClick = () => {
+        if(ticket.type === 0){
+            dispatch({
+                type: 'SET_SUBMISSION_FORM',
+                payload: {
+                    zips: [ticket.zip],
+                    utility_name: ticket.utility_name
+                }
+            })
+            history.push('/admin/submit/create/utility');
+        }
+        else if(ticket.type === 1){
+            dispatch({
+                type: 'SET_SUBMISSION_FORM',
+                payload: {
+                    eia_state: ticket.eia_state,
+                    utility_name: ticket.utility_name || '',
+                    eiaid: ticket.eia_state.match(/[0-9]*/)[0],
+                    state: ticket.eia_state.match(/[a-zA-Z]*/)[0],
+                    program_name: ticket.program_name
+                }
+            });
+            history.push('/admin/submit/create/program');
+        }
+        else if(ticket.type === 2){
+            dispatch({
+                type: 'GET_PROGRAM_SUBMISSION_FORM_DATA',
+                payload: {
+                    history: history,
+                    id: ticket.id
+                }
+            });
+        }
+    }
+
+    const buttonText = ['Create Utility', 'Create Program', `Edit ${ticket.program_name}`]
 
     return(
         <Modal
@@ -87,6 +123,12 @@ export default function DetailsModal(props){
                         <p>{ticket.comments}</p>
                     </>
                 }
+                <button
+                    onClick={onEditClick}
+                    className='button-default'
+                >
+                    {buttonText[ticket.type]}
+                </button>
                 <button
                     onClick={closeModal}
                     className='button-default'
