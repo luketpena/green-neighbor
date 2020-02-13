@@ -228,6 +228,7 @@ router.post('/', rejectUnauthenticated, async(req,res)=>{
   
   //>> Construct the query from those arrays
   let query = `INSERT INTO utilities (${keys.toString()}) VALUES (${keys.map((key,i)=>`$${i+1}`).toString()});`;
+  let zip_query = ``;
 
   //>> Construct queries if zips are present
   if (req.body.hasOwnProperty('zips')) {
@@ -254,7 +255,7 @@ router.post('/', rejectUnauthenticated, async(req,res)=>{
       }
     }
     //>> Construct the query from those arrays
-    let zip_query = `INSERT INTO zips (zip,${zip_keys.toString()}) VALUES ($1,${zip_keys.map((key,i)=>`$${i+2}`).toString()})`;
+    zip_query = `INSERT INTO zips (zip,${zip_keys.toString()}) VALUES ($1,${zip_keys.map((key,i)=>`$${i+2}`).toString()})`;
     console.log('Zip info:',req.body.zips[0],zip_values);
     console.log('Zip query:',zip_query);
     
