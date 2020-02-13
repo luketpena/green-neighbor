@@ -97,10 +97,9 @@ const FormButtons = styled.div`
 `;
 
 const steps = [
-  {name: 'Contract', component: <ContractForm />},
   {name: 'Source', component: <SubmitSources />},
   {name: 'Pricing', component: <PricingForm /> },
-  // move Contract back here
+  {name: 'Contract', component: <ContractForm />},
   {name: 'Details'},
 ];
 
