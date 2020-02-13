@@ -99,12 +99,10 @@ const FormButtons = styled.div`
 `;
 
 const steps = [
-  {name: 'Info', component: <SubmitUtilityInfo />},
   {name: 'Source', component: <SubmitSources />},
   {name: 'Pricing', component: <PricingForm /> },
   {name: 'Contract'},
   {name: 'Details'},
-  
 ];
 
 export default function SubmissionForm() {
@@ -170,7 +168,7 @@ export default function SubmissionForm() {
         <h1>Submission Form</h1>
         {action} {subject}
         <FormArea>
-          {steps[currentStep].component}  
+          {(subject==='program'? steps[currentStep].component : <SubmitUtilityInfo />)}  
         </FormArea>
         <FormButtons>
           {renderButtons()}

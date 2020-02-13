@@ -50,7 +50,7 @@ const ZipBox = styled.div`
     text-align: left;
     display: inline-block;
     padding: 0;
-    height: 350px;
+    height: 300px;
 
     background-color: #DDD;
     border-radius: 8px;
@@ -181,7 +181,6 @@ export default function SubmitUtilityInfo() {
     <Container>
       <BasicBox>
         <h3>Basic Info</h3>
-        <button onClick={()=>dispatch({type: 'GET_EDIT_INFO_UTILITY', payload: 1})}>Get</button>
         <label>Utility Name: </label>
         <input 
           type="text" 
