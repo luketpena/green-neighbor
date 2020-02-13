@@ -44,6 +44,7 @@ const ZipBox = styled.div`
   border-left: 2px dashed #DDD;
   box-sizing: border-box;
   padding: 16px;
+  
 
 
   ul {
@@ -59,7 +60,7 @@ const ZipBox = styled.div`
     padding: 8px 16px;
     width: 200px;
 
-
+    overflow-y: scroll;
 
     button {
       border: none;
@@ -129,7 +130,7 @@ export default function SubmitUtilityInfo() {
   const { action } = useParams();
 
   const [zipInput, setZipInput] = useState('');
-  const [zips, setZips] = useState([]);
+  const [zips, setZips] = useState(((action==='edit' && submissionData.zips)? submissionData.zips : []));
   const [state,setState] = useState('State');
   const [utility_name, setUtility_name] = useState('');
   const [eiaid,setEiaid] = useState('');
@@ -160,7 +161,7 @@ export default function SubmitUtilityInfo() {
       return (
       <li key={i}>
         <button onClick={()=>setDeleteZip(i)}><FontAwesomeIcon icon={faTimes}/></button>
-        {item} 
+        {item.zip} 
         </li>
       );
     })
@@ -259,7 +260,7 @@ export default function SubmitUtilityInfo() {
 
       <Dialog open={(deleteZip!==-1)}>
         <PopUpContent>
-          <DialogTitle>{(deleteZip!==-1? <span>Delete ZIP {zips[deleteZip]}?</span> : <span>Delete ZIP</span>)}</DialogTitle>
+          <DialogTitle>{(deleteZip!==-1? <span>Delete ZIP {zips[deleteZip].zip}?</span> : <span>Delete ZIP</span>)}</DialogTitle>
         
           <button className="button-negative" onClick={removeZip}>Delete</button>
           <button className="button-default" onClick={()=>setDeleteZip(-1)}>Cancel</button>
