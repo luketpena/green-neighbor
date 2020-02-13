@@ -50,7 +50,7 @@ const ZipBox = styled.div`
     text-align: left;
     display: inline-block;
     padding: 0;
-    height: 350px;
+    height: 300px;
 
     background-color: #DDD;
     border-radius: 8px;
@@ -119,6 +119,8 @@ const PopUpContent = styled.div`
 
 const states = [ 'AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MH', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PW', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VI', 'VA', 'WA', 'WV', 'WI', 'WY' ];
 
+
+
 export default function SubmitUtilityInfo() {
 
   const dispatch = useDispatch();
@@ -181,7 +183,6 @@ export default function SubmitUtilityInfo() {
     <Container>
       <BasicBox>
         <h3>Basic Info</h3>
-        <button onClick={()=>dispatch({type: 'GET_EDIT_INFO_UTILITY', payload: 1})}>Get</button>
         <label>Utility Name: </label>
         <input 
           type="text" 
@@ -195,7 +196,7 @@ export default function SubmitUtilityInfo() {
           <EiaBox>
             <label>EIA ID: </label>
             <input 
-              type="text" 
+              type="number" 
               placeholder="Enter the EIA ID"
               value={eiaid}
               onChange={event=>setEiaid(event.target.value)}

@@ -195,6 +195,8 @@ export default function RecordsPage() {
     dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show, order, orderDir: target}});
   }
 
+
+
   return(
     <Container>
         <h1>Record Management</h1>
@@ -225,7 +227,7 @@ export default function RecordsPage() {
             <PageBar>{renderPages()}</PageBar>
             <button
               className="addButton button-primary"
-              onClick={()=>history.push('/admin/addUtility')}
+              onClick={()=>history.push('/admin/submit/create/utility')}
             >Add New Utility Company</button>
           </MainHeader>
 
