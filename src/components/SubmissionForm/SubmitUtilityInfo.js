@@ -129,22 +129,26 @@ export default function SubmitUtilityInfo() {
   const submissionData = useSelector(state=>state.submissionFormReducer);
   const { action } = useParams();
 
+  function fillState(prop, defaultValue) {
+    return ((action==='edit' && submissionData[prop])? submissionData[prop] : defaultValue)
+  }
+
   const [zipInput, setZipInput] = useState('');
-  const [zips, setZips] = useState(((action==='edit' && submissionData.zips)? submissionData.zips : []));
-  const [state,setState] = useState('State');
-  const [utility_name, setUtility_name] = useState('');
-  const [eiaid,setEiaid] = useState('');
+  const [zips, setZips] = useState(fillState('zips',[]));
+  const [state,setState] = useState(fillState('state','State'));
+  const [utility_name, setUtility_name] = useState(fillState('utility_name',''));
+  const [eiaid,setEiaid] = useState(fillState('eiaid',''));
+
+  const [bundled_avg_comm_rate, setComm_bundled] = useState(fillState('bundled_avg_comm_rate',''));
+  const [delivery_avg_comm_rate, setComm_delivery] = useState(fillState('dlivery_avg_comm_rate',''));
+
+  const [bundled_avg_ind_rate, setInd_bundled] = useState(fillState('bundled_avg_ind_rate',''));
+  const [delivery_avg_ind_rate, setInd_delivery] = useState(fillState('delivery_avg_ind_rate',''));
+
+  const [bundled_avg_res_rate, setRes_bundled] = useState(fillState('bundled_avg_res_rate',''));
+  const [delivery_avg_res_rate, setRes_delivery] = useState(fillState('delivery_avg_res_rate',''));
 
   const [deleteZip, setDeleteZip] = useState(-1);
-
-  const [bundled_avg_comm_rate, setComm_bundled] = useState('');
-  const [delivery_avg_comm_rate, setComm_delivery] = useState('');
-
-  const [bundled_avg_ind_rate, setInd_bundled] = useState('');
-  const [delivery_avg_ind_rate, setInd_delivery] = useState('');
-
-  const [bundled_avg_res_rate, setRes_bundled] = useState('');
-  const [delivery_avg_res_rate, setRes_delivery] = useState('');
 
   function renderStates() {
     return states.map( (item,i)=>{
