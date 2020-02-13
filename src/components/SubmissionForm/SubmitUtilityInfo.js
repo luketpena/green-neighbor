@@ -196,7 +196,7 @@ export default function SubmitUtilityInfo() {
           <EiaBox>
             <label>EIA ID: </label>
             <input 
-              type="text" 
+              type="number" 
               placeholder="Enter the EIA ID"
               value={eiaid}
               onChange={event=>setEiaid(event.target.value)}

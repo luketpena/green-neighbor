@@ -197,24 +197,82 @@ router.get('/edit/:id', rejectUnauthenticated, async(req,res)=>{
   Posts a new utility company to the zips table.
 */
 router.post('/', rejectUnauthenticated, async(req,res)=>{
-  let collectedData = [];
+ 
+  let keys = [];
+  let values = [];
+  let zip_keys = [];
+  let zip_values = [];
+
+   //>> Collect the info from the req.body into usable arrays
   for (let [key,value] of Object.entries(req.body)) {
-    collectedData.push({key, value});
+    if (value!=='') {
+      switch(key) {
+        case 'zips':
+        case 'eiaid':
+          /* Do nothing */ 
+          break;
+        case 'state':
+          if (req.body.hasOwnProperty('eiaid')) {
+            keys.push('eia_state');
+            values.push(`${req.body.eiaid}${req.body.state}`);
+          }
+          break;
+        default:
+          keys.push(key);
+          values.push(value);
+      }
+    }
   }
   console.log('-----------------POSTING NEW UTILITY COMPANY');
-  console.log('Collected data:',collectedData);
+  console.log('Collected data:',keys,values);
   
-  
-  //const {zip, eiaid, state, eia_state} = req.body;
-  //const queryData = [zip, eiaid, utility_name, state, eia_state, bundled_avg_comm_rate, bundled_avg_ind_rate, bundled_avg_res_rate, delivery_avg_comm_rate, delivery_avg_ind_rate, delivery_avg_res_rate];
-  
+  //>> Construct the query from those arrays
+  let query = `INSERT INTO utilities (${keys.toString()}) VALUES (${keys.map((key,i)=>`$${i+1}`).toString()});`;
+
+  //>> Construct queries if zips are present
+  if (req.body.hasOwnProperty('zips')) {
+    //>> Collect the info from the req.body into usable arrays
+   
+
+    for (let [key,value] of Object.entries(req.body)) {
+      if (value!=='') {
+        switch(key) {
+          case 'state':
+            zip_keys.push(key);
+            zip_values.push(value);
+            break;
+          case 'eiaid':
+            zip_keys.push(key);
+            zip_values.push(value);
+            if (req.body.hasOwnProperty('state')) {
+              zip_keys.push('eia_state');
+              zip_values.push(`${req.body.eiaid}${req.body.state}`);
+            }
+          default:
+            /* Do nothing */
+        }
+      }
+    }
+    //>> Construct the query from those arrays
+    let zip_query = `INSERT INTO zips (zip,${zip_keys.toString()}) VALUES ($1,${zip_keys.map((key,i)=>`$${i+2}`).toString()})`;
+    console.log('Zip info:',req.body.zips[0],zip_values);
+    console.log('Zip query:',zip_query);
+    
+    
+    
+  }
+
+  console.log(query);
   
   try {
-    const query = `
-      INSERT INTO zips (zip, eiaid, state, eia_state)
-      VALUES ($1, $2, $3, $4);
-    `;
-    //await pool.query(query, queryData);
+    await pool.query(query,values);
+
+    if (zip_keys.length>0) {
+      for (let i=0; i<req.body.zips; i++) {
+        await pool.query(zip_query,[req.body.zips[i], ...zip_values])
+      }
+    }
+
     res.sendStatus(201);
   } catch(error) {
     res.sendStatus(500);
