@@ -21,7 +21,7 @@ function* createUtility(action) {
 
 function* getProgramSubmissionFormData(action){
   try {
-    const response = yield axios.get(`/api/details/${action.id}`);
+    const response = yield axios.get(`/api/utilities/details/${action.payload.id}`);
     yield put({type: 'SET_SUBMISSION_FORM', payload: response.data});
     action.payload.history.push('/admin/submit/edit/program');
   } catch(error) {
