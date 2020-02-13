@@ -10,10 +10,12 @@ const Container = styled.div`
 const InputRow = styled.div`
     display: flex;
     flex-flow: row wrap;
+    justify-content: flex-start;
     margin: 8px;
 `;
 
 const Input = styled.div`
+    white-space: nowrap;
     & > * {
         margin: 0px 4px
     }
@@ -28,8 +30,11 @@ const InputGrid = styled.form`
     grid-gap: 4px;
 `;
 
+const BlocksTableContainer = styled.div`
+    justify-self: flex-end;
+`;
+
 const BlocksTable = styled.table`
-    margin-top: 8px;
     th, td {
         text-align: center;
         min-width: 5rem;
@@ -195,7 +200,7 @@ export default function PricingForm(props){
                     </Input>
                 }
             </InputRow>
-            <InputRow>
+            <InputRow space={blocksAvailable !== 'No' ? 'space-evenly' : 'flex-start'}>
                 <Input>
                     <label htmlFor='submission-blocks-available'>Blocks Available: </label>
                     <select
@@ -228,7 +233,7 @@ export default function PricingForm(props){
                     </Input>
                 }
             {blocksAvailable !== 'No' &&
-                <InputGrid onSubmit={addBlock}>
+                <InputGrid>
                     <label htmlFor='submission-add-block'>
                         Block Size (kWh):
                     </label>
@@ -252,43 +257,46 @@ export default function PricingForm(props){
                         }}
                     />
                     <br />
-                    <button type='submit'>Add Block</button>
+                    <button
+                        type='submit'
+                        className='button-default half-padding'
+                    >
+                        Add Block
+                    </button>
                 </InputGrid>
             }
             {blocksAvailable !== 'No' &&
-                <div>
-                    <span>Blocks (kWh):</span>
-                    {blockSizes.length ?
-                        <BlocksTable className='admin-table'>
-                            <thead>
-                                <tr>
-                                    <th>Size</th>
-                                    <th>Cost</th>
-                                    <th>&nbsp;</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {blockSizes.map((blockSize, i) => 
-                                <tr key={i}>
-                                    <td>
-                                        {blockSize}
-                                    </td>
-                                    <td>
-                                        {blockCosts[i]}
-                                    </td>
-                                    <td>
-                                        <button key={i} onClick={()=>removeBlock(i)} >
-                                            Remove
-                                        </button>
-                                    </td>
-                                </tr>
-                            )}
-                            </tbody>
-                        </BlocksTable>
-                    : <center>No Blocks Listed</center>
-                    }
-                </div>
+                <BlocksTableContainer>
+                    <BlocksTable className='admin-table'>
+                        <thead>
+                            <tr>
+                                <th>Size (kWh)</th>
+                                <th>Cost</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {blockSizes.length ? blockSizes.map((blockSize, i) => 
+                            <tr key={i}>
+                                <td>
+                                    {blockSize}
+                                </td>
+                                <td>
+                                    {blockCosts[i]}
+                                </td>
+                                <td>
+                                    <button key={i} onClick={()=>removeBlock(i)} >
+                                        Remove
+                                    </button>
+                                </td>
+                            </tr>
+                        ) : <tr><td colSpan={2}>No Blocks Added</td><td></td></tr>}
+                        </tbody>
+                    </BlocksTable>
+                </BlocksTableContainer>
             }
+            </InputRow>
+            <InputRow>
             </InputRow>
         </Container>
     );
