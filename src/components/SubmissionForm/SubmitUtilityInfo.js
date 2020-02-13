@@ -139,6 +139,7 @@ export default function SubmitUtilityInfo() {
   const [utility_name, setUtility_name] = useState(fillState('utility_name',''));
   const [eiaid,setEiaid] = useState(fillState('eiaid',''));
 
+
   const [bundled_avg_comm_rate, setComm_bundled] = useState(fillState('bundled_avg_comm_rate',''));
   const [delivery_avg_comm_rate, setComm_delivery] = useState(fillState('dlivery_avg_comm_rate',''));
 
@@ -165,7 +166,7 @@ export default function SubmitUtilityInfo() {
       return (
       <li key={i}>
         <button onClick={()=>setDeleteZip(i)}><FontAwesomeIcon icon={faTimes}/></button>
-        {item.zip} 
+        {item} 
         </li>
       );
     })
@@ -173,9 +174,10 @@ export default function SubmitUtilityInfo() {
 
   function submitZip(event) {
     event.preventDefault();
+    //New zips need to contain a database id value even though it does not exist yet. -1 signifies it is a new zip.
     const newZips = [...zips,zipInput];
     setZips(newZips);
-    dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {zips: newZips}})
+    dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {zips: newZips}});
     setZipInput('');
   }
 
@@ -184,7 +186,7 @@ export default function SubmitUtilityInfo() {
     copy.splice(deleteZip,1);
     setDeleteZip(-1);
     setZips(copy);
-    dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {zips: copy}})
+    dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {zips: copy}});
   }
 
   return (

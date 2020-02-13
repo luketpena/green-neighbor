@@ -166,9 +166,11 @@ router.get('/summary/:page', async(req,res)=>{
 */
 router.get('/edit/:id', rejectUnauthenticated, async(req,res)=>{
 
+  // If zip db id is needed, use this select instead
+  // SELECT ARRAY_AGG(distinct jsonb_build_object('id', z.id, 'zip', z.zip)) as "zips",
   try {
     const query = `
-      SELECT ARRAY_AGG(distinct jsonb_build_object('id', z.id, 'zip', z.zip)) as "zips",
+      SELECT ARRAY_AGG(distinct z.zip) as "zips",
       u.utility_name,
           z.eia_state,
           z.eiaid,
@@ -179,11 +181,12 @@ router.get('/edit/:id', rejectUnauthenticated, async(req,res)=>{
           u.delivery_avg_comm_rate, 
           u.delivery_avg_ind_rate,
           u.delivery_avg_res_rate,
-          u.production AS production, u.id AS utility_id
+          u.production,
+          u.id
         FROM zips as z
         JOIN utilities u ON u.eia_state=z.eia_state
         WHERE u.id=$1
-        GROUP BY z.eia_state, z.state, z.eiaid, u.utility_name, utility_id, u.production, u.id;
+        GROUP BY z.eia_state, z.state, z.eiaid, u.utility_name, u.id, u.production;
     `;
     const response = await pool.query(query,[req.params.id]);
     res.send(response.rows[0])
@@ -303,14 +306,29 @@ router.delete('/:id', rejectUnauthenticated, async(req,res)=>{
   Requires a user to be authenticated to permit modification.
 */
 router.put('/:id', rejectUnauthenticated, async(req,res)=>{
-  const {zip, eiaid, state, eia_state} = req.body;
-  const queryData = [req.params.id, zip, eiaid, state, eia_state];
+
+  let queryData = [req.params.id];
+  let inserts = [];
+
+  console.log('req.body:',req.body);
+  
+
+  for (let [key,value] of Object.entries(req.body)) {
+    //>> Not using anything that isn't needed or provided elsewhere
+    if (key!=='id' && key!=='zips' && (key!=='state' && key!=='eiaid') )  {      
+      queryData.push(value);
+      inserts.push(`${key}=$${inserts.length+2}`);
+    }
+  }
+
   try {
     const query = `
-      UPDATE zips 
-      SET zip=$2, eiaid=$3, state=$4, eia_state=$5
+      UPDATE utilities 
+      SET ${inserts.toString()}
       WHERE id=$1;
     `;
+    console.log('Incoming update query:',query);
+    
     await pool.query(query, queryData);
     res.sendStatus(200);
   } catch(error) {

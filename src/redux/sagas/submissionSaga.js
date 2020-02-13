@@ -19,9 +19,18 @@ function* createUtility(action) {
   }
 }
 
+function* editUtility(action) {
+  try {
+    yield axios.put('/api/utilities/'+action.payload.id,action.payload);
+  } catch(error) {
+    console.log('Error trying to edit an existing utility:',error);    
+  }
+}
+
 function* submissionSaga() {
   yield takeLatest('GET_EDIT_INFO_UTILITY', getEditInfoUtility);
   yield takeLatest('CREATE_UTILITY', createUtility);
+  yield takeLatest('EDIT_UTILITY',editUtility);
 }
 
 export default submissionSaga;
