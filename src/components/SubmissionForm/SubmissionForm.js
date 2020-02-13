@@ -3,6 +3,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+
 import SubmitSources from './SubmitSources';
 import PricingForm from './PricingForm';
 import ContractForm from './ContractForm';
@@ -118,6 +122,8 @@ export default function SubmissionForm() {
   const submissionData = useSelector(state=>state.submissionFormReducer);
   const dispatch = useDispatch();
 
+  const [requiredAlert, setRequiredAlert] = useState(false);
+
   const { action, subject } = useParams();
 
   function renderSteps() {
@@ -132,7 +138,16 @@ export default function SubmissionForm() {
   }
 
   function clickSubmit() {
-    dispatch({type: `${action.toUpperCase()}_${subject.toUpperCase()}`, payload: submissionData})
+    switch(subject) {
+      case 'utility':
+        if (submissionData.utility_name && submissionData.state && submissionData.eiaid) {
+          dispatch({type: `${action.toUpperCase()}_${subject.toUpperCase()}`, payload: submissionData})
+        } else {
+          setRequiredAlert(true);
+        }
+        break;
+    }
+    
   }
 
   function renderButtons() {
@@ -188,14 +203,21 @@ export default function SubmissionForm() {
       </Stepper>
       <FormBox>
         <h1>{capitalize(action)} {capitalize(subject)}</h1>
-        {action} {subject}
+        
         <FormArea>
           {(subject==='program'? steps[currentStep].component : <SubmitUtilityInfo />)}  
         </FormArea>
         <FormButtons>
+          <p><span className="required">*</span> = required field</p>
           {renderButtons()}
         </FormButtons>
       </FormBox>
+
+      <Dialog aria-labelledby="simple-dialog-title" open={requiredAlert}>
+        <DialogTitle id="simple-dialog-title">Missing Information</DialogTitle>
+        <DialogContent>Please fill out all of the required fields.</DialogContent>
+        <button className="button-default" onClick={()=>setRequiredAlert(false)}>Close</button>
+      </Dialog>
 
     </Container>
   )

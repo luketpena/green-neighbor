@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const Container = styled.div`
     display: flex;
-    flex-flow: column wrap;
+    flex-flow: column nowrap;
 `;
 
 const InputRow = styled.div`
@@ -12,14 +12,25 @@ const InputRow = styled.div`
     flex-flow: row wrap;
     justify-content: flex-start;
     margin: 8px;
+    height: max-content;
+    width: auto;
+`;
+
+const FlexRow = styled.div`
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    margin: 0px 4px;
 `;
 
 const Input = styled.div`
     white-space: nowrap;
     & > * {
-        margin: 0px 4px
+        margin: 0px 4px;
     }
-    margin: 4px
+    margin: 4px calc(2px + 1%);
+    height: max-content;
+    width: max-content;
 `;
 
 const InputGrid = styled.form`
@@ -30,14 +41,25 @@ const InputGrid = styled.form`
     grid-gap: 4px;
 `;
 
+const PercentOptionsGrid = styled.div`
+    margin: 4px 8px;
+    display: grid;
+    grid-template-columns: max-content min-content;
+    grid-auto-rows: max-content;
+    grid-gap: 4px;
+`;
+
 const BlocksTableContainer = styled.div`
     justify-self: flex-end;
 `;
 
 const BlocksTable = styled.table`
+    min-width: 10rem;
     th, td {
         text-align: center;
-        min-width: 5rem;
+    }
+    th {
+        padding: auto 1rem;
     }
 `;
 
@@ -45,9 +67,8 @@ export default function PricingForm(props){
     const dispatch = useDispatch();
     const form = useSelector(state => state.submissionFormReducer);
 
-    const [hasReducerFilled, setHasReducerFilled] = useState(false);
     const [costKwh, setCostKwh] = useState(form.cost_kwh || '');
-    const formCostRange = form.cost_range && form.cost_range.split('-') || ['', ''];
+    const formCostRange = (form.cost_range && form.cost_range.split('-')) || ['', ''];
     const [costRangeMin, setCostRangeMin] = useState(formCostRange[0]);
     const [costRangeMax, setCostRangeMax] = useState(formCostRange[1]);
     const [costIsRange, setCostIsRange] = useState(form.cost_range ? 1 : 0);
@@ -55,10 +76,28 @@ export default function PricingForm(props){
     const [creditKwh, setCreditKwh] = useState(form.credit_kwh || '');
     const [blocksAvailable, setBlocksAvailable] = useState(form.blocks_available || 'No');
     const [blocksAvailableMinMaxValue, setBlocksAvailableMinMaxValue] = useState(2);
-    const [blockSizes, setBlockSizes] = useState(form.block_size_kwh && form.block_size_kwh.split(';') || []);
-    const [blockCosts, setBlockCosts] = useState(form.block_cost && form.block_cost.split(';') || []);
+    const [
+        blockSizes,
+        setBlockSizes
+    ] = useState((form.block_size_kwh && form.block_size_kwh.split(';')) || []);
+    const [
+        blockCosts,
+        setBlockCosts
+    ] = useState((form.block_cost && form.block_cost.split(';')) || []);
     const [newBlockSizeKwh, setNewBlockSizeKwh] = useState('');
     const [newBlockCost, setNewBlockCost] = useState(''); 
+    const [
+        percentOptionsOrRange,
+        setPercentOptionsOrRange
+    ] = useState(form.percentage_range ? 'range' : 'options');
+    const [
+        percentOptions,
+        setPercentOptions
+    ] = useState((form.percentage_options && form.percentage_options.split(';')) || []);
+    const percentageMinMaxes = (form.percentage_range && form.percentage_range.split('-')) || ['',''];
+    const [newPercentOption, setNewPercentOption] = useState('');
+    const [percentageMin, setPercentageMin] = useState(percentageMinMaxes[0] || '');
+    const [percentageMax, setPercentageMax] = useState(percentageMinMaxes[1] || '');
 
     const asCurrency = str => str.match(/[0-9]*\.?[0-9]{0,2}/)[0] || '';
     const asInteger = str => str.match(/[0-9]*/)[0] || '';
@@ -87,6 +126,7 @@ export default function PricingForm(props){
 
     const addBlock = e => {
         e.preventDefault();
+        console.log(newBlockSizeKwh, newBlockCost);
         if(newBlockSizeKwh === '' || newBlockCost === '') return;
         blockSizes.push(newBlockSizeKwh);
         blockCosts.push(newBlockCost);
@@ -110,6 +150,34 @@ export default function PricingForm(props){
         })
         setBlockSizes(blockSizes);
         setBlockCosts(blockCosts);
+    }
+
+    const addPercentOption = e => {
+        e.preventDefault();
+        percentOptions.push(newPercentOption);
+        updateSubmissionForm({
+            percentage_options: percentOptions.join(';'),
+            percentage_range: undefined
+        });
+        setPercentOptions(percentOptions);
+        setNewPercentOption('');
+    }
+
+    const removePercentOption = i => {
+        percentOptions.splice(i, 1);
+        updateSubmissionForm({
+            percentage_options: percentOptions.join(';'),
+            percentage_range: undefined
+        });
+        setPercentOptions(percentOptions);
+    }
+
+    const setPercentRange = e => {
+        e.preventDefault();
+        updateSubmissionForm({
+            percentage_options: undefined,
+            percentage_range: `${percentageMin}-${percentageMax}`
+        });
     }
 
     return (
@@ -233,70 +301,141 @@ export default function PricingForm(props){
                     </Input>
                 }
             {blocksAvailable !== 'No' &&
-                <InputGrid>
-                    <label htmlFor='submission-add-block'>
-                        Block Size (kWh):
-                    </label>
-                    <input
-                        id='submission-add-block'
-                        type='text'
-                        placeholder='100'
-                        value={newBlockSizeKwh}
-                        onChange={e=> setNewBlockSizeKwh(asInteger(e.target.value))}
-                    />
-                    <label htmlFor='submission-add-block-cost'>
-                        Block Cost:
-                    </label>
-                    <input
-                        id='submission-add-block-cost'
-                        type='text'
-                        placeholder='5.00'
-                        value={newBlockCost}
-                        onChange={e=>{
-                            setNewBlockCost(asCurrency(e.target.value));
-                        }}
-                    />
-                    <br />
-                    <button
-                        type='submit'
-                        className='button-default half-padding'
-                    >
-                        Add Block
-                    </button>
-                </InputGrid>
-            }
-            {blocksAvailable !== 'No' &&
-                <BlocksTableContainer>
-                    <BlocksTable className='admin-table'>
-                        <thead>
-                            <tr>
-                                <th>Size (kWh)</th>
-                                <th>Cost</th>
-                                <th>&nbsp;</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {blockSizes.length ? blockSizes.map((blockSize, i) => 
-                            <tr key={i}>
-                                <td>
-                                    {blockSize}
-                                </td>
-                                <td>
-                                    {blockCosts[i]}
-                                </td>
-                                <td>
-                                    <button key={i} onClick={()=>removeBlock(i)} >
-                                        Remove
-                                    </button>
-                                </td>
-                            </tr>
-                        ) : <tr><td colSpan={2}>No Blocks Added</td><td></td></tr>}
-                        </tbody>
-                    </BlocksTable>
-                </BlocksTableContainer>
+                <FlexRow>
+                    <InputGrid onSubmit={addBlock}>
+                        <label htmlFor='submission-add-block'>
+                            Block Size (kWh):
+                        </label>
+                        <input
+                            id='submission-add-block'
+                            type='text'
+                            placeholder='100'
+                            value={newBlockSizeKwh}
+                            onChange={e=> setNewBlockSizeKwh(asInteger(e.target.value))}
+                        />
+                        <label htmlFor='submission-add-block-cost'>
+                            Block Cost:
+                        </label>
+                        <input
+                            id='submission-add-block-cost'
+                            type='text'
+                            placeholder='5.00'
+                            value={newBlockCost}
+                            onChange={e=>{
+                                setNewBlockCost(asCurrency(e.target.value));
+                            }}
+                        />
+                        <br />
+                        <button
+                            type='submit'
+                            className='button-default half-padding'
+                        >
+                            Add Block
+                        </button>
+                    </InputGrid>
+                    <BlocksTableContainer>
+                        <BlocksTable className='admin-table'>
+                            <thead>
+                                <tr>
+                                    <th>Size (kWh)</th>
+                                    <th>Cost</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {blockSizes.length ? blockSizes.map((blockSize, i) => 
+                                <tr key={i}>
+                                    <td>
+                                        {blockSize}
+                                    </td>
+                                    <td>
+                                        {blockCosts[i]}
+                                    </td>
+                                    <td>
+                                        <button key={i} onClick={()=>removeBlock(i)} >
+                                            Remove
+                                        </button>
+                                    </td>
+                                </tr>
+                            ) : <tr><td colSpan={3}>No Blocks Added</td></tr>}
+                            </tbody>
+                        </BlocksTable>
+                    </BlocksTableContainer>
+                </FlexRow>
             }
             </InputRow>
             <InputRow>
+                <Input>
+                    <label htmlFor='submission-percent-model'>
+                        Percentage Model:
+                    </label>
+                    <select
+                        value={percentOptionsOrRange}
+                        onChange={e => setPercentOptionsOrRange(e.target.value)}
+                    >
+                        <option value={'options'}>Options</option>
+                        <option value={'range'}>Range</option>
+                    </select>
+                </Input>
+                {percentOptionsOrRange === 'options' ?
+                    <FlexRow>
+                        <InputGrid onSubmit={addPercentOption}>
+                            <label htmlFor='submission-percent-block'>
+                                Add Option:
+                            </label>
+                            <input
+                                id='submission-percent-block'
+                                type='text'
+                                placeholder='100'
+                                value={newPercentOption}
+                                onChange={e=>setNewPercentOption(asInteger(e.target.value))}
+                            />
+                            <br />
+                            <button className='button-default half-padding nowrap'>
+                                Add Option
+                            </button>
+                        </InputGrid>
+                        <PercentOptionsGrid>
+                            {percentOptions.map((option, i) =>
+                                <React.Fragment key={i}>
+                                    <div>{option}</div>
+                                    <button onClick={()=>removePercentOption(i)}>
+                                        Remove
+                                    </button>
+                                </React.Fragment>
+                            )}
+                        </PercentOptionsGrid>
+                    </FlexRow>
+                    : // END percentageOptionsRange
+                    <FlexRow>
+                        <Input>
+                            <label htmlFor='submission-percent-min'>
+                                Min:
+                            </label>
+                            <input
+                                id='submission-percent-min'
+                                type='text'
+                                placeholder='50'
+                                value={percentageMin}
+                                onChange={e => setPercentageMin(asInteger(e.target.value))}
+                                onBlur={setPercentRange}
+                            />
+                        </Input>
+                        <Input>
+                            <label htmlFor='submission-percent-max'>
+                                Max:
+                            </label>
+                            <input
+                                id='submission-percent-max'
+                                type='text'
+                                placeholder='100'
+                                value={percentageMax}
+                                onChange={e => setPercentageMax(asInteger(e.target.value))}
+                                onBlur={setPercentRange}
+                            />
+                        </Input>
+                    </FlexRow>
+                }
             </InputRow>
         </Container>
     );

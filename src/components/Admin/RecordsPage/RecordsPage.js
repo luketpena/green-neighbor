@@ -116,6 +116,8 @@ export default function RecordsPage() {
   const utilitiesCount = useSelector(state=>state.utilitiesCount);
   const utilitiesSearch = useSelector(state=>state.utilitiesSearch);
   const utilities = useSelector(state=>state.utilities);
+  const editWatcher = useSelector(state=>state.editWatcher);
+
 
   let [page, setPage] = useState(0);
   let [zip,setZip] = useState('');
@@ -137,7 +139,13 @@ export default function RecordsPage() {
       setMount(true);
       dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show, order}});
     }
-  },[utilitiesCount, utilitiesSearch, page, dispatch, mount, order, program_name, show, state, utility_name, zip]);
+
+    if (editWatcher) {
+      console.log('Pushing to edit page from UtilityRow');
+      history.push('/admin/submit/edit/utility');
+      dispatch({type: 'SET_EDIT_READY', payload: false});
+    }
+  },[utilitiesCount, utilitiesSearch, page, dispatch, mount, order, program_name, show, state, utility_name, zip, editWatcher]);
 
   function renderUtilities() {
     return utilities.map( (item,i)=> {
@@ -239,6 +247,7 @@ export default function RecordsPage() {
                     <th className="th-click" onClick={()=>triggerOrder('utility_name')}>Company</th>
                     <th className="th-click" onClick={()=>triggerOrder('state')}>State</th>
                     <th className="th-click" onClick={()=>triggerOrder('program_count')}># Programs</th>
+                    <th>&nbsp;</th>
                     <th>&nbsp;</th>
                     <th className="th-click" onClick={()=>triggerOrderDir((orderDir==='ASC'? 'DESC' : 'ASC'))} > <FontAwesomeIcon className="dir-btn" icon={faCaretUp}/></th>
                   </tr>
