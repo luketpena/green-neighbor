@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
+import {useDispatch} from 'react-redux';
 import styled from 'styled-components';
 
 import EnergyBar from '../EnergyBar/EnergyBar';
@@ -42,7 +43,6 @@ const capitalize = (s) => {
 
 export default function SubmitSources() {
 
-
   const [sourceList, setSourceList] = useState([
     {name: 'wind', value: 0, active: false},
     {name: 'solar', value: .2, active: false},
@@ -51,19 +51,39 @@ export default function SubmitSources() {
     {name: 'geo', value: 0, active: false},
   ]);
 
+  const dispatch = useDispatch();
+  
+  const sumSources = useCallback(
+    ()=> {
+      let sum = 0;
+      for (let i=0; i<sourceList.length; i++) {
+        sum += sourceList[i].value;
+      }
+      return Number(sum.toFixed(2));
+    },
+    [sourceList],
+  );
+
+  useEffect(()=>{
+    const sources = {
+      wind: sourceList[0].value,
+      solar: sourceList[1].value,
+      bio: sourceList[2].value,
+      hydro: sourceList[3].value,
+      geo: sourceList[4].value,
+      other: Math.max(Number( (1-sumSources()).toFixed(2)), 0)
+    }
+    dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: sources})
+  },[dispatch, sourceList, sumSources]);
+
+  
+
   function changeSourceList(index, target, value) {
     let copy = [...sourceList];
     copy[index][target] = value;
     setSourceList(copy);
   }
-
-  function sumSources() {
-    let sum = 0;
-    for (let i=0; i<sourceList.length; i++) {
-      sum += sourceList[i].value;
-    }
-    return Number(sum.toFixed(2));
-  }
+  
 
   function renderSources() {
     return sourceList.map( (item,i)=>{
@@ -81,7 +101,6 @@ export default function SubmitSources() {
     });
   }
 
-  let count = 0;
 
   return (
     <Container>

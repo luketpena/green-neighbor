@@ -7,7 +7,6 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import { Input } from '@material-ui/core';
 
 const styles = theme => ({
     root: {
@@ -48,9 +47,6 @@ const DialogTitle = withStyles(styles)(props => {
     const [username, setAdminUsername] = useState('');
     const [password, setAdminPassword] = useState('');
     const dispatch = useDispatch();
-    
-
-   
 
     useEffect( () => {
         setAdminUsername(username);
@@ -75,16 +71,14 @@ const DialogTitle = withStyles(styles)(props => {
             </DialogTitle>
             <DialogContent dividers>
                 <form>
-                    <Input
-                        className="zip-input"
+                    <input                    
                         type="text"
                         label="New Username"
                         placeholder="New Username"
                         value={username}
                         onChange={e=>setAdminUsername(e.target.value)}
                     />
-                    <Input
-                        className="zip-input"
+                    <input
                         type="text"
                         label="New Password"
                         placeholder="Don't Share Your Password!"
@@ -96,7 +90,7 @@ const DialogTitle = withStyles(styles)(props => {
             </DialogContent>
             <DialogActions>
                 <Button autoFocus onClick={updateAdmin}  color="primary">
-                Save Changes
+                    Save Changes
                 </Button>
             </DialogActions>
             </Dialog>

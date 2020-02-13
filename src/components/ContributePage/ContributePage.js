@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import Background from '../../images/bkg-forest-top.jpg';
 // fancy home button
@@ -24,7 +24,7 @@ display: grid;
 grid-template-areas: "menu details";
 grid-template-rows: 100px 1fr;
 grid-template-columns: 250px 850px;
-// justify-content: center;
+justify-content: center;
 `;
 
 const Header = styled.div`
@@ -55,8 +55,8 @@ grid-area: details;
 grid-row: 2;
 
 height: 400px;
-overflow: scroll;
-opacity: .82;
+overflow-y: scroll;
+background-color:rgba(250,250,250,0.8);
 `;
 const Div = styled.div`
 padding: 15px 0px 15px;
@@ -67,6 +67,18 @@ height: 100%;
 `;
 
 export default function ContributePage() {
+        useEffect(()=>{
+            const script = document.createElement("script");
+            script.src = "https://platform.twitter.com/widgets.js";
+            document.getElementsByClassName("twitter-embed")[0].appendChild(script)
+        }, []);
+
+        useEffect(()=>{
+            const script = document.createElement("script");
+            script.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v6.0";
+            document.getElementsByClassName("facebook-embed")[0].appendChild(script)
+        }, []);
+
   return(
       <BackgroundBox>
         <HomeButton/>
@@ -77,29 +89,38 @@ export default function ContributePage() {
 
             <Menu>
                 <button className="button-primary" >Follow us on Socal Media</button>
+                <button className="button-primary" >News Letter</button>
+                <button className="button-primary" >Donation</button>
             </Menu> 
 
             <Details className="container">
                 <Div>
                     <h2>FOLLOW US ON SOCIAL MEDIA</h2>
                     <h3>AND SHARE US WITH YOUR NEIGHBORS</h3>
-                    <a class="twitter-follow-button"
-                       href="https://twitter.com/GreenNeighborCh?ref_src=twsrc%5Etfw"
-                       target="_blank"
-                       data-size="large"
-                       data-show-count="default">
-                       Follow Us on Twitter</a>
 
-                    <div>
-                        <div id="fb-root"></div>
-                            <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v6.0"></script>
+                        <div className="twitter-embed">
+                            <a className="twitter-follow-button"
+                            href="https://twitter.com/GreenNeighborCh?ref_src=twsrc%5Etfw"
+                            rel="noopener noreferrer"
+                            target="_blank"
+                            data-size="large"
+                            data-show-count="default">
+                                Follow @GreenNeighborCh
+                            </a>
+                        </div>
 
-                        <div class="fb-page" data-href="https://www.facebook.com/GreenNeighborChallenge/" 
-                        data-tabs="timeline" data-width="" data-height="" data-small-header="true" 
-                        data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false">
-                            <blockquote cite="https://www.facebook.com/GreenNeighborChallenge/" class="fb-xfbml-parse-ignore">
-                                <a href="https://www.facebook.com/GreenNeighborChallenge/" target="_blank">Like Us on Facebook</a></blockquote></div>
-                    </div>
+                        <div className="facebook-embed">
+                            <div class="fb-like" data-href="https://www.facebook.com/GreenNeighborChallenge/" 
+                            data-width="279" data-layout="standard" data-action="like" data-size="large" data-share="true"></div>
+                        </div>
+                </Div>
+                <Div>
+                    <h3>Keep up to date with what we are doing</h3>
+                    <a href="https://mailchi.mp/f38a195f62f3/jointheneighborhood" target="_blank"><button className="button-default">Click Me for News Letter</button></a>
+                </Div>
+                <Div>
+                    <h3>Help bring the Green Neighbor Challenge to life!</h3>
+                    <a href="https://actionnetwork.org/fundraising/green-neighbor-challenge-fundraising-page" target="_blank"><button className="button-default">Click Me to Donate</button></a>
                 </Div>
             </Details>
         </Container>
