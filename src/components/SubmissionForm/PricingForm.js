@@ -20,15 +20,20 @@ const Input = styled.div`
     margin: 4px
 `;
 
-const Text = styled.p`
-    margin: 4px;
-`;
-
 const InputGrid = styled.form`
-    margin: 4px;
+    margin: 4px 8px;
     display: grid;
     grid-template-columns: max-content 1fr;
+    grid-auto-rows: max-content;
     grid-gap: 4px;
+`;
+
+const BlocksTable = styled.table`
+    margin-top: 8px;
+    th, td {
+        text-align: center;
+        min-width: 5rem;
+    }
 `;
 
 export default function PricingForm(props){
@@ -77,7 +82,7 @@ export default function PricingForm(props){
 
     const addBlock = e => {
         e.preventDefault();
-        if(newBlockSizeKwh === '') return;
+        if(newBlockSizeKwh === '' || newBlockCost === '') return;
         blockSizes.push(newBlockSizeKwh);
         blockCosts.push(newBlockCost);
 
@@ -231,8 +236,8 @@ export default function PricingForm(props){
                         id='submission-add-block'
                         type='text'
                         placeholder='100'
-                        value={newBlockCost}
-                        onChange={e=> setNewBlockCost(asInteger(e.target.value))}
+                        value={newBlockSizeKwh}
+                        onChange={e=> setNewBlockSizeKwh(asInteger(e.target.value))}
                     />
                     <label htmlFor='submission-add-block-cost'>
                         Block Cost:
@@ -241,9 +246,9 @@ export default function PricingForm(props){
                         id='submission-add-block-cost'
                         type='text'
                         placeholder='5.00'
-                        value={newBlockSizeKwh}
+                        value={newBlockCost}
                         onChange={e=>{
-                            setNewBlockSizeKwh(asCurrency(e.target.value));
+                            setNewBlockCost(asCurrency(e.target.value));
                         }}
                     />
                     <br />
@@ -254,7 +259,7 @@ export default function PricingForm(props){
                 <div>
                     <span>Blocks (kWh):</span>
                     {blockSizes.length ?
-                        <table>
+                        <BlocksTable className='admin-table'>
                             <thead>
                                 <tr>
                                     <th>Size</th>
@@ -279,7 +284,7 @@ export default function PricingForm(props){
                                 </tr>
                             )}
                             </tbody>
-                        </table>
+                        </BlocksTable>
                     : <center>No Blocks Listed</center>
                     }
                 </div>
