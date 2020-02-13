@@ -105,6 +105,11 @@ const steps = [
   {name: 'Details'},
 ];
 
+const capitalize = (s) => {
+  if (typeof s !== 'string') return ''
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
+
 export default function SubmissionForm() {
 
   const [currentStep, setCurrentStep] = useState(0);
@@ -159,13 +164,14 @@ export default function SubmissionForm() {
     }
   }
 
+
   return (
     <Container>
       <Stepper>
         {renderStepper()}
       </Stepper>
       <FormBox>
-        <h1>Submission Form</h1>
+        <h1>{capitalize(action)} {capitalize(subject)}</h1>
         {action} {subject}
         <FormArea>
           {(subject==='program'? steps[currentStep].component : <SubmitUtilityInfo />)}  

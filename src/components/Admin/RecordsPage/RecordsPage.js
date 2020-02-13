@@ -225,7 +225,7 @@ export default function RecordsPage() {
             <PageBar>{renderPages()}</PageBar>
             <button
               className="addButton button-primary"
-              onClick={()=>history.push('/admin/submit/add/utility')}
+              onClick={()=>history.push('/admin/submit/create/utility')}
             >Add New Utility Company</button>
           </MainHeader>
 
