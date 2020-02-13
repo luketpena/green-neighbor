@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTimes} from '@fortawesome/free-solid-svg-icons';
@@ -124,6 +125,8 @@ const states = [ 'AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM
 export default function SubmitUtilityInfo() {
 
   const dispatch = useDispatch();
+  const submissionData = useSelector(state=>state.submissionFormReducer);
+  const { action } = useParams();
 
   const [zipInput, setZipInput] = useState('');
   const [zips, setZips] = useState([]);

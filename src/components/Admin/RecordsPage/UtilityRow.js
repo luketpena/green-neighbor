@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {useDispatch,useSelector} from 'react-redux';
-import {useHistory} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
 import styled from 'styled-components';
 
 const ProductionButton = styled.button`
@@ -37,20 +36,16 @@ const Container = styled.tr`
 export default function UtilityRow(props) {
 
   const dispatch = useDispatch();
-  const history = useHistory();
+
 
   const {utility_name, utility_id, state, program_count} = props.utility;
   const [production, setProduction] = useState(props.utility.production);
-  const submissionData = useSelector(state=>state.submissionFormReducer);
-  const editWatcher = useSelector(state=>state.editWatcher);
+  
 
   useEffect(()=>{
     setProduction(props.utility.production);
-    if (editWatcher) {
-      history.push('/admin/submit/create/utility');
-      dispatch({type: 'SET_EDIT_READY', payload: false});
-    }
-  }, [props.utility.production, submissionData, editWatcher]);
+    
+  }, [props.utility.production, dispatch]);
 
   function toggleProduction() {
     dispatch({
