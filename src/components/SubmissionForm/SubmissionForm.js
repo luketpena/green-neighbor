@@ -139,7 +139,7 @@ export default function SubmissionForm() {
   function clickSubmit() {
     switch(subject) {
       case 'utility':
-        if (submissionData.hasOwnProperty('utility_name') && submissionData.hasOwnProperty('state') && submissionData.hasOwnProperty('eiaid')) {
+        if (submissionData.utility_name && submissionData.state && submissionData.eiaid) {
           dispatch({type: `${action.toUpperCase()}_${subject.toUpperCase()}`, payload: submissionData})
         } else {
           setRequiredAlert(true);
@@ -202,11 +202,12 @@ export default function SubmissionForm() {
       </Stepper>
       <FormBox>
         <h1>{capitalize(action)} {capitalize(subject)}</h1>
-        {action} {subject}
+        
         <FormArea>
           {(subject==='program'? steps[currentStep].component : <SubmitUtilityInfo />)}  
         </FormArea>
         <FormButtons>
+          <p><span className="required">*</span> = required field</p>
           {renderButtons()}
         </FormButtons>
       </FormBox>
