@@ -55,7 +55,7 @@ grid-area: details;
 grid-row: 2;
 
 height: 400px;
-overflow: scroll;
+overflow-y: scroll;
 background-color:rgba(250,250,250,0.8);
 `;
 const Div = styled.div`
