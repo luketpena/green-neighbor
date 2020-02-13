@@ -9,6 +9,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 
 import SubmitSources from './SubmitSources';
 import PricingForm from './PricingForm';
+import ContractForm from './ContractForm';
 
 import SubmitUtilityInfo from './SubmitUtilityInfo';
 
@@ -106,7 +107,7 @@ const FormButtons = styled.div`
 const steps = [
   {name: 'Source', component: <SubmitSources />},
   {name: 'Pricing', component: <PricingForm /> },
-  {name: 'Contract'},
+  {name: 'Contract', component: <ContractForm />},
   {name: 'Details'},
 ];
 
