@@ -128,24 +128,32 @@ export default function SubmissionForm() {
   }
 
   function renderButtons() {
-    if (currentStep===0) {
-      if (currentStep===steps.length-1) {
-        return <button className="button-primary">Submit</button>
-      } else {
-        return <button onClick={()=>setCurrentStep(currentStep+1)} className="button-default">Next</button>
-      }
-    } else {
-      if (currentStep===steps.length-1) {
-        return <>
-          <button onClick={()=>setCurrentStep(currentStep-1)} className="button-default">Back</button>
+    switch(subject) {
+      case 'program':
+        if (currentStep===0) {
+          if (currentStep===steps.length-1) {
+            return <button className="button-primary">Submit</button>
+          } else {
+            return <button onClick={()=>setCurrentStep(currentStep+1)} className="button-default">Next</button>
+          }
+        } else {
+          if (currentStep===steps.length-1) {
+            return <>
+              <button onClick={()=>setCurrentStep(currentStep-1)} className="button-default">Back</button>
+              <button className="button-primary">Submit</button>
+              </>
+          } else {
+            return <>
+            <button onClick={()=>setCurrentStep(currentStep-1)} className="button-default">Back</button>
+              <button onClick={()=>setCurrentStep(currentStep+1)} className="button-default">Next</button>
+              </>
+          }
+        }
+        break;
+      case 'utility':
+        return (
           <button className="button-primary">Submit</button>
-          </>
-      } else {
-        return <>
-        <button onClick={()=>setCurrentStep(currentStep-1)} className="button-default">Back</button>
-          <button onClick={()=>setCurrentStep(currentStep+1)} className="button-default">Next</button>
-          </>
-      }
+        )
     }
   }
 
