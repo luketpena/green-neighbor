@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -114,6 +114,7 @@ const capitalize = (s) => {
 export default function SubmissionForm() {
 
   const [currentStep, setCurrentStep] = useState(0);
+  const submissionData = useSelector(state=>state.submissionFormReducer);
   const dispatch = useDispatch();
 
   const { action, subject } = useParams();
@@ -130,7 +131,7 @@ export default function SubmissionForm() {
   }
 
   function clickSubmit() {
-    dispatch({type: `${action.toUpperCase()}_${subject.toUpperCase()}`})
+    dispatch({type: `${action.toUpperCase()}_${subject.toUpperCase()}`, payload: submissionData})
   }
 
   function renderButtons() {
