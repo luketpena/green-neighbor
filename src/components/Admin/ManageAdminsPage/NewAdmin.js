@@ -4,17 +4,14 @@ import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
-    h1 {
-        text-align: center; 
-    }
+    height: 250px;
     display: block;
     justify-content: center;
     background-color: var(--color-bkg-container);
     border-radius: 16px;
     padding: 16px;
-    box-sizing: border-box;
     box-shadow: 0 4px 4px -2px var(--color-shadow);
-    margin: 10px 0;
+    margin: 50px 0px;
     
     label {
         padding: 10px;
@@ -23,14 +20,12 @@ const Container = styled.div`
         margin: 10px 10px 10px 0px;
         width:
     }
-    div {
-        justify-content: center;
-        align-text: center;
-    }
     button {
         display:  block;
         margin: 0 auto;
-
+    }
+    h1 {
+        text-align: center; 
     }
 `;
 
@@ -45,7 +40,6 @@ export default function NewAdmin() {
     const addNewAdmin = () => {
         dispatch({ type: 'POST_NEW_ADMIN', payload: {username, password} });
         dispatch({ type: 'GET_ADMIN_USERS', usernames});
-     
     }
 
     // set up password conformation

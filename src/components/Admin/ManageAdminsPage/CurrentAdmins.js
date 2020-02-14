@@ -5,19 +5,15 @@ import UpdateAdminInfo from '../ManageAdminsPage/UpdateAdminInfo';
 import styled from 'styled-components';
 
 const Container = styled.div`
-    h1 {
-        text-align: center; 
-    }
-    
+    height: 250px;
     display: block;
-    justify-content: center;
+    justify-content: space-evenly;
     background-color: var(--color-bkg-container);
     border-radius: 16px;
     padding: 16px;
     box-sizing: border-box;
     box-shadow: 0 4px 4px -2px var(--color-shadow);
-    margin: 10px 0;
-    float: left
+    margin: 50px 0;
     label {
         padding: 10px;
     }
@@ -28,6 +24,9 @@ const Container = styled.div`
     div {
         justify-content: center;
         align-text: center;
+    }
+    h1 {
+        text-align: center; 
     }
 `;
 
@@ -75,6 +74,7 @@ export default function CurrentAdmin() {
     return(
         <Container>
             <div>
+                <h1> Current Admins</h1>
                 <table>
                     <tbody>
                         <tr>

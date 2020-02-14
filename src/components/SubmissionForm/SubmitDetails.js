@@ -33,7 +33,6 @@ const CheckboxForm = styled.form`
     float: left
     label {
         padding: 10px;
-        
     }
     input {
         margin: 10px 10px 10px 0px;
@@ -44,7 +43,6 @@ const CheckboxForm = styled.form`
 export default function SubmitDetails() {
 
     const form = useSelector(state => state.submissionFormReducer);
-
     const isYes = str => str === 'Yes' ? 'Yes' : 'No';
     // List of values declared for state of form
     const [greenE, setGreenE] = useState(isYes(form.green_e));
@@ -56,7 +54,6 @@ export default function SubmitDetails() {
     const [urlText, setUrlText] = useState(form.sign_up_text || '');
     const [programName, setProgramName] = useState(form.program_name || '');
     const dispatch = useDispatch();
-
     // Stores state from this step's inputs in the reducer.
     const updateSubmissionForm = obj => {
         dispatch({ type: 'UPDATE_FORM_SUBMISSION', payload: obj })
