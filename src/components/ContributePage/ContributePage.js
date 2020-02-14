@@ -5,7 +5,7 @@ import Background from '../../images/bkg-forest-top.jpg';
 import HomeButton from '../HomeButton/HomeButton';
 
 
-  const BackgroundBox = styled.div`
+const BackgroundBox = styled.div`
   background-image: url(${Background});
   background-size: cover;
   background-attachment: fixed;
