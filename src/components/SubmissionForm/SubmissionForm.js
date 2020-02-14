@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {useParams} from 'react-router-dom';
+import {useParams, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -104,6 +104,10 @@ const FormButtons = styled.div`
 
 `;
 
+const TitleBox = styled.div`
+
+`;
+
 const steps = [
   {name: 'Details', component: <SubmitDetails />},
   {name: 'Source', component: <SubmitSources />},
@@ -121,8 +125,10 @@ export default function SubmissionForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const submissionData = useSelector(state=>state.submissionFormReducer);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [requiredAlert, setRequiredAlert] = useState(false);
+  const [cancelAlert, setCancelAlert] = useState(false);
 
   const { action, subject } = useParams();
 
@@ -138,10 +144,21 @@ export default function SubmissionForm() {
   }
 
   function clickSubmit() {
+    console.log('HELLO FROM SUBMIT');
+    
     switch(subject) {
       case 'utility':
         if (submissionData.utility_name && submissionData.state && submissionData.eiaid) {
           dispatch({type: `${action.toUpperCase()}_${subject.toUpperCase()}`, payload: submissionData})
+          history.goBack();
+        } else {
+          setRequiredAlert(true);
+        }
+        break;
+      case 'program':
+        if (submissionData.program_name && submissionData.sign_up_url) {
+          dispatch({type: `${action.toUpperCase()}_${subject.toUpperCase()}`, payload: submissionData})
+          history.goBack();
         } else {
           setRequiredAlert(true);
         }
@@ -163,7 +180,7 @@ export default function SubmissionForm() {
           if (currentStep===steps.length-1) {
             return <>
               <button onClick={()=>setCurrentStep(currentStep-1)} className="button-default">Back</button>
-              <button className="button-primary">Submit</button>
+              <button onClick={clickSubmit} className="button-primary">Submit</button>
               </>
           } else {
             return <>
@@ -202,8 +219,10 @@ export default function SubmissionForm() {
         {renderStepper()}
       </Stepper>
       <FormBox>
-        <h1>{capitalize(action)} {capitalize(subject)}</h1>
-        
+        <TitleBox>
+          <h1>{capitalize(action)} {capitalize(subject)}</h1>
+          <button onClick={()=>setCancelAlert(true)} className="button-negative">Cancel Submission</button>
+        </TitleBox>
         <FormArea>
           {(subject==='program'? steps[currentStep].component : <SubmitUtilityInfo />)}  
         </FormArea>
@@ -217,6 +236,13 @@ export default function SubmissionForm() {
         <DialogTitle id="simple-dialog-title">Missing Information</DialogTitle>
         <DialogContent>Please fill out all of the required fields.</DialogContent>
         <button className="button-default" onClick={()=>setRequiredAlert(false)}>Close</button>
+      </Dialog>
+
+      <Dialog aria-labelledby="simple-dialog-title" open={cancelAlert}>
+        <DialogTitle id="simple-dialog-title">Leave this form?</DialogTitle>
+        <DialogContent>Changes you have made will not be saved.</DialogContent>
+        <button className="button-default" onClick={()=>setCancelAlert(false)}>Back to Form</button>
+        <button className="button-negative" onClick={()=>history.goBack()}>Quit Submission</button>
       </Dialog>
 
     </Container>

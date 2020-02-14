@@ -5,7 +5,7 @@ import {useHistory, useParams} from 'react-router-dom';
 import ProgramCard from './ProgramCard';
 
 const UtilityCardBody = styled.div`
-  max-width: 800px;
+ 
   margin: 32px auto;
   border-radius: 8px;
   overflow: hidden;
@@ -38,6 +38,9 @@ const UtilityHeader = styled.div`
 
 const ProgramCardBox = styled.div`
   padding: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
 `;
 
 const EmptyProgramDiv = styled.div`
