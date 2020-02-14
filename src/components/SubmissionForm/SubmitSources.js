@@ -45,7 +45,7 @@ export default function SubmitSources() {
 
   const [sourceList, setSourceList] = useState([
     {name: 'wind', value: 0, active: false},
-    {name: 'solar', value: .2, active: false},
+    {name: 'solar', value: 0, active: false},
     {name: 'bio', value: 0, active: false},
     {name: 'hydro', value: 0, active: false},
     {name: 'geo', value: 0, active: false},
