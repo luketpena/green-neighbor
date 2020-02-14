@@ -218,7 +218,7 @@ export default function DetailsPage() {
         </TitleMain>
         <TitleAction>
           <p>Continue to the program website to sign up!</p>
-          <a href = {details.sign_up_url}>
+          <a href = {details.sign_up_url} target="_blank">
             <button className= "button-primary">{details.sign_up_text || 'Go!'} </button>
           </a>
         </TitleAction>
