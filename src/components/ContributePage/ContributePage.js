@@ -5,7 +5,7 @@ import Background from '../../images/bkg-forest-top.jpg';
 import HomeButton from '../HomeButton/HomeButton';
 
 
-  const BackgroundBox = styled.div`
+const BackgroundBox = styled.div`
   background-image: url(${Background});
   background-size: cover;
   background-attachment: fixed;
@@ -23,7 +23,7 @@ margin: 0 auto;
 display: grid;
 grid-template-areas: "menu details";
 grid-template-rows: 100px 1fr;
-grid-template-columns: 250px 850px;
+grid-template-columns: max-content 1fr;
 justify-content: center;
 `;
 
@@ -58,6 +58,7 @@ height: 400px;
 overflow-y: scroll;
 background-color:rgba(250,250,250,0.8);
 `;
+
 const Div = styled.div`
 padding: 15px 0px 15px;
 display: flex;
