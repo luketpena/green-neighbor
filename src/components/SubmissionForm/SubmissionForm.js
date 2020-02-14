@@ -10,7 +10,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import SubmitSources from './SubmitSources';
 import PricingForm from './PricingForm';
 import ContractForm from './ContractForm';
-
+import SubmitDetails from './SubmitDetails';
 import SubmitUtilityInfo from './SubmitUtilityInfo';
 
 const Container = styled.div`
@@ -105,10 +105,11 @@ const FormButtons = styled.div`
 `;
 
 const steps = [
+  {name: 'Details', component: <SubmitDetails />},
+  {name: 'Info', component: <SubmitUtilityInfo />},
   {name: 'Source', component: <SubmitSources />},
   {name: 'Pricing', component: <PricingForm /> },
-  {name: 'Contract', component: <ContractForm />},
-  {name: 'Details'},
+  {name: 'Contract'},
 ];
 
 const capitalize = (s) => {
