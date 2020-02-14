@@ -14,7 +14,7 @@ function* getTickets(action) {
 
 function* setTicketResolve(action){
   try{
-    const response = yield axios.put(`/api/tickets/resolve/${action.payload.id}/${action.payload.value}`);
+    yield axios.put(`/api/tickets/resolve/${action.payload.id}/${action.payload.value}`);
   } catch (error) {
       console.log(error);
   }

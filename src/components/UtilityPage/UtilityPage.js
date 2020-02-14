@@ -67,25 +67,20 @@ export default function UtilityPage(props) {
   const history = useHistory();
   const dispatch = useDispatch();
   const {zip} = useParams(); 
-  const myParams = useParams();
   const geocode = useSelector(state=>state.geocode);
   const programs = useSelector(state=>state.programs);
 
   useEffect(()=>{
-    console.log('Zip code on useEffect:',myParams);
-    
     if (zip) {
       dispatch({type: 'GET_PROGRAMS', payload: zip});
     }
-  },[zip]);
+  },[zip, dispatch]);
 
   function countPrograms() {
     let programList = [];
     for (let program of programs) {
       programList = [...programList, ...program.programs];
     }
-    console.log('All programs found:', programList);
-    
     return programList.length;
   }
 

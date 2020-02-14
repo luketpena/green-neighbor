@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useState } from 'react';
+import {useDispatch} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -36,33 +36,32 @@ export default function NewAdmin() {
     const addNewAdmin = () => {
         dispatch({ type: 'POST_NEW_ADMIN', payload: {username, password} });
         dispatch({ type: 'GET_ADMIN_USERS', usernames});
-    };
+    }
 
     return(
-      
-          <Body onSubmit={addNewAdmin}>
-            <h1>Add New Admin</h1>
-                <form className="form">               
-                        <label htmlFor="name">New Name</label>
-                            <input 
-                                type="text" 
-                                placeholder="Username" 
-                                id="name" 
-                                value={username} 
-                                onChange={e=>setUsername(e.target.value)} 
-                                tabIndex="1">
-                            </input>                          
-                            <label htmlFor="password">Password</label>
-                            <input 
-                                type="text" 
-                                placeholder="Password" 
-                                id="password" 
-                                value={password} 
-                                onChange={e=>setPassword(e.target.value)} 
-                                tabIndex="2">   
-                            </input>                                  
-                        <button >Submit</button>                   
-                </form>
-          </Body>
+      <Body onSubmit={addNewAdmin}>
+        <h1>Add New Admin</h1>
+          <form className="form">               
+            <label htmlFor="name">New Name</label>
+              <input 
+                  type="text" 
+                  placeholder="Username" 
+                  id="name" 
+                  value={username} 
+                  onChange={e=>setUsername(e.target.value)} 
+                  tabIndex="1">
+              </input>                          
+              <label htmlFor="password">Password</label>
+              <input 
+                  type="text" 
+                  placeholder="Password" 
+                  id="password" 
+                  value={password} 
+                  onChange={e=>setPassword(e.target.value)} 
+                  tabIndex="2">   
+              </input>                                  
+            <button >Submit</button>                   
+          </form>
+      </Body>  
     );
-};
+}

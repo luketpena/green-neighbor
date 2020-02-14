@@ -19,7 +19,6 @@ import ManageAdminsPage from '../Admin/ManageAdminsPage/ManageAdminsPage.js';
 import RecordsPage from '../Admin/RecordsPage/RecordsPage';
 import TicketsPage from '../Admin/TicketsPage/TicketsPage';
 import ContributePage from '../ContributePage/ContributePage';
-import AddUtilityPage from '../Admin/AddUtilityPage/AddUtilityPage';
 import SubmissionForm from '../SubmissionForm/SubmissionForm';
 
 import './App.css';
@@ -93,12 +92,8 @@ class App extends Component {
                 component={TicketsPage}
               />
               <ProtectedRoute
-                exact path="/admin/addUtility/:id?"
-                component={AddUtilityPage}
-              />
-              <ProtectedRoute
                 exact
-                path="/admin/submit"
+                path="/admin/submit/:action/:subject"
                 component={SubmissionForm}
               />
             </div>

@@ -1,9 +1,16 @@
 import React, {useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
 
 import SubmitSources from './SubmitSources';
 import PricingForm from './PricingForm';
-import SubmitDetails from './SubmitDetails';
+import ContractForm from './ContractForm';
+
 import SubmitUtilityInfo from './SubmitUtilityInfo';
 
 const Container = styled.div`
@@ -103,13 +110,22 @@ const steps = [
   {name: 'Source', component: <SubmitSources />},
   {name: 'Pricing', component: <PricingForm /> },
   {name: 'Contract'},
- 
-  
 ];
+
+const capitalize = (s) => {
+  if (typeof s !== 'string') return ''
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
 
 export default function SubmissionForm() {
 
   const [currentStep, setCurrentStep] = useState(0);
+  const submissionData = useSelector(state=>state.submissionFormReducer);
+  const dispatch = useDispatch();
+
+  const [requiredAlert, setRequiredAlert] = useState(false);
+
+  const { action, subject } = useParams();
 
   function renderSteps() {
     return steps.map( (item,i)=>{
@@ -122,47 +138,87 @@ export default function SubmissionForm() {
     });
   }
 
+  function clickSubmit() {
+    switch(subject) {
+      case 'utility':
+        if (submissionData.utility_name && submissionData.state && submissionData.eiaid) {
+          dispatch({type: `${action.toUpperCase()}_${subject.toUpperCase()}`, payload: submissionData})
+        } else {
+          setRequiredAlert(true);
+        }
+        break;
+    }
+    
+  }
+
   function renderButtons() {
-    if (currentStep===0) {
-      if (currentStep===steps.length-1) {
-        return <button className="button-primary">Submit</button>
-      } else {
-        return <button onClick={()=>setCurrentStep(currentStep+1)} className="button-default">Next</button>
-      }
-    } else {
-      if (currentStep===steps.length-1) {
-        return <>
-          <button onClick={()=>setCurrentStep(currentStep-1)} className="button-default">Back</button>
-          <button className="button-primary">Submit</button>
-          </>
-      } else {
-        return <>
-        <button onClick={()=>setCurrentStep(currentStep-1)} className="button-default">Back</button>
-          <button onClick={()=>setCurrentStep(currentStep+1)} className="button-default">Next</button>
-          </>
-      }
+    switch(subject) {
+      case 'program':
+        if (currentStep===0) {
+          if (currentStep===steps.length-1) {
+            return <button onClick={clickSubmit} className="button-primary">Submit</button>
+          } else {
+            return <button onClick={()=>setCurrentStep(currentStep+1)} className="button-default">Next</button>
+          }
+        } else {
+          if (currentStep===steps.length-1) {
+            return <>
+              <button onClick={()=>setCurrentStep(currentStep-1)} className="button-default">Back</button>
+              <button className="button-primary">Submit</button>
+              </>
+          } else {
+            return <>
+            <button onClick={()=>setCurrentStep(currentStep-1)} className="button-default">Back</button>
+              <button onClick={()=>setCurrentStep(currentStep+1)} className="button-default">Next</button>
+              </>
+          }
+        }
+        break;
+      case 'utility':
+        return (
+          <button onClick={clickSubmit} className="button-primary">Submit</button>
+        )
     }
   }
+
+  function renderStepper() {
+    if (subject==='program') {
+      return (
+        <>
+          <StepBox>
+          {renderSteps()}
+          </StepBox>
+          <ProgressBox num={steps.length}>
+            <ProgressBar num={steps.length} currentStep={currentStep}/>
+          </ProgressBox>
+        </>
+      )
+    }
+  }
+
 
   return (
     <Container>
       <Stepper>
-        <StepBox>
-          {renderSteps()}
-        </StepBox>
-        <ProgressBox num={steps.length}>
-          <ProgressBar num={steps.length} currentStep={currentStep}/>
-        </ProgressBox>
+        {renderStepper()}
       </Stepper>
       <FormBox>
-        <h1>Submission Form</h1>
+        <h1>{capitalize(action)} {capitalize(subject)}</h1>
+        
         <FormArea>
-          {steps[currentStep].component}  
+          {(subject==='program'? steps[currentStep].component : <SubmitUtilityInfo />)}  
         </FormArea>
         <FormButtons>
+          <p><span className="required">*</span> = required field</p>
           {renderButtons()}
         </FormButtons>
       </FormBox>
+
+      <Dialog aria-labelledby="simple-dialog-title" open={requiredAlert}>
+        <DialogTitle id="simple-dialog-title">Missing Information</DialogTitle>
+        <DialogContent>Please fill out all of the required fields.</DialogContent>
+        <button className="button-default" onClick={()=>setRequiredAlert(false)}>Close</button>
+      </Dialog>
 
     </Container>
   )
