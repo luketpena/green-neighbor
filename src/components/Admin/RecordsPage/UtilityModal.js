@@ -35,6 +35,7 @@ const ProductionButton = styled.button`
 function Program({program}){
   const {name, id} = program;
   const dispatch = useDispatch();
+  const history = useHistory();
   const [production, setProduction] = useState(program.production);
   useEffect(()=>{
     setProduction(program.production);
@@ -48,6 +49,13 @@ function Program({program}){
     setProduction(!production);
   }
 
+  const onEditClick = () => {
+    dispatch({
+      type: 'GET_PROGRAM_SUBMISSION_FORM_DATA',
+      payload: { id, history }
+    });
+  }
+
   return(
     <p>
       {name || `Unnamed Program (ID #${id})`}
@@ -57,6 +65,10 @@ function Program({program}){
       >
         {production ? 'Active' : 'Inactive'}
       </ProductionButton>
+      <button
+        onClick={onEditClick}
+        className='button-default'
+      >Edit</button>
     </p>
   )
 }
