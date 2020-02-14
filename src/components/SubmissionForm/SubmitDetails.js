@@ -68,7 +68,7 @@ export default function SubmitDetails() {
                 <CheckboxForm>
                     <h2>Overview</h2>
                     <div>
-                        <label>Program Name:  </label>
+                        <label>Program Name<span className="required">*</span></label>
                         <input 
                             type="text" 
                             placeholder="Enter Program Name"
@@ -128,19 +128,9 @@ export default function SubmitDetails() {
                         </input>
                         <label>Waitlist Available</label>
                     </div>
+                    
                     <div>
-                        <label>Program Name:  </label>
-                        <input 
-                            type="text" 
-                            placeholder="Enter Program Name"
-                            value={programName}
-                            onChange={e=>setProgramName(e.target.value)}
-                            onBlur={e=>updateSubmissionForm({program_name: programName})}
-                            >
-                        </input> 
-                    </div>
-                    <div>
-                        <label>Sign Up or Enroll Link:  </label>
+                        <label>Sign Up or Enroll Link<span className="required">*</span></label>
                         <input 
                             type="text"
                             placeholder="sign-up-here.com"
@@ -151,7 +141,7 @@ export default function SubmitDetails() {
                         </input>
                     </div>
                     <div>
-                        <label>Sign Up or Enroll Text:  </label>
+                        <label>Sign Up or Enroll Text</label>
                         <input 
                             type="text" 
                             placeholder="Sign-Up, Enroll Now"
