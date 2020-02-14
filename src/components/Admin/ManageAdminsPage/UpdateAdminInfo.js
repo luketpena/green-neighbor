@@ -63,6 +63,10 @@ const DialogTitle = withStyles(styles)(props => {
         props.close();
     };
 
+    const closeBox = () => {
+        props.close();
+    }
+
     return (
         <div>
             <Dialog  aria-labelledby="customized-dialog-title" open={props.open}>
@@ -89,6 +93,9 @@ const DialogTitle = withStyles(styles)(props => {
                 
             </DialogContent>
             <DialogActions>
+                <Button onClick={closeBox}>
+                    Cancel
+                </Button>
                 <Button autoFocus onClick={updateAdmin}  color="primary">
                     Save Changes
                 </Button>
