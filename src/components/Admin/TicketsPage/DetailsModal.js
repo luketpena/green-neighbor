@@ -90,7 +90,7 @@ export default function DetailsModal(props){
                     eia_state: ticket.eia_state,
                     utility_name: ticket.utility_name || '',
                     eiaid: ticket.eia_state.match(/[0-9]*/)[0],
-                    state: ticket.eia_state.match(/[a-zA-Z]*/)[0],
+                    state: ticket.eia_state.match(/[a-zA-Z]+/)[0],
                     program_name: ticket.program_name
                 }
             });

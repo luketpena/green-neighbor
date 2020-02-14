@@ -130,21 +130,39 @@ export default function SubmitUtilityInfo() {
   const { action } = useParams();
 
   const [zipInput, setZipInput] = useState('');
-  const [zips, setZips] = useState(((action==='edit' && submissionData.zips)? submissionData.zips : []));
-  const [state,setState] = useState('State');
-  const [utility_name, setUtility_name] = useState('');
-  const [eiaid,setEiaid] = useState('');
+  const [zips, setZips] = useState(submissionData.zips? submissionData.zips : [] );
+  const [state,setState] = useState(submissionData.state || 'State');
+  const [utility_name, setUtility_name] = useState(submissionData.utility_name || '');
+  const [eiaid,setEiaid] = useState(submissionData.eiaid || '');
 
   const [deleteZip, setDeleteZip] = useState(-1);
 
-  const [bundled_avg_comm_rate, setComm_bundled] = useState('');
-  const [delivery_avg_comm_rate, setComm_delivery] = useState('');
+  const [
+    bundled_avg_comm_rate,
+    setComm_bundled
+  ] = useState(submissionData.bundled_avg_comm_rate || '');
+  const [
+    delivery_avg_comm_rate,
+    setComm_delivery
+  ] = useState(submissionData.delivery_avg_comm_rate || '');
 
-  const [bundled_avg_ind_rate, setInd_bundled] = useState('');
-  const [delivery_avg_ind_rate, setInd_delivery] = useState('');
+  const [
+    bundled_avg_ind_rate,
+    setInd_bundled
+  ] = useState(submissionData.bundled_avg_ind_rate || '');
+  const [
+    delivery_avg_ind_rate,
+    setInd_delivery
+  ] = useState(submissionData.delivery_avg_ind_rate || '');
 
-  const [bundled_avg_res_rate, setRes_bundled] = useState('');
-  const [delivery_avg_res_rate, setRes_delivery] = useState('');
+  const [
+    bundled_avg_res_rate,
+    setRes_bundled
+  ] = useState(submissionData.bundled_avg_res_rate || '');
+  const [
+    delivery_avg_res_rate,
+    setRes_delivery
+  ] = useState(submissionData.delivery_avg_res_rate || '');
 
   function renderStates() {
     return states.map( (item,i)=>{
@@ -157,11 +175,13 @@ export default function SubmitUtilityInfo() {
   }
 
   function renderZips() {
-    return zips.map( (item,i)=>{
+    return zips.map( (zip, i)=>{
       return (
-      <li key={i}>
-        <button onClick={()=>setDeleteZip(i)}><FontAwesomeIcon icon={faTimes}/></button>
-        {item.zip} 
+        <li key={i}>
+          <button onClick={()=>removeZip(i)}>
+            <FontAwesomeIcon icon={faTimes}/>
+          </button>
+          {zip} 
         </li>
       );
     })
@@ -175,10 +195,9 @@ export default function SubmitUtilityInfo() {
     setZipInput('');
   }
 
-  function removeZip() {
+  function removeZip(i) {
     let copy = [...zips];
-    copy.splice(deleteZip,1);
-    setDeleteZip(-1);
+    copy.splice(i,1);
     setZips(copy);
     dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {zips: copy}})
   }
@@ -249,7 +268,12 @@ export default function SubmitUtilityInfo() {
       <ZipBox>
         <h3>Zip Codes</h3>
         <form onSubmit={submitZip}>
-          <input type="number" placeholder="Enter zip code" value={zipInput} onChange={event=>setZipInput(event.target.value)}/>
+          <input
+            type="number"
+            placeholder="Enter zip code"
+            value={zipInput}
+            onChange={event=>setZipInput(event.target.value)}
+          />
           <button>Add Zip</button>
         </form>
 
