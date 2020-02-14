@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {useParams} from 'react-router-dom';
+import {useParams, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -123,6 +123,7 @@ export default function SubmissionForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const submissionData = useSelector(state=>state.submissionFormReducer);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [requiredAlert, setRequiredAlert] = useState(false);
 
@@ -144,9 +145,11 @@ export default function SubmissionForm() {
       case 'utility':
         if (submissionData.utility_name && submissionData.state && submissionData.eiaid) {
           dispatch({type: `${action.toUpperCase()}_${subject.toUpperCase()}`, payload: submissionData})
+          history.goBack();
         } else {
           setRequiredAlert(true);
         }
+        
         break;
     }
     
