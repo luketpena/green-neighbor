@@ -15,14 +15,13 @@ const BackgroundBox = styled.div`
 `;
 
 const Container = styled.div`
-  width: 90%;
+  background-color: red;
   height: 500px;
+  width: 90%;
   margin: 0 auto;
   display: grid;
-  justify-content: center;
-  grid-template-rows: 100px 1fr;
-  grid-template-areas: "questions answers" ;
-  grid-template-columns: max-content 1fr ;
+  grid-template-areas: "menu content";
+  grid-template-columns: 300px 1fr;
 `;
 
 const Header = styled.div`
@@ -64,6 +63,18 @@ const Adiv = styled.div`
   flex-direction: column;
   align-items: center;
   height: 100%;
+`;
+
+
+
+const Content = styled.div`
+  background-color: blue;
+  grid-area: content;
+`;
+
+const Menu = styled.div`
+  background-color: yellow;
+  grid-area: menu;
 `;
 
 export default function AboutPage() {
@@ -113,16 +124,28 @@ export default function AboutPage() {
     <Header>
         <h1>Frequently Asked Questions</h1>
     </Header>
-
+    
     <Container>
-      <QBox>
-        {faq.map((item,id)=>{return<button key={`faq${id}`} className="button-primary" onClick={()=>document.getElementById(`faqanswer${id}`).scrollIntoView({behavior: "smooth"})}>{item.Q}</button>})}
-      </QBox>
-      
-      <ABox className="container">
-        {faq.map((answer,id)=>{return <Adiv key={`faq${id}`} id={`faqanswer${id}`}><h2>{answer.H}</h2><p>{answer.A}</p></Adiv>})}
-      </ABox>
+      <Menu>
+
+      </Menu>
+      <Content>
+
+      </Content>
     </Container>
+    
     </BackgroundBox>
   )
 }
+
+/*
+  <Container>
+    <QBox>
+      {faq.map((item,id)=>{return<button key={`faq${id}`} className="button-primary" onClick={()=>document.getElementById(`faqanswer${id}`).scrollIntoView({behavior: "smooth"})}>{item.Q}</button>})}
+    </QBox>
+    
+    <ABox className="container">
+      {faq.map((answer,id)=>{return <Adiv key={`faq${id}`} id={`faqanswer${id}`}><h2>{answer.H}</h2><p>{answer.A}</p></Adiv>})}
+    </ABox>
+  </Container>
+*/
