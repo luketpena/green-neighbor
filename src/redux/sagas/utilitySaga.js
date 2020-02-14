@@ -13,8 +13,19 @@ function* getUtilityName(action) {
   }
 }
 
-function* utilityNameSaga() {
-  yield takeLatest('GET_UTILITY_NAME', getUtilityName);
+function* getUtilityDetails(action){
+  try{
+    const response = yield axios.get(`/api/utilities/details/${action.payload.id}`);
+    yield put({type: 'SET_RECORDS_MODAL_UTILITY', payload: response.data});
+    yield put({type: 'SET_ADMIN_RECORDS_MODAL_OPEN', payload: true});
+  } catch (error) {
+      console.log(error);
+  }
 }
 
-export default utilityNameSaga;
+function* utilitySaga() {
+  yield takeLatest('GET_UTILITY_NAME', getUtilityName);
+  yield takeLatest('GET_UTILITY_DETAILS', getUtilityDetails);
+}
+
+export default utilitySaga;

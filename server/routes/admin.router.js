@@ -39,8 +39,13 @@ router.get('/overview', rejectUnauthenticated, async (req, res) => {
           ) as programs_draft 	
         FROM gpp;
       `;
+      const activeUsers = await pool.query('SELECT COUNT(*) as "count" FROM "user";');
       const programInfo = await pool.query(programQuery);
-      res.send({...ticketInfo.rows[0], ...programInfo.rows[0]});
+      res.send({
+        ...ticketInfo.rows[0],
+        ...programInfo.rows[0],
+        adminCount: activeUsers.rows[0].count
+      });
     } catch(error) {
       console.log('Error getting admin overview data:',error);
       res.sendStatus(500);

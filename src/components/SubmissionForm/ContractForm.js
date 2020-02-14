@@ -38,53 +38,53 @@ export default function PricingForm(props){
                     />
                 </div>
                 <div>
-                <label>Is there a Monthly Minimum? </label>
-                <select 
-                value={minYesNo}
-                onChange={e=>setminYesNo(e.target.value)}
-                onBlur={e=>updateSubmissionForm({monthly_min: minYesNo})}
-                >
-                    <option>Pick One</option>
-                    <option value={'No'}>No</option>
-                    <option value={'Yes'}>Yes</option>
-                </select>
-                {minYesNo === 'Yes' &&
-                <>
-                <label> Monthly Minimum: </label>
-                <input
-                    type="text"
-                    value={minimum}
-                    placeholder="12-month"
-                    onChange={e=>setMinimum(e.target.value)}
-                    onBlur={e=>updateSubmissionForm({monthly_min: minimum})}
-                />
-                </>
+                    <label>Is there a Monthly Minimum? </label>
+                    <select 
+                    value={minYesNo}
+                    onChange={e=>setminYesNo(e.target.value)}
+                    onBlur={e=>updateSubmissionForm({monthly_min: minYesNo})}
+                    >
+                        <option>Pick One</option>
+                        <option value={'No'}>No</option>
+                        <option value={'Yes'}>Yes</option>
+                    </select>
+                    {minYesNo === 'Yes' &&
+                    <>
+                        <label> Monthly Minimum: </label>
+                        <input
+                            type="text"
+                            value={minimum}
+                            placeholder="12-month"
+                            onChange={e=>setMinimum(e.target.value)}
+                            onBlur={e=>updateSubmissionForm({monthly_min: minimum})}
+                        />
+                    </>
                 }
                 </div>
                 <div>
-                <label>Is there a Termination Fee? </label>
-                <select
-                    value={termination}
-                    onChange={e=>setTermination(e.target.value)}
-                    onBlur={e=>updateSubmissionForm({termination_fee: termination})}
-                >
-                    <option>Pick One</option>
-                    <option value={'No'}>No</option>
-                    <option value={'Yes'}>Yes</option>
-                </select>
-                {termination === 'Yes' &&
-                <>
-                    <label> Termination Cost: </label>
-                    <input
-                        type="text"
-                        value={termination_cost}
-                        placeholder="150"
-                        onChange={e=>setTermination_cost(e.target.value)}
-                        onBlur={e=>updateSubmissionForm({termination_cost: termination_cost})}
-                    />
-                </>
+                    <label>Is there a Termination Fee? </label>
+                    <select
+                        value={termination}
+                        onChange={e=>setTermination(e.target.value)}
+                        onBlur={e=>updateSubmissionForm({termination_fee: termination})}
+                    >
+                        <option>Pick One</option>
+                        <option value={'No'}>No</option>
+                        <option value={'Yes'}>Yes</option>
+                    </select>
+                    {termination === 'Yes' &&
+                    <>
+                        <label> Termination Cost: </label>
+                        <input
+                            type="text"
+                            value={termination_cost}
+                            placeholder="150"
+                            onChange={e=>setTermination_cost(e.target.value)}
+                            onBlur={e=>updateSubmissionForm({termination_cost: termination_cost})}
+                        />
+                    </>
                 }
-                </div>
+            </div>
         </Container>
     )
 }

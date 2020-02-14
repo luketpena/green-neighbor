@@ -13,7 +13,7 @@ import submissionFormReducer from './submissionFormReducer';
 // The parameter str sets the correct string, and type sets the starting state. Type defaults to [].
 const createReducer = (str, type=[]) => {
   return (state=type, action) => {
-    if(action.type === str) return action.payload;
+    if(action.type === str && action.hasOwnProperty('payload')) return action.payload;
     else if(action.type === 'DELETE_ALL') return type;
     else return state;
   }
@@ -37,6 +37,7 @@ const rootReducer = combineReducers({
   tickets: createReducer('SET_TICKETS', {}),
   adminTicketsDisplayDetails: createReducer('SET_TICKETS_DISPLAY', false),
   adminTicketsModalOpen: createReducer('SET_TICKET_MODAL_OPEN', false),
+  ticketsUpdateFlag: createReducer('SET_TICKETS_UPDATE_FLAG', 0),
   adminTicketsModalTicket: createReducer('SET_TICKET_MODAL_TICKET', {}),
   submissionFormReducer,
   editWatcher: createReducer('SET_EDIT_READY', false),
