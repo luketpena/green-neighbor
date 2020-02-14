@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -12,15 +12,19 @@ h2 {
 export default function PricingForm(props){
 
     const dispatch = useDispatch();
+    const form = useSelector(state => state.submissionFormReducer);
 
-    const [length, setLength] = useState('');
-    const [minYesNo, setminYesNo] = useState('');
-    const [minimum, setMinimum] = useState('');
-    const [termination, setTermination] = useState('');
-    const [termination_cost, setTermination_cost] = useState('');
+    const [length, setLength] = useState(form.contract_length || '');
+    const [minYesNo, setminYesNo] = useState(form.monthly_min || '');
+    const [minimum, setMinimum] = useState(form.monthly_min || '');
+    const [
+        termination, 
+        setTermination
+    ] = useState(form.termination_fee === 'Yes' ? 'Yes' : 'No');
+    const [termination_cost, setTermination_cost] = useState(form.termination_cost || '');
 
     const updateSubmissionForm = obj => {
-        dispatch({type: 'UDATE_SUBMISSION_FORM', payload: obj});
+        dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: obj});
     }
 
 
