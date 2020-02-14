@@ -13,7 +13,7 @@ const Container = styled.div`
     padding: 16px;
     box-sizing: border-box;
     box-shadow: 0 4px 4px -2px var(--color-shadow);
-    margin: 50px 0;
+    margin: 50px 25px;
     label {
         padding: 10px;
     }

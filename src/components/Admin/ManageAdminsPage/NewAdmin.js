@@ -11,10 +11,11 @@ const Container = styled.div`
     border-radius: 16px;
     padding: 16px;
     box-shadow: 0 4px 4px -2px var(--color-shadow);
-    margin: 50px 0px;
-    
+    margin: 50px 25px;
     label {
-        padding: 10px;
+        display: inline-block;
+        width: 100px;
+        text-align: left;
     }
     input {
         margin: 10px 10px 10px 0px;
@@ -22,7 +23,7 @@ const Container = styled.div`
     }
     button {
         display:  block;
-        margin: 0 auto;
+        margin: 25px auto ;
     }
     h1 {
         text-align: center; 

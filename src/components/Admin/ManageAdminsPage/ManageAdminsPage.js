@@ -15,8 +15,7 @@ const Container = styled.div`
   height: 100%;
   margin: 0px 0px 0px 0px;
   .component-box {
-    min-width: 320px;
-     
+    min-width: 320px; 
   }
 `;
 
