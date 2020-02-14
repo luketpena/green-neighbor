@@ -11,7 +11,6 @@ import SubmitSources from './SubmitSources';
 import PricingForm from './PricingForm';
 import ContractForm from './ContractForm';
 import SubmitDetails from './SubmitDetails';
-
 import SubmitUtilityInfo from './SubmitUtilityInfo';
 
 const Container = styled.div`
