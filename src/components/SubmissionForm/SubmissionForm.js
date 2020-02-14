@@ -107,7 +107,6 @@ const FormButtons = styled.div`
 
 const steps = [
   {name: 'Details', component: <SubmitDetails />},
-  {name: 'Info', component: <SubmitUtilityInfo />},
   {name: 'Source', component: <SubmitSources />},
   {name: 'Pricing', component: <PricingForm /> },
   {name: 'Contract', component: <ContractForm />},
@@ -141,6 +140,8 @@ export default function SubmissionForm() {
   }
 
   function clickSubmit() {
+    console.log('HELLO FROM SUBMIT');
+    
     switch(subject) {
       case 'utility':
         if (submissionData.utility_name && submissionData.state && submissionData.eiaid) {
@@ -149,7 +150,14 @@ export default function SubmissionForm() {
         } else {
           setRequiredAlert(true);
         }
-        
+        break;
+      case 'program':
+        if (submissionData.program_name && submissionData.sign_up_url) {
+          dispatch({type: `${action.toUpperCase()}_${subject.toUpperCase()}`, payload: submissionData})
+          history.goBack();
+        } else {
+          setRequiredAlert(true);
+        }
         break;
     }
     
@@ -168,7 +176,7 @@ export default function SubmissionForm() {
           if (currentStep===steps.length-1) {
             return <>
               <button onClick={()=>setCurrentStep(currentStep-1)} className="button-default">Back</button>
-              <button className="button-primary">Submit</button>
+              <button onClick={clickSubmit} className="button-primary">Submit</button>
               </>
           } else {
             return <>
