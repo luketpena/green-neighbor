@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faBullhorn, faEnvelopeOpenText, faHandHoldingUsd} from '@fortawesome/free-solid-svg-icons';
-import './contribute.css'
 import Background from '../../images/bkg-forest-top.jpg';
 
 // fancy home button
@@ -23,6 +22,33 @@ const BackgroundBox = styled.div`
   min-height: 100vh;
   margin: 0;
   box-sizing: border-box;
+
+  h2, h3 {
+    color: white;
+    text-align: center;
+    text-shadow: 0 0 4px black;
+  }
+  
+
+  a {
+  
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .socialMediaBox {
+    background-color: #EEE;
+    padding: 8px;
+    border-radius: 8px;
+  }
+  
+  .cardContent {
+    display: grid;
+    grid-template-rows: 1fr auto;
+  }
 `;
 
 const Container = styled.div`
