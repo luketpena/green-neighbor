@@ -122,7 +122,7 @@ export default function SubmitDetails() {
                         <input 
                             type="text" 
                             placeholder="Enter Program Name"
-                            value={urlText}
+                            value={programName}
                             onChange={e=>setProgramName(e.target.value)}
                             onBlur={e=>updateSubmissionForm({program_name: programName})}
                             >
