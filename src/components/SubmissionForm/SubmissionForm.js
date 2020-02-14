@@ -104,8 +104,11 @@ const FormButtons = styled.div`
 
 `;
 
-const TitleBox = styled.div`
+const TitleBox = styled.div``;
 
+const Subtitle = styled.p`
+  padding: 0px;
+  text-align: center;
 `;
 
 const steps = [
@@ -144,8 +147,6 @@ export default function SubmissionForm() {
   }
 
   function clickSubmit() {
-    console.log('HELLO FROM SUBMIT');
-    
     switch(subject) {
       case 'utility':
         if (submissionData.utility_name && submissionData.state && submissionData.eiaid) {
@@ -164,7 +165,6 @@ export default function SubmissionForm() {
         }
         break;
     }
-    
   }
 
   function renderButtons() {
@@ -221,6 +221,8 @@ export default function SubmissionForm() {
       <FormBox>
         <TitleBox>
           <h1>{capitalize(action)} {capitalize(subject)}</h1>
+          {subject === 'program' && submissionData.utility_name &&
+          <Subtitle>{submissionData.utility_name}, {submissionData.state}</Subtitle>}
           <button onClick={()=>setCancelAlert(true)} className="button-negative">Cancel Submission</button>
         </TitleBox>
         <FormArea>

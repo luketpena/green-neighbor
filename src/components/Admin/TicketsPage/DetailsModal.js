@@ -78,7 +78,8 @@ export default function DetailsModal(props){
                 type: 'SET_SUBMISSION_FORM',
                 payload: {
                     zips: [ticket.zip],
-                    utility_name: ticket.utility_name
+                    utility_name: ticket.utility_name,
+                    state: ticket.state
                 }
             })
             history.push('/admin/submit/create/utility');
@@ -90,7 +91,7 @@ export default function DetailsModal(props){
                     eia_state: ticket.eia_state,
                     utility_name: ticket.utility_name || '',
                     eiaid: ticket.eia_state.match(/[0-9]*/)[0],
-                    state: ticket.eia_state.match(/[a-zA-Z]*/)[0],
+                    state: ticket.state || ticket.eia_state.match(/[a-zA-Z]+/)[0],
                     program_name: ticket.program_name
                 }
             });
@@ -145,12 +146,17 @@ export default function DetailsModal(props){
                         ticket.date_submitted.toLocaleDateString()}
                     </p>
                     <p>Zip:</p><p>{ticket.zip}</p>
-                    {ticket.eia_state && 
+                    {(ticket.eia_state && 
                         <>
                             <p>EIAID - State:</p>
-                            <p>{ticket.eia_state}</p>
+                            <p>{ticket.eia_state.match(/[0-9]*/)[0]} - {ticket.eia_state.match(/[0-9]+/)[0]}</p>
                         </>
-                    }
+                    ) || (ticket.state && 
+                        <>
+                            <p>State:</p>
+                            <p>{ticket.state}</p>
+                        </>
+                    )}
                     <p>Utility:</p><p>{ticket.utility_name}</p>
                     {ticket.program_name &&
                         <>
