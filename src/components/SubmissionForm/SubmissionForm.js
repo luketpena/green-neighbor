@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {useParams} from 'react-router-dom';
+import {useParams, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -121,6 +121,7 @@ export default function SubmissionForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const submissionData = useSelector(state=>state.submissionFormReducer);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [requiredAlert, setRequiredAlert] = useState(false);
 
@@ -138,10 +139,21 @@ export default function SubmissionForm() {
   }
 
   function clickSubmit() {
+    console.log('HELLO FROM SUBMIT');
+    
     switch(subject) {
       case 'utility':
         if (submissionData.utility_name && submissionData.state && submissionData.eiaid) {
           dispatch({type: `${action.toUpperCase()}_${subject.toUpperCase()}`, payload: submissionData})
+          history.goBack();
+        } else {
+          setRequiredAlert(true);
+        }
+        break;
+      case 'program':
+        if (submissionData.program_name && submissionData.sign_up_url) {
+          dispatch({type: `${action.toUpperCase()}_${subject.toUpperCase()}`, payload: submissionData})
+          history.goBack();
         } else {
           setRequiredAlert(true);
         }
@@ -163,7 +175,7 @@ export default function SubmissionForm() {
           if (currentStep===steps.length-1) {
             return <>
               <button onClick={()=>setCurrentStep(currentStep-1)} className="button-default">Back</button>
-              <button className="button-primary">Submit</button>
+              <button onClick={clickSubmit} className="button-primary">Submit</button>
               </>
           } else {
             return <>
