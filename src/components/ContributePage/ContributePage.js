@@ -2,14 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faBullhorn, faEnvelopeOpenText, faHandHoldingUsd} from '@fortawesome/free-solid-svg-icons';
-
+import './contribute.css'
 import Background from '../../images/bkg-forest-top.jpg';
 
 // fancy home button
 import HomeButton from '../HomeButton/HomeButton';
 import SocialMedia from '../ContributePage/SocialMedia';
-import NewsLetter from '../ContributePage/NewsLetterPage';
-import Donate from '../ContributePage/DonatePage';
+import NewsLetter from './NewsLetter';
+import Donate from './Donate';
 
 
 
@@ -26,7 +26,6 @@ const BackgroundBox = styled.div`
 `;
 
 const Container = styled.div`
-  background-color: red;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -46,30 +45,16 @@ h1 {
 }
 `;
 
-const Menu = styled.div`
-grid-area: menu;
-height: 400px;
-grid-row: 2;
-display: flex;
-flex-direction: column;
-align-items: right;
-`;
-
-const Details = styled.div`
-grid-area: details;
-grid-row: 2;
-
-height: 400px;
-overflow-y: scroll;
-background-color:rgba(250,250,250,0.8);
-`;
-
 const Card = styled.div`
-  background-color: blue;
+  background-color: rgba(255, 255, 255, .1);
+  backdrop-filter: blur(4px);
+  border: 2px solid white;
   border-radius: 16px;
   width: 320px;
   height: 400px;
   margin: 8px 16px;
+  padding: 12px;
+  box-sizing: border-box;
 
   .icon {
     color: white;
@@ -77,6 +62,7 @@ const Card = styled.div`
     margin: 16px auto;
     font-size: 80px;
   }
+
 `;
 
 
@@ -93,17 +79,18 @@ export default function ContributePage() {
       <Container>
         <Card>
           <FontAwesomeIcon className="icon" icon={faBullhorn} />
-          Social
+          
+          <SocialMedia />
         </Card>
 
         <Card>
           <FontAwesomeIcon className="icon" icon={faEnvelopeOpenText} />
-          News Letter
+          <NewsLetter />
         </Card>
 
         <Card>
           <FontAwesomeIcon className="icon" icon={faHandHoldingUsd} />
-          Donate
+          <Donate />
         </Card>
       
       </Container>

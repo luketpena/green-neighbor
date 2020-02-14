@@ -18,8 +18,8 @@ export default function SocialMedia() {
 
   return(
     <Container>
-        <h2>FOLLOW US ON SOCIAL MEDIA</h2>
-        <h3>AND SHARE US WITH YOUR NEIGHBORS</h3>
+        <h2>Follow us on social media</h2>
+        <h3>And share us with your neighbors</h3>
 
             <div className="twitter-embed">
                 <a 
