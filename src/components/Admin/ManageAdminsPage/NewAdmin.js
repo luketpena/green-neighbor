@@ -7,7 +7,6 @@ const Container = styled.div`
     h1 {
         text-align: center; 
     }
-    width: 50%;
     display: block;
     justify-content: center;
     background-color: var(--color-bkg-container);
@@ -16,7 +15,7 @@ const Container = styled.div`
     box-sizing: border-box;
     box-shadow: 0 4px 4px -2px var(--color-shadow);
     margin: 10px 0;
-    float: left
+    
     label {
         padding: 10px;
     }
@@ -27,6 +26,11 @@ const Container = styled.div`
     div {
         justify-content: center;
         align-text: center;
+    }
+    button {
+        display:  block;
+        margin: 0 auto;
+        
     }
 `;
 

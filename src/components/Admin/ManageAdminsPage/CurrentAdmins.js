@@ -8,7 +8,7 @@ const Container = styled.div`
     h1 {
         text-align: center; 
     }
-    width: 50%;
+    
     display: block;
     justify-content: center;
     background-color: var(--color-bkg-container);

@@ -12,21 +12,25 @@ const Container = styled.div`
     margin: auto auto;
     align-text: center;
     justify-content: center;
+    align-items: center;
     display: flex;
-    flex-direction: column;
+    
+    .component-box {
+      min-width: 320px;
+     
+    }
 `;
 
 export default function ManageAdminsPage() {
 
   return(
-    <div>
-      <Container>
-        <NewAdmin />
-      </Container>
-      <Container>
-        <CurrentAdmin /> 
-      </Container>
-    </div> 
+    <Container>
+      <div >
+        <NewAdmin className="component-box" />
+        <CurrentAdmin  className="component-box"/> 
+      </div>
+
+    </Container> 
 
   )
 }
