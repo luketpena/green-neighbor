@@ -68,6 +68,17 @@ export default function SubmitDetails() {
                 <CheckboxForm>
                     <h2>Overview</h2>
                     <div>
+                        <label>Program Name:  </label>
+                        <input 
+                            type="text" 
+                            placeholder="Enter Program Name"
+                            value={urlText}
+                            onChange={e=>setProgramName(e.target.value)}
+                            onBlur={e=>updateSubmissionForm({program_name: programName})}
+                            >
+                        </input> 
+                    </div>
+                    <div>
                         <input 
                             type="checkbox" 
                             checked={greenE === 'Yes'}
