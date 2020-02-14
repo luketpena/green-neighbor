@@ -1,11 +1,17 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faBullhorn, faEnvelopeOpenText, faHandHoldingUsd} from '@fortawesome/free-solid-svg-icons';
+
 import Background from '../../images/bkg-forest-top.jpg';
+
 // fancy home button
 import HomeButton from '../HomeButton/HomeButton';
 import SocialMedia from '../ContributePage/SocialMedia';
 import NewsLetter from '../ContributePage/NewsLetterPage';
 import Donate from '../ContributePage/DonatePage';
+
+
 
 
 const BackgroundBox = styled.div`
@@ -20,14 +26,10 @@ const BackgroundBox = styled.div`
 `;
 
 const Container = styled.div`
-width: 90%;
-height: 500px;
-margin: 0 auto;
-display: grid;
-grid-template-areas: "menu details";
-grid-template-rows: 100px 1fr;
-grid-template-columns: max-content 1fr;
-justify-content: center;
+  background-color: red;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 `;
 
 const Header = styled.div`
@@ -63,42 +65,68 @@ background-color:rgba(250,250,250,0.8);
 `;
 
 const Card = styled.div`
-padding: 15px 0px 15px;
-display: flex;
-flex-direction: column;
-align-items: center;
-height: 100%;
+  background-color: blue;
+  border-radius: 16px;
+  width: 320px;
+  height: 400px;
+  margin: 8px 16px;
+
+  .icon {
+    color: white;
+    display: block;
+    margin: 16px auto;
+    font-size: 80px;
+  }
 `;
+
+
 
 export default function ContributePage() {
         
 
   return(
-      <BackgroundBox>
-            <HomeButton/>
-            <Header>
-                <h1>Contribute</h1>
-            </Header>
-        <Container>
+    <BackgroundBox>
+      <HomeButton/>
+      <Header>
+          <h1>Contribute</h1>
+      </Header>
+      <Container>
+        <Card>
+          <FontAwesomeIcon className="icon" icon={faBullhorn} />
+          Social
+        </Card>
 
-            <Menu>
-                <button className="button-primary" >Follow us on Socal Media</button>
-                <button className="button-primary" >News Letter</button>
-                <button className="button-primary" >Donation</button>
-            </Menu> 
+        <Card>
+          <FontAwesomeIcon className="icon" icon={faEnvelopeOpenText} />
+          News Letter
+        </Card>
 
-            <Details className="container">
-                <Card>
-                    <SocialMedia/>
-                </Card>
-                <Card>
-                    <NewsLetter/>
-                </Card>
-                <Card>
-                    <Donate/>
-                </Card>
-            </Details>
-        </Container>
+        <Card>
+          <FontAwesomeIcon className="icon" icon={faHandHoldingUsd} />
+          Donate
+        </Card>
+      
+      </Container>
     </BackgroundBox>
   )
 }
+
+/*
+<Menu>
+    <button className="button-primary" >Follow us on Socal Media</button>
+    <button className="button-primary" >News Letter</button>
+    <button className="button-primary" >Donation</button>
+</Menu> 
+
+  <Details className="container">
+    <Card>
+        <SocialMedia/>
+    </Card>
+    <Card>
+        <NewsLetter/>
+    </Card>
+    <Card>
+        <Donate/>
+    </Card>
+  </Details>
+*/
