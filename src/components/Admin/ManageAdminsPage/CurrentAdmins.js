@@ -5,10 +5,7 @@ import UpdateAdminInfo from '../ManageAdminsPage/UpdateAdminInfo';
 import styled from 'styled-components';
 
 const Container = styled.div`
-    h1 {
-        text-align: center; 
-    }
-    
+    width: 600px;
     display: block;
     justify-content: center;
     background-color: var(--color-bkg-container);
@@ -16,18 +13,27 @@ const Container = styled.div`
     padding: 16px;
     box-sizing: border-box;
     box-shadow: 0 4px 4px -2px var(--color-shadow);
-    margin: 10px 0;
-    float: left
+    margin: 50px 25px;
     label {
         padding: 10px;
     }
     input {
         margin: 10px 10px 10px 0px;
-        width:
+        width: 100%
     }
     div {
         justify-content: center;
         align-text: center;
+    }
+    h1 {
+        text-align: center; 
+    }
+    button {
+        text-align: center;
+        align: left;
+    }
+    td {
+        text-align: center;
     }
 `;
 
@@ -74,8 +80,9 @@ export default function CurrentAdmin() {
 
     return(
         <Container>
-            <div>
-                <table>
+            
+                <h1> Current Admins</h1>
+                <table className="admin-table">
                     <tbody>
                         <tr>
                             <th>Username</th>
@@ -84,7 +91,6 @@ export default function CurrentAdmin() {
                         
                         {adminUsers.map((user, i) => {
                             return<tr key={i}>
-                                {/* {JSON.stringify(user)} */}
                                     <td>{user.username}</td>
                                     <td>
                                         {user.id === currentUser.id ? <EditButton /> : <RemoveButton user={user} />}
@@ -94,7 +100,7 @@ export default function CurrentAdmin() {
                 </table>
             
                 <UpdateAdminInfo open={open} close={handleClose} />
-            </div>
+            
         </Container>
     )
 }
