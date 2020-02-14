@@ -19,9 +19,23 @@ function* createUtility(action) {
   }
 }
 
+function* getProgramSubmissionFormData(action){
+  try {
+    const response = yield axios.get(`/api/programs/details/${action.payload.id}`);
+    yield put({type: 'SET_SUBMISSION_FORM', payload: response.data});
+    if(!action.payload.history){
+      throw "getProgramSubmissionFormData must be passed a history object in action.payload."
+    }
+    action.payload.history.push('/admin/submit/edit/program');
+  } catch(error) {
+    console.log('error getting edit info for utility company:',error);    
+  }
+}
+
 function* submissionSaga() {
   yield takeLatest('GET_EDIT_INFO_UTILITY', getEditInfoUtility);
   yield takeLatest('CREATE_UTILITY', createUtility);
+  yield takeLatest('GET_PROGRAM_SUBMISSION_FORM_DATA', getProgramSubmissionFormData);
 }
 
 export default submissionSaga;

@@ -106,10 +106,9 @@ const FormButtons = styled.div`
 
 const steps = [
   {name: 'Details', component: <SubmitDetails />},
-  {name: 'Info', component: <SubmitUtilityInfo />},
   {name: 'Source', component: <SubmitSources />},
   {name: 'Pricing', component: <PricingForm /> },
-  {name: 'Contract'},
+  {name: 'Contract', component: <ContractForm />},
 ];
 
 const capitalize = (s) => {

@@ -5,7 +5,7 @@ import Background from '../../images/bkg-forest-top.jpg';
 import HomeButton from '../HomeButton/HomeButton';
 
 
-  const BackgroundBox = styled.div`
+const BackgroundBox = styled.div`
   background-image: url(${Background});
   background-size: cover;
   background-attachment: fixed;
@@ -23,7 +23,7 @@ margin: 0 auto;
 display: grid;
 grid-template-areas: "menu details";
 grid-template-rows: 100px 1fr;
-grid-template-columns: 250px 850px;
+grid-template-columns: max-content 1fr;
 justify-content: center;
 `;
 
@@ -58,6 +58,7 @@ height: 400px;
 overflow-y: scroll;
 background-color:rgba(250,250,250,0.8);
 `;
+
 const Div = styled.div`
 padding: 15px 0px 15px;
 display: flex;
@@ -99,28 +100,46 @@ export default function ContributePage() {
                     <h3>AND SHARE US WITH YOUR NEIGHBORS</h3>
 
                         <div className="twitter-embed">
-                            <a className="twitter-follow-button"
-                            href="https://twitter.com/GreenNeighborCh?ref_src=twsrc%5Etfw"
-                            rel="noopener noreferrer"
-                            target="_blank"
-                            data-size="large"
-                            data-show-count="default">
-                                Follow @GreenNeighborCh
+                            <a 
+                                className="twitter-follow-button"
+                                href="https://twitter.com/GreenNeighborCh?ref_src=twsrc%5Etfw"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                                data-size="large"
+                                data-show-count="default">
+                                    Follow @GreenNeighborCh
                             </a>
                         </div>
 
                         <div className="facebook-embed">
-                            <div class="fb-like" data-href="https://www.facebook.com/GreenNeighborChallenge/" 
-                            data-width="279" data-layout="standard" data-action="like" data-size="large" data-share="true"></div>
+                            <div 
+                                className="fb-like" 
+                                data-href="https://www.facebook.com/GreenNeighborChallenge/" 
+                                data-width="279" 
+                                data-layout="standard" 
+                                data-action="like" 
+                                data-size="large" 
+                                data-share="true">
+                            </div>
                         </div>
                 </Div>
                 <Div>
                     <h3>Keep up to date with what we are doing</h3>
-                    <a href="https://mailchi.mp/f38a195f62f3/jointheneighborhood" target="_blank"><button className="button-default">Click Me for News Letter</button></a>
+                    <a 
+                        href="https://mailchi.mp/f38a195f62f3/jointheneighborhood" 
+                        rel="noopener noreferrer"
+                        target="_blank">
+                            <button className="button-default">Click Me for News Letter</button>
+                    </a>
                 </Div>
                 <Div>
                     <h3>Help bring the Green Neighbor Challenge to life!</h3>
-                    <a href="https://actionnetwork.org/fundraising/green-neighbor-challenge-fundraising-page" target="_blank"><button className="button-default">Click Me to Donate</button></a>
+                    <a 
+                        href="https://actionnetwork.org/fundraising/green-neighbor-challenge-fundraising-page" 
+                        rel="noopener noreferrer"
+                        target="_blank">
+                            <button className="button-default">Click Me to Donate</button>
+                    </a>
                 </Div>
             </Details>
         </Container>

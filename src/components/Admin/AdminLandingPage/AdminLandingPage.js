@@ -44,11 +44,13 @@ export default function AdminLandingPage() {
     tickets_active: activeTickets,
     tickets_resolved: resolvedTickets,
     programs_live: liveRecords,
-    programs_draft: draftRecords
+    programs_draft: draftRecords,
+    adminCount
   } = useSelector(state => state.adminLandingPageData);
   const state = useSelector(state => state.adminLandingPageData);
   console.log(state);
   const dispatch = useCallback(useDispatch(), []);
+
   useEffect(()=>{
     dispatch({type: 'GET_ADMIN_LANDING_DATA'});
   },[dispatch]);
@@ -68,6 +70,7 @@ export default function AdminLandingPage() {
       <Card
         headerText="Users"
         link='/admin/manageAdmins'
+        body={[<>&nbsp;</>, `${adminCount || 1} Admin Account${adminCount > 1 ? 's':''}`]}
       />
     </Page>
   );
