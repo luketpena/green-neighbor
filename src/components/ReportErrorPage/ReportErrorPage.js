@@ -4,6 +4,7 @@ import {useParams, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import ReportThankYou from '../ReportErrorPage/ReportThankYou';
 import Background from '../../images/bkg-forest-top.jpg';
+import HomeButton from '../HomeButton/HomeButton';
 
 const Container = styled.div`
     color: white;
@@ -156,6 +157,7 @@ export default function ReportErrorPage(props){
 
     return (
        <ImageBackground >
+            <HomeButton />
             <Container>
                 <Body onSubmit={handleSubmit}>
                     {body}

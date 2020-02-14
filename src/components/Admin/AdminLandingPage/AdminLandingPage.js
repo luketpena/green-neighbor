@@ -70,7 +70,7 @@ export default function AdminLandingPage() {
       <Card
         headerText="Users"
         link='/admin/manageAdmins'
-        body={[`${adminCount || 1} Admin Accounts`]}
+        body={[<>&nbsp;</>, `${adminCount || 1} Admin Account${adminCount > 1 ? 's':''}`]}
       />
     </Page>
   );
