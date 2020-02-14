@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import styled from 'styled-components';
 
@@ -43,15 +43,18 @@ const CheckboxForm = styled.form`
 
 export default function SubmitDetails() {
 
+    const form = useSelector(state => state.submissionFormReducer);
+
+    const isYes = str => str === 'Yes' ? 'Yes' : 'No';
     // List of values declared for state of form
-    const [greenE, setGreenE] = useState();
-    const [recsRetired, setRecsRetired] = useState();
-    const [revsNeutral, setRevsNeutral] = useState();
-    const [retail, setRetail] = useState();
-    const [waitlist, setWaitlist] = useState();
-    const [urlLink, setUrlLink] = useState();
-    const [urlText, setUrlText] = useState();
-    const [programName, setProgramName] = useState();
+    const [greenE, setGreenE] = useState(isYes(form.green_e));
+    const [recsRetired, setRecsRetired] = useState(isYes(form.recs_retired));
+    const [revsNeutral, setRevsNeutral] = useState(isYes(form.revenue_neutral));
+    const [retail, setRetail] = useState(isYes(form.retail));
+    const [waitlist, setWaitlist] = useState(isYes(form.waitlist));
+    const [urlLink, setUrlLink] = useState(form.sign_up_url || '');
+    const [urlText, setUrlText] = useState(form.sign_up_text || '');
+    const [programName, setProgramName] = useState(form.program_name || '');
     const dispatch = useDispatch();
 
     // Stores state from this step's inputs in the reducer.
@@ -67,8 +70,8 @@ export default function SubmitDetails() {
                     <div>
                         <input 
                             type="checkbox" 
-                            value={greenE}
-                            onChange={e=>setGreenE(e.target.value)}
+                            checked={greenE === 'Yes'}
+                            onChange={e=>setGreenE(e.target.checked ? 'Yes' : 'No')}
                             onBlur={e=>updateSubmissionForm({green_e: greenE})}
                             >
                         </input>
@@ -77,8 +80,8 @@ export default function SubmitDetails() {
                     <div>
                         <input 
                             type="checkbox" 
-                            value={recsRetired}
-                            onChange={e=>setRecsRetired(e.target.value)}
+                            checked={recsRetired === 'Yes'}
+                            onChange={e=>setRecsRetired(e.target.checked ? 'Yes' : 'No')}
                             onBlur={e=>updateSubmissionForm({recs_retired: recsRetired})}
                             >
                         </input>
@@ -87,8 +90,8 @@ export default function SubmitDetails() {
                     <div>
                         <input 
                             type="checkbox" 
-                            value={revsNeutral}
-                            onChange={e=>setRevsNeutral(e.target.value)}
+                            checked={revsNeutral === 'Yes'}
+                            onChange={e=>setRevsNeutral(e.target.checked ? 'Yes' : 'No')}
                             onBlur={e=>updateSubmissionForm({revenue_neutral: revsNeutral})}
                             >
                         </input>
@@ -97,8 +100,8 @@ export default function SubmitDetails() {
                     <div>
                         <input 
                             type="checkbox" 
-                            value={retail}
-                            onChange={e=>setRetail(e.target.value)}
+                            checked={retail === "Yes"}
+                            onChange={e=>setRetail(e.target.checked ? 'Yes' : 'No')}
                             onBlur={e=>updateSubmissionForm({retail: retail})}
                             >
                         </input>
@@ -107,8 +110,8 @@ export default function SubmitDetails() {
                     <div>
                         <input 
                             type="checkbox" 
-                            value={waitlist}
-                            onChange={e=>setWaitlist(e.target.value)}
+                            checked={waitlist === "Yes"}
+                            onChange={e=>setWaitlist(e.target.checked ? 'Yes' : 'No')}
                             onBlur={e=>updateSubmissionForm({waitlist: waitlist})}
                             >
                         </input>
