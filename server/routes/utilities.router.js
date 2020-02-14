@@ -186,7 +186,9 @@ router.get('/details/:id', async (req, res) => {
             programs, production, utility_id
       `
       const response = await pool.query(query, [req.params.id]);
-      res.send(response.rows[0]);
+      const valueToSend = response.rows[0];
+      valueToSend.programs = valueToSend.programs.filter(program => program.id !== null);
+      res.send(valueToSend);
   } catch(error){
       res.sendStatus(500);
       console.log('-------- ERROR GETTING UTILITY DETAILS -------- \n', error);
