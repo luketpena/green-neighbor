@@ -6,12 +6,11 @@ import styled, {keyframes} from 'styled-components';
 import Background from '../../images/bkg-forest-top.jpg';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBullhorn, faScroll, faSeedling, faExclamation, faHandsHelping, faCaretUp } from '@fortawesome/free-solid-svg-icons';
+import { faScroll, faSeedling, faExclamation, faHandsHelping, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
 import HomeButton from '../HomeButton/HomeButton';
 
 const ActionData = [
-  {action: 'share', text: `Share with Friends`, icon: faBullhorn},
   {action: 'utility', text: `View other energy programs near you`, icon: faScroll},
   {action: 'about', text: `Discover Green Energy's Impact`, icon: faSeedling},
   {action: 'report', text: `Report a problem with this energy program`, icon: faExclamation},
@@ -98,7 +97,7 @@ const BottomDisplay = styled.div`
 const ActionCard = styled.button`
   
   text-align: center;
-  width: 20%;
+  width: 30%;
   padding: 16px;
   background-color: rgba(255,255,255,.1);
   color: rgba(255,255,255,.8);
@@ -191,6 +190,7 @@ export default function DetailsPage() {
       case 'utility': history.push(`/utility/${zip}`); break;
       case 'about': history.push('/about'); break;
       case 'report': history.push(`/report/${zip}/${details.eia_state}/${details.id}`); break;
+      case 'contribute': history.push('/contribute'); break;
       default: /* Always remember: keep React happy with default cases. */ break;
     }
   }
