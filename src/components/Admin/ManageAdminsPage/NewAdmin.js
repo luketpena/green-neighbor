@@ -29,7 +29,6 @@ const Body = styled.form`
 export default function NewAdmin() {
 
     const {usernames} = useParams();
-   
     const dispatch = useDispatch(); 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -63,8 +62,6 @@ export default function NewAdmin() {
               </input>                                  
             <button >Submit</button>                   
           </form>
-      </Body>
-          
-      
-    )
+      </Body>  
+    );
 }

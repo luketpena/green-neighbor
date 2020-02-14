@@ -4,22 +4,42 @@ import {useDispatch} from 'react-redux';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  h2 {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+    h2 {
     text-align: center;
-  }
+    }
+    div {
+        justify-content: left;
+        text-align: left;
+        padding-top: 0px
+        flush: left;        
+    }
 `;
 
 const DetailsBox = styled.div`
-  width: 90%;
-  height: 100%;
-  margin: 0 auto;
-  border-radius: 32px;
-  overflow: hidden;
-  margin-top: 50px;
+    display: block;
+    height: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    margin-top: 0px;
+    vertical-align: left;
 `;
 
-//captializes the letter of the column being brought in from DB
-
+const CheckboxForm = styled.form`
+    margin: 10px 0;
+    float: left
+    label {
+        padding: 10px;
+        
+    }
+    input {
+        margin: 10px 10px 10px 0px;
+        width:
+    }
+`
 
 export default function SubmitDetails() {
 
@@ -31,93 +51,111 @@ export default function SubmitDetails() {
     const [waitlist, setWaitlist] = useState();
     const [urlLink, setUrlLink] = useState();
     const [urlText, setUrlText] = useState();
+    const [programName, setProgramName] = useState();
+    const dispatch = useDispatch();
 
-   const updateSubmissionForm = obj => {
-       dispatch = ({ type: 'UPDATE_FORM_SUBMISSION', payload: obj })
-   }
-
-    // List for on sets for above input values
-    // useEffect( () => { setGreenE( greenE ); }, [greenE] );
-    // useEffect( () => { setRecsRetired( recsRetired ); }, [recsRetired] );
-    // useEffect( () => { setRecsNeutral( recsNeutral); }, [recsNeutral] );
-    // useEffect( () => { setRetail( retail ); }, [retail] );
-    // useEffect( () => { setWaitlist( waitlist ); }, [waitlist] );
-    // useEffect( () => { setUrlLink( urlLink ); }, [urlLink] );
-    // useEffect( () => { setUrlText( urlText ); }, [urlText] );
-
-
+    // Stores state from this step's inputs in the reducer.
+    const updateSubmissionForm = obj => {
+        dispatch({ type: 'UPDATE_FORM_SUBMISSION', payload: obj })
+    }
 
     function renderDetails() {
         
             return(
-                
-                <form >
-                    <label>Green-e Certified</label>
-                    <input 
-                        type="checkbox" 
-                        value={greenE}
-                        onChange={e=>setGreenE(e.target.value)}
-                        onBlur={e=>updateSubmissionForm({green_e: greenE})}
+                <CheckboxForm>
+                    <h2>Overview</h2>
+                    <div>
+                        <input 
+                            type="checkbox" 
+                            value={greenE}
+                            onChange={e=>setGreenE(e.target.value)}
+                            onBlur={e=>updateSubmissionForm({green_e: greenE})}
+                            >
+                        </input>
+                        <label>Green-e Certified</label>
+                    </div>
+                    <div>
+                        <input 
+                            type="checkbox" 
+                            value={recsRetired}
+                            onChange={e=>setRecsRetired(e.target.value)}
+                            onBlur={e=>updateSubmissionForm({recs_retired: recsRetired})}
+                            >
+                        </input>
+                        <label>Recs Retired</label>
+                    </div>
+                    <div>
+                        <input 
+                            type="checkbox" 
+                            value={revsNeutral}
+                            onChange={e=>setRevsNeutral(e.target.value)}
+                            onBlur={e=>updateSubmissionForm({revenue_neutral: revsNeutral})}
+                            >
+                        </input>
+                        <label>Revenue Neutral</label>
+                    </div>
+                    <div>
+                        <input 
+                            type="checkbox" 
+                            value={retail}
+                            onChange={e=>setRetail(e.target.value)}
+                            onBlur={e=>updateSubmissionForm({retail: retail})}
+                            >
+                        </input>
+                        <label>Retail</label>
+                    </div>
+                    <div>
+                        <input 
+                            type="checkbox" 
+                            value={waitlist}
+                            onChange={e=>setWaitlist(e.target.value)}
+                            onBlur={e=>updateSubmissionForm({waitlist: waitlist})}
+                            >
+                        </input>
+                        <label>Waitlist Available</label>
+                    </div>
+                    <div>
+                        <label>Program Name:  </label>
+                        <input 
+                            type="text" 
+                            placeholder="Enter Program Name"
+                            value={urlText}
+                            onChange={e=>setProgramName(e.target.value)}
+                            onBlur={e=>updateSubmissionForm({program_name: programName})}
+                            >
+                        </input> 
+                    </div>
+                    <div>
+                        <label>Sign Up or Enroll Link:  </label>
+                        <input 
+                            type="text"
+                            placeholder="sign-up-here.com"
+                            value={urlLink}
+                            onChange={e=>setUrlLink(e.target.value)}
+                            onBlur={e=>updateSubmissionForm({sign_up_url: urlLink})}
                         >
-                    </input>
-                    <label>Recs Retired</label>
-                    <input 
-                        type="checkbox" 
-                        value={recsRetired}
-                        onChange={e=>setRecsRetired(e.target.value)}
-                        onBlur={e=>updateSubmissionForm({recs_retired: recsRetired})}
-                        >
-                    </input>
-                    <label>Revenue Neutral</label>
-                    <input 
-                        type="checkbox" 
-                        value={revsNeutral}
-                        onChange={e=>setRevsNeutral(e.target.value)}
-                        onBlur={e=>updateSubmissionForm({revenue_neutral: revsNeutral})}
-                        >
-                    </input>
-                    <label>Retail</label>
-                    <input 
-                        type="checkbox" 
-                        value={retail}
-                        onChange={e=>setRetail(e.target.value)}
-                        onBlur={e=>updateSubmissionForm({retail: retail})}
-                        >
-                    </input>
-                    <label>Waitlist Available</label>
-                    <input 
-                        type="checkbox" 
-                        value={waitlist}
-                        onChange={e=>setWaitlist(e.target.value)}
-                        >
-                    </input>
-                    <label>Sign Up or Enroll Link</label>
-                    <input 
-                        type="checkbox" 
-                        value={urlLink}
-                        onChange={e=>setUrlLink(e.target.value)}
-                    >
-                    </input>
-                    <label>Sign Up or Enroll Text</label>
-                    <input 
-                        type="checkbox" 
-                        value={urlText}
-                        onChange={e=>setUrlText(e.target.value)}
-                        >
-                    </input>
-                </form>
+                        </input>
+                    </div>
+                    <div>
+                        <label>Sign Up or Enroll Text:  </label>
+                        <input 
+                            type="text" 
+                            placeholder="Sign-Up, Enroll Now"
+                            value={urlText}
+                            onChange={e=>setUrlText(e.target.value)}
+                            onBlur={e=>updateSubmissionForm({sign_up_text: urlText})}
+                            >
+                        </input> 
+                    </div>
+                </CheckboxForm>    
             )
     }
 
     return (
         <Container>
-          <h2>Details</h2>
           <DetailsBox>
               {renderDetails()}
           </DetailsBox>
         </Container>
       )
-
-
-
 }

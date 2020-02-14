@@ -116,11 +116,11 @@ export default function AboutPage() {
 
     <Container>
       <QBox>
-        {faq.map((item,id)=>{return<button className="button-primary" onClick={()=>document.getElementById(`faqanswer${id}`).scrollIntoView({behavior: "smooth"})}>{item.Q}</button>})}
+        {faq.map((item,id)=>{return<button key={`faq${id}`} className="button-primary" onClick={()=>document.getElementById(`faqanswer${id}`).scrollIntoView({behavior: "smooth"})}>{item.Q}</button>})}
       </QBox>
       
       <ABox className="container">
-        {faq.map((answer,id)=>{return <Adiv id={`faqanswer${id}`}><h2>{answer.H}</h2><p>{answer.A}</p></Adiv>})}
+        {faq.map((answer,id)=>{return <Adiv key={`faq${id}`} id={`faqanswer${id}`}><h2>{answer.H}</h2><p>{answer.A}</p></Adiv>})}
       </ABox>
     </Container>
     </BackgroundBox>
