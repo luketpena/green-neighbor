@@ -98,6 +98,7 @@ export default function ReportErrorPage(props){
     const [email, setEmail] = useState('');
     const [open, setOpen] = useState(false);
 
+    // on first mount
     useEffect(()=>{
         if(program_id){
             dispatch({type: 'GET_PROGRAM_DETAILS', payload: program_id});
@@ -107,8 +108,11 @@ export default function ReportErrorPage(props){
         }
     }, [dispatch, zip, program_id, eia_state]);
 
+    // when utility data gets pulled in
     useEffect(()=>{
-        setCompanyName(utility_name);
+        if(eia_state){
+            setCompanyName(utility_name);
+        }
     }, [utility_name, history]);
 
     useEffect(()=>{
