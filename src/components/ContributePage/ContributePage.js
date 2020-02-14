@@ -20,7 +20,7 @@ const BackgroundBox = styled.div`
   background-attachment: fixed;
   background-position: center;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0;
   box-sizing: border-box;
 `;
@@ -51,10 +51,13 @@ const Card = styled.div`
   border: 2px solid white;
   border-radius: 16px;
   width: 320px;
-  height: 400px;
+  height: 320px;
   margin: 8px 16px;
   padding: 12px;
   box-sizing: border-box;
+
+  display: grid;
+  grid-template-rows: auto 1fr;
 
   .icon {
     color: white;

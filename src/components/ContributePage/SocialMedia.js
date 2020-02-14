@@ -17,17 +17,20 @@ export default function SocialMedia() {
     }, []);
 
   return(
-    <Container>
-        <h2>Follow us on social media</h2>
-        <h3>And share us with your neighbors</h3>
+    <Container className="cardContent">
+        <div>
+          <h2>Follow us on social media</h2>
+          <h3>And share us with your neighbors!</h3>
+        </div>
 
+          <div className="socialMediaBox">
             <div className="twitter-embed">
                 <a 
                     className="twitter-follow-button"
                     href="https://twitter.com/GreenNeighborCh?ref_src=twsrc%5Etfw"
                     rel="noopener noreferrer"
                     target="_blank"
-                    data-size="large"
+                    data-size="medium"
                     data-show-count="default">
                         Follow @GreenNeighborCh
                 </a>
@@ -37,13 +40,14 @@ export default function SocialMedia() {
                 <div 
                     className="fb-like" 
                     data-href="https://www.facebook.com/GreenNeighborChallenge/" 
-                    data-width="279" 
+                    data-width="250" 
                     data-layout="standard" 
                     data-action="like" 
                     data-size="large" 
                     data-share="true">
                 </div>
             </div>
+          </div>
     </Container>
   )
 }
