@@ -30,7 +30,7 @@ const Container = styled.div`
     button {
         display:  block;
         margin: 0 auto;
-        
+
     }
 `;
 
@@ -45,6 +45,7 @@ export default function NewAdmin() {
     const addNewAdmin = () => {
         dispatch({ type: 'POST_NEW_ADMIN', payload: {username, password} });
         dispatch({ type: 'GET_ADMIN_USERS', usernames});
+     
     }
 
     // set up password conformation
