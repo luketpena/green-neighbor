@@ -18,7 +18,6 @@ const Container = styled.div`
     }
     input {
         margin: 10px 10px 10px 0px;
-        width:
     }
     button {
         display:  block;

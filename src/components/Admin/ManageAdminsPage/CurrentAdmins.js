@@ -5,7 +5,7 @@ import UpdateAdminInfo from '../ManageAdminsPage/UpdateAdminInfo';
 import styled from 'styled-components';
 
 const Container = styled.div`
-width: 400px;
+    width: 600px;
     display: block;
     justify-content: center;
     background-color: var(--color-bkg-container);
@@ -27,6 +27,13 @@ width: 400px;
     }
     h1 {
         text-align: center; 
+    }
+    button {
+        text-align: center;
+        align: left;
+    }
+    td {
+        text-align: center;
     }
 `;
 
@@ -84,7 +91,6 @@ export default function CurrentAdmin() {
                         
                         {adminUsers.map((user, i) => {
                             return<tr key={i}>
-                                {/* {JSON.stringify(user)} */}
                                     <td>{user.username}</td>
                                     <td>
                                         {user.id === currentUser.id ? <EditButton /> : <RemoveButton user={user} />}
