@@ -129,6 +129,17 @@ export default function SubmitDetails() {
                         <label>Waitlist Available</label>
                     </div>
                     <div>
+                        <label>Program Name:  </label>
+                        <input 
+                            type="text" 
+                            placeholder="Enter Program Name"
+                            value={programName}
+                            onChange={e=>setProgramName(e.target.value)}
+                            onBlur={e=>updateSubmissionForm({program_name: programName})}
+                            >
+                        </input> 
+                    </div>
+                    <div>
                         <label>Sign Up or Enroll Link:  </label>
                         <input 
                             type="text"
