@@ -1,8 +1,22 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import {Modal} from '@material-ui/core';
+
+const Resolved = styled.button`
+    color: ${props=>(props.resolved? 'var(--color-primary)' : '#A53535')};
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    transition: all .2s;
+    &:hover {
+        color: ${props=>(props.resolved? 'var(--color-primary-bright)' : '#333')};
+        transform: scale(1.05);
+        cursor: pointer;
+    }
+`;
 
 const ModalBody = styled.div`
     position: absolute;
@@ -36,17 +50,28 @@ const TicketInfo = styled.div`
     }
 `;
 
+const ButtonRow = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+`;
+
 export default function DetailsModal(props){
     const history = useHistory();
     const dispatch = useDispatch();
     const open = useSelector(state => state.adminTicketsModalOpen);
     const ticket = useSelector(state => state.adminTicketsModalTicket);
     ticket.date_submitted = new Date(ticket.date_submitted);
+    const [resolved, setResolved] = useState(ticket.resolved);
+
+    useEffect(() => {
+        setResolved(ticket.resolved);
+    }, [ticket.resolved]);
+
     const closeModal = e => {
         dispatch({type: 'SET_TICKET_MODAL_OPEN', payload: false});
     }
 
-    console.log(ticket);
     const onEditClick = () => {
         if(ticket.type === 0){
             dispatch({
@@ -82,6 +107,15 @@ export default function DetailsModal(props){
         }
     }
 
+    const onResolvedClicked = e => {
+        const value = !resolved;
+        dispatch({
+            type: 'SET_TICKET_RESOLVE',
+            payload: {id: ticket.id, value}
+        });
+        setResolved(value);
+    }
+
     const buttonText = ['Create Utility', 'Create Program', `Edit ${ticket.program_name}`]
 
     return(
@@ -96,7 +130,14 @@ export default function DetailsModal(props){
             >
                 <MarginLeft>
                     <h2>Ticket Details</h2>
-                    <p>{ticket.resolved ? 'Resolved' : 'Active'}</p>
+                    <p>
+                        <Resolved
+                            resolved={resolved}
+                            onClick={onResolvedClicked}
+                        >
+                            {resolved ? 'Resolved' : 'Active'}
+                        </Resolved>
+                    </p>
                 </MarginLeft>
                 <TicketInfo>
                     <p>Submitted:</p>
@@ -123,16 +164,18 @@ export default function DetailsModal(props){
                         <p>{ticket.comments}</p>
                     </>
                 }
-                <button
-                    onClick={onEditClick}
-                    className='button-default'
-                >
-                    {buttonText[ticket.type]}
-                </button>
-                <button
-                    onClick={closeModal}
-                    className='button-default'
-                >Close</button>
+                <ButtonRow>
+                    <button
+                        onClick={onEditClick}
+                        className='button-default'
+                    >
+                        {buttonText[ticket.type]}
+                    </button>
+                    <button
+                        onClick={closeModal}
+                        className='button-default'
+                    >Close</button>
+                </ButtonRow>
             </ModalBody>
         </Modal>
     )

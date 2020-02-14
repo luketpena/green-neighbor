@@ -37,6 +37,7 @@ const rootReducer = combineReducers({
   tickets: createReducer('SET_TICKETS', {}),
   adminTicketsDisplayDetails: createReducer('SET_TICKETS_DISPLAY', false),
   adminTicketsModalOpen: createReducer('SET_TICKET_MODAL_OPEN', false),
+  ticketsUpdateFlag: createReducer('SET_TICKETS_UPDATE_FLAG', 0),
   adminTicketsModalTicket: createReducer('SET_TICKET_MODAL_TICKET', {}),
   submissionFormReducer,
   editWatcher: createReducer('SET_EDIT_READY', false),

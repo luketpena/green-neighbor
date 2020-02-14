@@ -1,4 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import writeQueries from '../../modules/writeQueries';
 
@@ -15,6 +15,8 @@ function* getTickets(action) {
 function* setTicketResolve(action){
   try{
     yield axios.put(`/api/tickets/resolve/${action.payload.id}/${action.payload.value}`);
+    const updateFlag = yield select(state => state.ticketsUpdateFlag);
+    yield put({type: 'SET_TICKETS_UPDATE_FLAG', payload: updateFlag + 1});
   } catch (error) {
       console.log(error);
   }

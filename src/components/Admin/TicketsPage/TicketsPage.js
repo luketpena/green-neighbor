@@ -54,6 +54,7 @@ export default function TicketsPage() {
 
     const ticketCount = useSelector(state=>state.tickets.count);
     const showDetails = useSelector(state => state.adminTicketsDisplayDetails);
+    const ticketsUpdateFlag = useSelector(state => state.ticketsUpdateFlag);
 
     const hasMounted = useRef(false);
 
@@ -114,7 +115,7 @@ export default function TicketsPage() {
         });
     }, [dispatch, zip, program, utility, resolved,
         fromCompanies, fromUtility, fromProgram,
-        offset, comments
+        offset, comments, ticketsUpdateFlag
     ]);
 
     
