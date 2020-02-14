@@ -43,7 +43,7 @@ const ProgramCardMain = styled.div`
   box-sizing: border-box;
   z-index: 1;
   height: 150px;
-  padding: 4px;
+  padding: 8px;
   text-align: center;
   p {
     margin: 8px auto;
