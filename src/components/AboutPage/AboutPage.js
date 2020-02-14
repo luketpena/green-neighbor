@@ -15,55 +15,55 @@ const BackgroundBox = styled.div`
 `;
 
 const Container = styled.div`
-width: 90%;
-height: 500px;
-margin: 0 auto;
-display: grid;
-justify-content: center;
-grid-template-rows: 100px 1fr;
-grid-template-areas: "questions answers" ;
-grid-template-columns: 250px 850px ;
+  width: 90%;
+  height: 500px;
+  margin: 0 auto;
+  display: grid;
+  justify-content: center;
+  grid-template-rows: 100px 1fr;
+  grid-template-areas: "questions answers" ;
+  grid-template-columns: max-content 1fr ;
 `;
 
 const Header = styled.div`
-display: flex;
-  align-items: center;
-  justify-content: center;
-  
-color: white;
-text-shadow: 0 0 4px black;
-h1 {
-  font-family: var(--font-header);
-  font-size: 64px;
-  margin: 0;
-}
+  display: flex;
+    align-items: center;
+    justify-content: center;
+    
+  color: white;
+  text-shadow: 0 0 4px black;
+  h1 {
+    font-family: var(--font-header);
+    font-size: 64px;
+    margin: 0;
+  }
 `;
 
 const QBox = styled.div`
-grid-area: questions;
-grid-row: 2;
+  grid-area: questions;
+  grid-row: 2;
 
-height: 350px;
-display: flex;
-flex-direction: column;
-align-items: right;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: right;
 `;
 
 const ABox = styled.div`
-grid-area: answers;
-grid-row: 2;
-height: 350px;
-overflow-y: scroll;
-background-color:rgba(250,250,250,0.8);
-font-family: var(--font-main);
+  grid-area: answers;
+  grid-row: 2;
+  height: 350px;
+  overflow-y: scroll;
+  background-color:rgba(250,250,250,0.8);
+  font-family: var(--font-main);
 `;
 
 const Adiv = styled.div`
-padding: 15px 0px 15px;
-display: flex;
-flex-direction: column;
-align-items: center;
-height: 100%;
+  padding: 15px 0px 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
 `;
 
 export default function AboutPage() {
