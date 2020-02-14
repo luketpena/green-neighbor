@@ -59,7 +59,7 @@ export default function SubmitDetails() {
 
     // Stores state from this step's inputs in the reducer.
     const updateSubmissionForm = obj => {
-        dispatch({ type: 'UPDATE_FORM_SUBMISSION', payload: obj })
+        dispatch({ type: 'UPDATE_SUBMISSION_FORM', payload: obj })
     }
 
     function renderDetails() {
