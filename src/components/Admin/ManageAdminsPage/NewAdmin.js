@@ -1,29 +1,31 @@
-import React, { useState } from 'react';
-import {useDispatch} from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 
-const Body = styled.form`
-    h1 {
-        font-family: var(--font-header);
-        font-size: 64px;
-        margin: 0;
-    }
-    h2 {
-        margin: 0;
-        font-family: var(--font-main);
-        font-weight: lighter;
-      }
-    label {
-        color: #f1773b;
-    }
-    height: max-content;
-    text-align: center;
-    display: flex;
-    flex-flow: column nowrap;
+const Container = styled.div`
+    display: block;
     justify-content: center;
-    color: white;
-    text-shadow: 0 0 4px black;
+    background-color: var(--color-bkg-container);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 4px 4px -2px var(--color-shadow);
+    margin: 50px 25px;
+    label {
+        display: inline-block;
+        width:100px;
+        text-align: left;
+    }
+    input {
+        margin: 10px 10px 10px 0px;
+    }
+    button {
+        display:  block;
+        margin: 25px auto ;
+    }
+    h1 {
+        text-align: center; 
+    }
 `;
 
 export default function NewAdmin() {
@@ -32,36 +34,67 @@ export default function NewAdmin() {
     const dispatch = useDispatch(); 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [passConfirm, setPassConfirm] = useState('');
 
     const addNewAdmin = () => {
         dispatch({ type: 'POST_NEW_ADMIN', payload: {username, password} });
         dispatch({ type: 'GET_ADMIN_USERS', usernames});
     }
 
+    // set up password conformation
+    const handleConfirmPassword = () => {
+        if (password !== passConfirm)  {
+            alert ("Passwords don't match, please try again.");
+        } else {
+            addNewAdmin();
+        }
+    }
+
     return(
-      <Body onSubmit={addNewAdmin}>
-        <h1>Add New Admin</h1>
-          <form className="form">               
-            <label htmlFor="name">New Name</label>
-              <input 
-                  type="text" 
-                  placeholder="Username" 
-                  id="name" 
-                  value={username} 
-                  onChange={e=>setUsername(e.target.value)} 
-                  tabIndex="1">
-              </input>                          
-              <label htmlFor="password">Password</label>
-              <input 
-                  type="text" 
-                  placeholder="Password" 
-                  id="password" 
-                  value={password} 
-                  onChange={e=>setPassword(e.target.value)} 
-                  tabIndex="2">   
-              </input>                                  
-            <button >Submit</button>                   
-          </form>
-      </Body>  
-    );
+        
+        <Container>
+            <h1>Add New Admin</h1>
+                <form onSubmit={handleConfirmPassword}>
+                    <div>             
+                        <label htmlFor="name">New Username</label>
+                            <input 
+                                required
+                                type="text" 
+                                placeholder="Username" 
+                                id="name" 
+                                value={username} 
+                                onChange={e=>setUsername(e.target.value)} 
+                                tabIndex="1">
+                            </input>     
+                        </div>
+                        <div>                           
+                        <label htmlFor="password">Password</label>
+                            <input 
+                                required
+                                type="text" 
+                                placeholder="Password" 
+                                id="password" 
+                                value={password} 
+                                onChange={e=>setPassword(e.target.value)} 
+                                tabIndex="2">   
+                            </input> 
+                        </div>    
+                        <div> 
+                        <label htmlFor="confirm-password"> Confirm Password</label>
+                            <input 
+                                required
+                                type="text" 
+                                placeholder="Confirm Password" 
+                                id="password" 
+                                value={passConfirm} 
+                                onChange={e=>setPassConfirm(e.target.value)} 
+                                tabIndex="2">   
+                            </input> 
+                        </div>
+                        <div>                                              
+                            <button >Submit</button>
+                        </div>                     
+                </form>
+        </Container>
+    )
 }

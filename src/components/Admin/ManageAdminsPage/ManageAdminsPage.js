@@ -8,26 +8,26 @@ import CurrentAdmin from'../ManageAdminsPage/CurrentAdmins';
 
 
 const Container = styled.div`
-    color: white;
-    height: 100vh;
-    width: max-content;
-    margin: auto auto;
-    align-text: center;
-    justify-content: center;
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 300px;  
+  margin: 0px 0px 0px 0px;
+  .component-box {
+    width: 400px;
+    
+     
+  }
 `;
 
 export default function ManageAdminsPage() {
 
   return(
-    
-      <Container>
-        <NewAdmin 
-        />
-        <CurrentAdmin 
-        /> 
-      </Container>
+    <Container>
+        <NewAdmin className="component-box" />
+        <CurrentAdmin  className="component-box"/>
+    </Container> 
 
   )
 }

@@ -81,6 +81,7 @@ CREATE TABLE "tickets" (
 	-- 0: missing utility company
 	-- 1: missing program
 	-- 2: errors in program
+	"state" VARCHAR,
 	"zip" INT,
 	"zips_id" INT,
 	"utility_name" VARCHAR,

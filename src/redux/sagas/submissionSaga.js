@@ -19,6 +19,14 @@ function* createUtility(action) {
   }
 }
 
+function* createProgram(action){
+  try{
+    yield axios.post('/api/programs/create', action.payload);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function* getProgramSubmissionFormData(action){
   try {
     const response = yield axios.get(`/api/programs/details/${action.payload.id}`);
@@ -36,6 +44,7 @@ function* submissionSaga() {
   yield takeLatest('GET_EDIT_INFO_UTILITY', getEditInfoUtility);
   yield takeLatest('CREATE_UTILITY', createUtility);
   yield takeLatest('GET_PROGRAM_SUBMISSION_FORM_DATA', getProgramSubmissionFormData);
+  yield takeLatest('CREATE_PROGRAM', createProgram);
 }
 
 export default submissionSaga;

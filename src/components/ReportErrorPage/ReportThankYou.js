@@ -1,6 +1,5 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
@@ -52,23 +51,17 @@ export default function ReportThankYou(props) {
       <div>
         <Dialog  aria-labelledby="customized-dialog-title" open={props.open}>
           <DialogTitle id="customized-dialog-title" onClose={props.handleClose}>
-            Thank You for submitting a ticket!
+            Thanks for helping out!
           </DialogTitle>
           <DialogContent dividers>
             <Typography gutterBottom>
-              Our Team at Green Neighbor Challenge will begin to look into this quickly and we'll update you when it's been processed!
-            </Typography>
-            <Typography gutterBottom>
-              Your input and feedback is important to the Green Neighbor Project and every little bit of information you provide strengthens our community.
-            </Typography>
-            <Typography gutterBottom>
-              If there is anything else you'd like to chime in on check out our <a href="https://www.facebook.com/GreenNeighborChallenge/" target="_blank">Facebook</a>  and  <a href="https://twitter.com/GreenNeighborCh" target="_blank">Twitter!</a> 
+              We will work to resolve this issue and let you know when it's been fixed.
             </Typography>
           </DialogContent>
           <DialogActions>
-            <Button autoFocus onClick={props.postThenBack} color="primary">
+            <button onClick={props.postThenBack} className="button-primary">
               Continue
-            </Button>
+            </button>
           </DialogActions>
         </Dialog>
       </div>
