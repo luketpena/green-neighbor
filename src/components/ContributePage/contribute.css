@@ -1,0 +1,27 @@
+h2, h3 {
+  color: white;
+  text-align: center;
+  text-shadow: 0 0 4px black;
+}
+
+
+
+a {
+
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+}
+
+.socialMediaBox {
+  background-color: #EEE;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.cardContent {
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
