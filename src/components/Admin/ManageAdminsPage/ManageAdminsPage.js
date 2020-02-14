@@ -12,10 +12,12 @@ const Container = styled.div`
   justify-content: center;
   flex-direction: row;
   flex-wrap: wrap;
-  height: 100%;
+  height: 300px;  
   margin: 0px 0px 0px 0px;
   .component-box {
-    min-width: 320px; 
+    width: 400px;
+    
+     
   }
 `;
 
@@ -23,11 +25,8 @@ export default function ManageAdminsPage() {
 
   return(
     <Container>
-      
         <NewAdmin className="component-box" />
-        <CurrentAdmin  className="component-box"/> 
-      
-
+        <CurrentAdmin  className="component-box"/>
     </Container> 
 
   )

@@ -4,7 +4,6 @@ import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
-    height: 250px;
     display: block;
     justify-content: center;
     background-color: var(--color-bkg-container);
@@ -14,7 +13,7 @@ const Container = styled.div`
     margin: 50px 25px;
     label {
         display: inline-block;
-        width: 100px;
+        width:100px;
         text-align: left;
     }
     input {

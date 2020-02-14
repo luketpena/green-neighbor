@@ -5,9 +5,9 @@ import UpdateAdminInfo from '../ManageAdminsPage/UpdateAdminInfo';
 import styled from 'styled-components';
 
 const Container = styled.div`
-    height: 250px;
+width: 400px;
     display: block;
-    justify-content: space-evenly;
+    justify-content: center;
     background-color: var(--color-bkg-container);
     border-radius: 16px;
     padding: 16px;
@@ -19,7 +19,7 @@ const Container = styled.div`
     }
     input {
         margin: 10px 10px 10px 0px;
-        width:
+        width: 100%
     }
     div {
         justify-content: center;
@@ -73,9 +73,9 @@ export default function CurrentAdmin() {
 
     return(
         <Container>
-            <div>
+            
                 <h1> Current Admins</h1>
-                <table>
+                <table className="admin-table">
                     <tbody>
                         <tr>
                             <th>Username</th>
@@ -94,7 +94,7 @@ export default function CurrentAdmin() {
                 </table>
             
                 <UpdateAdminInfo open={open} close={handleClose} />
-            </div>
+            
         </Container>
     )
 }
