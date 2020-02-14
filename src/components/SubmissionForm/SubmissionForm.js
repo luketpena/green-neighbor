@@ -144,8 +144,6 @@ export default function SubmissionForm() {
   }
 
   function clickSubmit() {
-    console.log('HELLO FROM SUBMIT');
-    
     switch(subject) {
       case 'utility':
         if (submissionData.utility_name && submissionData.state && submissionData.eiaid) {
@@ -164,7 +162,6 @@ export default function SubmissionForm() {
         }
         break;
     }
-    
   }
 
   function renderButtons() {
