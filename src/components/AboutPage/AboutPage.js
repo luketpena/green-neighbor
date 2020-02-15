@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import Background from '../../images/bkg-forest-top.jpg';
 import HomeButton from '../HomeButton/HomeButton';
@@ -73,11 +73,33 @@ const Content = styled.div`
 `;
 
 const Menu = styled.div`
-  background-color: yellow;
   grid-area: menu;
+  display: flex;
+  flex-direction: column;
+`;
+
+const MenuItem = styled.button`
+  background-color: yellow;
+  border: none;
+  outline: none;
+  height: ${props=>props.myHeight}%;
+  width: ${props=>(props.index===props.select? '110' : '100')}%;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+  transition: width .3s;
+
+  &:first-child {
+    border-radius: 32px 0 0 0;
+  }
+  &:last-child {
+    border-radius: 0 0 0 32px;
+  }
 `;
 
 export default function AboutPage() {
+
+  const [select, setSelect] = useState(2);
 
   const faq = [
     {
@@ -117,6 +139,21 @@ export default function AboutPage() {
     },
   ];
 
+  function renderMenu() {
+    return faq.map( (item,i)=>{
+      return (
+        <MenuItem 
+          key={i} 
+          myHeight={ (1/faq.length)*100 } 
+          select={select} 
+          index={i}
+          onClick={()=>setSelect(i)}>
+          {item.Q}
+        </MenuItem>
+      )
+    });
+  }
+
   return(
     <BackgroundBox>
       <HomeButton />
@@ -127,7 +164,7 @@ export default function AboutPage() {
     
     <Container>
       <Menu>
-
+        {renderMenu()}
       </Menu>
       <Content>
 
