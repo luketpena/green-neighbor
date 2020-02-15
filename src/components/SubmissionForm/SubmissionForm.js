@@ -234,13 +234,21 @@ export default function SubmissionForm() {
         </FormButtons>
       </FormBox>
 
-      <Dialog aria-labelledby="simple-dialog-title" open={requiredAlert}>
+      <Dialog
+        aria-labelledby="simple-dialog-title"
+        open={requiredAlert}
+        onBackdropClick={()=>setRequiredAlert(false)}
+      >
         <DialogTitle id="simple-dialog-title">Missing Information</DialogTitle>
         <DialogContent>Please fill out all of the required fields.</DialogContent>
         <button className="button-default" onClick={()=>setRequiredAlert(false)}>Close</button>
       </Dialog>
 
-      <Dialog aria-labelledby="simple-dialog-title" open={cancelAlert}>
+      <Dialog
+        aria-labelledby="simple-dialog-title"
+        open={cancelAlert}
+        onBackdropClick={()=>setCancelAlert(false)}
+      >
         <DialogTitle id="simple-dialog-title">Leave this form?</DialogTitle>
         <DialogContent>Changes you have made will not be saved.</DialogContent>
         <button className="button-default" onClick={()=>setCancelAlert(false)}>Back to Form</button>

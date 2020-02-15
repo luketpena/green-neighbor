@@ -202,8 +202,8 @@ router.get('/edit/:id', rejectUnauthenticated, async(req,res)=>{
 
   try {
     const query = `
-      SELECT ARRAY_AGG(distinct jsonb_build_object('id', z.id, 'zip', z.zip)) as "zips",
-      u.utility_name,
+      SELECT ARRAY_AGG(z.zip) as "zips",
+          u.utility_name,
           z.eia_state,
           z.eiaid,
           z.state,
