@@ -5,7 +5,7 @@ import UpdateAdminInfo from '../ManageAdminsPage/UpdateAdminInfo';
 import styled from 'styled-components';
 
 const Container = styled.div`
-    width: 600px;
+    width: max-content;
     display: block;
     justify-content: center;
     background-color: var(--color-bkg-container);
@@ -32,8 +32,11 @@ const Container = styled.div`
         text-align: center;
         align: left;
     }
-    td {
+    td, th {
         text-align: center;
+    }
+    td {
+        padding: 16px;
     }
 `;
 

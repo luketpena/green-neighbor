@@ -42,7 +42,8 @@ export default function NewAdmin() {
     }
 
     // set up password conformation
-    const handleConfirmPassword = () => {
+    const handleConfirmPassword = e => {
+        e.preventDefault();
         if (password !== passConfirm)  {
             alert ("Passwords don't match, please try again.");
         } else {
