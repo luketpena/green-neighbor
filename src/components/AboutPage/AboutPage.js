@@ -16,16 +16,18 @@ const BackgroundBox = styled.div`
 `;
 
 const Container = styled.div`
-  height: 500px;
-  width: 90%;
+  height: 600px;
+  max-width: 70%;
   margin: 0 auto;
   display: grid;
   grid-template-areas: "menu content";
   grid-template-columns: 225px 1fr;
+  grid-template-rows: 1fr;
 
   @media only screen and (max-width: 850px) {
     grid-template-areas: "menu" "content";
-    grid-template-columns: 1fr
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
   }
 `;
 
@@ -44,41 +46,11 @@ const Header = styled.div`
   }
 `;
 
-const QBox = styled.div`
-  grid-area: questions;
-  grid-row: 2;
-
-  height: 350px;
-  display: flex;
-  flex-direction: column;
-  align-items: right;
-`;
-
-const ABox = styled.div`
-  grid-area: answers;
-  grid-row: 2;
-  height: 350px;
-  overflow-y: scroll;
-  background-color:rgba(250,250,250,0.8);
-  font-family: var(--font-main);
-`;
-
-const Adiv = styled.div`
-  padding: 15px 0px 15px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
-`;
-
-
-
 const Content = styled.div`
   grid-area: content;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-left: 32px;
 `;
 
 const Menu = styled.div`
@@ -88,6 +60,7 @@ const Menu = styled.div`
   border: 1px solid white;
   border-radius: 32px 0 0 32px;
   margin-bottom: 32px;
+  height: 100%;
 
   @media only screen and (max-width: 850px) {
     border-radius: 0;
@@ -96,8 +69,7 @@ const Menu = styled.div`
 `;
 //${props=>(props.index===props.select? '110' : '100')}%;
 const MenuItem = styled.button`
-  background-color: rgba(255,255,255,.1); 
-  backdrop-filter: blur(4px);
+
   color: white;
   font-family: var(--font-main);
   font-size: 1em;
@@ -140,6 +112,10 @@ const TextBox = styled.div`
   width: 90%;
   position: relative;
   overflow: hidden;
+
+  @media only screen and (max-width: 850px) {
+    margin-top: 32px;
+  }
   
   h2 {
     font-family: var(--font-header);
@@ -191,27 +167,43 @@ export default function AboutPage() {
     {
       Q: 'Why Should I Sign Up?',
       H: 'MORE THAN I, THERE IS POWER IN "US"',
-      A: 'Our elected representatives are not representing ‘We The People.’ Our lifespans are falling. Inequality is rising. We don’t need jobs where the side effect is cancer. Over the last 20 years, for every $1 spent preventing air pollution, there were $30 in social benefits. Despite this, billions are given to fossil fuel companies. We can stop this. We can choose us. Together, we will breathe easy again.'
+      A: <div>
+          <p>Our elected representatives are not representing ‘We The People.’ Our lifespans are falling. Inequality is rising. We don’t need jobs where the side effect is cancer.</p>
+          <p>Over the last 20 years, for every $1 spent preventing air pollution, there were $30 in social benefits. Despite this, billions are given to fossil fuel companies. We can stop this. We can choose us. Together, we will breathe easy again.</p>
+        </div>
     },
     {
       Q: 'What Does It Cost?',
       H: 'FAR LESS THAN A TRIP TO THE DOCTOR',
-      A: 'Right now, the average home on the average program would pay under $10 /month for 100% clean energy. That’s about $4/person and is often much less for folks in apartments. The annual cost of healthcare is now over $10,000/person. Not only can wind turbines and solar panels improve our health, but over their lifespan, will actually drive down program and energy costs until we all have affordable, clean energy.'
+      A: <div>
+          <p>Right now, the average home on the average program would pay under $10 /month for 100% clean energy. That’s about $4/person and is often much less for folks in apartments. The annual cost of healthcare is now over $10,000/person.</p>
+          <p>Not only can wind turbines and solar panels improve our health, but over their lifespan, will actually drive down program and energy costs until we all have affordable, clean energy.</p>
+        </div>
     },
     {
       Q: 'How Does This Work?',
       H: 'ELECTRICITY IS MAGICAL. RECs ARE NOT',
-      A: 'Your utility can measure how much energy is put on the grid, in the same way it measures how much you take off. When a unit of green energy is produced, a supplier receives a “Renewable Energy Certificate” or REC. When your utility buys your energy, they can also buy RECs to certify that it was green. So when you buy green energy, your utility “retires” RECs on your behalf. Every REC is unique and can be used only once.'
+      A: <div>
+          <p>Your utility can measure how much energy is put on the grid, in the same way it measures how much you take off. When a unit of green energy is produced, a supplier receives a “Renewable Energy Certificate” or REC.</p>
+          <p>When your utility buys your energy, they can also buy RECs to certify that it was green. So when you buy green energy, your utility “retires” RECs on your behalf. Every REC is unique and can be used only once.</p>
+        </div>
     },
     {
       Q: 'Who Benefits?',
       H: 'EVERYONE EXCEPT FOSSIL FUEL TYCOONS',
-      A: 'We won’t pull punches. Developers and competitive green utilities stand to gain. But so do communities and farmers who lease land in exchange for a reliable source of clean income. Clean energy means clean jobs. No lung cancer required. Prairies, bees, and butterflies can be restored, pollinating nearby farms and purifying our water. Plus we all benefit from clean air, fewer doctor visits, and fewer climate disasters.'
+      A: <div>
+          <p>We won’t pull punches. Developers and competitive green utilities stand to gain. But so do communities and farmers who lease land in exchange for a reliable source of clean income.</p>
+          <p>Clean energy means clean jobs. No lung cancer required.</p>
+          <p>Prairies, bees, and butterflies can be restored, pollinating nearby farms and purifying our water. Plus we all benefit from clean air, fewer doctor visits, and fewer climate disasters.</p>
+        </div>
     },
     {
       Q: 'Can I Trust You?',
       H: 'LET US BE AS TRANSPARENT AS CLEAR AIR',
-      A: 'We care about clean water and air. We love our neighbors. We collect no personal information. We sell no products. We are a certified non-profit. We are powered by the forceful (foolish) will of ordinary people who would rather hustle for grants than become another middleman looking for a slice of your pie. We owe a debt to those who came before us, we aim to pay forward to those who come after.'
+      A: <div>
+          <p>We care about clean water and air. We love our neighbors. We collect no personal information. We sell no products. We are a certified non-profit. We are powered by the forceful (foolish) will of ordinary people who would rather hustle for grants than become another middleman looking for a slice of your pie.</p>
+          <p>We owe a debt to those who came before us, we aim to pay forward to those who come after.</p>
+        </div>
     },
   ];
 
@@ -220,6 +212,7 @@ export default function AboutPage() {
       return (
         <MenuItem 
           key={i} 
+          className="blur-background"
           myHeight={ (1/faq.length)*100 } 
           select={select} 
           index={i}
