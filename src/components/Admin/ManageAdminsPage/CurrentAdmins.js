@@ -83,28 +83,26 @@ export default function CurrentAdmin() {
 
     return(
         <Container>
-            
-                <h1> Current Admins</h1>
-                <table className="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Username</th>
-                            <th>Actions</th>
+            <h1> Current Admins</h1>
+            <table className="admin-table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {adminUsers.map((user, i) => 
+                        <tr key={i}>
+                            <td>{user.username}</td>
+                            <td>
+                                {user.id === currentUser.id ? <EditButton /> : <RemoveButton user={user} />}
+                            </td> 
                         </tr>
-                    </thead>
-                    <tbody>
-                        {adminUsers.map((user, i) => {
-                            return<tr key={i}>
-                                    <td>{user.username}</td>
-                                    <td>
-                                        {user.id === currentUser.id ? <EditButton /> : <RemoveButton user={user} />}
-                                    </td> 
-                                </tr>})}
-                    </tbody>
-                </table>
-            
-                <UpdateAdminInfo open={open} close={handleClose} />
-            
+                    )}
+                </tbody>
+            </table>
+            <UpdateAdminInfo open={open} close={handleClose} />
         </Container>
     )
 }
