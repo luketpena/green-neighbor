@@ -112,10 +112,11 @@ const Subtitle = styled.p`
 `;
 
 const steps = [
+  {name: 'Contract', component: <ContractForm />},
   {name: 'Details', component: <SubmitDetails />},
   {name: 'Source', component: <SubmitSources />},
   {name: 'Pricing', component: <PricingForm /> },
-  {name: 'Contract', component: <ContractForm />},
+  
 ];
 
 const capitalize = (s) => {
