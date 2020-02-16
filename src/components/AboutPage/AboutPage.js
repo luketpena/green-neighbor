@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import Background from '../../images/bkg-forest-top.jpg';
 import HomeButton from '../HomeButton/HomeButton';
@@ -9,20 +9,24 @@ const BackgroundBox = styled.div`
   background-attachment: fixed;
   background-position: center;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0;
   box-sizing: border-box;
+  overflow-x: hidden;
 `;
 
 const Container = styled.div`
-  width: 90%;
   height: 500px;
+  width: 90%;
   margin: 0 auto;
   display: grid;
-  justify-content: center;
-  grid-template-rows: 100px 1fr;
-  grid-template-areas: "questions answers" ;
-  grid-template-columns: max-content 1fr ;
+  grid-template-areas: "menu content";
+  grid-template-columns: 225px 1fr;
+
+  @media only screen and (max-width: 850px) {
+    grid-template-areas: "menu" "content";
+    grid-template-columns: 1fr
+  }
 `;
 
 const Header = styled.div`
@@ -32,6 +36,7 @@ const Header = styled.div`
     
   color: white;
   text-shadow: 0 0 4px black;
+  text-align: center;
   h1 {
     font-family: var(--font-header);
     font-size: 64px;
@@ -66,18 +71,122 @@ const Adiv = styled.div`
   height: 100%;
 `;
 
+
+
+const Content = styled.div`
+  grid-area: content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 32px;
+`;
+
+const Menu = styled.div`
+  grid-area: menu;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid white;
+  border-radius: 32px 0 0 32px;
+  margin-bottom: 32px;
+
+  @media only screen and (max-width: 850px) {
+    border-radius: 0;
+  }
+  
+`;
+//${props=>(props.index===props.select? '110' : '100')}%;
+const MenuItem = styled.button`
+  background-color: rgba(255,255,255,.1); 
+  backdrop-filter: blur(4px);
+  color: white;
+  font-family: var(--font-main);
+  font-size: 1em;
+  border: none;
+  outline: none;
+  height: ${props=>props.myHeight}%;
+
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+  transition: border-right .3s;
+  border-top: 1px solid white;
+  border-right: ${props=>(props.index===props.select? '16px solid white' : '0px solid white')};
+
+  text-shadow: 0 0 4px black;
+
+  &:first-child {
+    border-radius: 32px 0 0 0;
+    border-top: none;
+  }
+  &:last-child {
+    border-radius: 0 0 0 32px;
+  }
+
+  @media only screen and (max-width: 850px) {
+    &:first-child {
+      border-radius: 0;
+      border-top: none;
+    }
+    &:last-child {
+      border-radius: 0;
+    }
+  }
+`;
+
+const TextBox = styled.div`
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 8px 0 rgba(0,0,0,.5);
+  width: 90%;
+  position: relative;
+  overflow: hidden;
+  
+  h2 {
+    font-family: var(--font-header);
+    font-size: 48px;
+    color: white;    
+    margin: 0;
+  }
+  p {
+    font-size: 1.2em;
+    color: black;
+    line-height: 130%;
+    text-indent: 25px;
+  }
+`;
+
+const TextBoxHeader = styled.div`
+  background-color: var(--color-primary);
+  box-sizing: border-box;
+  padding: 16px;
+  box-shadow: 0 -4px 16px 8px rgba(0,0,0,.3);
+`;
+
+const TextBoxContent = styled.div`
+  padding: 16px;
+  box-sizing: border-box;
+`;
+
 export default function AboutPage() {
+
+  const [select, setSelect] = useState(0);
 
   const faq = [
     {
       Q: 'What is this?',
       H: 'THERE IS A FUTURE BEYOND POLLUTION',
-      A: 'The Green Neighbor Challenge is a campaign and tool to help get us there. Air Pollution caused over 100,000 American deaths and cost the economy $1495/person in 2015. We don’t have to keep polluting in our backyards. Most Americans can choose clean energy today, for less than the cost of Netflix. When we choose one another, we create hope. When we do it together, a new future is born. Will you join us?'
+      A: <div>
+          <p>The Green Neighbor Challenge is a campaign and tool to help get us there. Air Pollution caused over 100,000 American deaths and cost the economy $1495/person in 2015. We don’t have to keep polluting in our backyards. Most Americans can choose clean energy today, for less than the cost of Netflix.</p>
+          <p>When we choose one another, we create hope. When we do it together, a new future is born. Will you join us?</p>
+        </div>
     },
     {
       Q: 'Am I Eligible?',
       H: 'IF YOU HAVE AN ELECTRIC BILL, YOU’RE IN!',  
-      A: 'We did some homework. Nearly 7 out of 10 homes have access to a Green Energy Program. For everyone else, we aim to help you lobby your utility, your public utility commission, and your elected representatives to make choosing green an option for everyone. Also, we still have some pretty cool ideas about how you can help spread The Green Neighbor Challenge just like everyone else! #WontYouBeMine?'
+      A: <div>
+          <p>We did some homework. Nearly 7 out of 10 homes have access to a Green Energy Program. For everyone else, we aim to help you lobby your utility, your public utility commission, and your elected representatives to make choosing green an option for everyone.</p>
+          <p>Also, we still have some pretty cool ideas about how you can help spread The Green Neighbor Challenge just like everyone else! #WontYouBeMine?</p>
+        </div>
     }, 
     {
       Q: 'Why Should I Sign Up?',
@@ -106,6 +215,21 @@ export default function AboutPage() {
     },
   ];
 
+  function renderMenu() {
+    return faq.map( (item,i)=>{
+      return (
+        <MenuItem 
+          key={i} 
+          myHeight={ (1/faq.length)*100 } 
+          select={select} 
+          index={i}
+          onClick={()=>setSelect(i)}>
+          {item.Q}
+        </MenuItem>
+      )
+    });
+  }
+
   return(
     <BackgroundBox>
       <HomeButton />
@@ -113,16 +237,35 @@ export default function AboutPage() {
     <Header>
         <h1>Frequently Asked Questions</h1>
     </Header>
-
+    
     <Container>
-      <QBox>
-        {faq.map((item,id)=>{return<button key={`faq${id}`} className="button-primary" onClick={()=>document.getElementById(`faqanswer${id}`).scrollIntoView({behavior: "smooth"})}>{item.Q}</button>})}
-      </QBox>
-      
-      <ABox className="container">
-        {faq.map((answer,id)=>{return <Adiv key={`faq${id}`} id={`faqanswer${id}`}><h2>{answer.H}</h2><p>{answer.A}</p></Adiv>})}
-      </ABox>
+      <Menu>
+        {renderMenu()}
+      </Menu>
+      <Content>
+        <TextBox>
+          <TextBoxHeader>
+            <h2>{faq[select].H}</h2>
+          </TextBoxHeader>
+          <TextBoxContent>
+            {faq[select].A}
+          </TextBoxContent>
+        </TextBox>
+      </Content>
     </Container>
+    
     </BackgroundBox>
   )
 }
+
+/*
+  <Container>
+    <QBox>
+      {faq.map((item,id)=>{return<button key={`faq${id}`} className="button-primary" onClick={()=>document.getElementById(`faqanswer${id}`).scrollIntoView({behavior: "smooth"})}>{item.Q}</button>})}
+    </QBox>
+    
+    <ABox className="container">
+      {faq.map((answer,id)=>{return <Adiv key={`faq${id}`} id={`faqanswer${id}`}><h2>{answer.H}</h2><p>{answer.A}</p></Adiv>})}
+    </ABox>
+  </Container>
+*/

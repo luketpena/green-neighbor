@@ -27,6 +27,9 @@ const ModalBody = styled.div`
     :focus {
         outline: none;
     }
+    p {
+        margin: 0px;
+    }
 `;
 
 const MarginLeft = styled.div`

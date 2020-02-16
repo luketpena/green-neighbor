@@ -7,13 +7,13 @@
 
 :root {
   --color-bkg-main: #EEE;
-  --color-bkg-dark: rgb(23, 34, 48);
+  --color-bkg-dark: #264425;
   --color-bkg-container: white;
   --color-bkg-highlight: white;
   --color-shadow: rgba(0,0,0,.5);
 
-  --color-primary: #137d65;
-  --color-primary-light: #20A073;
+  --color-primary: #508046;
+  --color-primary-light: #76A058;
 
   --color-button-default-main: #CCC;
   --color-button-default-light: #EEE;

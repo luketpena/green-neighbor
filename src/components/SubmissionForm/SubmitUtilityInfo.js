@@ -178,7 +178,7 @@ export default function SubmitUtilityInfo() {
     return zips.map( (zip, i)=>{
       return (
         <li key={i}>
-          <button onClick={()=>removeZip(i)}>
+          <button onClick={()=>setDeleteZip(i)}>
             <FontAwesomeIcon icon={faTimes}/>
           </button>
           {zip} 
@@ -195,10 +195,11 @@ export default function SubmitUtilityInfo() {
     setZipInput('');
   }
 
-  function removeZip(i) {
+  function removeZip() {
     let copy = [...zips];
-    copy.splice(i,1);
+    copy.splice(deleteZip, 1);
     setZips(copy);
+    setDeleteZip(-1);
     dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {zips: copy}})
   }
 
@@ -282,12 +283,15 @@ export default function SubmitUtilityInfo() {
         </ul>
       </ZipBox>
 
-      <Dialog open={(deleteZip!==-1)}>
+      <Dialog open={(deleteZip!==-1)} onBackdropClick={()=>setDeleteZip(-1)}>
         <PopUpContent>
           <DialogTitle>{(deleteZip!==-1? <span>Delete ZIP {zips[deleteZip].zip}?</span> : <span>Delete ZIP</span>)}</DialogTitle>
         
           <button className="button-negative" onClick={removeZip}>Delete</button>
-          <button className="button-default" onClick={()=>setDeleteZip(-1)}>Cancel</button>
+          <button
+            className="button-default"
+            onClick={()=>setDeleteZip(-1)}
+          >Cancel</button>
         </PopUpContent>
       </Dialog>
 
