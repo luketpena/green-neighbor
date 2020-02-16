@@ -41,6 +41,10 @@ const capitalize = (s) => {
   return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
+const newKey = () => {
+  newKey.value = newKey.value ? newKey.value + 1 : 1;
+  return newKey.value;
+}
 
 export default function SubmitSources() {
 
@@ -96,7 +100,8 @@ export default function SubmitSources() {
           <label>{capitalize(item.name)}</label>
           <input 
             type="number" 
-            value={ Math.round(sourceList[i].value*100) }  
+            value={ Math.round(sourceList[i].value*100) || '' }  
+            placeholder = '0'
             onChange={event=>changeSourceList(i,'value', Number( (event.target.value/100).toFixed(2)) )} 
             onBlur={event=> changeSourceList(i,'value', Number(((event.target.value/100)-Math.max(0,sumSources()-1)).toFixed(2)) )}/>
           <label>%</label>
@@ -110,7 +115,7 @@ export default function SubmitSources() {
     <Container>
       <h2>Sources</h2>
       <EnergyBox>
-        <EnergyBar sourceList={sourceList} key={Math.random} program={{
+        <EnergyBar sourceList={sourceList} key={newKey()} program={{
           wind: sourceList[0].value,
           solar: sourceList[1].value,
           bio: sourceList[2].value,

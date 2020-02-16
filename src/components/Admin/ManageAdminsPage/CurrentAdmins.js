@@ -5,7 +5,7 @@ import UpdateAdminInfo from '../ManageAdminsPage/UpdateAdminInfo';
 import styled from 'styled-components';
 
 const Container = styled.div`
-    width: 600px;
+    width: max-content;
     display: block;
     justify-content: center;
     background-color: var(--color-bkg-container);
@@ -32,8 +32,11 @@ const Container = styled.div`
         text-align: center;
         align: left;
     }
-    td {
+    td, th {
         text-align: center;
+    }
+    td {
+        padding: 16px;
     }
 `;
 
@@ -83,12 +86,13 @@ export default function CurrentAdmin() {
             
                 <h1> Current Admins</h1>
                 <table className="admin-table">
-                    <tbody>
+                    <thead>
                         <tr>
                             <th>Username</th>
                             <th>Actions</th>
                         </tr>
-                        
+                    </thead>
+                    <tbody>
                         {adminUsers.map((user, i) => {
                             return<tr key={i}>
                                     <td>{user.username}</td>

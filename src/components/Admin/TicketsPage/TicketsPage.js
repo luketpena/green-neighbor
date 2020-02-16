@@ -129,6 +129,16 @@ export default function TicketsPage() {
         showFromProgram, showResolved]
     );
 
+    // ensure modal is closed on page up
+    useEffect(() => {
+        dispatch({
+            type: 'SET_TICKET_MODAL_OPEN', payload: false
+        });
+        dispatch({
+            type: 'SET_TICKETS_DISPLAY', payload: false
+        });
+    }, [dispatch]);
+
     // push current search to url
     function onSearch(e) {
       if(e) e.preventDefault();

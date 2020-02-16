@@ -31,6 +31,14 @@ const ProductionButton = styled.button`
     }
 `;
 
+const SubHeader = styled.h3`
+    margin-bottom: 0px;
+`;
+
+const NoMargin = styled.p`
+    margin: 0px;
+    padding: 0px;
+`;
 
 function Program({program}){
   const {name, id} = program;
@@ -57,7 +65,7 @@ function Program({program}){
   }
 
   return(
-    <p>
+    <NoMargin>
       {name || `Unnamed Program (ID #${id})`}
       <ProductionButton
         onClick={onProductionClick}
@@ -69,7 +77,7 @@ function Program({program}){
         onClick={onEditClick}
         className='button-default'
       >Edit</button>
-    </p>
+    </NoMargin>
   )
 }
 
@@ -148,8 +156,8 @@ export default function UtilityModal(props){
         </ProgramTitle>
       </DialogTitle>
       <DialogContent>
-        <p>EIA - State: {eia_state}</p>
-        <h3>Programs:</h3>
+        <NoMargin>EIA - State: {eia_state}</NoMargin>
+        <SubHeader>Programs:</SubHeader>
         <List>
           {programs && programs.map(program =>
             <Program program={program} key={program.id} />
@@ -160,9 +168,9 @@ export default function UtilityModal(props){
         </List>
         <h3>Active Zips:</h3>
         <List>
-          <p>
+          <NoMargin>
             {zips && zips.map(a => a.zip).join(', ')}
-          </p>
+          </NoMargin>
         </List>
       </DialogContent>
       <DialogActions>

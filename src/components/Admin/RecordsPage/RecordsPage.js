@@ -131,10 +131,13 @@ export default function RecordsPage() {
 
   let [mount, setMount] = useState(false);
 
-
+  // check if something changed on the modal, load
+  // data on page mount
   useEffect(()=>{
     dispatch({type: 'GET_UTILITIES', payload: {page, search: utilitiesSearch}});
-    
+    //ensure modal is closed
+    dispatch({type: 'SET_ADMIN_RECORDS_MODAL_OPEN', payload: false});
+
     if (!mount) {
       setMount(true);
       dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show, order}});
