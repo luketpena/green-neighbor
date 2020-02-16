@@ -20,6 +20,7 @@ const Inputs = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-column-gap: 4px;
+    grid-row-gap: 8px;
 `;
 
 const DialogTitle = withStyles(styles)(props => {
