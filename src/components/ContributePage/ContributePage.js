@@ -1,11 +1,16 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faBullhorn, faEnvelopeOpenText, faHandHoldingUsd} from '@fortawesome/free-solid-svg-icons';
 import Background from '../../images/bkg-forest-top.jpg';
+
 // fancy home button
 import HomeButton from '../HomeButton/HomeButton';
 import SocialMedia from '../ContributePage/SocialMedia';
-import NewsLetter from '../ContributePage/NewsLetterPage';
-import Donate from '../ContributePage/DonatePage';
+import NewsLetter from './NewsLetter';
+import Donate from './Donate';
+
+
 
 
 const BackgroundBox = styled.div`
@@ -14,20 +19,42 @@ const BackgroundBox = styled.div`
   background-attachment: fixed;
   background-position: center;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0;
   box-sizing: border-box;
+
+  h2, h3 {
+    color: white;
+    text-align: center;
+    text-shadow: 0 0 4px black;
+  }
+  
+
+  a {
+  
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .socialMediaBox {
+    background-color: #EEE;
+    padding: 8px;
+    border-radius: 8px;
+  }
+  
+  .cardContent {
+    display: grid;
+    grid-template-rows: 1fr auto;
+  }
 `;
 
 const Container = styled.div`
-width: 90%;
-height: 500px;
-margin: 0 auto;
-display: grid;
-grid-template-areas: "menu details";
-grid-template-rows: 100px 1fr;
-grid-template-columns: max-content 1fr;
-justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 `;
 
 const Header = styled.div`
@@ -44,61 +71,78 @@ h1 {
 }
 `;
 
-const Menu = styled.div`
-grid-area: menu;
-height: 400px;
-grid-row: 2;
-display: flex;
-flex-direction: column;
-align-items: right;
-`;
-
-const Details = styled.div`
-grid-area: details;
-grid-row: 2;
-
-height: 400px;
-overflow-y: scroll;
-background-color:rgba(250,250,250,0.8);
-`;
-
 const Card = styled.div`
-padding: 15px 0px 15px;
-display: flex;
-flex-direction: column;
-align-items: center;
-height: 100%;
+  background-color: rgba(255, 255, 255, .1);
+  backdrop-filter: blur(4px);
+  border: 2px solid white;
+  border-radius: 16px;
+  width: 320px;
+  height: 320px;
+  margin: 8px 16px;
+  padding: 12px;
+  box-sizing: border-box;
+
+  display: grid;
+  grid-template-rows: auto 1fr;
+
+  .icon {
+    color: white;
+    display: block;
+    margin: 16px auto;
+    font-size: 80px;
+  }
+
 `;
+
+
 
 export default function ContributePage() {
         
 
   return(
-      <BackgroundBox>
-            <HomeButton/>
-            <Header>
-                <h1>Contribute</h1>
-            </Header>
-        <Container>
+    <BackgroundBox>
+      <HomeButton/>
+      <Header>
+          <h1>Contribute</h1>
+      </Header>
+      <Container>
+        <Card>
+          <FontAwesomeIcon className="icon" icon={faBullhorn} />
+          
+          <SocialMedia />
+        </Card>
 
-            <Menu>
-                <button className="button-primary" >Follow us on Socal Media</button>
-                <button className="button-primary" >News Letter</button>
-                <button className="button-primary" >Donation</button>
-            </Menu> 
+        <Card>
+          <FontAwesomeIcon className="icon" icon={faEnvelopeOpenText} />
+          <NewsLetter />
+        </Card>
 
-            <Details className="container">
-                <Card>
-                    <SocialMedia/>
-                </Card>
-                <Card>
-                    <NewsLetter/>
-                </Card>
-                <Card>
-                    <Donate/>
-                </Card>
-            </Details>
-        </Container>
+        <Card>
+          <FontAwesomeIcon className="icon" icon={faHandHoldingUsd} />
+          <Donate />
+        </Card>
+      
+      </Container>
     </BackgroundBox>
   )
 }
+
+/*
+<Menu>
+    <button className="button-primary" >Follow us on Socal Media</button>
+    <button className="button-primary" >News Letter</button>
+    <button className="button-primary" >Donation</button>
+</Menu> 
+
+  <Details className="container">
+    <Card>
+        <SocialMedia/>
+    </Card>
+    <Card>
+        <NewsLetter/>
+    </Card>
+    <Card>
+        <Donate/>
+    </Card>
+  </Details>
+*/
