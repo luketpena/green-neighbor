@@ -13,6 +13,20 @@ import ContractForm from './ContractForm';
 import SubmitDetails from './SubmitDetails';
 import SubmitUtilityInfo from './SubmitUtilityInfo';
 
+const CancelSubButton = styled.button`
+  background-color: var(--color-button-negative-main); 
+  color: var(--color-text-light);
+  outline: none;
+  border: none;
+  padding: 8px 24px;
+  box-shadow: 0 2px 2px -1px var(--color-shadow);
+  font-size: 1rem;
+  margin: 8px;
+  border-radius: 8px;
+  transition: all .2s;
+  font-family: var(--font-button);
+`
+
 const Container = styled.div`
   height: 100%;
   display: grid;
@@ -99,9 +113,9 @@ const FormArea = styled.div`
 
 const FormButtons = styled.div`
   padding: 16px;
-  display: flex;
+  display: grid;
   justify-content: center;
-
+  grid-template-columns: auto 1fr auto;
 `;
 
 const TitleBox = styled.div``;
@@ -223,14 +237,15 @@ export default function SubmissionForm() {
           <h1>{capitalize(action)} {capitalize(subject)}</h1>
           {subject === 'program' && submissionData.utility_name &&
           <Subtitle>{submissionData.utility_name}, {submissionData.state}</Subtitle>}
-          <button onClick={()=>setCancelAlert(true)} className="button-negative">Cancel Submission</button>
+          {/* <button onClick={()=>setCancelAlert(true)} className="button-negative">Cancel Submission</button> */}
         </TitleBox>
         <FormArea>
           {(subject==='program'? steps[currentStep].component : <SubmitUtilityInfo />)}  
         </FormArea>
         <FormButtons>
-          <p><span className="required">*</span> = required field</p>
-          {renderButtons()}
+        <CancelSubButton onClick={()=>setCancelAlert(true)} >Cancel Submission</CancelSubButton>
+          <p><span className="required">*</span> = required field {renderButtons()}</p>
+          
         </FormButtons>
       </FormBox>
 
