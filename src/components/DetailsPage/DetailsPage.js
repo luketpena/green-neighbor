@@ -91,8 +91,6 @@ const BottomDisplay = styled.div`
 `;
 
 
-
-
 const ActionCard = styled.button`
   
   text-align: center;

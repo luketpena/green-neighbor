@@ -107,6 +107,7 @@ body {
 }
 
 .button-wire {
+  outline: none;
   font-size: 1em;
   font-family: var(--font-button);
   margin: 8px;
