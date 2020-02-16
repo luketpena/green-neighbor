@@ -83,12 +83,13 @@ export default function CurrentAdmin() {
             
                 <h1> Current Admins</h1>
                 <table className="admin-table">
-                    <tbody>
+                    <thead>
                         <tr>
                             <th>Username</th>
                             <th>Actions</th>
                         </tr>
-                        
+                    </thead>
+                    <tbody>
                         {adminUsers.map((user, i) => {
                             return<tr key={i}>
                                     <td>{user.username}</td>
