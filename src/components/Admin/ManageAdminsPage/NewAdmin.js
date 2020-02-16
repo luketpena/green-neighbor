@@ -38,7 +38,6 @@ export default function NewAdmin() {
 
     const addNewAdmin = () => {
         dispatch({ type: 'POST_NEW_ADMIN', payload: {username, password} });
-        dispatch({ type: 'GET_ADMIN_USERS', usernames});
     }
 
     // set up password conformation
@@ -72,7 +71,7 @@ export default function NewAdmin() {
                         <label htmlFor="password">Password</label>
                             <input 
                                 required
-                                type="text" 
+                                type="password" 
                                 placeholder="Password" 
                                 id="password" 
                                 value={password} 
@@ -84,7 +83,7 @@ export default function NewAdmin() {
                         <label htmlFor="confirm-password"> Confirm Password</label>
                             <input 
                                 required
-                                type="text" 
+                                type="password" 
                                 placeholder="Confirm Password" 
                                 id="password" 
                                 value={passConfirm} 

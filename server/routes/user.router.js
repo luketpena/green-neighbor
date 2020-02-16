@@ -37,14 +37,26 @@ router.post('/admin', rejectUnauthenticated, (req, res) => {
 
 // Handles UPDATING requests for when Admins change their user info.
 router.put('/admin/:id', rejectUnauthenticated, (req, res) => {
-  const username = req.body.username;
-  const password = encryptLib.encryptPassword(req.body.password);
-  const id = req.user.id;
+  const acceptedKeys = ['username, password'];
+  if(req.body.password){
+    req.body.password = encryptLib.encryptPassword(req.body.password);
+  }
+  if(!username && !password){
+    res.sendStatus(400);
+    return;
+  }
+  const config = [req.user.id];
+  const setValues = Object.keys(req.body)
+    .filter(([key]) => acceptedKeys.includes(key))
+    .map(([key, value]) => {
+      config.push(value);
+      return `${key}=$${config.length}`;
+    }).join(', ');
   const queryText = `
     UPDATE "user"
-    SET username = $1, password = $2
-    WHERE "user"."id" = $3`;
-    pool.query(queryText, [username, password, id])
+    SET ${values}
+    WHERE "user"."id" = $1`;
+    pool.query(queryText, config)
     .then((result) => {
       res.sendStatus(200);
     }).catch((error) => {
