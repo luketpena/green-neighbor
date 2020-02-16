@@ -114,8 +114,10 @@ const FormArea = styled.div`
 const FormButtons = styled.div`
   padding: 16px;
   display: grid;
-  justify-content: center;
   grid-template-columns: auto 1fr auto;
+  p {
+    text-align: center;
+  }
 `;
 
 const TitleBox = styled.div``;
@@ -203,7 +205,6 @@ export default function SubmissionForm() {
               </>
           }
         }
-        break;
       case 'utility':
         return (
           <button onClick={clickSubmit} className="button-primary">Submit</button>
@@ -243,8 +244,11 @@ export default function SubmissionForm() {
           {(subject==='program'? steps[currentStep].component : <SubmitUtilityInfo />)}  
         </FormArea>
         <FormButtons>
-        <CancelSubButton onClick={()=>setCancelAlert(true)} >Cancel Submission</CancelSubButton>
-          <p><span className="required">*</span> = required field {renderButtons()}</p>
+          <button className="button-negative" onClick={()=>setCancelAlert(true)} >Cancel Submission</button>
+          <p><span className="required">*</span> = required field</p>
+          <div>
+            {renderButtons()}
+          </div>
           
         </FormButtons>
       </FormBox>
@@ -256,7 +260,7 @@ export default function SubmissionForm() {
       >
         <DialogTitle id="simple-dialog-title">Missing Information</DialogTitle>
         <DialogContent>Please fill out all of the required fields.</DialogContent>
-        <button className="button-default" onClick={()=>setRequiredAlert(false)}>Close</button>
+        <button className="button-cancel" onClick={()=>setRequiredAlert(false)}>Close</button>
       </Dialog>
 
       <Dialog
