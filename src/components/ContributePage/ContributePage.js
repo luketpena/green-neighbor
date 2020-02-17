@@ -72,8 +72,7 @@ h1 {
 `;
 
 const Card = styled.div`
-  background-color: rgba(255, 255, 255, .1);
-  backdrop-filter: blur(4px);
+  
   border: 2px solid white;
   border-radius: 16px;
   width: 320px;
@@ -98,26 +97,33 @@ const Card = styled.div`
 
 export default function ContributePage() {
         
+  function checkForBlur() {
+    let target = document.getElementById('blur');
+    console.log('My Target data:',target);
+    
+    return target;
+  }
 
   return(
     <BackgroundBox>
       <HomeButton/>
       <Header>
-          <h1>Contribute</h1>
+          <h1 id="blur" onClick={checkForBlur}>Contribute</h1>
+          {checkForBlur()}
       </Header>
       <Container>
-        <Card>
+        <Card className="blur-background">
           <FontAwesomeIcon className="icon" icon={faBullhorn} />
           
           <SocialMedia />
         </Card>
 
-        <Card>
+        <Card className="blur-background">
           <FontAwesomeIcon className="icon" icon={faEnvelopeOpenText} />
           <NewsLetter />
         </Card>
 
-        <Card>
+        <Card className="blur-background">
           <FontAwesomeIcon className="icon" icon={faHandHoldingUsd} />
           <Donate />
         </Card>
@@ -126,23 +132,3 @@ export default function ContributePage() {
     </BackgroundBox>
   )
 }
-
-/*
-<Menu>
-    <button className="button-primary" >Follow us on Socal Media</button>
-    <button className="button-primary" >News Letter</button>
-    <button className="button-primary" >Donation</button>
-</Menu> 
-
-  <Details className="container">
-    <Card>
-        <SocialMedia/>
-    </Card>
-    <Card>
-        <NewsLetter/>
-    </Card>
-    <Card>
-        <Donate/>
-    </Card>
-  </Details>
-*/
