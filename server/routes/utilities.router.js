@@ -115,9 +115,9 @@ router.get('/summary/:page', async(req,res)=>{
           jsonb_build_object('name', g.program_name, 'id', g.id, 'production', g.production)
           ORDER BY g.id
         ) as programs
-      FROM zips as z
+      FROM utilities as u
+      LEFT JOIN zips z ON u.eia_state=z.eia_state
       LEFT JOIN gpp g ON z.eia_state=g.eia_state
-      JOIN utilities u ON u.eia_state=z.eia_state
     `;
 
     let queryParams = [req.params.page*100];
@@ -146,7 +146,6 @@ router.get('/summary/:page', async(req,res)=>{
       LIMIT 100 OFFSET $1;`;
 
     const result = await pool.query(query,queryParams);
-
     // AFAIK, there is no way to prevent Postgres from
     // returning a null JSON
     result.rows.forEach(item => {
