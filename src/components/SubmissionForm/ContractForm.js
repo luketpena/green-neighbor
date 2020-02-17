@@ -33,7 +33,7 @@ const ContractForm = styled.form`
     label {
         padding: 10px;
     }
-    input {
+    input, select {
         margin: 10px 10px 10px 0px;
     }
     select {
