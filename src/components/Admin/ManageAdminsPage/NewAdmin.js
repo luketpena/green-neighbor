@@ -85,7 +85,7 @@ export default function NewAdmin() {
                                 required
                                 type="password" 
                                 placeholder="Confirm Password" 
-                                id="password" 
+                                id="confirm-password" 
                                 value={passConfirm} 
                                 onChange={e=>setPassConfirm(e.target.value)} 
                                 tabIndex="2">   
