@@ -12,7 +12,6 @@ const Container = styled.div`
   justify-content: center;
   flex-direction: row;
   flex-wrap: wrap;
-  height: 300px;  
   margin: 0px 0px 0px 0px;
   .component-box {
     width: 400px;
