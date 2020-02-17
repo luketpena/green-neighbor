@@ -140,11 +140,9 @@ export default function ProgramCard(props) {
     let mainHeight = document.getElementsByClassName('program-card-main')[props.index];
     let detailsHeight = document.getElementsByClassName('program-card-details')[props.index];
     if (mainHeight) {
-      console.log('h_main:',props.index,mainHeight.clientHeight);
       setH_main(mainHeight.clientHeight);
     }
     if (detailsHeight) {
-      
       setH_details(detailsHeight.clientHeight);
     }
   }
