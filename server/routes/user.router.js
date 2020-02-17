@@ -15,7 +15,9 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 // Handles GET request to get all admins that are current users
 router.get('/admins', rejectUnauthenticated, (req, res) => {
   const username = req.body.username;
-  const queryText = `SELECT "user"."username", "user"."id" FROM "user";`;
+  const queryText = `
+    SELECT "user"."username", "user"."id"
+    FROM "user" ORDER BY "user"."id";`;
   pool.query(queryText, username)
   .then(result => {
     res.send(result.rows);
@@ -28,7 +30,7 @@ router.get('/admins', rejectUnauthenticated, (req, res) => {
 // Handles POST request for adding new admins to the users table
 router.post('/admin', rejectUnauthenticated, (req, res) => {
   const username = req.body.username;
-  const password = req.body.password;
+  const password = encryptLib.encryptPassword(req.body.password);
   const queryText = `INSERT INTO "user" (username, password) VALUES ($1, $2);`;
   pool.query(queryText, [username, password])
   .then(() => res.sendStatus(201))
@@ -36,21 +38,34 @@ router.post('/admin', rejectUnauthenticated, (req, res) => {
 });
 
 // Handles UPDATING requests for when Admins change their user info.
-router.put('/admin/:id', rejectUnauthenticated, (req, res) => {
-  const username = req.body.username;
-  const password = encryptLib.encryptPassword(req.body.password);
-  const id = req.user.id;
+router.put('/admin', rejectUnauthenticated, (req, res) => {
+  const acceptedKeys = ['username', 'password'];
+  if(req.body.password){
+    req.body.password = encryptLib.encryptPassword(req.body.password);
+  }
+  if(!req.body.username && !req.body.password){
+    res.sendStatus(400);
+    return;
+  }
+  const config = [req.user.id];
+  const setValues = Object.entries(req.body)
+    .filter(([key, value]) => {
+      return value && acceptedKeys.includes(key) ;
+    }).map(([key, value]) => {
+      config.push(value);
+      return `${key}=$${config.length}`;
+    }).join(', ');
   const queryText = `
     UPDATE "user"
-    SET username = $1, password = $2
-    WHERE "user"."id" = $3`;
-    pool.query(queryText, [username, password, id])
-    .then((result) => {
-      res.sendStatus(200);
-    }).catch((error) => {
-      console.log('error updating admin user info router', error);
-      
-    })
+    SET ${setValues}
+    WHERE "user"."id" = $1`;
+    pool.query(queryText, config)
+      .then((result) => {
+        res.sendStatus(200);
+      }).catch((error) => {
+        res.sendStatus(500);
+        console.log('error updating admin user info router', error);
+    });
 })
 
 // Handles POST request with new user data

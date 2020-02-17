@@ -10,9 +10,9 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 router.get('/getName/:zip/:eia_state', async (req, res) => {
     try{
         const query = `
-            SELECT "id" AS "zips_id", "utility_name"
-            FROM "zips"
-            WHERE "zip"=$1 AND "eia_state"=$2`
+            SELECT "zips"."id" AS "zips_id", "utilities"."utility_name"
+            FROM "zips" JOIN "utilities" ON "zips"."eia_state"="utilities"."eia_state"
+            WHERE "zips"."zip"=$1 AND "zips"."eia_state"=$2`
         const {rows} = await pool.query(query, [req.params.zip, req.params.eia_state]);
         res.send(rows[0]);
     } catch (error) {
@@ -61,7 +61,7 @@ function stringifyQueries(query,paramsArray) {
         }   
         if (value!=='all') {
           final.string += conjunctionFunction(final.params);
-          final.string += `z.production=$${final.params.length}`;
+          final.string += `u.production=$${final.params.length}`;
         }
         break;
       case 'zip':
@@ -115,9 +115,9 @@ router.get('/summary/:page', async(req,res)=>{
           jsonb_build_object('name', g.program_name, 'id', g.id, 'production', g.production)
           ORDER BY g.id
         ) as programs
-      FROM zips as z
+      FROM utilities as u
+      LEFT JOIN zips z ON u.eia_state=z.eia_state
       LEFT JOIN gpp g ON z.eia_state=g.eia_state
-      JOIN utilities u ON u.eia_state=z.eia_state
     `;
 
     let queryParams = [req.params.page*100];
@@ -146,7 +146,6 @@ router.get('/summary/:page', async(req,res)=>{
       LIMIT 100 OFFSET $1;`;
 
     const result = await pool.query(query,queryParams);
-
     // AFAIK, there is no way to prevent Postgres from
     // returning a null JSON
     result.rows.forEach(item => {
@@ -161,6 +160,40 @@ router.get('/summary/:page', async(req,res)=>{
   }
 });
 
+
+router.get('/details/:id', async (req, res) => {
+  try{
+      const query = `
+          SELECT ARRAY_AGG("zips") as zips, eia_state, utility_name, state,
+          program_count, programs, production, utility_id
+          FROM (
+          SELECT json_build_object('id', z.id, 'zip', z.zip) as "zips",
+              z.eia_state, u.utility_name, z.state,
+              COUNT(g.utility_name) as program_count,
+              u.production AS production, u.id AS utility_id,
+              array_agg(
+                  jsonb_build_object('name', g.program_name, 'id', g.id, 'production', g.production)
+                  ORDER BY g.id
+              ) as programs
+          FROM utilities u 
+          LEFT JOIN zips z ON u.eia_state=z.eia_state
+          LEFT JOIN gpp g ON z.eia_state=g.eia_state
+          WHERE u.id=$1
+          GROUP BY z.id, u.utility_name, u.production, u.id
+          ) AS td
+          GROUP BY eia_state, utility_name, state, program_count,
+            programs, production, utility_id
+      `
+      const response = await pool.query(query, [req.params.id]);
+      const valueToSend = response.rows[0];
+      valueToSend.programs = valueToSend.programs.filter(program => program.id !== null);
+      res.send(valueToSend);
+  } catch(error){
+      res.sendStatus(500);
+      console.log('-------- ERROR GETTING UTILITY DETAILS -------- \n', error);
+  }
+});
+
 /* 
   Gets the info to edit a single utility company 
 */
@@ -170,8 +203,8 @@ router.get('/edit/:id', rejectUnauthenticated, async(req,res)=>{
   // SELECT ARRAY_AGG(distinct jsonb_build_object('id', z.id, 'zip', z.zip)) as "zips",
   try {
     const query = `
-      SELECT ARRAY_AGG(distinct z.zip) as "zips",
-      u.utility_name,
+      SELECT ARRAY_AGG(z.zip) as "zips",
+          u.utility_name,
           z.eia_state,
           z.eiaid,
           z.state,
@@ -206,6 +239,7 @@ router.post('/', rejectUnauthenticated, async(req,res)=>{
   let zip_keys = [];
   let zip_values = [];
 
+  console.log(req.body)
    //>> Collect the info from the req.body into usable arrays
   for (let [key,value] of Object.entries(req.body)) {
     if (value!=='') {
@@ -236,8 +270,6 @@ router.post('/', rejectUnauthenticated, async(req,res)=>{
   //>> Construct queries if zips are present
   if (req.body.hasOwnProperty('zips')) {
     //>> Collect the info from the req.body into usable arrays
-   
-
     for (let [key,value] of Object.entries(req.body)) {
       if (value!=='') {
         switch(key) {
@@ -260,7 +292,8 @@ router.post('/', rejectUnauthenticated, async(req,res)=>{
     //>> Construct the query from those arrays
     zip_query = `INSERT INTO zips (zip,${zip_keys.toString()}) VALUES ($1,${zip_keys.map((key,i)=>`$${i+2}`).toString()})`;
     console.log('Zip info:',req.body.zips[0],zip_values);
-    console.log('Zip query:',zip_query);
+    console.log('ZÍip query:',zip_query);
+    console.log(query, config);
     
     
     

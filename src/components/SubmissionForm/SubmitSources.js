@@ -1,8 +1,9 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
 
 import EnergyBar from '../EnergyBar/EnergyBar';
+import submissionFormReducer from '../../redux/reducers/submissionFormReducer';
 
 const Container = styled.div`
   h2 {
@@ -40,18 +41,24 @@ const capitalize = (s) => {
   return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
+const newKey = () => {
+  newKey.value = newKey.value ? newKey.value + 1 : 1;
+  return newKey.value;
+}
 
 export default function SubmitSources() {
 
+  const form = useSelector(state => state.submissionFormReducer);
+
   const [sourceList, setSourceList] = useState([
-    {name: 'wind', value: 0, active: false},
-    {name: 'solar', value: .2, active: false},
-    {name: 'bio', value: 0, active: false},
-    {name: 'hydro', value: 0, active: false},
-    {name: 'geo', value: 0, active: false},
+    {name: 'wind', value: form.wind || 0},
+    {name: 'solar', value: form.solar || 0},
+    {name: 'bio', value: form.bio || 0},
+    {name: 'hydro', value: form.hydro || 0},
+    {name: 'geo', value: form.geo || 0},
   ]);
 
-  const dispatch = useDispatch();
+  const dispatch = useCallback(useDispatch(), []);
   
   const sumSources = useCallback(
     ()=> {
@@ -65,6 +72,7 @@ export default function SubmitSources() {
   );
 
   useEffect(()=>{
+    console.log(sourceList);
     const sources = {
       wind: sourceList[0].value,
       solar: sourceList[1].value,
@@ -92,7 +100,8 @@ export default function SubmitSources() {
           <label>{capitalize(item.name)}</label>
           <input 
             type="number" 
-            value={ Math.round(sourceList[i].value*100) }  
+            value={ Math.round(sourceList[i].value*100) || '' }  
+            placeholder = '0'
             onChange={event=>changeSourceList(i,'value', Number( (event.target.value/100).toFixed(2)) )} 
             onBlur={event=> changeSourceList(i,'value', Number(((event.target.value/100)-Math.max(0,sumSources()-1)).toFixed(2)) )}/>
           <label>%</label>
@@ -106,7 +115,7 @@ export default function SubmitSources() {
     <Container>
       <h2>Sources</h2>
       <EnergyBox>
-        <EnergyBar sourceList={sourceList} key={Math.random} program={{
+        <EnergyBar sourceList={sourceList} key={newKey()} program={{
           wind: sourceList[0].value,
           solar: sourceList[1].value,
           bio: sourceList[2].value,

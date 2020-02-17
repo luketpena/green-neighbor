@@ -7,13 +7,13 @@
 
 :root {
   --color-bkg-main: #EEE;
-  --color-bkg-dark: rgb(23, 34, 48);
+  --color-bkg-dark: #264425;
   --color-bkg-container: white;
   --color-bkg-highlight: white;
   --color-shadow: rgba(0,0,0,.5);
 
-  --color-primary: #137d65;
-  --color-primary-light: #20A073;
+  --color-primary: #508046;
+  --color-primary-light: #76A058;
 
   --color-button-default-main: #CCC;
   --color-button-default-light: #EEE;
@@ -41,6 +41,17 @@ body {
   margin: 0;
   height: 100vh;
   font-family: var(--font-main);
+}
+
+.blur-background {
+  background-color: rgba(0,0,0, .5);
+}
+
+@supports (backdrop-filter: blur(4px)) {
+  .blur-background {
+    background-color: rgba(255, 255, 255, .1);
+    backdrop-filter: blur(20px);
+  }
 }
 
 .required {
@@ -76,7 +87,7 @@ body {
   box-sizing: border-box;
 }
 
-.button-default, .button-primary, .button-secondary, .button-negative {
+.button-default, .button-primary, .button-secondary, .button-negative, .button-cancel{
   outline: none;
   border: none;
   padding: 8px 24px;
@@ -96,6 +107,7 @@ body {
 }
 
 .button-wire {
+  outline: none;
   font-size: 1em;
   font-family: var(--font-button);
   margin: 8px;
@@ -115,75 +127,6 @@ body {
   text-shadow: 0 0 0px black;
   padding: 8px 32px;
 }
-
-/* Begin Input Styling */
-
-/* .input-container {
-  max-width: 25em;
-  margin: 2em auto;
-  width: 95%;
-   
-}
-
-.input-title {
-  font-size: 1.5em; 
-  padding: .5em 0;
-  text-align: center; 
-  background: #323a45;
-  color: white;
-  border-radius: 5px 5px 0 0;
-}
-
-label, input, textarea {
-  display: block;
-  border: 0;
-}
-
-input, textarea {
-  width: 100%; 
-  height: 100%; 
-  padding: 2.25em 1em 1em; 
-  outline: 0;
-}
-label {
-  font-size: .8125em; /* 13/16 */
-  /* position: absolute; 
-  top: 1.23em;
-  left: 1.23em;
-  color: #f1773b;
-  opacity: 1;
-  -webkit-transition: .333s ease top, .333s ease opacity;
-    transition: .333s ease top, .333s ease opacity;
-}
-.js-hide-label label {
-  opacity: 0; 
-  top: 1.5em
-} */
-
-/* End Input Styling */
-
-/* Begin Form Styling */
-
-/* .form-admin ul {
-  background: white;
-  margin-bottom: 1em;
-}
-.form-admin li {
-  border: 1px solid #ccc;
-  border-bottom: 0;
-  margin-bottom: 0px;
-  position: relative;
-}
-.form-admin li:first-child {
-  border-top: 0;
-}
-.form-admin li:last-child {
-  border-bottom: 1px solid #ccc;
-} */
-
-/* End Form Styling */
-
-
 
 .button-primary {background-color: var(--color-primary); color: var(--color-text-light);}
 .button-primary:hover {background-color: var(--color-primary-light); color: var(--color-text-light);}
@@ -239,4 +182,8 @@ input[type=number]::-webkit-outer-spin-button {
 .half-padding {
   padding: 4px 12px;
   margin: 0;
+}
+
+.nowrap {
+  white-space: nowrap;
 }

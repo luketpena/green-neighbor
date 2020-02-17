@@ -2,6 +2,7 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 const {rejectUnauthenticated} = require('../modules/authentication-middleware');
+const axios = require('axios');
 
 // send in req.query the column name and value to search for
 router.get('/', rejectUnauthenticated, async (req, res) => {
@@ -78,7 +79,7 @@ router.post('/', async (req, res) => {
             'resolved', 'zip', 'utility_name',
             'program_name', 'gpp_id',
             'email', 'comments', 'eia_state', 'zips_id',
-            'type'
+            'type', 'state'
         ];
         const config = [];
         const values = [];
@@ -86,6 +87,17 @@ router.post('/', async (req, res) => {
         if(req.body.gpp_id) req.body.type = 2;
         else if(req.body.zips_id) req.body.type = 1;
         else req.body.type = 0;
+
+        if(req.body.zip && !req.body.state){
+            try {
+                const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.body.zip}&sensor=true&key=${process.env.GEOCODE_API_KEY}`)
+                req.body.state = response.data.results[0].address_components
+                    .filter(item => item.types.includes("administrative_area_level_1"))[0]
+                    .short_name;
+            } catch(error) {
+                console.log(error);
+            }
+        }
         // for each key in req.body that is in acceptedKeys,
         // add $1 or $2 etc to values, add the value itself to
         // config, and map into keys the key itself.

@@ -4,7 +4,7 @@ import registrationSaga from './registrationSaga';
 import userSaga from './userSaga';
 import programsSaga from './programsSaga';
 import programDetailsSaga from './programDetailsSaga';
-import utilityNameSaga from './utilityNameSaga';
+import utilitySaga from './utilitySaga';
 import adminLandingSaga from './adminLandingSaga';
 import reportSaga from './reportSaga';
 import adminUserSaga from './adminUserSaga';
@@ -21,7 +21,7 @@ import submissionSaga from './submissionSaga';
 // and login triggers setting the user
 export default function* rootSaga() {
   yield all([
-    utilityNameSaga(),
+    utilitySaga(),
     programDetailsSaga(),
     programsSaga(),
     reportSaga(),

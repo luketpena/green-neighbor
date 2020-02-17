@@ -4,12 +4,12 @@ import {useParams, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import ReportThankYou from '../ReportErrorPage/ReportThankYou';
 import Background from '../../images/bkg-forest-top.jpg';
+import HomeButton from '../HomeButton/HomeButton';
 
 const Container = styled.div`
     color: white;
-    height: 100vh;
     width: max-content;
-    margin: auto auto;
+    margin: 10vh auto auto auto;
     align-text: center;
     justify-content: center;
     display: flex;
@@ -17,8 +17,11 @@ const Container = styled.div`
 `;
 
 const ImageBackground = styled.div`
-    width: 100%;
-    margin: 0 auto;
+    width: 100vw;
+    margin: 0px;
+    padding: 0px;
+    min-height: 100vh;
+    min-width: 100vw;
     background-image: url(${Background});
     background-size: cover;
     background-attachment: fixed;
@@ -38,14 +41,16 @@ const Body = styled.form`
         font-weight: lighter;
       }
     
-    height: max-content;
+    height: auto;
+    max-width: 100vw;
     text-align: center;
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
     color: white;
     text-shadow: 0 0 4px black;
-    background-color: rgba(0, 0, 0, 0.55);
+    border: 2px solid white;
+    margin: auto auto;
     padding: 16px;
     border-radius: 16px;
     box-shadow: 0 4px 4px -2px rgba(0, 0, 0, 0.4);
@@ -56,7 +61,7 @@ const Body = styled.form`
     backdrop-filter: blur(0px);
     outline: none;
     margin: 10px;
-    border: 1px solid white;
+    border: 1.1px solid white;
     text-shadow: 0 0 4px black;
     color: white;
     ::placeholder {
@@ -70,6 +75,14 @@ const Body = styled.form`
   
   `;
 
+const ButtonRow = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+`;
+
+const ColorButton = styled.button`
+    background-color: ${props => props.color};
+`;
 
 export default function ReportErrorPage(props){
 
@@ -85,6 +98,12 @@ export default function ReportErrorPage(props){
     const [email, setEmail] = useState('');
     const [open, setOpen] = useState(false);
 
+    function demoAutoFill() {
+      setComments('Your website says it runs on 50% Biomass, but it is actually 100% Wind energy.');
+      setEmail('luketpena@gmail.com');
+    }
+
+    // on first mount
     useEffect(()=>{
         if(program_id){
             dispatch({type: 'GET_PROGRAM_DETAILS', payload: program_id});
@@ -94,8 +113,11 @@ export default function ReportErrorPage(props){
         }
     }, [dispatch, zip, program_id, eia_state]);
 
+    // when utility data gets pulled in
     useEffect(()=>{
-        setCompanyName(utility_name);
+        if(eia_state){
+            setCompanyName(utility_name);
+        }
     }, [utility_name, history]);
 
     useEffect(()=>{
@@ -116,7 +138,7 @@ export default function ReportErrorPage(props){
     if(program_id && eia_state){
         body = (
             <>
-                <h1>Report Program Issue</h1>
+                <h1 onClick={demoAutoFill}>Report Program Issue</h1>
                 <p>{zip} - {utility_name} - {program_name}</p>
             </>
         )
@@ -156,8 +178,9 @@ export default function ReportErrorPage(props){
 
     return (
        <ImageBackground >
+            <HomeButton />
             <Container>
-                <Body onSubmit={handleSubmit}>
+                <Body onSubmit={handleSubmit} className="blur-background">
                     {body}
                     <Input 
                         className="zip-input"            
@@ -175,7 +198,19 @@ export default function ReportErrorPage(props){
                         onChange={e=>setEmail(e.target.value)}
                     />
                     <ReportThankYou open={open} postThenBack={postThenBack}  />
-                    <button className='button-wire'>Submit</button>
+                    <ButtonRow>
+                        <ColorButton
+                            color='rgba(255, 150, 150, 0.2)'
+                            className='button-wire'
+                            onClick={()=>history.goBack()}    
+                        >Back</ColorButton>
+                        <ColorButton
+                            color='rgba(150, 200, 255, 0.2)'
+                            className='button-wire'
+                        >
+                            Submit
+                        </ColorButton>
+                    </ButtonRow>
                 </Body>
             </Container>
         </ImageBackground>

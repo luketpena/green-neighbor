@@ -6,16 +6,15 @@ import styled, {keyframes} from 'styled-components';
 import Background from '../../images/bkg-forest-top.jpg';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBullhorn, faScroll, faSeedling, faExclamation, faHandsHelping, faCaretUp } from '@fortawesome/free-solid-svg-icons';
+import { faScroll, faSeedling, faExclamation, faHandsHelping, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
 import HomeButton from '../HomeButton/HomeButton';
 
 const ActionData = [
-  {action: 'share', text: `Share with Friends`, icon: faBullhorn},
-  {action: 'utility', text: `View other energy programs near you`, icon: faScroll},
-  {action: 'about', text: `Discover Green Energy's Impact`, icon: faSeedling},
-  {action: 'report', text: `Report a problem with this energy program`, icon: faExclamation},
-  {action: 'contribute', text: `Discover how you can contribute`, icon: faHandsHelping}
+  {action: 'utility', text: `View other energy programs near you`, short: 'Other Programs', icon: faScroll},
+  {action: 'about', text: `Discover Green Energy's Impact`, short: 'FAQ', icon: faSeedling},
+  {action: 'report', text: `Report a problem with this energy program`, short: 'Report Problem', icon: faExclamation},
+  {action: 'contribute', text: `Discover how you can contribute`, short: 'Contribute', icon: faHandsHelping}
 ];
 
 const Container = styled.div`
@@ -54,7 +53,7 @@ const TitleDiv = styled.div`
   text-shadow: 0 0 4px black;
   h1 {
     font-family: var(--font-header);
-    font-size: 96px;
+    font-size: 4em;
     margin: 0;
     margin-bottom: 32px;
   }
@@ -85,7 +84,6 @@ const BottomDisplay = styled.div`
   padding-right: px;
   justify-content: center;
   align-content: center;
-  backdrop-filter: blur(4px);
   border-top: 4px dashed white;
   position: relative;
   transition: height .5s;
@@ -93,31 +91,34 @@ const BottomDisplay = styled.div`
 `;
 
 
-
-
 const ActionCard = styled.button`
   
   text-align: center;
-  width: 20%;
-  padding: 16px;
-  background-color: rgba(255,255,255,.1);
+  width: 25%;
+  padding: 0 16px;
   color: rgba(255,255,255,.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 
   transition: all .3s;
   border: none;
   outline: none;
   font-size:  1em;
   
+  background: none;
   
   p {
     font-family: var(--font-main);
+    font-size: ${props=>(props.myWidth>500? '1em' : '.8em')};
     text-shadow: 0 0 8px black;
     display: block;
   }
   .icon {
     display: block;
-    margin: 16px auto;
-    font-size: 48px;
+    margin: 15% auto;
+    transition: font-size: .2s;
+    font-size: ${props=>(props.myWidth>500? '48px' : '32px')};
     transition: transform 1s;
   }
   &:hover, &:focus {
@@ -176,11 +177,15 @@ export default function DetailsPage() {
   const dispatch = useDispatch();
   const {id, zip} = useParams(); 
   let [discoverActive, setDiscoverActive] = useState(false);  
+  let [width, setWidth] = useState(window.innerWidth);
 
 
   useEffect(()=>{
     dispatch({type: 'GET_PROGRAM_DETAILS', payload: id});
+    window.addEventListener('resize', ()=>setWidth(window.innerWidth));
   }, [id, dispatch]);
+
+
 
   function blurActions(event) {
     event.target.blur();
@@ -191,6 +196,7 @@ export default function DetailsPage() {
       case 'utility': history.push(`/utility/${zip}`); break;
       case 'about': history.push('/about'); break;
       case 'report': history.push(`/report/${zip}/${details.eia_state}/${details.id}`); break;
+      case 'contribute': history.push('/contribute'); break;
       default: /* Always remember: keep React happy with default cases. */ break;
     }
   }
@@ -198,9 +204,9 @@ export default function DetailsPage() {
   function renderActions() {
     return ActionData.map( (item,i)=>{
       return (
-        <ActionCard key={i} onMouseLeave={blurActions} onClick={()=>clickAction(item.action)}>
+        <ActionCard key={i} onMouseLeave={blurActions} onClick={()=>clickAction(item.action)} myWidth={width}>
           <FontAwesomeIcon className="icon" icon={item.icon}/>
-          <p>{item.text}</p>
+          <p>{(width<500? item.short : item.text)}</p>
         </ActionCard>
       )
     });
@@ -218,18 +224,18 @@ export default function DetailsPage() {
         </TitleMain>
         <TitleAction>
           <p>Continue to the program website to sign up!</p>
-          <a href = {details.sign_up_url}>
+          <a href = {details.sign_up_url} target="_blank">
             <button className= "button-primary">{details.sign_up_text || 'Go!'} </button>
           </a>
         </TitleAction>
       </TitleDiv>
-
+      
       <DiscoverBar active={discoverActive}>
         <button className="discoverButton" onClick={()=>setDiscoverActive(!discoverActive)}>
           <p>Discover More</p>
           <FontAwesomeIcon className="icon" icon={faCaretUp} />
         </button>
-        <BottomDisplay active={discoverActive}>
+        <BottomDisplay active={discoverActive} className="blur-background">
           {renderActions()}
         </BottomDisplay> 
       </DiscoverBar>

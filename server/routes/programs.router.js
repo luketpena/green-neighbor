@@ -76,9 +76,6 @@ router.get('/:zip', async (req, res) => {
     }
 });
 
-
-
-
 //-----< GPP TABLE ROUTES >-----\\
 
 /* 

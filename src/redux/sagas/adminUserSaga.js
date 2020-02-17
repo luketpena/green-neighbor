@@ -14,7 +14,7 @@ function* getAdminUsers() {
   function* postAdminUser(action) {
     try{
       yield axios.post('/api/user/admin', action.payload);
-      yield put({ type: 'SET_NEW_ADMIN', payload: action.payload});
+      yield put({ type: 'GET_ADMIN_USERS', payload: action.payload});
     } catch (error) {
       console.log('error posting new admin', error);
     }
@@ -33,10 +33,9 @@ function* getAdminUsers() {
 
 // type: UPDATE
 function* updateAdminInfo (action) {
-  let id = action.payload.id
   try {
     console.log('inside updateAdminInfo saga');
-    yield axios.put(`/api/user/admin/${id}`, action.payload);
+    yield axios.put(`/api/user/admin`, action.payload);
     yield put({type: `GET_ADMIN_USERS`});
   }catch(error){
     console.log('error updating admin user info', error);

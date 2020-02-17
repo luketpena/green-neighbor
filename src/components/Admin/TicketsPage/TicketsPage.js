@@ -12,14 +12,12 @@ import {Container, ManageBox, SearchBox, FilterBox,
 import TicketsList from './TicketsList';
 
 const DetailsDisplayButton = styled.button`
-    color: ${props=>(props.active? 'var(--color-primary)' : '#A53535')};
-    background-color: rgba(0, 0, 0, 0);
-    border: none;
+    border-radius: 4px;
     outline: none;
     font-size: 1rem;
     transition: all .2s;
+    color: black;
     &:hover {
-        color: ${props=>(props.active? 'var(--color-primary-bright)' : '#333')};
         transform: scale(1.05);
         cursor: pointer;
     }
@@ -54,6 +52,7 @@ export default function TicketsPage() {
 
     const ticketCount = useSelector(state=>state.tickets.count);
     const showDetails = useSelector(state => state.adminTicketsDisplayDetails);
+    const ticketsUpdateFlag = useSelector(state => state.ticketsUpdateFlag);
 
     const hasMounted = useRef(false);
 
@@ -114,7 +113,7 @@ export default function TicketsPage() {
         });
     }, [dispatch, zip, program, utility, resolved,
         fromCompanies, fromUtility, fromProgram,
-        offset, comments
+        offset, comments, ticketsUpdateFlag
     ]);
 
     
@@ -127,6 +126,16 @@ export default function TicketsPage() {
     }, [showFromCompanies, showFromUtility,
         showFromProgram, showResolved]
     );
+
+    // ensure modal is closed on page up
+    useEffect(() => {
+        dispatch({
+            type: 'SET_TICKET_MODAL_OPEN', payload: false
+        });
+        dispatch({
+            type: 'SET_TICKETS_DISPLAY', payload: false
+        });
+    }, [dispatch]);
 
     // push current search to url
     function onSearch(e) {
@@ -149,7 +158,7 @@ export default function TicketsPage() {
 
     return(
         <Container>
-            <h2>Tickets Management</h2>
+            <h1>Tickets Management</h1>
             <ManageBox>
                 <SearchBox onSubmit={onSearch} aria-label="search box">
                     <form onSubmit={onSearch}>
@@ -253,13 +262,13 @@ export default function TicketsPage() {
                                 <th>Zip</th>
                                 <th>Company</th>
                                 <th>Program</th>
-                                <th style={{minWidth: '5rem'}}>Resolved</th>
+                                <th style={{minWidth: '5rem'}}>Status</th>
                                 <th>
                                     <DetailsDisplayButton
                                         active={showDetails}
                                         onClick={toggleShowDetails}
                                     >
-                                        {showDetails ? 'Hide':'Show'} Details
+                                        {showDetails ? 'Hide':'Show'} Detailed View
                                     </DetailsDisplayButton>
                                 </th>
                             </tr>

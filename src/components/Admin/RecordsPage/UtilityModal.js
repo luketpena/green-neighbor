@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -10,7 +11,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 const ProgramTitle = styled.span`
   display: block;
-  min-width: 500px;
 `;
 
 const List = styled.div`
@@ -31,10 +31,19 @@ const ProductionButton = styled.button`
     }
 `;
 
+const SubHeader = styled.h3`
+    margin-bottom: 0px;
+`;
+
+const NoMargin = styled.p`
+    margin: 0px;
+    padding: 0px;
+`;
 
 function Program({program}){
   const {name, id} = program;
   const dispatch = useDispatch();
+  const history = useHistory();
   const [production, setProduction] = useState(program.production);
   useEffect(()=>{
     setProduction(program.production);
@@ -48,8 +57,15 @@ function Program({program}){
     setProduction(!production);
   }
 
+  const onEditClick = () => {
+    dispatch({
+      type: 'GET_PROGRAM_SUBMISSION_FORM_DATA',
+      payload: { id, history }
+    });
+  }
+
   return(
-    <p>
+    <NoMargin>
       {name || `Unnamed Program (ID #${id})`}
       <ProductionButton
         onClick={onProductionClick}
@@ -57,78 +73,111 @@ function Program({program}){
       >
         {production ? 'Active' : 'Inactive'}
       </ProductionButton>
-    </p>
+      <button
+        onClick={onEditClick}
+        className='button-default'
+      >Edit</button>
+    </NoMargin>
   )
 }
 
 export default function UtilityModal(props){
-    const dispatch = useDispatch();
-    const utility = useSelector(state => state.adminRecordsModalUtility);
-    const {
-      eia_state, utility_name,
-      zips, 
-      programs, utility_id
-    } = utility;
-    const [production, setProduction] = useState(utility.production);
-    useEffect(()=>{
-      setProduction(utility.production);
-    }, [utility.production]);
 
-    const open = useSelector(state => state.adminRecordsModalOpen);
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const utility = useSelector(state => state.adminRecordsModalUtility);
+  const {
+    eia_state, utility_name,
+    zips, 
+    programs, utility_id
+  } = utility;
+  const [production, setProduction] = useState(utility.production);
+  useEffect(()=>{
+    setProduction(utility.production);
+  }, [utility.production]);
 
-    const close = () => {
-        dispatch({type: 'SET_ADMIN_RECORDS_MODAL_OPEN', payload: false});
-    }
+  const open = useSelector(state => state.adminRecordsModalOpen);
 
-    const toggleProduction = () => {
-      dispatch({
-        type: 'SET_UTILITY_PRODUCTION',
-        payload: {
-          id: utility_id,
-          production: !production,
-          page: props.page,
-          search: props.search
-        }
-      });
-      setProduction(!production);
-    }  
- 
-    return (
-        <Dialog
-            open={open}
-            onClose={close}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-            className="dialog"
-        >
-        <DialogTitle id="alert-dialog-title">
-          <ProgramTitle>
-            Programs for {utility_name} - <ProductionButton
-              live={production}
-              onClick={toggleProduction}
-            >{production?'Active':'Inactive'}</ProductionButton>
-          </ProgramTitle>
-        </DialogTitle>
-        <DialogContent>
-          <p>EIA - State: {eia_state}</p>
-          <h3>Programs:</h3>
-          <List>
-            {programs && programs.map(program =>
-              <Program program={program} key={program.id} />
-            )}
-          </List>
-          <h3>Active Zips:</h3>
-          <List>
-            <p>
-              {zips && zips.map(a => a.zip).join(', ')}
-            </p>
-          </List>
-        </DialogContent>
-        <DialogActions>
-          <button className="button-default" onClick={close} >
-            Close
+  const close = () => {
+      dispatch({type: 'SET_ADMIN_RECORDS_MODAL_OPEN', payload: false});
+  }
+
+  const toggleProduction = () => {
+    dispatch({
+      type: 'SET_UTILITY_PRODUCTION',
+      payload: {
+        id: utility_id,
+        production: !production,
+        page: props.page,
+        search: props.search
+      }
+    });
+    setProduction(!production);
+  } 
+
+  const openEdit = () => {
+    dispatch({type: 'GET_EDIT_INFO_UTILITY', payload: utility_id});
+  }
+
+  const addProgram = () => {
+    dispatch({
+      type: 'SET_SUBMISSION_FORM',
+      payload: {
+        eia_state,
+        utility_name,
+        eiaid: eia_state.match(/[0-9]*/)[0],
+        state: utility.state
+      }
+    });
+    history.push('/admin/submit/create/program');
+  }
+
+  return (
+    <Dialog
+      open={open}
+      onClose={close}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+      className="dialog"
+    >
+      <DialogTitle id="alert-dialog-title">
+        <ProgramTitle>
+          Programs for {utility_name} -
+          <ProductionButton
+            live={production}
+            onClick={toggleProduction}
+          >
+            {production ? 'Active' : 'Inactive'}
+          </ProductionButton>
+          -
+          <button className='button-default' onClick={openEdit}>
+            Edit
           </button>
-        </DialogActions>
-        </Dialog>
-    )
+        </ProgramTitle>
+      </DialogTitle>
+      <DialogContent>
+        <NoMargin>EIA - State: {eia_state}</NoMargin>
+        <SubHeader>Programs:</SubHeader>
+        <List>
+          {programs && programs.map(program =>
+            <Program program={program} key={program.id} />
+          )}
+          <button className='button-default' onClick={addProgram}>
+            Add Program
+          </button>
+        </List>
+        <h3>Active Zips:</h3>
+        <List>
+          <NoMargin>
+            {zips && zips.map(a => a.zip).join(', ')}
+          </NoMargin>
+        </List>
+      </DialogContent>
+      <DialogActions>
+        <button className="button-default" onClick={close} >
+          Close
+        </button>
+      </DialogActions>
+    </Dialog>
+  )
 }

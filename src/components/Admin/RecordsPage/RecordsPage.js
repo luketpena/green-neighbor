@@ -131,10 +131,13 @@ export default function RecordsPage() {
 
   let [mount, setMount] = useState(false);
 
-
+  // check if something changed on the modal, load
+  // data on page mount
   useEffect(()=>{
     dispatch({type: 'GET_UTILITIES', payload: {page, search: utilitiesSearch}});
-    
+    //ensure modal is closed
+    dispatch({type: 'SET_ADMIN_RECORDS_MODAL_OPEN', payload: false});
+
     if (!mount) {
       setMount(true);
       dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show, order}});
@@ -145,7 +148,7 @@ export default function RecordsPage() {
       history.push('/admin/submit/edit/utility');
       dispatch({type: 'SET_EDIT_READY', payload: false});
     }
-  },[utilitiesCount, utilitiesSearch, page, dispatch, mount, order, program_name, show, state, utility_name, zip, editWatcher]);
+  },[utilitiesCount, utilitiesSearch, page, dispatch, mount, order, editWatcher]);
 
   function renderUtilities() {
     return utilities.map( (item,i)=> {
@@ -203,7 +206,10 @@ export default function RecordsPage() {
     dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show, order, orderDir: target}});
   }
 
-
+  const addNewUtility = () => {
+    dispatch({type: 'SET_SUBMISSION_FORM', payload: {}});
+    history.push('/admin/submit/create/utility');
+  }
 
   return(
     <Container>
@@ -235,7 +241,7 @@ export default function RecordsPage() {
             <PageBar>{renderPages()}</PageBar>
             <button
               className="addButton button-primary"
-              onClick={()=>history.push('/admin/submit/create/utility')}
+              onClick={addNewUtility}
             >Add New Utility Company</button>
           </MainHeader>
 

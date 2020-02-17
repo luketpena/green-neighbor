@@ -134,22 +134,39 @@ export default function SubmitUtilityInfo() {
   }
 
   const [zipInput, setZipInput] = useState('');
-  const [zips, setZips] = useState(fillState('zips',[]));
-  const [state,setState] = useState(fillState('state','State'));
-  const [utility_name, setUtility_name] = useState(fillState('utility_name',''));
-  const [eiaid,setEiaid] = useState(fillState('eiaid',''));
-
-
-  const [bundled_avg_comm_rate, setComm_bundled] = useState(fillState('bundled_avg_comm_rate',''));
-  const [delivery_avg_comm_rate, setComm_delivery] = useState(fillState('dlivery_avg_comm_rate',''));
-
-  const [bundled_avg_ind_rate, setInd_bundled] = useState(fillState('bundled_avg_ind_rate',''));
-  const [delivery_avg_ind_rate, setInd_delivery] = useState(fillState('delivery_avg_ind_rate',''));
-
-  const [bundled_avg_res_rate, setRes_bundled] = useState(fillState('bundled_avg_res_rate',''));
-  const [delivery_avg_res_rate, setRes_delivery] = useState(fillState('delivery_avg_res_rate',''));
+  const [zips, setZips] = useState(submissionData.zips? submissionData.zips : [] );
+  const [state,setState] = useState(submissionData.state || 'State');
+  const [utility_name, setUtility_name] = useState(submissionData.utility_name || '');
+  const [eiaid,setEiaid] = useState(submissionData.eiaid || '');
 
   const [deleteZip, setDeleteZip] = useState(-1);
+
+  const [
+    bundled_avg_comm_rate,
+    setComm_bundled
+  ] = useState(submissionData.bundled_avg_comm_rate || '');
+  const [
+    delivery_avg_comm_rate,
+    setComm_delivery
+  ] = useState(submissionData.delivery_avg_comm_rate || '');
+
+  const [
+    bundled_avg_ind_rate,
+    setInd_bundled
+  ] = useState(submissionData.bundled_avg_ind_rate || '');
+  const [
+    delivery_avg_ind_rate,
+    setInd_delivery
+  ] = useState(submissionData.delivery_avg_ind_rate || '');
+
+  const [
+    bundled_avg_res_rate,
+    setRes_bundled
+  ] = useState(submissionData.bundled_avg_res_rate || '');
+  const [
+    delivery_avg_res_rate,
+    setRes_delivery
+  ] = useState(submissionData.delivery_avg_res_rate || '');
 
   function renderStates() {
     return states.map( (item,i)=>{
@@ -162,11 +179,13 @@ export default function SubmitUtilityInfo() {
   }
 
   function renderZips() {
-    return zips.map( (item,i)=>{
+    return zips.map( (zip, i)=>{
       return (
-      <li key={i}>
-        <button onClick={()=>setDeleteZip(i)}><FontAwesomeIcon icon={faTimes}/></button>
-        {item} 
+        <li key={i}>
+          <button onClick={()=>setDeleteZip(i)}>
+            <FontAwesomeIcon icon={faTimes}/>
+          </button>
+          {zip} 
         </li>
       );
     })
@@ -183,10 +202,10 @@ export default function SubmitUtilityInfo() {
 
   function removeZip() {
     let copy = [...zips];
-    copy.splice(deleteZip,1);
-    setDeleteZip(-1);
+    copy.splice(deleteZip, 1);
     setZips(copy);
-    dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {zips: copy}});
+    setDeleteZip(-1);
+    dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {zips: copy}})
   }
 
   return (
@@ -255,7 +274,12 @@ export default function SubmitUtilityInfo() {
       <ZipBox>
         <h3>Zip Codes</h3>
         <form onSubmit={submitZip}>
-          <input type="number" placeholder="Enter zip code" value={zipInput} onChange={event=>setZipInput(event.target.value)}/>
+          <input
+            type="number"
+            placeholder="Enter zip code"
+            value={zipInput}
+            onChange={event=>setZipInput(event.target.value)}
+          />
           <button>Add Zip</button>
         </form>
 
@@ -264,12 +288,15 @@ export default function SubmitUtilityInfo() {
         </ul>
       </ZipBox>
 
-      <Dialog open={(deleteZip!==-1)}>
+      <Dialog open={(deleteZip!==-1)} onBackdropClick={()=>setDeleteZip(-1)}>
         <PopUpContent>
           <DialogTitle>{(deleteZip!==-1? <span>Delete ZIP {zips[deleteZip].zip}?</span> : <span>Delete ZIP</span>)}</DialogTitle>
         
           <button className="button-negative" onClick={removeZip}>Delete</button>
-          <button className="button-default" onClick={()=>setDeleteZip(-1)}>Cancel</button>
+          <button
+            className="button-default"
+            onClick={()=>setDeleteZip(-1)}
+          >Cancel</button>
         </PopUpContent>
       </Dialog>
 
