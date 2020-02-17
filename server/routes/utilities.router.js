@@ -175,9 +175,9 @@ router.get('/details/:id', async (req, res) => {
                   jsonb_build_object('name', g.program_name, 'id', g.id, 'production', g.production)
                   ORDER BY g.id
               ) as programs
-          FROM zips as z
+          FROM utilities u 
+          LEFT JOIN zips z ON u.eia_state=z.eia_state
           LEFT JOIN gpp g ON z.eia_state=g.eia_state
-          JOIN utilities u ON u.eia_state=z.eia_state
           WHERE u.id=$1
           GROUP BY z.id, u.utility_name, u.production, u.id
           ) AS td
@@ -236,6 +236,7 @@ router.post('/', rejectUnauthenticated, async(req,res)=>{
   let zip_keys = [];
   let zip_values = [];
 
+  console.log(req.body)
    //>> Collect the info from the req.body into usable arrays
   for (let [key,value] of Object.entries(req.body)) {
     if (value!=='') {
@@ -266,8 +267,6 @@ router.post('/', rejectUnauthenticated, async(req,res)=>{
   //>> Construct queries if zips are present
   if (req.body.hasOwnProperty('zips')) {
     //>> Collect the info from the req.body into usable arrays
-   
-
     for (let [key,value] of Object.entries(req.body)) {
       if (value!=='') {
         switch(key) {
@@ -290,7 +289,8 @@ router.post('/', rejectUnauthenticated, async(req,res)=>{
     //>> Construct the query from those arrays
     zip_query = `INSERT INTO zips (zip,${zip_keys.toString()}) VALUES ($1,${zip_keys.map((key,i)=>`$${i+2}`).toString()})`;
     console.log('Zip info:',req.body.zips[0],zip_values);
-    console.log('Zip query:',zip_query);
+    console.log('ZÍip query:',zip_query);
+    console.log(query, config);
     
     
     
