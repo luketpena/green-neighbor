@@ -206,7 +206,10 @@ export default function RecordsPage() {
     dispatch({type: 'SET_UTILITIES_SEARCH', payload: {state, zip, utility_name, program_name, show, order, orderDir: target}});
   }
 
-
+  const addNewUtility = () => {
+    dispatch({type: 'SET_SUBMISSION_FORM', payload: {}});
+    history.push('/admin/submit/create/utility');
+  }
 
   return(
     <Container>
@@ -238,7 +241,7 @@ export default function RecordsPage() {
             <PageBar>{renderPages()}</PageBar>
             <button
               className="addButton button-primary"
-              onClick={()=>history.push('/admin/submit/create/utility')}
+              onClick={addNewUtility}
             >Add New Utility Company</button>
           </MainHeader>
 

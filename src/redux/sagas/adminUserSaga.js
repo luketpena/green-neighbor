@@ -33,10 +33,9 @@ function* getAdminUsers() {
 
 // type: UPDATE
 function* updateAdminInfo (action) {
-  let id = action.payload.id
   try {
     console.log('inside updateAdminInfo saga');
-    yield axios.put(`/api/user/admin/${id}`, action.payload);
+    yield axios.put(`/api/user/admin`, action.payload);
     yield put({type: `GET_ADMIN_USERS`});
   }catch(error){
     console.log('error updating admin user info', error);
