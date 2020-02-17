@@ -27,9 +27,11 @@ const UtilityCardBox = styled.div`
 
 const slideIn = keyframes`
   0% {
-    top: 100vh;
+    opacity: 0;
+    top: 5vh;
   }
   100% {
+    opacity: 1;
     top: 0vh;
   }
 `;
