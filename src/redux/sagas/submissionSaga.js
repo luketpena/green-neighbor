@@ -19,6 +19,16 @@ function* createUtility(action) {
   }
 }
 
+function* editUtility(action) {
+  console.log('Incoming edit id:',action.payload.id, action.payload);
+  
+  try {
+    yield axios.put('/api/utilities/'+action.payload.id, action.payload);
+  } catch(error) {
+    console.log('Error trying to edit an existing utility:',error);    
+  }
+}
+
 function* createProgram(action){
   try{
     yield axios.post('/api/programs/create', action.payload);
@@ -43,6 +53,7 @@ function* getProgramSubmissionFormData(action){
 function* submissionSaga() {
   yield takeLatest('GET_EDIT_INFO_UTILITY', getEditInfoUtility);
   yield takeLatest('CREATE_UTILITY', createUtility);
+  yield takeLatest('EDIT_UTILITY',editUtility);
   yield takeLatest('GET_PROGRAM_SUBMISSION_FORM_DATA', getProgramSubmissionFormData);
   yield takeLatest('CREATE_PROGRAM', createProgram);
 }

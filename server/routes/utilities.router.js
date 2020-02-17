@@ -199,6 +199,8 @@ router.get('/details/:id', async (req, res) => {
 */
 router.get('/edit/:id', rejectUnauthenticated, async(req,res)=>{
 
+  // If zip db id is needed, use this select instead
+  // SELECT ARRAY_AGG(distinct jsonb_build_object('id', z.id, 'zip', z.zip)) as "zips",
   try {
     const query = `
       SELECT ARRAY_AGG(z.zip) as "zips",
@@ -212,11 +214,12 @@ router.get('/edit/:id', rejectUnauthenticated, async(req,res)=>{
           u.delivery_avg_comm_rate, 
           u.delivery_avg_ind_rate,
           u.delivery_avg_res_rate,
-          u.production AS production, u.id AS utility_id
+          u.production,
+          u.id
         FROM zips as z
         JOIN utilities u ON u.eia_state=z.eia_state
         WHERE u.id=$1
-        GROUP BY z.eia_state, z.state, z.eiaid, u.utility_name, utility_id, u.production, u.id;
+        GROUP BY z.eia_state, z.state, z.eiaid, u.utility_name, u.id, u.production;
     `;
     const response = await pool.query(query,[req.params.id]);
     res.send(response.rows[0])
@@ -336,15 +339,45 @@ router.delete('/:id', rejectUnauthenticated, async(req,res)=>{
   Requires a user to be authenticated to permit modification.
 */
 router.put('/:id', rejectUnauthenticated, async(req,res)=>{
-  const {zip, eiaid, state, eia_state} = req.body;
-  const queryData = [req.params.id, zip, eiaid, state, eia_state];
+
+  let queryData = [req.params.id];
+  let inserts = [];
+
+  for (let [key,value] of Object.entries(req.body)) {
+    //>> Not using anything that isn't needed or provided elsewhere
+    if (key!=='id' && key!=='zips' && (key!=='state' && key!=='eiaid') )  {      
+      queryData.push(value);
+      inserts.push(`${key}=$${inserts.length+2}`);
+    }
+  }
+
   try {
     const query = `
-      UPDATE zips 
-      SET zip=$2, eiaid=$3, state=$4, eia_state=$5
+      UPDATE utilities 
+      SET ${inserts.toString()}
       WHERE id=$1;
     `;
     await pool.query(query, queryData);
+
+    //>> Check every zip that exists vs what we now have and make changes
+    const existingZipsResult = await pool.query(`SELECT zip, id FROM zips WHERE eia_state=$1`,[req.body.eia_state]);
+    const existingZips = existingZipsResult.rows.map(item=>item.zip);
+
+    //Check to see if the existing zips is missing anything, then create it
+    const zips = req.body.zips;
+    for (let i=0; i<zips.length; i++) {
+      if (!existingZips.includes(zips[i])) {
+        await pool.query(`INSERT INTO zips (zip,eiaid,state,eia_state) VALUES ($1,$2,$3,$4);`,[zips[i],req.body.eiaid,req.body.state,req.body.eia_state]);
+      }
+    }
+
+    //Check to see if anything has been removed from the existing zips, then delete it
+    for (let i=0; i<existingZips.length; i++) {
+      if (!zips.includes(existingZips[i])) {
+        await pool.query(`DELETE FROM zips WHERE id=$1`,[existingZipsResult.rows[i].id]);
+      }
+    }
+
     res.sendStatus(200);
   } catch(error) {
     res.sendStatus(500);
