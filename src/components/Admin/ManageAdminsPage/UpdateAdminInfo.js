@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -46,10 +46,15 @@ const DialogTitle = withStyles(styles)(props => {
   }))(MuiDialogActions);
 
   export default function UpdateAdminInfo(props) {
+    const currentUsername = useSelector(state => state.userReducer);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPass, setConfirmPass] = useState('');
     const dispatch = useDispatch();
+
+    useEffect(()=>{
+        setUsername(currentUsername);
+    }, []);
 
     // Function allows a Logged in Admin to update ONLY their own info.
     const updateAdmin = () => {
