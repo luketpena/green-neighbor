@@ -64,7 +64,7 @@ class App extends Component {
             path="/contribute"
             component={ContributePage}
           />
-          <Fragment>
+          <Route path='/admin'>
             <div className='admin-pages'>
               <NavBar />
               {/* For protected routes, the view could show one of several things on the same route.
@@ -97,7 +97,7 @@ class App extends Component {
                 component={SubmissionForm}
               />
             </div>
-          </Fragment>
+          </Route>
           {/* This 404 route needs to be last. */}
           <Route render={() => <h1>404</h1>} />
         </Switch>
