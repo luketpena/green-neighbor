@@ -58,7 +58,7 @@ export default function UtilityCard(props) {
   function renderPrograms() {
     if (props.company.programs.length>0) {
       return props.company.programs.map( (item,i)=>{
-        return <ProgramCard key={i} program={item} />
+        return <ProgramCard key={i} program={item} index={i}/>
       });
     } else {
       return <EmptyProgramDiv>
