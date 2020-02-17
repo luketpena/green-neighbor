@@ -218,10 +218,10 @@ export default function ProgramCard(props) {
     let priceString = 'The price ';
     if (blockActive && props.program.block_cost) {
       let blockCostArray = props.program.block_cost.split(';');
-      if (blockCostArray.length>1) {priceString += `starts at $${Number(blockCostArray[0]).toFixed(2)} per Kilowatt-hour`}
-      else {priceString += `is $${Number(blockCostArray[0]).toFixed(2)} per Kilwatt-hour`}
+      if (blockCostArray.length>1) {priceString += `starts at $${Number(blockCostArray[0]*.01).toFixed(4)} per Kilowatt-hour`}
+      else {priceString += `is $${Number(blockCostArray[0]*.01).toFixed(4)} per Kilwatt-hour`}
     } else {
-      priceString += `is $${Number(props.program.cost_kwh).toFixed(2)} per Kilwatt-hour`;
+      priceString += `is $${Number(props.program.cost_kwh*.01).toFixed(4)} per Kilwatt-hour`;
     }
     return priceString
   }
@@ -238,7 +238,7 @@ export default function ProgramCard(props) {
 
   function renderCredit() {
     switch(props.program.credit_yn) {
-      case 'Yes': return <p>This program offers credit {(props.program.credit_kwh? <span>at ${props.program.credit_kwh} </span> : <></>)}per Kilwatt-hour</p>;
+      case 'Yes': return <p>This program offers credit {(props.program.credit_kwh? <span>at ${(props.program.credit_kwh*.01).toFixed(4)} </span> : <></>)}per Kilwatt-hour</p>;
       case 'Included': return `This program offers credit included in the price`;
       default: return ``
     }
@@ -278,15 +278,16 @@ export default function ProgramCard(props) {
 
       <ProgramCardMain className="program-card-main">
           <p>{renderSourceText()}</p>
-          <p>{renderAttributeText()}</p>
+          <p>{renderPricing()} {renderBlockSize()}</p>
+          {renderPercentOptions()}
           <p>{renderBlockActive()}</p>
           <DetailsButton detailsActive={detailsActive} onClick={()=>setDetailsActive(!detailsActive)}>Pricing details <FontAwesomeIcon className="icon" icon={faCaretUp} /></DetailsButton>
       </ProgramCardMain>
 
       <ProgramCardDetails className="program-card-details">
-        <p>{renderPricing()} {renderBlockSize()}</p>
+        <p>{renderAttributeText()}</p>
         {renderCredit()}
-        {renderPercentOptions()}
+        
         {renderTermination()}
       </ProgramCardDetails>
     </ProgramCardBody>
