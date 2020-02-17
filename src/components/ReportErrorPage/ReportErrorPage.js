@@ -49,7 +49,7 @@ const Body = styled.form`
     justify-content: center;
     color: white;
     text-shadow: 0 0 4px black;
-    background-color: rgba(0, 0, 0, 0.55);
+    border: 2px solid white;
     margin: auto auto;
     padding: 16px;
     border-radius: 16px;
@@ -175,7 +175,7 @@ export default function ReportErrorPage(props){
        <ImageBackground >
             <HomeButton />
             <Container>
-                <Body onSubmit={handleSubmit}>
+                <Body onSubmit={handleSubmit} className="blur-background">
                     {body}
                     <Input 
                         className="zip-input"            
