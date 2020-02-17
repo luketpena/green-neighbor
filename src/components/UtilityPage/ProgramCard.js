@@ -281,7 +281,7 @@ export default function ProgramCard(props) {
           <p>{renderPricing()} {renderBlockSize()}</p>
           {renderPercentOptions()}
           <p>{renderBlockActive()}</p>
-          <DetailsButton detailsActive={detailsActive} onClick={()=>setDetailsActive(!detailsActive)}>Pricing details <FontAwesomeIcon className="icon" icon={faCaretUp} /></DetailsButton>
+          <DetailsButton detailsActive={detailsActive} onClick={()=>setDetailsActive(!detailsActive)}>Details <FontAwesomeIcon className="icon" icon={faCaretUp} /></DetailsButton>
       </ProgramCardMain>
 
       <ProgramCardDetails className="program-card-details">
