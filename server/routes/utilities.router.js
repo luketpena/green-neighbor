@@ -227,7 +227,7 @@ router.get('/edit/:id', rejectUnauthenticated, async(req,res)=>{
 });
 
 /* 
-  Posts a new utility company to the zips table.
+  Posts a new utility company to the utilities table.
 */
 router.post('/', rejectUnauthenticated, async(req,res)=>{
  
@@ -290,10 +290,7 @@ router.post('/', rejectUnauthenticated, async(req,res)=>{
     //>> Construct the query from those arrays
     zip_query = `INSERT INTO zips (zip,${zip_keys.toString()}) VALUES ($1,${zip_keys.map((key,i)=>`$${i+2}`).toString()})`;
     console.log('Zip info:',req.body.zips[0],zip_values);
-    console.log('Zip query:',zip_query);
-    
-    
-    
+    console.log('Zip query:',zip_query);    
   }
 
   console.log(query);
