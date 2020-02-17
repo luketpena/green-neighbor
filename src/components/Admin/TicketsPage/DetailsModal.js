@@ -152,7 +152,7 @@ export default function DetailsModal(props){
                     {(ticket.eia_state && 
                         <>
                             <p>EIAID - State:</p>
-                            <p>{ticket.eia_state.match(/[0-9]*/)[0]} - {ticket.eia_state.match(/[0-9]+/)[0]}</p>
+                            <p>{ticket.eia_state.match(/[0-9]*/)[0]} - {ticket.eia_state.match(/[a-zA-Z]+/)[0]}</p>
                         </>
                     ) || (ticket.state && 
                         <>

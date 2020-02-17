@@ -2,7 +2,8 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
-
+const utilityCols = require('../modules/utilitiesColumns');
+const zipCols = require('../modules/zipsColumns');
 /* 
   Gets just then name of a utility company and its ID.
   Used on the details page once a program is selected
@@ -108,7 +109,7 @@ router.get('/summary/:page', async(req,res)=>{
     program_count, programs, production, utility_id
     FROM (
       SELECT json_build_object('id', z.id, 'zip', z.zip) as "zips",
-        z.eia_state, u.utility_name, z.state,
+        u.eia_state, u.utility_name, u.state,
         COUNT(g.utility_name) as program_count,
         u.production AS production, u.id AS utility_id,
         array_agg(
@@ -168,16 +169,16 @@ router.get('/details/:id', async (req, res) => {
           program_count, programs, production, utility_id
           FROM (
           SELECT json_build_object('id', z.id, 'zip', z.zip) as "zips",
-              z.eia_state, u.utility_name, z.state,
+              u.eia_state, u.utility_name, u.state,
               COUNT(g.utility_name) as program_count,
               u.production AS production, u.id AS utility_id,
               array_agg(
                   jsonb_build_object('name', g.program_name, 'id', g.id, 'production', g.production)
                   ORDER BY g.id
               ) as programs
-          FROM zips as z
+          FROM utilities u 
+          LEFT JOIN zips z ON u.eia_state=z.eia_state
           LEFT JOIN gpp g ON z.eia_state=g.eia_state
-          JOIN utilities u ON u.eia_state=z.eia_state
           WHERE u.id=$1
           GROUP BY z.id, u.utility_name, u.production, u.id
           ) AS td
@@ -199,26 +200,30 @@ router.get('/details/:id', async (req, res) => {
 */
 router.get('/edit/:id', rejectUnauthenticated, async(req,res)=>{
 
+  // If zip db id is needed, use this select instead
+  // SELECT ARRAY_AGG(distinct jsonb_build_object('id', z.id, 'zip', z.zip)) as "zips",
   try {
     const query = `
       SELECT ARRAY_AGG(z.zip) as "zips",
-          u.utility_name,
-          z.eia_state,
-          z.eiaid,
-          z.state,
+          u.utility_name, 
+          u.eia_state,
+          u.eiaid,
+          u.state,
           u.bundled_avg_comm_rate,
           u.bundled_avg_ind_rate,
           u.bundled_avg_res_rate,
           u.delivery_avg_comm_rate, 
           u.delivery_avg_ind_rate,
           u.delivery_avg_res_rate,
-          u.production AS production, u.id AS utility_id
-        FROM zips as z
-        JOIN utilities u ON u.eia_state=z.eia_state
+          u.production,
+          u.id
+        FROM utilities u
+        LEFT JOIN zips z ON u.eia_state=z.eia_state
         WHERE u.id=$1
-        GROUP BY z.eia_state, z.state, z.eiaid, u.utility_name, utility_id, u.production, u.id;
+        GROUP BY z.eia_state, z.state, z.eiaid, u.utility_name, u.id, u.production;
     `;
     const response = await pool.query(query,[req.params.id]);
+    response.rows[0].zips = response.rows[0].zips.filter(zip=>zip);
     res.send(response.rows[0])
   } catch(error) {
     console.log('Error getting utility to edit:',error);
@@ -230,77 +235,46 @@ router.get('/edit/:id', rejectUnauthenticated, async(req,res)=>{
   Posts a new utility company to the utilities table.
 */
 router.post('/', rejectUnauthenticated, async(req,res)=>{
- 
-  let keys = [];
-  let values = [];
-  let zip_keys = [];
-  let zip_values = [];
-
    //>> Collect the info from the req.body into usable arrays
-  for (let [key,value] of Object.entries(req.body)) {
-    if (value!=='') {
-      switch(key) {
-        case 'zips':
-        case 'eiaid':
-          /* Do nothing */ 
-          break;
-        case 'state':
-          if (req.body.hasOwnProperty('eiaid')) {
-            keys.push('eia_state');
-            values.push(`${req.body.eiaid}${req.body.state}`);
-          }
-          break;
-        default:
-          keys.push(key);
-          values.push(value);
-      }
-    }
+  if(req.body.state && req.body.eiaid){
+    req.body.eia_state = req.body.eiaid + req.body.state;
+  } else {
+    res.sendStatus(400);
+    return;
   }
-  console.log('-----------------POSTING NEW UTILITY COMPANY');
-  console.log('Collected data:',keys,values);
+
+  const config = [];
+  const keys = Object.entries(req.body)
+    .filter(([key, value]) => {
+      return utilityCols.includes(key) && value !== '';
+    }).map(([key, value]) => {
+      config.push(value)
+      return `${key}`
+    });
   
   //>> Construct the query from those arrays
-  let query = `INSERT INTO utilities (${keys.toString()}) VALUES (${keys.map((key,i)=>`$${i+1}`).toString()});`;
-  let zip_query = ``;
+  const query = `INSERT INTO utilities (${keys.join(', ')}) VALUES (${keys.map((key,i)=>`$${i+1}`).join(', ')});`;
 
   //>> Construct queries if zips are present
-  if (req.body.hasOwnProperty('zips')) {
+  const zip_config = [];
+  if (req.body.zips) {
     //>> Collect the info from the req.body into usable arrays
-   
-
-    for (let [key,value] of Object.entries(req.body)) {
-      if (value!=='') {
-        switch(key) {
-          case 'state':
-            zip_keys.push(key);
-            zip_values.push(value);
-            break;
-          case 'eiaid':
-            zip_keys.push(key);
-            zip_values.push(value);
-            if (req.body.hasOwnProperty('state')) {
-              zip_keys.push('eia_state');
-              zip_values.push(`${req.body.eiaid}${req.body.state}`);
-            }
-          default:
-            /* Do nothing */
-        }
-      }
-    }
+    const zip_keys = Object.entries(req.body)
+      .filter(([key, value]) => value !== '' && zipCols.includes(key))
+      .map(([key, value]) => {
+        zip_config.push(value);
+        return `${key}`;
+      });
     //>> Construct the query from those arrays
-    zip_query = `INSERT INTO zips (zip,${zip_keys.toString()}) VALUES ($1,${zip_keys.map((key,i)=>`$${i+2}`).toString()})`;
-    console.log('Zip info:',req.body.zips[0],zip_values);
-    console.log('Zip query:',zip_query);    
+    zip_query = `INSERT INTO zips (zip,${zip_keys.toString()}) VALUES ($1,${zip_keys.map((key,i)=>`$${i+2}`).join(', ')});`;
   }
-
-  console.log(query);
   
   try {
-    await pool.query(query,values);
+    await pool.query(query, config);
 
-    if (zip_keys.length>0) {
-      for (let i=0; i<req.body.zips; i++) {
-        await pool.query(zip_query,[req.body.zips[i], ...zip_values])
+    if (req.body.zips) {
+      for (let i=0; i<req.body.zips.length; i++) {
+        await pool.query(zip_query,[req.body.zips[i], ...zip_config])
       }
     }
 
@@ -333,15 +307,45 @@ router.delete('/:id', rejectUnauthenticated, async(req,res)=>{
   Requires a user to be authenticated to permit modification.
 */
 router.put('/:id', rejectUnauthenticated, async(req,res)=>{
-  const {zip, eiaid, state, eia_state} = req.body;
-  const queryData = [req.params.id, zip, eiaid, state, eia_state];
+
+  let queryData = [req.params.id];
+  let inserts = [];
+
+  for (let [key,value] of Object.entries(req.body)) {
+    //>> Not using anything that isn't needed or provided elsewhere
+    if (key!=='id' && key!=='zips' && (key!=='state' && key!=='eiaid') )  {      
+      queryData.push(value);
+      inserts.push(`${key}=$${inserts.length+2}`);
+    }
+  }
+
   try {
     const query = `
-      UPDATE zips 
-      SET zip=$2, eiaid=$3, state=$4, eia_state=$5
+      UPDATE utilities 
+      SET ${inserts.toString()}
       WHERE id=$1;
     `;
     await pool.query(query, queryData);
+
+    //>> Check every zip that exists vs what we now have and make changes
+    const existingZipsResult = await pool.query(`SELECT zip, id FROM zips WHERE eia_state=$1`,[req.body.eia_state]);
+    const existingZips = existingZipsResult.rows.map(item=>item.zip);
+
+    //Check to see if the existing zips is missing anything, then create it
+    const zips = req.body.zips;
+    for (let i=0; i<zips.length; i++) {
+      if (!existingZips.includes(zips[i])) {
+        await pool.query(`INSERT INTO zips (zip,eiaid,state,eia_state) VALUES ($1,$2,$3,$4);`,[zips[i],req.body.eiaid,req.body.state,req.body.eia_state]);
+      }
+    }
+
+    //Check to see if anything has been removed from the existing zips, then delete it
+    for (let i=0; i<existingZips.length; i++) {
+      if (!zips.includes(existingZips[i])) {
+        await pool.query(`DELETE FROM zips WHERE id=$1`,[existingZipsResult.rows[i].id]);
+      }
+    }
+
     res.sendStatus(200);
   } catch(error) {
     res.sendStatus(500);

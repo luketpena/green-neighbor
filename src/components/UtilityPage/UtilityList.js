@@ -1,7 +1,7 @@
 import React from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import {useSelector} from 'react-redux';
-import styled from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 
 import UtilityCard from './UtilityCard';
 
@@ -25,7 +25,20 @@ const UtilityCardBox = styled.div`
   
 `;
 
+const slideIn = keyframes`
+  0% {
+    top: 100vh;
+  }
+  100% {
+    top: 0vh;
+  }
+`;
+
 const Container = styled.div`
+
+  animation: 2s ${slideIn} ease-in-out;
+
+  position: relative;
   background-color: var(--color-bkg-main);
   border-radius: 96px 96px 0 0;
   box-shadow: 0 0 128px 32px rgba(0,0,0,1);

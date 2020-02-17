@@ -129,6 +129,10 @@ export default function SubmitUtilityInfo() {
   const submissionData = useSelector(state=>state.submissionFormReducer);
   const { action } = useParams();
 
+  function fillState(prop, defaultValue) {
+    return ((action==='edit' && submissionData[prop])? submissionData[prop] : defaultValue)
+  }
+
   const [zipInput, setZipInput] = useState('');
   const [zips, setZips] = useState(submissionData.zips? submissionData.zips : [] );
   const [state,setState] = useState(submissionData.state || 'State');
@@ -189,9 +193,10 @@ export default function SubmitUtilityInfo() {
 
   function submitZip(event) {
     event.preventDefault();
+    //New zips need to contain a database id value even though it does not exist yet. -1 signifies it is a new zip.
     const newZips = [...zips,zipInput];
     setZips(newZips);
-    dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {zips: newZips}})
+    dispatch({type: 'UPDATE_SUBMISSION_FORM', payload: {zips: newZips}});
     setZipInput('');
   }
 

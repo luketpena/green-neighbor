@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 const Container = styled.div`
     width: max-content;
+    height: min-content;
     display: block;
     justify-content: center;
     background-color: var(--color-bkg-container);

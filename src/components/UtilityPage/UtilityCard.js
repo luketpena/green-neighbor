@@ -17,10 +17,9 @@ const UtilityCardBody = styled.div`
 const UtilityHeader = styled.div`
   background-color: var(--color-primary);
   color: white;
-  height: 64px;
-  display: grid;
-  grid-template-areas: "title button";
-  grid-template-columns: 1fr auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
   align-items: center;
 
   box-shadow: 0 3px 8px 0 rgba(0,0,0,.3);
@@ -58,7 +57,7 @@ export default function UtilityCard(props) {
   function renderPrograms() {
     if (props.company.programs.length>0) {
       return props.company.programs.map( (item,i)=>{
-        return <ProgramCard key={i} program={item} />
+        return <ProgramCard key={i} program={item} index={i}/>
       });
     } else {
       return <EmptyProgramDiv>
@@ -70,7 +69,6 @@ export default function UtilityCard(props) {
   return (
     <UtilityCardBody>
       <UtilityHeader>
-        
         <h3>{props.company.name}</h3>
         <button className="button-default" onClick={()=>history.push(`/report/${zip}/${props.company.eia_state}`)}>Report missing program</button>
       </UtilityHeader>

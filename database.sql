@@ -25,7 +25,9 @@ CREATE TABLE "zips" (
 
 CREATE TABLE "utilities" (
 	"id" SERIAL PRIMARY KEY,
+	"eiaid" INT,
 	"eia_state" VARCHAR,
+	"state" VARCHAR,
 	"utility_name" VARCHAR,
 	"bundled_avg_comm_rate" FLOAT,
 	"bundled_avg_ind_rate" FLOAT,
@@ -116,10 +118,10 @@ BEGIN;
 	INSERT INTO "zips" ("zip", "eiaid", "state", "eia_state")
 	SELECT "zip", "eiaid", "state", "eia_state" FROM "t";
 
-	INSERT INTO "utilities" ("utility_name", "eia_state", "bundled_avg_comm_rate", "bundled_avg_ind_rate", "bundled_avg_res_rate", "delivery_avg_comm_rate", "delivery_avg_ind_rate", "delivery_avg_res_rate")
-	SELECT "utility_name", "eia_state", "bundled_avg_comm_rate", "bundled_avg_ind_rate", "bundled_avg_res_rate", "delivery_avg_comm_rate", "delivery_avg_ind_rate", "delivery_avg_res_rate"
+	INSERT INTO "utilities" ("utility_name", "state", "eiaid", "eia_state", "bundled_avg_comm_rate", "bundled_avg_ind_rate", "bundled_avg_res_rate", "delivery_avg_comm_rate", "delivery_avg_ind_rate", "delivery_avg_res_rate")
+	SELECT "utility_name", "state", "eiaid", "eia_state", "bundled_avg_comm_rate", "bundled_avg_ind_rate", "bundled_avg_res_rate", "delivery_avg_comm_rate", "delivery_avg_ind_rate", "delivery_avg_res_rate"
 	FROM "t"
-	GROUP BY "utility_name", "eia_state", "bundled_avg_comm_rate", "bundled_avg_ind_rate", "bundled_avg_res_rate", "delivery_avg_comm_rate", "delivery_avg_ind_rate", "delivery_avg_res_rate";
+	GROUP BY "utility_name", "state", "eiaid", "eia_state", "bundled_avg_comm_rate", "bundled_avg_ind_rate", "bundled_avg_res_rate", "delivery_avg_comm_rate", "delivery_avg_ind_rate", "delivery_avg_res_rate";
 COMMIT;
 
 BEGIN;

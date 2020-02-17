@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useParams, useHistory} from 'react-router-dom';
-import styled from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 
 import Background from '../../images/bkg-forest-top.jpg';
 
@@ -16,21 +16,29 @@ const Container = styled.div`
   margin: 0 auto;
   display: grid;
   grid-template-areas: "title" "programs";
-  grid-template-rows: 500px auto;
+  grid-template-rows: auto auto;
 
   background-image: url(${Background});
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
+  overflow: hidden;
+`;
+
+const appear = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 `;
 
 const TitleBox = styled.div`
-
+  
   position: relative;
   z-index: 1;
-
-
   grid-area: title;
   display: grid;
   grid-template-areas: "home" "main" "help";
@@ -42,13 +50,16 @@ const TitleBox = styled.div`
   color: var(--color-text-light);
 
   p {
+    animation: 2s ${appear} ease-in-out;
     margin: 0;
+    font-size: 1.5em;
     font-family: var(--font-main);
   }
   h2 {
+    animation: 2s ${appear} ease-in-out;
     margin: 8px 0;
     font-family: var(--font-header);
-    font-size: 48px;
+    font-size: 6em;
   }
 `;
 
@@ -59,7 +70,7 @@ const TitleBoxMain = styled.div`
 
 const HelpBox = styled.div`
   grid-area: help;
-
+  animation: 2s ${appear} ease-in-out;
 `;
 
 export default function UtilityPage(props) {

@@ -112,7 +112,7 @@ export const MainTableBody = styled.tbody`
 `;
 
 export const MainTableHead = styled.thead`
-  background-color: #CACACF;
+  background-color: var(--color-primary);
   text-align: left;
   font-weight: bold;
   font-size: 1rem;
@@ -120,6 +120,7 @@ export const MainTableHead = styled.thead`
   box-shadow: 0px, 8px, 4px, #555555;
   th {
     padding: 10px 8px;
+    color: white;
   }
 `;
 

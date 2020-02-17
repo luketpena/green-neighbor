@@ -148,7 +148,7 @@ export default function RecordsPage() {
       history.push('/admin/submit/edit/utility');
       dispatch({type: 'SET_EDIT_READY', payload: false});
     }
-  },[utilitiesCount, utilitiesSearch, page, dispatch, mount, order, program_name, show, state, utility_name, zip, editWatcher]);
+  },[utilitiesCount, utilitiesSearch, page, dispatch, mount, order, editWatcher]);
 
   function renderUtilities() {
     return utilities.map( (item,i)=> {
