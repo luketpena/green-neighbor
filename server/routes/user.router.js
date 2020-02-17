@@ -15,7 +15,9 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 // Handles GET request to get all admins that are current users
 router.get('/admins', rejectUnauthenticated, (req, res) => {
   const username = req.body.username;
-  const queryText = `SELECT "user"."username", "user"."id" FROM "user";`;
+  const queryText = `
+    SELECT "user"."username", "user"."id"
+    FROM "user" ORDER BY "user"."id";`;
   pool.query(queryText, username)
   .then(result => {
     res.send(result.rows);
