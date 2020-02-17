@@ -36,7 +36,7 @@ const slideIn = keyframes`
 
 const Container = styled.div`
 
-  animation: 3s ${slideIn} ease-in-out;
+  animation: 2s ${slideIn} ease-in-out;
 
   position: relative;
   background-color: var(--color-bkg-main);
