@@ -134,6 +134,9 @@ export default function ProgramCard(props) {
   useEffect(()=>{
     getCardHeights();
     window.addEventListener('resize', getCardHeights);
+    return () => {
+      window.removeEventListener('resize', getCardHeights);
+    }
   },[])
 
   function getCardHeights() {
