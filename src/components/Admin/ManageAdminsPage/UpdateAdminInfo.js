@@ -46,7 +46,7 @@ const DialogTitle = withStyles(styles)(props => {
   }))(MuiDialogActions);
 
   export default function UpdateAdminInfo(props) {
-    const currentUsername = useSelector(state => state.userReducer);
+    const {username: currentUsername} = useSelector(state => state.user);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPass, setConfirmPass] = useState('');
@@ -54,7 +54,7 @@ const DialogTitle = withStyles(styles)(props => {
 
     useEffect(()=>{
         setUsername(currentUsername);
-    }, []);
+    }, [currentUsername]);
 
     // Function allows a Logged in Admin to update ONLY their own info.
     const updateAdmin = () => {
@@ -94,8 +94,8 @@ const DialogTitle = withStyles(styles)(props => {
                         <label htmlFor='new-username'>
                             New Username:
                         </label>
-                        <input         
-                            id='new-username'           
+                        <input     
+                            id='new-username'
                             type="text"
                             placeholder="New Username"
                             value={username}
