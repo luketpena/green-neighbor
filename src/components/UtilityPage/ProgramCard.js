@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import EnergyBar from '../EnergyBar/EnergyBar';
@@ -13,7 +13,7 @@ const ProgramCardBody = styled.div`
     margin: 0 8px;
     font-size: 18px;
   }
-  height: ${props=>(props.detailsActive? '380' : '230')}px;
+  height: ${props=>(props.detailsActive? `${80+props.h_main+props.h_details}` : `${80+props.h_main}`)}px;
   overflow: hidden;
   transition: height .5s;
   border-radius: 8px;
@@ -42,8 +42,9 @@ const ProgramCardMain = styled.div`
   position: relative;
   box-sizing: border-box;
   z-index: 1;
-  height: 150px;
+  height: auto;
   padding: 8px;
+  padding-bottom: 16px;
   text-align: center;
   p {
     margin: 8px auto;
@@ -54,7 +55,6 @@ const ProgramCardMain = styled.div`
 
 const ProgramCardDetails = styled.div`
   background-color: var(--color-primary);
-  height: 150px;
   text-align: center;
   box-sizing: border-box;
   padding: 8px;
@@ -113,7 +113,11 @@ export default function ProgramCard(props) {
   const {zip} = useParams(); 
 
   let [detailsActive, setDetailsActive] = useState(false);
-  let [blockActive] = useState(( (props.program.blocks_available==='No' || props.program.blocks_available===null)? false : true))
+  let [blockActive] = useState(( (props.program.blocks_available==='No' || props.program.blocks_available===null)? false : true));
+  let [h_main, setH_main] = useState(0);
+  let [h_details, setH_details] = useState(0);
+  let [mount, setMount] = useState(false);
+  
   const [energy] = useState([
     {name: 'Wind', value: props.program.wind}, 
     {name: 'Solar', value: props.program.solar}, 
@@ -126,6 +130,22 @@ export default function ProgramCard(props) {
     {text: 'uses Retired Recs', value: (props.program.recs_retired==='Yes'? true : false)},
     {text: 'is Revenue Neutral', value: (props.program.revenue_neutral==='Yes'? true : false)},
   ]);
+
+  useEffect(()=>{
+    getCardHeights();
+    window.addEventListener('resize', getCardHeights);
+  },[])
+
+  function getCardHeights() {
+    let mainHeight = document.getElementsByClassName('program-card-main')[props.index];
+    let detailsHeight = document.getElementsByClassName('program-card-details')[props.index];
+    if (mainHeight) {
+      setH_main(mainHeight.clientHeight);
+    }
+    if (detailsHeight) {
+      setH_details(detailsHeight.clientHeight);
+    }
+  }
 
   function sortEnergy() {
     let copy = [];
@@ -174,7 +194,6 @@ export default function ProgramCard(props) {
         if (attributeString.length===0) {
           attributeString += 'This program '
         } else if (i<attributes.length) {
-          console.log('Attribute length',attributes[i]);
           if (attributes.length>2) {
             attributeString += ', '
           }                    
@@ -199,10 +218,10 @@ export default function ProgramCard(props) {
     let priceString = 'The price ';
     if (blockActive && props.program.block_cost) {
       let blockCostArray = props.program.block_cost.split(';');
-      if (blockCostArray.length>1) {priceString += `starts at $${Number(blockCostArray[0]).toFixed(2)} per Kilowatt-hour`}
-      else {priceString += `is $${Number(blockCostArray[0]).toFixed(2)} per Kilwatt-hour`}
+      if (blockCostArray.length>1) {priceString += `starts at $${Number(blockCostArray[0]*.01).toFixed(4)} per Kilowatt-hour`}
+      else {priceString += `is $${Number(blockCostArray[0]*.01).toFixed(4)} per Kilwatt-hour`}
     } else {
-      priceString += `is $${Number(props.program.cost_kwh).toFixed(2)} per Kilwatt-hour`;
+      priceString += `is $${Number(props.program.cost_kwh*.01).toFixed(4)} per Kilwatt-hour`;
     }
     return priceString
   }
@@ -219,7 +238,7 @@ export default function ProgramCard(props) {
 
   function renderCredit() {
     switch(props.program.credit_yn) {
-      case 'Yes': return <p>This program offers credit {(props.program.credit_kwh? <span>at ${props.program.credit_kwh} </span> : <></>)}per Kilwatt-hour</p>;
+      case 'Yes': return <p>This program offers credit {(props.program.credit_kwh? <span>at ${(props.program.credit_kwh*.01).toFixed(4)} </span> : <></>)}per Kilwatt-hour</p>;
       case 'Included': return `This program offers credit included in the price`;
       default: return ``
     }
@@ -244,29 +263,31 @@ export default function ProgramCard(props) {
     }
   }
 
+  
+
   return (
-    <ProgramCardBody detailsActive={detailsActive}>
+    <ProgramCardBody detailsActive={detailsActive} h_main={h_main} h_details={h_details}>
       <ProgramCardHeader>
         <ProgramCardTitleBox>
           <h5>{props.program.program_name}</h5>
-          
           <SelectButton className="button-primary" onClick={()=>history.push(`/details/${props.program.id}/${zip}`)}>Select</SelectButton>
         </ProgramCardTitleBox>
         <BarBox><EnergyBar program={props.program}/></BarBox>
         
       </ProgramCardHeader>
 
-      <ProgramCardMain >
+      <ProgramCardMain className="program-card-main">
           <p>{renderSourceText()}</p>
-          <p>{renderAttributeText()}</p>
+          <p>{renderPricing()} {renderBlockSize()}</p>
+          {renderPercentOptions()}
           <p>{renderBlockActive()}</p>
-          <DetailsButton detailsActive={detailsActive} onClick={()=>setDetailsActive(!detailsActive)}>Pricing details <FontAwesomeIcon className="icon" icon={faCaretUp} /></DetailsButton>
+          <DetailsButton detailsActive={detailsActive} onClick={()=>setDetailsActive(!detailsActive)}>Details <FontAwesomeIcon className="icon" icon={faCaretUp} /></DetailsButton>
       </ProgramCardMain>
 
-      <ProgramCardDetails>
-        <p>{renderPricing()} {renderBlockSize()}</p>
+      <ProgramCardDetails className="program-card-details">
+        <p>{renderAttributeText()}</p>
         {renderCredit()}
-        {renderPercentOptions()}
+        
         {renderTermination()}
       </ProgramCardDetails>
     </ProgramCardBody>

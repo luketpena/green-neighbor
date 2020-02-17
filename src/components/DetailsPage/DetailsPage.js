@@ -84,7 +84,6 @@ const BottomDisplay = styled.div`
   padding-right: px;
   justify-content: center;
   align-content: center;
-  backdrop-filter: blur(4px);
   border-top: 4px dashed white;
   position: relative;
   transition: height .5s;
@@ -92,14 +91,11 @@ const BottomDisplay = styled.div`
 `;
 
 
-
-
 const ActionCard = styled.button`
   
   text-align: center;
   width: 30%;
   padding: 16px;
-  background-color: rgba(255,255,255,.1);
   color: rgba(255,255,255,.8);
 
   transition: all .3s;
@@ -107,6 +103,7 @@ const ActionCard = styled.button`
   outline: none;
   font-size:  1em;
   
+  background: none;
   
   p {
     font-family: var(--font-main);
@@ -229,7 +226,7 @@ export default function DetailsPage() {
           <p>Discover More</p>
           <FontAwesomeIcon className="icon" icon={faCaretUp} />
         </button>
-        <BottomDisplay active={discoverActive}>
+        <BottomDisplay active={discoverActive} className="blur-background">
           {renderActions()}
         </BottomDisplay> 
       </DiscoverBar>

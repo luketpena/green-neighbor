@@ -81,7 +81,6 @@ const FormBox = styled.div`
   display: grid;
   box-sizing: border-box;
   padding: 0 5%;
-  
   grid-template-areas: "header" "main" "buttons";
   grid-template-rows: auto 1fr auto;
   h1 {
@@ -99,9 +98,11 @@ const FormArea = styled.div`
 
 const FormButtons = styled.div`
   padding: 16px;
-  display: flex;
-  justify-content: center;
-
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  p {
+    text-align: center;
+  }
 `;
 
 const TitleBox = styled.div``;
@@ -112,10 +113,11 @@ const Subtitle = styled.p`
 `;
 
 const steps = [
+  {name: 'Contract', component: <ContractForm />},
   {name: 'Details', component: <SubmitDetails />},
   {name: 'Source', component: <SubmitSources />},
   {name: 'Pricing', component: <PricingForm /> },
-  {name: 'Contract', component: <ContractForm />},
+  
 ];
 
 const capitalize = (s) => {
@@ -184,12 +186,11 @@ export default function SubmissionForm() {
               </>
           } else {
             return <>
-            <button onClick={()=>setCurrentStep(currentStep-1)} className="button-default">Back</button>
+              <button onClick={()=>setCurrentStep(currentStep-1)} className="button-default">Back</button>
               <button onClick={()=>setCurrentStep(currentStep+1)} className="button-default">Next</button>
               </>
           }
         }
-        break;
       case 'utility':
         return (
           <button onClick={clickSubmit} className="button-primary">Submit</button>
@@ -223,14 +224,16 @@ export default function SubmissionForm() {
           <h1>{capitalize(action)} {capitalize(subject)}</h1>
           {subject === 'program' && submissionData.utility_name &&
           <Subtitle>{submissionData.utility_name}, {submissionData.state}</Subtitle>}
-          <button onClick={()=>setCancelAlert(true)} className="button-negative">Cancel Submission</button>
         </TitleBox>
         <FormArea>
           {(subject==='program'? steps[currentStep].component : <SubmitUtilityInfo />)}  
         </FormArea>
         <FormButtons>
+          <button className="button-negative" onClick={()=>setCancelAlert(true)} >Cancel Submission</button>
           <p><span className="required">*</span> = required field</p>
-          {renderButtons()}
+          <div>
+            {renderButtons()}
+          </div>
         </FormButtons>
       </FormBox>
 
@@ -241,7 +244,7 @@ export default function SubmissionForm() {
       >
         <DialogTitle id="simple-dialog-title">Missing Information</DialogTitle>
         <DialogContent>Please fill out all of the required fields.</DialogContent>
-        <button className="button-default" onClick={()=>setRequiredAlert(false)}>Close</button>
+        <button className="button-cancel" onClick={()=>setRequiredAlert(false)}>Close</button>
       </Dialog>
 
       <Dialog
