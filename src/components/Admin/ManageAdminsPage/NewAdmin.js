@@ -11,6 +11,7 @@ const Container = styled.div`
     padding: 16px;
     box-shadow: 0 4px 4px -2px var(--color-shadow);
     margin: 50px 25px;
+    height: min-content;
     label {
         display: inline-block;
         width:100px;
@@ -37,6 +38,9 @@ export default function NewAdmin() {
     const [passConfirm, setPassConfirm] = useState('');
 
     const addNewAdmin = () => {
+        setUsername('');
+        setPassword('');
+        setPassConfirm('');
         dispatch({ type: 'POST_NEW_ADMIN', payload: {username, password} });
     }
 
