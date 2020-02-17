@@ -217,12 +217,13 @@ router.get('/edit/:id', rejectUnauthenticated, async(req,res)=>{
           u.delivery_avg_res_rate,
           u.production,
           u.id
-        FROM zips as z
-        JOIN utilities u ON u.eia_state=z.eia_state
+        FROM utilities u
+        LEFT JOIN zips z ON u.eia_state=z.eia_state
         WHERE u.id=$1
         GROUP BY z.eia_state, z.state, z.eiaid, u.utility_name, u.id, u.production;
     `;
     const response = await pool.query(query,[req.params.id]);
+    response.rows[0].zips = response.rows[0].zips.filter(zip=>zip);
     res.send(response.rows[0])
   } catch(error) {
     console.log('Error getting utility to edit:',error);
@@ -231,7 +232,7 @@ router.get('/edit/:id', rejectUnauthenticated, async(req,res)=>{
 });
 
 /* 
-  Posts a new utility company to the zips table.
+  Posts a new utility company to the utilities table.
 */
 router.post('/', rejectUnauthenticated, async(req,res)=>{
    //>> Collect the info from the req.body into usable arrays
