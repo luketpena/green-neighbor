@@ -36,7 +36,7 @@ function* getUtilities(action) {
 
 function* editProgram(action) {
   try {
-    yield axios.put(`/api/programs/update/${action.payload.id}`, {production: action.payload.production} );
+    yield axios.put(`/api/programs/update/${action.payload.id}`, action.payload);
   } catch(error) {
     console.log(error);    
   }

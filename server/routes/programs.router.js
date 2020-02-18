@@ -134,7 +134,7 @@ router.put('/update/:id', rejectUnauthenticated, async (req, res) => {
 
         // if all that's changing is "production" status, don't
         // update date_updated
-        if(entries.length > 1 || entries[0][0] !== 'production'){
+        if(!req.body.date_updated && (entries.length > 1 || entries[0][0] !== 'production')){
             entries.push(['date_updated', new Date()]);
         }
         const cols = entries.map(([key, value], i) => {
@@ -145,7 +145,6 @@ router.put('/update/:id', rejectUnauthenticated, async (req, res) => {
         const query = `
             UPDATE "gpp" SET ${cols}
             WHERE "gpp"."id"=$1`;
-
         await pool.query(query, config);
         res.sendStatus(200);
     } catch (error) {

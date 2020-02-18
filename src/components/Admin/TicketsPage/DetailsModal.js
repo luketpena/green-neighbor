@@ -105,7 +105,7 @@ export default function DetailsModal(props){
                 type: 'GET_PROGRAM_SUBMISSION_FORM_DATA',
                 payload: {
                     history: history,
-                    id: ticket.id
+                    id: ticket.gpp_id
                 }
             });
         }
