@@ -70,7 +70,7 @@ export default function DetailsModal(props){
     useEffect(() => {
         setResolved(ticket.resolved);
     }, [ticket.resolved]);
-
+    console.log(ticket);
     const closeModal = e => {
         dispatch({type: 'SET_TICKET_MODAL_OPEN', payload: false});
     }
@@ -105,7 +105,7 @@ export default function DetailsModal(props){
                 type: 'GET_PROGRAM_SUBMISSION_FORM_DATA',
                 payload: {
                     history: history,
-                    id: ticket.id
+                    id: ticket.gpp_id
                 }
             });
         }
