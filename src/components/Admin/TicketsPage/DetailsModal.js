@@ -70,7 +70,7 @@ export default function DetailsModal(props){
     useEffect(() => {
         setResolved(ticket.resolved);
     }, [ticket.resolved]);
-    console.log(ticket);
+
     const closeModal = e => {
         dispatch({type: 'SET_TICKET_MODAL_OPEN', payload: false});
     }
