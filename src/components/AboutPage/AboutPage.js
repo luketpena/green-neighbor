@@ -1,8 +1,12 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
+
+//-----< Resource Imports >-----\\
 import Background from '../../images/bkg-forest-top.jpg';
 import HomeButton from '../HomeButton/HomeButton';
 
+
+//-----< Styling >-----\\
 const BackgroundBox = styled.div`
   background-image: url(${Background});
   background-size: cover;
@@ -12,7 +16,6 @@ const BackgroundBox = styled.div`
   min-height: 100vh;
   margin: 0;
   box-sizing: border-box;
-  overflow-x: hidden;
 `;
 
 const Container = styled.div`
@@ -33,9 +36,8 @@ const Container = styled.div`
 
 const Header = styled.div`
   display: flex;
-    align-items: center;
-    justify-content: center;
-    
+  align-items: center;
+  justify-content: center;   
   color: white;
   text-shadow: 0 0 4px black;
   text-align: center;
@@ -65,9 +67,8 @@ const Menu = styled.div`
   @media only screen and (max-width: 850px) {
     border-radius: 0;
   }
-  
 `;
-//${props=>(props.index===props.select? '110' : '100')}%;
+
 const MenuItem = styled.button`
 
   color: white;
@@ -143,8 +144,10 @@ const TextBoxContent = styled.div`
   box-sizing: border-box;
 `;
 
+//-----< Component Function >-----\\
 export default function AboutPage() {
 
+  //Tracks which FAQ page the user is currently viewing
   const [select, setSelect] = useState(0);
 
   const faq = [
@@ -207,6 +210,7 @@ export default function AboutPage() {
     },
   ];
 
+  //Height of menu item is determined by the FAQ array length and passed into the styled-component via myHeight
   function renderMenu() {
     return faq.map( (item,i)=>{
       return (
@@ -225,40 +229,31 @@ export default function AboutPage() {
 
   return(
     <BackgroundBox>
+
       <HomeButton />
+      <Header>
+          <h1>Frequently Asked Questions</h1>
+      </Header>
     
-    <Header>
-        <h1>Frequently Asked Questions</h1>
-    </Header>
-    
-    <Container>
-      <Menu>
-        {renderMenu()}
-      </Menu>
-      <Content>
-        <TextBox>
-          <TextBoxHeader>
-            <h2>{faq[select].H}</h2>
-          </TextBoxHeader>
-          <TextBoxContent>
-            {faq[select].A}
-          </TextBoxContent>
-        </TextBox>
-      </Content>
-    </Container>
+      <Container>
+
+        <Menu>
+          {renderMenu()}
+        </Menu>
+
+        <Content>
+          <TextBox>
+            <TextBoxHeader>
+              <h2>{faq[select].H}</h2>
+            </TextBoxHeader>
+            <TextBoxContent>
+              {faq[select].A}
+            </TextBoxContent>
+          </TextBox>
+        </Content>
+
+      </Container>
     
     </BackgroundBox>
   )
 }
-
-/*
-  <Container>
-    <QBox>
-      {faq.map((item,id)=>{return<button key={`faq${id}`} className="button-primary" onClick={()=>document.getElementById(`faqanswer${id}`).scrollIntoView({behavior: "smooth"})}>{item.Q}</button>})}
-    </QBox>
-    
-    <ABox className="container">
-      {faq.map((answer,id)=>{return <Adiv key={`faq${id}`} id={`faqanswer${id}`}><h2>{answer.H}</h2><p>{answer.A}</p></Adiv>})}
-    </ABox>
-  </Container>
-*/
