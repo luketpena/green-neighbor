@@ -1,12 +1,17 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import styled from 'styled-components';
-import EnergyBar from '../EnergyBar/EnergyBar';
 
+//-----< Resource Imports >-----\\
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretUp } from '@fortawesome/free-solid-svg-icons'
+import EnergyBar from '../EnergyBar/EnergyBar';
 
 
+//-----< Styling >-----\\
+
+// '80' in the height accounts for the header height.
+// The other two heights are calculated on mount and window resize.
 const ProgramCardBody = styled.div`
   margin: 8px 0 32px 0;
   h5 {
@@ -106,7 +111,7 @@ const ProgramCardTitleBox = styled.div`
   width: 100%;
 `;
 
-
+//-----< Component Function >-----\\
 export default function ProgramCard(props) {
 
   const history = useHistory();
@@ -116,7 +121,6 @@ export default function ProgramCard(props) {
   let [blockActive] = useState(( (props.program.blocks_available==='No' || props.program.blocks_available===null)? false : true));
   let [h_main, setH_main] = useState(0);
   let [h_details, setH_details] = useState(0);
-  let [mount, setMount] = useState(false);
   
   const [energy] = useState([
     {name: 'Wind', value: props.program.wind}, 
@@ -131,25 +135,30 @@ export default function ProgramCard(props) {
     {text: 'is Revenue Neutral', value: (props.program.revenue_neutral==='Yes'? true : false)},
   ]);
 
+  // This calculates the size of the individual card based on their content + size of the window
+  const cardHeightCallback = useCallback(
+    () => {
+      let mainHeight = document.getElementsByClassName('program-card-main')[props.index];
+      let detailsHeight = document.getElementsByClassName('program-card-details')[props.index];
+      if (mainHeight) {
+        setH_main(mainHeight.clientHeight);
+      }
+      if (detailsHeight) {
+        setH_details(detailsHeight.clientHeight);
+      }
+    },
+    [props.index]
+  );
+
   useEffect(()=>{
-    getCardHeights();
-    window.addEventListener('resize', getCardHeights);
+    cardHeightCallback();
+    window.addEventListener('resize', cardHeightCallback);
     return () => {
-      window.removeEventListener('resize', getCardHeights);
+      window.removeEventListener('resize', cardHeightCallback);
     }
-  },[])
+  },[cardHeightCallback])
 
-  function getCardHeights() {
-    let mainHeight = document.getElementsByClassName('program-card-main')[props.index];
-    let detailsHeight = document.getElementsByClassName('program-card-details')[props.index];
-    if (mainHeight) {
-      setH_main(mainHeight.clientHeight);
-    }
-    if (detailsHeight) {
-      setH_details(detailsHeight.clientHeight);
-    }
-  }
-
+  // This function rearranged the energy sources values from highest to lowest, ignoring empty values
   function sortEnergy() {
     let copy = [];
     for (let i=0; i<energy.length; i++) {
@@ -174,7 +183,7 @@ export default function ProgramCard(props) {
     return copy;
   }
 
-  //Creates the text describing where a program is sources from
+  // Creates the text describing where a program is sourced from. (Solar, wind, etc.)
   function renderSourceText() {
     let sourceString = 'Generated from '
     const sourceList = sortEnergy();
@@ -190,6 +199,7 @@ export default function ProgramCard(props) {
     
   }
 
+  // Creates text describing what certifications a program has
   function renderAttributeText() {
     let attributeString = '';
     for (let i=0; i<attributes.length; i++) {
@@ -210,6 +220,7 @@ export default function ProgramCard(props) {
     return attributeString;
   }
 
+  // Returns text describing the pricing model of a program
   function renderBlockActive() {
     switch(blockActive) {
       case false: return 'Priced by Kilowatt-hour';
@@ -217,6 +228,7 @@ export default function ProgramCard(props) {
     }
   }
 
+  // Returns text describing the cost of a program (for either block or c/kwh models)
   function renderPricing() {
     let priceString = 'The price ';
     if (blockActive && props.program.block_cost) {
@@ -229,6 +241,7 @@ export default function ProgramCard(props) {
     return priceString
   }
 
+  // Renders text about the sizes of blocks (if blocks are being used)
   function renderBlockSize() {
     if (blockActive) {
       let blockString = '';
@@ -239,6 +252,7 @@ export default function ProgramCard(props) {
     }
   }
 
+  // Renders text about the credits for enrollment - text is rendered if there are no credits
   function renderCredit() {
     switch(props.program.credit_yn) {
       case 'Yes': return <p>This program offers credit {(props.program.credit_kwh? <span>at ${(props.program.credit_kwh*.01).toFixed(4)} </span> : <></>)}per Kilwatt-hour</p>;
@@ -247,6 +261,7 @@ export default function ProgramCard(props) {
     }
   }
 
+  // Renders text about how much % of energy usage a program will cover
   function renderPercentOptions() {
     if (props.program.percentage_options) {
       const optionArray = props.program.percentage_options.split(';');      
@@ -258,6 +273,8 @@ export default function ProgramCard(props) {
     }
   }
 
+  // Render tex tabout whether or not a program charges fees upon contract termination
+  // Note: does NOT render the amount charged upon termination
   function renderTermination() {
     switch(props.program.termination_fee) {
       case 'Yes': return <p>Charges fee upon termination</p>;
@@ -266,10 +283,10 @@ export default function ProgramCard(props) {
     }
   }
 
-  
 
   return (
     <ProgramCardBody detailsActive={detailsActive} h_main={h_main} h_details={h_details}>
+
       <ProgramCardHeader>
         <ProgramCardTitleBox>
           <h5>{props.program.program_name}</h5>
@@ -293,6 +310,7 @@ export default function ProgramCard(props) {
         
         {renderTermination()}
       </ProgramCardDetails>
+      
     </ProgramCardBody>
   )
 }
