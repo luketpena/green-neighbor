@@ -98,11 +98,6 @@ export default function ReportErrorPage(props){
     const [email, setEmail] = useState('');
     const [open, setOpen] = useState(false);
 
-    function demoAutoFill() {
-      setComments('Your website says it runs on 50% Biomass, but it is actually 100% Wind energy.');
-      setEmail('luketpena@gmail.com');
-    }
-
     // on first mount
     useEffect(()=>{
         if(program_id){
@@ -138,7 +133,7 @@ export default function ReportErrorPage(props){
     if(program_id && eia_state){
         body = (
             <>
-                <h1 onClick={demoAutoFill}>Report Program Issue</h1>
+                <h1>Report Program Issue</h1>
                 <p>{zip} - {utility_name} - {program_name}</p>
             </>
         )
