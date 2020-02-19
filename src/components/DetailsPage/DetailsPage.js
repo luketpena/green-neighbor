@@ -31,15 +31,7 @@ const Container = styled.div`
   overflow: hidden;
 `;
 
-const appear_step1 = keyframes`
-  0% {opacity: 0;}
-  100% {opacity: 1;}
-`;
-const appear_step2 = keyframes`
-  0% {opacity: 0;}
-  50% {opacity: 0;}
-  100% {opacity: 1;}
-`;
+
 
 const TitleDiv = styled.div`
   grid-area: main;
@@ -95,11 +87,11 @@ const ActionCard = styled.button`
   
   text-align: center;
   width: 25%;
-  padding: 0 16px;
+  padding: 0 1%;
   color: rgba(255,255,255,.8);
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  align-items: center;
 
   transition: all .3s;
   border: none;
@@ -116,7 +108,8 @@ const ActionCard = styled.button`
   }
   .icon {
     display: block;
-    margin: 15% auto;
+    margin: 0 auto;
+    margin-top: 15%;
     transition: font-size: .2s;
     font-size: ${props=>(props.myWidth>500? '48px' : '32px')};
     transition: transform 1s;
@@ -129,6 +122,16 @@ const ActionCard = styled.button`
       transform: scale(1.4);
     }
   }
+`;
+
+const appear_step1 = keyframes`
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+`;
+const appear_step2 = keyframes`
+  0% {opacity: 0;}
+  50% {opacity: 0;}
+  100% {opacity: 1;}
 `;
 
 const TitleMain = styled.div`
