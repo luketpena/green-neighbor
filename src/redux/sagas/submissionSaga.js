@@ -42,7 +42,7 @@ function* getProgramSubmissionFormData(action){
     const response = yield axios.get(`/api/programs/details/${action.payload.id}`);
     yield put({type: 'SET_SUBMISSION_FORM', payload: response.data});
     if(!action.payload.history){
-      throw "getProgramSubmissionFormData must be passed a history object in action.payload."
+      throw new Error("getProgramSubmissionFormData must be passed a history object in action.payload.");
     }
     action.payload.history.push('/admin/submit/edit/program');
   } catch(error) {

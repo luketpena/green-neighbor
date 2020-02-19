@@ -118,7 +118,7 @@ export default function ReportErrorPage(props){
         if(eia_state){
             setCompanyName(utility_name);
         }
-    }, [utility_name, history]);
+    }, [utility_name, history, eia_state]);
 
     useEffect(()=>{
         setProgramName(program_name);

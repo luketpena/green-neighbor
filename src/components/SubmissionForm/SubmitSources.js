@@ -3,7 +3,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
 
 import EnergyBar from '../EnergyBar/EnergyBar';
-import submissionFormReducer from '../../redux/reducers/submissionFormReducer';
 
 const Container = styled.div`
   h2 {

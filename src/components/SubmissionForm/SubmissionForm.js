@@ -165,6 +165,7 @@ export default function SubmissionForm() {
           setRequiredAlert(true);
         }
         break;
+      default: /* No default */ return;
     }
   }
 
@@ -194,6 +195,7 @@ export default function SubmissionForm() {
         return (
           <button onClick={clickSubmit} className="button-primary">Submit</button>
         )
+      default: /* No default */ return;
     }
   }
 
