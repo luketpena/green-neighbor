@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 
+
+//-----< Styling >-----\\
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -27,11 +29,19 @@ const Bar = styled.div`
   }
 `;
 
+
+//-----< Component Function >-----\\
 export default function EnergyBar(props) {
 
   const [hover] = useState(-1);
   const [select,setSelect] = useState(-1);
 
+  /*
+    This function takes in the energy sources coming in on props and
+    sorts them from largest to smallest in a new array.
+
+    Energy sources with a value of 0 will not be added to this array.
+  */
   function sortEnergy() {
 
     const energyStarter= [
@@ -65,27 +75,27 @@ export default function EnergyBar(props) {
     return copy;
   }
 
+  /*
+    Each element that comes out of the sortEnergy function is rendered
+    as a div with its width being a percent stored in that items
+    "value" property.
+  */
   function renderBars() {
     return sortEnergy().map( (item,i)=>{
-    return <Bar bar={item} key={i} select={select} index={i} onClick={()=>setSelect(i)} onMouseLeave={()=>setSelect(-1)}>{item.name} { parseInt((item.value*100).toString()) }%</Bar>
+    return <Bar 
+              bar={item} 
+              key={i} 
+              select={select} 
+              index={i} 
+              onClick={()=>setSelect(i)} 
+              onMouseLeave={()=>setSelect(-1)}>
+                {item.name} { parseInt((item.value*100).toString()) }%
+            </Bar>
     })
   }
 
-  function generateColumns() {
-    const myEnergy = sortEnergy();
-    let columnString = ``;
-    for (let i=0; i<myEnergy.length; i++) {
-      if (hover===i) {
-        columnString += `auto `;
-      } else {
-        columnString += `${myEnergy[i].value*100}fr `;
-      }
-    }
-    return columnString;
-  }
-
   return (
-    <Container gridColumns={generateColumns()}>
+    <Container>
      {renderBars()}
     </Container>
   )
