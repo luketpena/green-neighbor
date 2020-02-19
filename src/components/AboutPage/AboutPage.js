@@ -12,14 +12,11 @@ const BackgroundBox = styled.div`
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
-  width: 100vw;
   min-height: 100vh;
-  margin: 0;
-  box-sizing: border-box;
 `;
 
 const Container = styled.div`
-  height: 600px;
+  min-height: 600px;
   max-width: 70%;
   margin: 0 auto;
   display: grid;
