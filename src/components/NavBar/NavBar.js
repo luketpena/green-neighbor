@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
 
 
+//-----< Styling >-----\\
 const Container = styled.div`
   height: 50px;
   background-color: var(--color-primary);
@@ -17,6 +18,7 @@ const Container = styled.div`
   z-index: 100;
 `;
 
+// NOTE: The menu does not actually wrap for some reason. Might need updating later to be responsive.
 const ButtonBox = styled.div`
   grid-area: buttons;
   display: flex;
@@ -54,6 +56,8 @@ const NavButton = styled.button`
   }
 `;
 
+
+//-----< Component Function >-----\\
 export default function NavBar() {
 
   const [value, setValue] = useState(0);
@@ -61,6 +65,7 @@ export default function NavBar() {
   const history = useHistory();
   const dispatch = useDispatch();
 
+  // Stores menu options and their links - continue this array to add more options
   const tabs = [
     {name: 'Home', link: '/admin/home'},
     {name: 'Tickets', link: '/admin/tickets'},
@@ -68,6 +73,7 @@ export default function NavBar() {
     {name: 'Users', link: '/admin/manageAdmins'},
   ];
 
+  // Setting the selected menu position based on URL
   useEffect(()=>{
     let i = 0;
     for(; i < tabs.length; i++){
@@ -86,6 +92,7 @@ export default function NavBar() {
     })
   }
 
+  // Does not render menu if no user is logged in (aka, login / registration page)
   const user = useSelector(state => state.user);
   if(!user.id){
     return null;
