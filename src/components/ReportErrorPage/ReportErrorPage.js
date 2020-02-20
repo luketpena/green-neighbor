@@ -2,10 +2,14 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useParams, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
+
+//-----< Component + Resource Imports >-----\\
 import ReportThankYou from '../ReportErrorPage/ReportThankYou';
 import Background from '../../images/bkg-forest-top.jpg';
 import HomeButton from '../HomeButton/HomeButton';
 
+
+//-----< Styling >-----\\
 const Container = styled.div`
     color: white;
     width: max-content;
@@ -84,6 +88,8 @@ const ColorButton = styled.button`
     background-color: ${props => props.color};
 `;
 
+
+//-----< Component Function >-----\\
 export default function ReportErrorPage(props){
 
     const {zip, eia_state, program_id} = useParams();
@@ -114,7 +120,6 @@ export default function ReportErrorPage(props){
             setCompanyName(utility_name);
         }
     }, [utility_name, history, eia_state]);
-
     useEffect(()=>{
         setProgramName(program_name);
     }, [program_name, history]);
@@ -129,6 +134,10 @@ export default function ReportErrorPage(props){
         history.goBack();
     }
     
+    /*
+      Body is conditionally generated depending on the params brought in.
+      Allows the form to report different kinds of issues. 
+    */
     let body;
     if(program_id && eia_state){
         body = (
@@ -166,7 +175,7 @@ export default function ReportErrorPage(props){
         );
     }
     
-    const handleSubmit = e => {
+    function handleSubmit(e) {
         e.preventDefault();
         setOpen(true);
     }
