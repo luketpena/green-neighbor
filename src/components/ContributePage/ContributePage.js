@@ -2,23 +2,22 @@ import React from 'react';
 import styled from 'styled-components';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faBullhorn, faEnvelopeOpenText, faHandHoldingUsd} from '@fortawesome/free-solid-svg-icons';
-import Background from '../../images/bkg-forest-top.jpg';
 
-// fancy home button
+
+//-----< Resource Imports >-----\\
+import Background from '../../images/bkg-forest-top.jpg';
 import HomeButton from '../HomeButton/HomeButton';
 import SocialMedia from '../ContributePage/SocialMedia';
 import NewsLetter from './NewsLetter';
 import Donate from './Donate';
 
 
-
-
+//-----< Styling >-----\\
 const BackgroundBox = styled.div`
   background-image: url(${Background});
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
-  width: 100vw;
   min-height: 100vh;
   margin: 0;
   box-sizing: border-box;
@@ -29,9 +28,7 @@ const BackgroundBox = styled.div`
     text-shadow: 0 0 4px black;
   }
   
-
   a {
-  
     display: block;
     width: 100%;
     text-decoration: none;
@@ -58,21 +55,20 @@ const Container = styled.div`
 `;
 
 const Header = styled.div`
-display: flex;
-  align-items: center;
-  justify-content: center;
-  
-color: white;
-text-shadow: 0 0 4px black;
-h1 {
-  font-family: var(--font-header);
-  font-size: 64px;
-  margin: 0;
-}
+  display: flex;
+    align-items: center;
+    justify-content: center;
+    
+  color: white;
+  text-shadow: 0 0 4px black;
+  h1 {
+    font-family: var(--font-header);
+    font-size: 64px;
+    margin: 0;
+  }
 `;
 
-const Card = styled.div`
-  
+const Card = styled.div` 
   border: 2px solid white;
   border-radius: 16px;
   width: 320px;
@@ -90,28 +86,22 @@ const Card = styled.div`
     margin: 16px auto;
     font-size: 80px;
   }
-
 `;
 
 
-
+//-----< Component Function >-----\\
 export default function ContributePage() {
         
-  function checkForBlur() {
-    let target = document.getElementById('blur');
-    console.log('My Target data:',target);
-    
-    return target;
-  }
-
   return(
     <BackgroundBox>
+
       <HomeButton/>
       <Header>
-          <h1 id="blur" onClick={checkForBlur}>Contribute</h1>
-          {checkForBlur()}
+          <h1>Contribute</h1>
       </Header>
+
       <Container>
+
         <Card className="blur-background">
           <FontAwesomeIcon className="icon" icon={faBullhorn} />
           
@@ -129,6 +119,7 @@ export default function ContributePage() {
         </Card>
       
       </Container>
+
     </BackgroundBox>
   )
 }

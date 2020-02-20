@@ -207,7 +207,6 @@ export default function TicketsPage() {
                         </OrderByOptions>
                         <button
                             type='submit'
-                            role='submit'
                             className='button-default'
                         >Search</button>
                     </form>

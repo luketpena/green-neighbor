@@ -1,12 +1,15 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import {
   HashRouter as Router,
   Route,
   Redirect,
   Switch,
 } from 'react-router-dom';
-
 import {connect} from 'react-redux';
+
+
+//-----< Resource Imports >-----\\
+import './App.css';
 
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import DetailsPage from '../DetailsPage/DetailsPage';
@@ -20,10 +23,10 @@ import RecordsPage from '../Admin/RecordsPage/RecordsPage';
 import TicketsPage from '../Admin/TicketsPage/TicketsPage';
 import ContributePage from '../ContributePage/ContributePage';
 import SubmissionForm from '../SubmissionForm/SubmissionForm';
-
-import './App.css';
 import ReportErrorPage from '../ReportErrorPage/ReportErrorPage';
 
+
+//-----< Component Class >-----\\
 class App extends Component {
   componentDidMount () {
     this.props.dispatch({type: 'FETCH_USER'})
@@ -33,10 +36,10 @@ class App extends Component {
     return (
       <Router>
         <Switch>
-          {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
+          {/* Visiting localhost:3000 will redirect to localhost:3000/intro */}
           <Redirect exact from="/" to="/intro" />
           <Redirect exact from='/admin' to='/admin/home' />
-          {/* Visiting localhost:3000/about will show the about page.
+          {/* Example: Visiting localhost:3000/about will show the about page.
           This is a route anyone can see, no login necessary */}
           <Route
             exact

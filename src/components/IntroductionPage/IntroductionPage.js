@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import styled, {keyframes} from 'styled-components';
 import { useHistory } from 'react-router-dom';
+
+//-----< Resource Imports >-----\\
 import Background from '../../images/bkg-forest-top.jpg';
 
-
+//-----< Styling >-----\\
 const appear_step1 = keyframes`
   0% {
     opacity: 0;
@@ -14,6 +16,7 @@ const appear_step1 = keyframes`
     transform: translate( 0, 0);
   }
 `;
+
 const appear_step2 = keyframes`
   0% {opacity: 0;}
   50% {opacity: 0;}
@@ -33,13 +36,11 @@ const BackgroundBox = styled.div`
 `;
 
 const Container = styled.div`
-  
   display: grid;
   grid-template-areas: "main" "learn";
   grid-template-rows: 1fr auto;
   border: 4px solid white;
   height: 100%;
-
 `;
 
 const ZipBox = styled.div`
@@ -94,7 +95,9 @@ const LearnBox = styled.div`
   margin: 16px auto;
 `;
 
-export default function IntroductionPage(props) {
+
+//-----< Component Function >-----\\
+export default function IntroductionPage() {
   const history = useHistory();
   let [zipInput, setZipInput] = useState('');
 
@@ -129,7 +132,6 @@ export default function IntroductionPage(props) {
         <LearnBox>
           <button className="button-default" onClick={()=>history.push("/about")}>Learn who we are</button> 
           <button className="button-default" onClick={()=>history.push("/contribute")}>How you can help</button>
-          {/* update push links to when we had those pages set up */}
         </LearnBox>
       </Container>
     </BackgroundBox>

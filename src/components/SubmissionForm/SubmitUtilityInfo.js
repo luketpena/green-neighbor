@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTimes} from '@fortawesome/free-solid-svg-icons';
@@ -127,11 +126,6 @@ export default function SubmitUtilityInfo() {
 
   const dispatch = useDispatch();
   const submissionData = useSelector(state=>state.submissionFormReducer);
-  const { action } = useParams();
-
-  function fillState(prop, defaultValue) {
-    return ((action==='edit' && submissionData[prop])? submissionData[prop] : defaultValue)
-  }
 
   const [zipInput, setZipInput] = useState('');
   const [zips, setZips] = useState(submissionData.zips? submissionData.zips : [] );

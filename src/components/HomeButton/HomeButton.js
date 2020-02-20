@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { FontAwesomeIcon}  from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 
+
+//-----< Styling >-----\\
 const Container = styled.div`
   width: 100%;
   font-size: 4em;
@@ -32,10 +34,9 @@ const Container = styled.div`
   }
 `;
 
+//-----< Component Function >-----\\
 export default function HomeButton() {
-
   const history = useHistory();
-
   return (
     <Container>
       <FontAwesomeIcon className="icon" icon={faHome} onClick={()=>history.push('/intro')}/>

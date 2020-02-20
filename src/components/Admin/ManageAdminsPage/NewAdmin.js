@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {useParams} from 'react-router-dom';
+import React, { useState } from 'react';
+import {useDispatch} from 'react-redux';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -31,7 +30,6 @@ const Container = styled.div`
 
 export default function NewAdmin() {
 
-    const {usernames} = useParams();
     const dispatch = useDispatch(); 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
